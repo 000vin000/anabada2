@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>kr.co.greenart.anabada2</groupId>
-	<artifactId>anabada_2</artifactId>
+	<artifactId>anabada2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>anabada_2</name>
+	<name>anabada2</name>
 	<description>중고거래경매플랫폼 아나바다2</description>
 	<url/>
 	<licenses>
