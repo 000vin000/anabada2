@@ -4,7 +4,6 @@
 
 # application.properties
 schema.sql
-application.properties
 
 ### Eclipse ###
 .metadata
