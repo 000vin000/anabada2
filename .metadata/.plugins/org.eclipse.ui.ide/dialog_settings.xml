@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<list key="installedFeatures">
+		<item value="org.eclipse.buildship:3.1.10.v20240802-1211"/>
+		<item value="org.eclipse.egit.gitflow.feature:7.0.0.202409031743-r"/>
+		<item value="org.eclipse.egit:7.0.0.202409031743-r"/>
+		<item value="org.eclipse.emf.common:2.32.0.v20240731-0952"/>
+		<item value="org.eclipse.emf.ecore:2.38.0.v20240721-0802"/>
+		<item value="org.eclipse.epp.mpc:1.11.0.v20240709-1650"/>
+		<item value="org.eclipse.help:2.3.1900.v20240903-0240"/>
+		<item value="org.eclipse.jdt:3.19.600.v20240903-0240"/>
+		<item value="org.eclipse.jgit.gpg.bc:7.0.0.202409031743-r"/>
+		<item value="org.eclipse.jgit.http.apache:7.0.0.202409031743-r"/>
+		<item value="org.eclipse.jgit.lfs:7.0.0.202409031743-r"/>
+		<item value="org.eclipse.jgit.ssh.apache:7.0.0.202409031743-r"/>
+		<item value="org.eclipse.jgit:7.0.0.202409031743-r"/>
+		<item value="org.eclipse.jst.common.fproj.enablement.jdt:3.30.0.v202405122323"/>
+		<item value="org.eclipse.jst.enterprise_ui.feature:3.35.0.v202407060546"/>
+		<item value="org.eclipse.justj.openjdk.hotspot.jre.full:21.0.4.v20240802-1551"/>
+		<item value="org.eclipse.m2e.feature:2.6.2.20240828-1954"/>
+		<item value="org.eclipse.m2e.logback.feature:2.6.1.20240411-1743"/>
+		<item value="org.eclipse.m2e.wtp.feature:1.6.1.20231024-1618"/>
+		<item value="org.eclipse.mylyn.wikitext.feature:4.4.0.v20240820-2036"/>
+		<item value="org.eclipse.pde:3.16.0.v20240903-0240"/>
+		<item value="org.eclipse.platform:4.33.0.v20240903-0618"/>
+		<item value="org.eclipse.rcp:4.33.0.v20240903-0618"/>
+		<item value="org.eclipse.tm.terminal.connector.ssh.feature:11.6.1.202406241230"/>
+		<item value="org.eclipse.tm.terminal.control.feature:11.6.1.202407022003"/>
+		<item value="org.eclipse.tm.terminal.feature:11.6.1.202406241230"/>
+		<item value="org.eclipse.tm.terminal.view.feature:11.6.1.202406241230"/>
+		<item value="org.eclipse.userstorage:1.2.0.v20210517-0327"/>
+		<item value="org.eclipse.wb.core.feature:1.18.0.202411152029"/>
+		<item value="org.eclipse.wb.core.ui.feature:1.18.0.202409171726"/>
+		<item value="org.eclipse.wb.doc.user.feature:1.18.0.202411251904"/>
+		<item value="org.eclipse.wb.layout.group.feature:1.18.0.202411031218"/>
+		<item value="org.eclipse.wb.rcp.SWT_AWT_support:1.18.0.202410071826"/>
+		<item value="org.eclipse.wb.rcp.doc.user.feature:1.18.0.202409171726"/>
+		<item value="org.eclipse.wb.rcp.feature:1.18.0.202411152147"/>
+		<item value="org.eclipse.wb.swing.doc.user.feature:1.18.0.202409171726"/>
+		<item value="org.eclipse.wb.swing.feature:1.18.0.202411152029"/>
+		<item value="org.eclipse.wb.swt.feature:1.18.0.202411152147"/>
+		<item value="org.eclipse.wst.common.fproj:3.7.4.v202308161955"/>
+		<item value="org.eclipse.wst.json_ui.feature:1.1.11.v202308160419"/>
+		<item value="org.eclipse.wst.web_ui.feature:3.31.0.v202405130132"/>
+		<item value="org.eclipse.wst.xml_ui.feature:3.34.0.v202404170147"/>
+		<item value="org.jboss.tools.m2e.wro4j.feature:1.2.1.202301111328"/>
+		<item value="org.sonatype.m2e.egit.feature:0.17.0.202209271423"/>
+	</list>
+	<section name="CleanDialogSettings">
+		<item key="TOGGLE_SELECTED" value="false"/>
+		<item key="DIALOG_WIDTH" value="500"/>
+		<item key="DIALOG_HEIGHT" value="389"/>
+		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
+	</section>
+</section>

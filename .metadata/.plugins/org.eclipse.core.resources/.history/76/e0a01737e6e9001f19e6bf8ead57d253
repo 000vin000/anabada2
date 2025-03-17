@@ -1,0 +1,84 @@
+package kr.co.anabada.item.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
+
+import kr.co.anabada.item.entity.QnA;
+import kr.co.anabada.item.service.QuestionService;
+import kr.co.anabada.user.entity.User;
+
+@Controller
+public class QuestionController {
+	 @Autowired
+	 private QuestionService qService;
+	 
+	  // 문의 작성 처리
+	    @PostMapping("/item/detail/q")
+	    public String insertQuestion(@RequestParam int itemNo,
+	                                 @RequestParam int userNo,
+	                                 @RequestParam String qTitle,
+	                                 @RequestParam String qContent,
+	                                 Model model) {
+
+	        // 문의 등록
+	        qService.insertQ(itemNo, userNo, qTitle, qContent);
+
+	        // 등록된 문의 목록 조회
+	        List<QnA> qnaList = qService.getQListByItem(itemNo);
+	        model.addAttribute("qnaList", qnaList);
+
+	        // 상품 정보 (상세 페이지로 돌아감)
+	        model.addAttribute("item", qService.getItemById(itemNo));
+
+	        return "item/detail";
+	    }
+	 
+
+
+	 
+//	// 문의 수정 처리
+//	 @PostMapping("/item/detail/editQ")
+//	 public String updateQ(Question question) {
+//	     qService.updateQ(question);
+//	     return "item/detail";
+//	 }
+//
+//	 // 문의 삭제 처리
+//	 @PostMapping("/item/detail/deleteQ")
+//	 public String deleteQ(@RequestParam int qNo) {
+//	     qService.deleteQ(qNo);
+//	     return "item/detail"; 
+//	 }
+	 
+	 // 상품별 문의 목록 조회
+	@GetMapping("/item/detail/{itemNo}/qnaList")
+	@ResponseBody
+	public List<QnA> getQnaList(@PathVariable int itemNo) {
+		return qService.getQListByItem(itemNo);
+	}
+	 
+	 // 내가 작성한 모든 문의글 조회
+	 @GetMapping("/mypage/q")
+	 public String getQList(@SessionAttribute(name = "loggedInUser", required = false) User user, Model model) {
+		 List<QnA> list = qService.getQList(user.getUserNo());
+	     model.addAttribute("list", list);
+	     return "mypage/q";
+	 }
+	 
+//	 // 상품의 모든 문의글 조회
+//	 @GetMapping("/item/detail")
+//	 public String getQListByItem(@RequestParam int itemNo, Model model) {
+//		 List<QnA> list = qService.getQListByItem(itemNo);
+//		 model.addAttribute("list", list);
+//		 return "item/detail";
+//	 }
+}
