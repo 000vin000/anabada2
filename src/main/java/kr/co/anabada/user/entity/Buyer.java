@@ -1,5 +1,5 @@
 package kr.co.anabada.user.entity;
 
-public class User {
+public class Buyer {
 
 }

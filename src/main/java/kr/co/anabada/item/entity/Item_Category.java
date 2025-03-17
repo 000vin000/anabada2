@@ -1,5 +1,5 @@
 package kr.co.anabada.item.entity;
 
-public class Image {
+public class Item_Category {
 
 }
