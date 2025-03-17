@@ -1,0 +1,163 @@
+@charset "UTF-8";
+
+/* 전체 페이지 */
+body {
+  max-width: 1200px; /* 최대 너비 설정 (원하는 크기로 조정 가능) */
+  margin: 0 auto; /* 좌우 중앙 정렬 */
+  padding: 0 20px; /* 내부 여백 추가 (필요에 따라 조정) */
+}
+
+/* 카테고리 선택 */
+#categorySearchOption {
+    background-color: #f1f1f1; /* 배경색 */
+    padding: 20px; /* 패딩 */
+    margin-bottom: 20px; /* 아래쪽 여백 */
+    text-align: center; /* 자식 요소의 텍스트 가운데 정렬 */
+}
+#categorySearchOption label {
+	margin-right: 10px;	
+}
+
+#categorySearchOption select {
+    padding: 8px; /* 패딩 */
+    margin-right: 10px; /* 오른쪽 여백 */
+    border: 1px solid #ccc; /* 테두리 */
+    border-radius: 4px; /* 모서리 둥글게 */
+}
+
+#categorySearchOption input[type="button"] {
+    padding: 10px 15px; /* 패딩 */
+    background-color: #000000; /* 버튼 배경색 */
+    color: white; /* 글자 색상 */
+    border: none; /* 테두리 없음 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    cursor: pointer; /* 커서 모양 */
+}
+
+#gender {
+	width: 100px;
+}
+
+#clothesType {
+	width: 120px;
+}
+
+/* 정렬 버튼 */
+#sortOption {
+    display: flex; /* Flexbox 사용 */
+    align-items: center; /* 수직 중앙 정렬 */
+    margin-left: auto; /* 왼쪽 여백 자동으로 설정하여 오른쪽으로 이동 */
+    font-size: 16px; /* 글자 크기 */
+    color: #333; /* 글자 색상 */
+}
+
+#sortOrder {
+    margin-left: 10px; /* 정렬 선택 박스와 레이블 사이 여백 */
+    padding: 5px; /* 패딩으로 여백 추가 */
+    border: 1px solid #ccc; /* 테두리 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    background-color: #fff; /* 배경 색상 */
+    cursor: pointer; /* 커서 포인터로 변경 */
+}
+
+#sortOrder option {
+    padding: 10px; /* 옵션의 여백 */
+}
+
+
+/* 아이템 리스트 */
+#itemOption {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center; /* 카드 중앙 정렬 */
+	margin: 0 auto; /* 가운데 정렬을 위한 마진 */
+	max-width: 1200px; /* 최대 너비 설정 (필요에 따라 조정) */
+}
+
+#itemOption ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center; /* 카드 중앙 정렬 */
+}
+
+#itemOption li {
+	background-color: #fff; /* 카드 배경색 */
+	border-radius: 8px; /* 카드 모서리 둥글게 */
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+	padding: 16px; /* 카드 내부 여백 */
+	width: 200px; 
+	height: 300px;
+	margin: 10px; /* 카드 간의 간격 */
+	text-align: center; /* 텍스트 중앙 정렬 */
+	box-sizing: border-box; /* 패딩과 테두리가 너비에 포함되도록 설정 */
+}
+
+#itemOption img {
+	max-width: 100%; /* 이미지가 카드 너비에 맞게 조정 */
+	height: auto; /* 비율 유지 */
+	border-radius: 4px; /* 이미지 모서리 둥글게 */
+}
+
+#itemOption p {
+	margin: 1px 0; /* 위아래 간격을 8px로 설정 */
+}
+
+/* 아이템 1개 */
+#itemOption ul {
+    list-style-type: none; /* 기본 리스트 스타일 제거 */
+    padding: 0; /* 패딩 제거 */
+    display: flex; /* 플렉스박스 사용 */
+    flex-wrap: wrap; /* 줄 바꿈 허용 */
+}
+
+#itemOption li {
+    background-color: #fff; /* 카드 배경색 */
+    border: 1px solid #ddd; /* 카드 테두리 */
+    border-radius: 8px; /* 둥근 모서리 */
+    overflow: hidden; /* 넘치는 내용 숨기기 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    transition: transform 0.2s; /* 애니메이션 효과 */
+}
+
+#itemOption li:hover {
+    transform: scale(1.05); /* 마우스 오버 시 확대 */
+}
+
+#itemOption img {
+    width: 100%; /* 이미지 너비 100% */
+    height: auto; /* 비율 유지 */
+}
+
+#line {
+	border: none; /* 기본 테두리 제거 */
+    height: 2.5px; /* 두께 설정 */
+    background-color: #ccc; /* 회색 배경 */
+    margin: 1px 0; /* 위아래 여백 설정 */
+}
+
+#itemName {
+    font-weight: bold; /* 제목 두껍게 */
+    color: #000000;
+    font-size: 18px;
+}
+
+#itemPrice {
+    color: #e74c3c; /* 가격 색상 */
+}
+
+#itemUserNick {
+    color: #7f8c8d; /* 유저 닉네임 색상 */
+}
+
+#itemAuction {
+    font-style: italic; /* 경매 정보 이탤릭체 */
+    color: #5a5a5a;
+}
+
+#card {
+	text-decoration: none; /* 링크 밑줄 제거 */
+}
+

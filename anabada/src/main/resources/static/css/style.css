@@ -1,0 +1,1281 @@
+@charset "UTF-8";
+/* 전체 페이지 */
+body {
+	margin: 0 auto;
+}
+
+/* 카테고리 선택 */
+#categorySearchOption {
+    background-color: #e7f9fa; /* 배경색 */
+    padding: 20px; /* 패딩 */
+    margin-bottom: 20px; /* 아래쪽 여백 */
+    text-align: center; /* 자식 요소의 텍스트 가운데 정렬 */
+}
+#categorySearchOption label {
+	margin-right: 10px;	
+}
+
+#categorySearchOption select {
+    padding: 8px; /* 패딩 */
+    margin-right: 10px; /* 오른쪽 여백 */
+    border: 1px solid #ccc; /* 테두리 */
+    border-radius: 4px; /* 모서리 둥글게 */
+}
+
+#categorySearchOption input[type="button"] {
+    padding: 10px 15px; /* 패딩 */
+    background-color: #21afbf; /* 버튼 배경색 */
+    color: white; /* 글자 색상 */
+    border: none; /* 테두리 없음 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    cursor: pointer; /* 커서 모양 */
+    transition: background-color 0.3s; /* 애니메이션 효과 */
+}
+
+#categorySearchOption input[type="button"]:hover {
+	background-color: #2adbe0;
+}
+
+#gender {
+	width: 100px;
+}
+
+#clothesType {
+	width: 120px;
+}
+
+/* 정렬 버튼 */
+#sortOption {
+    display: flex; /* Flexbox 사용 */
+    align-items: center; /* 수직 중앙 정렬 */
+    margin-left: auto; /* 왼쪽 여백 자동으로 설정하여 오른쪽으로 이동 */
+    font-size: 16px; /* 글자 크기 */
+    color: #333; /* 글자 색상 */
+}
+
+#sortOrder {
+    margin-left: 10px; /* 정렬 선택 박스와 레이블 사이 여백 */
+    padding: 5px; /* 패딩으로 여백 추가 */
+    border: 1px solid #ccc; /* 테두리 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    background-color: #fff; /* 배경 색상 */
+    cursor: pointer; /* 커서 포인터로 변경 */
+}
+
+#sortOrder option {
+    padding: 10px; /* 옵션의 여백 */
+}
+
+
+/* 아이템 리스트 */
+#itemOption {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center; /* 카드 중앙 정렬 */
+	margin: 0 auto; /* 가운데 정렬을 위한 마진 */
+	max-width: 1200px; /* 최대 너비 설정 (필요에 따라 조정) */
+}
+
+#itemOption ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center; /* 카드 중앙 정렬 */
+}
+
+#itemOption li {
+	background-color: #fff; /* 카드 배경색 */
+	border-radius: 8px; /* 카드 모서리 둥글게 */
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+	padding: 16px; /* 카드 내부 여백 */
+	width: 200px; 
+	height: 300px;
+	margin: 10px; /* 카드 간의 간격 */
+	text-align: center; /* 텍스트 중앙 정렬 */
+	box-sizing: border-box; /* 패딩과 테두리가 너비에 포함되도록 설정 */
+}
+
+#itemOption img {
+	max-width: 100%; /* 이미지가 카드 너비에 맞게 조정 */
+	height: auto; /* 비율 유지 */
+	border-radius: 4px; /* 이미지 모서리 둥글게 */
+}
+
+#itemOption p {
+	margin: 1px 0; /* 위아래 간격을 8px로 설정 */
+}
+
+/* 아이템 1개 */
+#itemOption ul {
+    list-style-type: none; /* 기본 리스트 스타일 제거 */
+    padding: 0; /* 패딩 제거 */
+    display: flex; /* 플렉스박스 사용 */
+    flex-wrap: wrap; /* 줄 바꿈 허용 */
+}
+
+#itemOption li {
+    background-color: #fff; /* 카드 배경색 */
+    border: 1px solid #ddd; /* 카드 테두리 */
+    border-radius: 8px; /* 둥근 모서리 */
+    overflow: hidden; /* 넘치는 내용 숨기기 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    transition: transform 0.2s; /* 애니메이션 효과 */
+}
+
+#itemOption li:hover {
+    transform: scale(1.05); /* 마우스 오버 시 확대 */
+}
+
+#itemOption img {
+    width: 100%; /* 이미지 너비 100% */
+    height: auto; /* 비율 유지 */
+}
+
+#line {
+	border: none; /* 기본 테두리 제거 */
+    height: 2.5px; /* 두께 설정 */
+    background-color: #ccc; /* 회색 배경 */
+    margin: 1px 0; /* 위아래 여백 설정 */
+}
+
+#itemName {
+    font-weight: bold; /* 제목 두껍게 */
+    color: #000000;
+    font-size: 18px;
+}
+
+#itemPrice {
+    color: #e74c3c; /* 가격 색상 */
+}
+
+#itemUserNick {
+    color: #7f8c8d; /* 유저 닉네임 색상 */
+}
+
+#itemAuction {
+    font-style: italic; /* 경매 정보 이탤릭체 */
+    color: #5a5a5a;
+}
+
+#card {
+	text-decoration: none; /* 링크 밑줄 제거 */
+}
+
+
+
+/* 헤더 부분 */
+header {
+	width: 1200px;
+	margin: 0 auto;
+    display: flex;
+    justify-content: space-between; /* 양쪽 끝으로 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    padding: 10px 20px; /* 상하좌우 여백 */
+}
+
+header img {
+	margin-top: 4px;
+	width: 230px; 
+	height: auto; /* 비율 유지 */
+}
+
+#findOption {
+    display: flex; /* Flexbox 사용 */
+    align-items: center; /* 수직 중앙 정렬 */
+}
+
+#findType, #keyword, #find {
+    margin-left: 10px; /* 요소 간 간격 */
+    padding: 8px; /* 패딩 추가 */
+    border-radius: 4px; /* 모서리 둥글게 */
+}
+
+#findType, #keyword {
+	border: 1px solid #ccc; /* 테두리 */
+}
+
+#findType {
+    width: 120px; /* 드롭다운 넓이 */
+}
+
+input[type="search"] {
+    width: 300px; /* 검색창 넓이 */
+}
+
+input[type="button"] {
+    background-color: #21afbf; /* 버튼 배경 색상 */
+    color: white; /* 글자 색상 */
+    cursor: pointer; /* 커서 포인터로 변경 */
+    transition: background-color 0.3s; /* 배경색 전환 효과 */
+    width: 80px;
+    border: none;
+}
+
+input[type="button"]:hover {
+	background-color: #2adbe0;
+}
+
+nav ul {
+    list-style-type: none; /* 리스트 스타일 제거 */
+    padding: 0; /* 기본 패딩 제거 */
+    margin: 0; /* 기본 마진 제거 */
+    display: flex; /* Flexbox 사용 */
+}
+
+nav ul li {
+    margin-left: 15px; /* 리스트 항목 간 간격 */
+}
+
+nav ul li a {
+    text-decoration: none; /* 링크 밑줄 제거 */
+    color: #333; /* 글자 색상 */
+    transition: color 0.3s; /* 색상 전환 효과 */
+    margin-left: 15px;
+}
+
+nav ul li a:hover {
+    color: #21afbf; /* 마우스 오버 시 색상 */
+}
+
+#itemUpload {
+    margin-left: 20px; /* 다른 요소와의 간격 */
+}
+
+#itemUpload a {
+    display: inline-block; /* 블록 요소로 표시 */
+    padding: 10px 15px; /* 패딩 추가 */
+    background-color: #21afbf; /* 배경 색상 */
+    color: white; /* 글자 색상 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    text-decoration: none; /* 밑줄 제거 */
+    transition: background-color 0.3s, transform 0.2s; /* 전환 효과 */
+}
+
+#itemUpload a:hover {
+    transform: scale(1.05); /* 약간 확대 */
+    transition: background-color 0.3s, transform 0.2s; /* 전환 효과 */
+    background-color: #2adbe0;
+}
+
+.body-container {
+  max-width: 1200px; /* 최대 너비 설정 (원하는 크기로 조정 가능) */
+  margin: 0 auto; /* 좌우 중앙 정렬 */
+  padding: 0 20px; /* 내부 여백 추가 (필요에 따라 조정) */
+  margin-bottom: 50px;
+  min-height: 820px; /* 최소 높이를 100vh로 설정 */
+}
+
+/* 마이페이지 브레드크럼 */
+.breadcrumb {
+    list-style: none;
+    display: flex;
+    font-size: 12px;
+    padding: 10px;
+}
+
+.breadcrumb li {
+    margin-right: 10px;
+}
+
+.breadcrumb li::after {
+    content: ">";
+    margin-left: 10px;
+}
+
+.breadcrumb li:last-child::after {
+    content: "";
+}
+
+.breadcrumb a {
+    text-decoration: none;
+    color: #33A6A0;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+/* 마이페이지 내비게이션 */
+.mypage-nav {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 10px;
+}
+.mypage-nav a {
+    display: block;
+    width: 64px;
+    height: 64px;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    font-size: 11px;
+    margin: 10px;
+    text-align: center; /* 텍스트를 가운데 정렬 */
+}
+
+.mypage-nav a img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+.mypage-nav a:hover img {
+    transform: scale(1.1);
+}
+
+/* 관심물품 테이블 모양*/
+.tableFavor {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.tableFavor th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.tableFavor th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.tableFavor tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.tableFavor tr:hover {
+    background-color: #f1f1f1;
+}
+
+.tableFavor img {
+    width: 80px; 
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.no-border {
+    border: none; 
+}
+
+.no-style {
+	color: inherit;
+    text-decoration: none;
+}
+
+.btn {
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.btn-delete {
+    background-color: rgb(0, 0, 0);
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+/* 사이드바 스타일 */
+/* 사이드바 컨테이너 */
+.sidebar-container {
+	display: flex;
+    flex-direction: column;
+    align-items: center; /* 내부 요소 전체를 중앙 정렬 */
+    position: fixed;
+    right: 75px;
+    top: 100px;
+    width: 200px;
+    padding: 15px;
+    border-radius: 10px;
+    z-index: 9999; /* 다른 요소들보다 위에 배치 */
+}
+
+/* 최근 본 상품 */
+.recently-viewed-box {
+	width: 95px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 10px;
+    
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.sidebar {
+    position: fixed; /* 화면에 고정 */
+    right: 10px; /* 오른쪽 끝에서 10px 떨어짐 */
+    top: 100px; /* 화면 상단에서 100px */
+    width: 200px;
+    background: #ffffff; /* 배경색 */
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+    z-index: 9999; /* 다른 요소들보다 위에 배치 */
+}
+
+.recently-viewed-box div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.recently-viewed-box img {
+    width: 60px; /* 원하는 크기로 조정 */
+    height: 60px;
+    border-radius: 5px;
+    transition: transform 0.2s ease-in-out;
+    object-fit: cover; /* 비율을 유지하면서 이미지가 꽉 차도록 */
+}
+
+/* 사이드바 스크롤탑 버튼 */
+   
+#scrollTopBtn:hover {
+    background: #808080;
+}
+
+.top-btn {
+        margin-top: 10px auto;
+        width: 50%;
+        padding: 10px;
+        background: black;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        text-align: center;
+}
+
+/* 상세페이지 즐겨찾기 버튼 */
+#favor-btn {
+    all: unset; /* 기본 스타일 제거 */
+    display: inline-block; /* 버튼 크기를 이미지 크기에 맞춤 */
+    cursor: pointer; /* 마우스 오버 시 클릭 가능하게 */
+}
+
+#favor-btn img {
+    width: 24px; /* 이미지 크기 조절 */
+    height: 24px;
+    vertical-align: middle; /* 정렬 이슈 방지 */
+}
+
+/*로그인 페이지 */
+ .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        #login-label {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-size: 16px;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            border-color: #21afbf;
+            outline: none;
+        }
+
+        #loginBtn {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            background-color: #21afbf;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        #loginBtn:hover {
+        	background-color: #2adbe0;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .signup-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+		.signup-link:hover {
+			background-color: #e7f9fa;
+		}
+		
+        .signup-link a {
+            color: #21afbf;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        
+/* 마이페이지 - 마이페이지로 돌아가기 버튼 */
+.toMypage {
+        display: block; /* 버튼 모양 만들기 */
+        width: 200px;
+        margin: 20px auto; /* 위쪽 여백 */
+        padding: 10px 20px; /* 버튼 내부 여백 */
+        background-color: #21afbf; /* 배경색 */
+        color: white; /* 글자색 */
+        border: none; /* 테두리 없애기 */
+        border-radius: 5px; /* 모서리 둥글게 */
+        text-decoration: none; /* 밑줄 없애기 */
+        font-size: 16px; /* 글자 크기 */
+        cursor: pointer; /* 마우스 커서 변경 */
+        text-align: center;
+        transition: background-color 0.3s;
+    }
+    
+.toMypage:hover {
+	background-color: #2adbe0;
+}
+    
+/* 판매현황 - 상세보기, 수정하기, 삭제하기 버튼 */
+.showDetail {
+    color: black;
+	text-decoration: none; /* 밑줄 없애기 */
+	font-size: 16px; /* 글자 크기 */
+	cursor: pointer; /* 마우스 커서 변경 */
+	text-align: center;
+}
+
+.editRemove {
+	margin: 0 auto; /* 위쪽 여백 */
+    padding: 10px 8px;  /* 버튼 내부 여백 */
+    color: black;
+	border: none; /* 테두리 없애기 */
+	border-radius: 5px; /* 모서리 둥글게 */
+	text-decoration: none; /* 밑줄 없애기 */
+	font-size: 16px; /* 글자 크기 */
+	cursor: pointer; /* 마우스 커서 변경 */
+	text-align: center;
+	background-color: #21afbf;
+	color: white;
+}
+
+/* 상품 등록, 수정 페이지 */
+.itemUp {
+    display: flex;
+    flex-direction: column;
+}
+
+.itemUp label {
+    font-weight: bold;
+    font-size: 18px;
+    color: #21afbf;
+    margin-right: 5px;
+}
+
+.itemUp div {
+	margin-bottom: 30px;
+}
+
+.itemUp input[type="text"] {
+	width: 700px;
+}
+
+.itemUp textarea, input[type="text"], input[type="number"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-right: 10px;
+}
+.tabEnd {
+	margin-left: 20px;
+}
+.startEnd {
+	display: flex;
+  	align-items: center; /* 세로 정렬 */
+  	gap: 10px; /* 요소 간 간격 */
+  	margin-right: 5px; /* 라벨과 입력 사이 간격 */
+}
+
+input[type="datetime-local"] {
+  padding: 10px; /* 안쪽 여백 */
+  border: 1px solid #ccc; /* 테두리 색상 */
+  border-radius: 5px; /* 모서리 둥글게 */
+  font-size: 14px; /* 글자 크기 */
+}
+
+.uploadImage {
+	align-items: center;
+	margin-right: 5px;
+}
+
+.uploadCate {
+  margin-top: 5px;
+  display: flex;
+  background-color: #e7f9fa; /* 배경 색상 */
+  padding: 10px; /* 안쪽 여백 */
+  border-radius: 10px; /* 모서리 둥글게 */
+  max-width: 600px; /* 최대 너비 */
+}
+
+.uploadCate label {
+  margin-right: 30px; /* 오른쪽 여백을 30px 설정 */
+}
+
+input[type="radio"] {
+  margin-right: 5px; /* 오른쪽 여백 */
+}
+
+input[type="radio"] + label {
+  margin-right: 15px; /* 라디오 버튼과 레이블 사이의 여백 */
+}
+
+.uploadPrice {
+	display: flex;
+	margin-right: 5px;
+}
+
+.uploadContent {
+	margin-bottom: 10px;
+	margin-right: 10px;
+}
+
+.uploadBtn {
+	    display: block; /* 버튼 모양 만들기 */
+        width: 200px;
+        margin: 20px auto; /* 위쪽 여백 */
+        padding: 10px 20px; /* 버튼 내부 여백 */
+        background-color: #ffffff; /* 배경색 */
+        color: #21afbf; /* 글자색 */
+        border: none; /* 테두리 없애기 */
+        border-radius: 5px; /* 모서리 둥글게 */
+        text-decoration: none; /* 밑줄 없애기 */
+        font-size: 16px; /* 글자 크기 */
+        cursor: pointer; /* 마우스 커서 변경 */
+        text-align: center;
+        border: 3px solid #21afbf; /* 테두리 색상 */
+}
+
+.uploadBtn:hover {
+	background-color: #e7f9fa;
+	transition: background-color 0.3s; /* 배경색 전환 효과 */
+}
+
+/* 상품 상세페이지 */
+#NameSection {
+	display: flex;
+	gap: 20px;
+	justify-content: space-between; /* 양 끝으로 배치 */
+	align-items: center; /* 수직 중앙 정렬 */
+	width: 620px;
+}
+
+#NameSection div {
+	display: flex;
+	gap: 20px;
+}
+
+#qnaList {
+	text-decoration: none; /* 밑줄 없애기 */
+	width: 90px;
+	padding: 5px;
+	background-color: #ffffff; /* 배경색 */
+	color: #21afbf; /* 글자색 */
+	border-radius: 10px; /* 모서리 둥글게 */
+	text-align: center;
+	cursor: pointer; /* 마우스 커서 변경 */
+	border: 2.5px solid #21afbf; /* 테두리 색상 */
+	font-weight: 700;
+	font-size: 14px;
+}
+
+#qnaList:hover {
+	background-color: #e7f9fa;
+	transition: background-color 0.3s; /* 배경색 전환 효과 */
+}
+
+#bidSection {
+	background-color: #e7f9fa;
+	padding: 10px 30px;
+	width: 570px;
+	border-radius: 10px; /* 모서리 둥글게 */
+}
+
+#bidSection input[type="text"] {
+	background-color: white;
+}
+
+#bidList {
+	width: 80px;
+	background-color: white;
+	text-decoration: none; /* 밑줄 없애기 */
+	padding: 6px;
+	color: #21afbf;
+	border-radius: 10px; /* 모서리 둥글게 */
+	font-weight: 700;
+	border: 2.5px solid white;
+	font-size: 14px;
+	transition: border 0.3s;
+}
+
+#bidList:hover {
+	border: 2.5px solid #21afbf;
+}
+
+#remainTime {
+	color: #21afbf;
+	font-size: 18px;
+	font-weight: 700;
+}
+
+#btnBid {
+		width: 60px;
+		height: 35px;
+        background-color: #21afbf; /* 배경색 */
+        color: white; /* 글자색 */
+        border: none; /* 테두리 없애기 */
+        border-radius: 5px; /* 모서리 둥글게 */
+        text-align: center;
+        border: 3px solid #21afbf; /* 테두리 색상 */
+        cursor: pointer; /* 마우스 커서 변경 */
+        transition: transform 0.3s; /* 애니메이션 효과 */
+        
+}
+
+#btnBid:hover {
+	background-color: #2adbe0;
+	border: 3px solid #2adbe0;
+}
+
+#btnBid:disabled {
+	background-color: #a0a0a0;
+	border: none;
+	cursor: default;
+}
+
+#detailSection table {
+	margin-top: 10px;
+}
+
+#detailSection th {
+	width: 100px;
+	font-size: 16px;
+}
+
+#detailSection td {
+	border: none;
+	text-align: left; /* 텍스트 좌측 정렬 */
+}
+
+#QnASection {
+	display: flex;
+	width: 620px;
+	margin-bottom: 15px;
+}
+
+
+
+
+/* 이메일 인증 페이지 스타일 */
+.email-verification-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.email-verification-container h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.input-container {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.email-verification-container input[type="email"],
+.email-verification-container input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: none;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.email-verification-container button {
+    width: 100%;
+    background-color: #21afbf;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.email-verification-container button:hover {
+    background-color: #2adbe0;
+}
+
+#verificationSection {
+    display: none;
+}
+
+/* 비밀번호 확인 페이지 스타일 */
+.password-check-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.password-check-container h1 {
+    color: #21afbf;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.password-check-container label {
+    margin-bottom: 5px;
+    display: block;
+    color: #555;
+}
+
+.password-check-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+.password-check-container button {
+    width: 100%;
+    padding: 12px;
+    background-color: #21afbf;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.password-check-container button:hover {
+    background-color: #2adbe0;
+}
+
+.password-check-container .error-message {
+    color: red;
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* 회원가입 페이지 스타일 */
+.join-container {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px; 
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.join-container h2 {
+    text-align: center;
+    color: #21afbf;
+}
+
+.join-container label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.join-container input[type="text"], 
+.join-container input[type="email"], 
+.join-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.join-container button, 
+.join-container input[type="button"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #21afbf;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.join-container button:hover, 
+.join-container input[type="button"]:hover {
+    background-color: #2adbe0;
+}
+
+.join-container input[type="text"][id^="userPhone"] {
+    width: 30%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.join-container .error-message {
+    color: red;
+    margin-top: 0;
+    font-size: 14px;
+}
+
+/* 회원정보 수정 페이지 스타일 */
+.update-info-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e7f4f7;
+    color: #333;
+    border-radius: 5px;
+    border: 1px solid #bcd9e8;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+    text-align: center;
+    margin-bottom: 20px; /* 필요 시 간격 추가 */
+}
+
+.update-info-link:hover {
+    background-color: #d0e6ec;
+    transform: scale(1.05);
+}
+
+
+.update-info-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.update-info-container .breadcrumb {
+    list-style: none;
+    display: flex;
+    font-size: 14px;
+    padding: 10px 0;
+    margin-bottom: 20px;
+}
+
+.update-info-container .breadcrumb li {
+    margin-right: 10px;
+}
+
+.update-info-container .breadcrumb li a {
+    color: #21afbf;
+    text-decoration: none;
+}
+
+.update-info-container .breadcrumb li a:hover {
+    text-decoration: underline;
+}
+
+.update-info-container h1, .update-info-container h2 {
+    color: #333;
+}
+
+.update-info-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.update-info-container input[type="text"],
+.update-info-container input[type="email"],
+.update-info-container input[type="password"],
+.update-info-container input[type="button"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.update-info-container input[type="button"] {
+    background-color: #21afbf;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.update-info-container input[type="button"]:hover {
+    background-color: #2adbe0;
+}
+
+.update-info-container .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px; /* 여기서 마진을 조정 */
+    margin-bottom: 15px; /* 필요시 유지 */
+}
+
+
+.update-info-container button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #21afbf;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.update-info-container button[type="submit"]:hover {
+    background-color: #2adbe0;
+}
+
+.withdraw-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e7f4f7;
+    color: #333;
+    border-radius: 5px;
+    border: 1px solid #bcd9e8;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+    text-align: center;
+}
+
+.withdraw-link:hover {
+    background-color: #d0e6ec;
+    transform: scale(1.05);
+}
+
+/* 회원정보 수정 페이지 전화번호 입력 스타일 */
+.update-info-container input[type="text"][id^="userPhone"] {
+    width: 30%; /* 각 입력 칸의 너비 설정 */
+    display: inline-block; /* 한 줄에 나란히 배치 */
+    margin-right: 5px; /* 입력 칸 사이 여백 */
+    padding: 10px; /* 내부 여백 */
+    border: 1px solid #ddd; /* 테두리 */
+    border-radius: 5px; /* 모서리를 둥글게 */
+    font-size: 16px; /* 글자 크기 */
+    box-sizing: border-box; /* 패딩과 보더 포함하여 박스 크기 계산 */
+}
+
+/* 추가적인 오류 메시지 스타일 */
+.update-info-container .error-message {
+    color: red; /* 오류 메시지 색상 */
+    font-size: 14px; /* 글자 크기 */
+    margin-top: 0; /* 위쪽 마진을 제거하여 간격 조정 */
+}
+
+/* 회원 탈퇴 페이지 스타일 */
+.deactivate-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.deactivate-container .breadcrumb {
+    list-style: none;
+    display: flex;
+    font-size: 14px;
+    padding: 10px 0;
+    margin-bottom: 20px;
+}
+
+.deactivate-container .breadcrumb li {
+    margin-right: 10px;
+}
+
+.deactivate-container .breadcrumb li a {
+    color: #21afbf;
+    text-decoration: none;
+}
+
+.deactivate-container .breadcrumb li a:hover {
+    text-decoration: underline;
+}
+
+.deactivate-container h1, .deactivate-container h2 {
+    color: #333;
+}
+
+.deactivate-container button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #21afbf;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.deactivate-container button[type="submit"]:hover {
+    background-color: #2adbe0;
+}
+
+.deactivate-container .update-info-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e7f4f7;
+    color: #333;
+    border-radius: 5px;
+    border: 1px solid #bcd9e8;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.deactivate-container .update-info-link:hover {
+    background-color: #d0e6ec;
+    transform: scale(1.05);
+}
+
+.change-password-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e7f4f7;
+    color: #333;
+    border-radius: 5px;
+    border: 1px solid #bcd9e8;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+    text-align: center;
+}
+
+.change-password-link:hover {
+    background-color: #d0e6ec;
+    transform: scale(1.05);
+}
+
+/* 비번변경 페이지 */
+/* 비밀번호 변경 페이지 - 내부 테두리 제거 */
+.change-password-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    border: none; /* 테두리 없애기 */
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.change-password-container h2 {
+    color: #333;
+}
+
+.change-password-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.change-password-container input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd; /* 외부 테두리는 유지 */
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.change-password-container button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #21afbf;
+    color: white;
+    border: none; /* 버튼 테두리 없애기 */
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.change-password-container button[type="submit"]:hover {
+    background-color: #2adbe0;
+}
+
+.change-password-container .error-message {
+    color: red;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+

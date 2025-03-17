@@ -1,0 +1,175 @@
+@charset "UTF-8";
+body {
+	margin: 0 auto;
+}
+
+.body-container {
+  max-width: 1200px; /* 최대 너비 설정 (원하는 크기로 조정 가능) */
+  margin: 0 auto; /* 좌우 중앙 정렬 */
+  padding: 0 20px; /* 내부 여백 추가 (필요에 따라 조정) */
+  margin-bottom: 50px;
+}
+
+/* 마이페이지 브레드크럼 */
+.breadcrumb {
+    list-style: none;
+    display: flex;
+    font-size: 14px;
+    padding: 10px;
+}
+
+.breadcrumb li {
+    margin-right: 10px;
+}
+
+.breadcrumb li::after {
+    content: ">";
+    margin-left: 10px;
+}
+
+.breadcrumb li:last-child::after {
+    content: "";
+}
+
+.breadcrumb a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+
+/* 관심물품 테이블 모양*/
+.tableFavor {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.tableFavor th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.tableFavor th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.tableFavor tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.tableFavor tr:hover {
+    background-color: #f1f1f1;
+}
+
+.tableFavor img {
+    width: 80px; 
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.no-style {
+	color: inherit;
+    text-decoration: none;
+}
+
+.btn {
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.btn-delete {
+    background-color: rgb(0, 0, 0);
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+/* 사이드바 스타일 */
+/* 사이드바 컨테이너 */
+.sidebar-container {
+	display: flex;
+    flex-direction: column;
+    align-items: center; /* 내부 요소 전체를 중앙 정렬 */
+    position: fixed;
+    right: 75px;
+    top: 100px;
+    width: 200px;
+    padding: 15px;
+    border-radius: 10px;
+    z-index: 9999; /* 다른 요소들보다 위에 배치 */
+}
+
+/* 최근 본 상품 */
+.recently-viewed-box {
+    padding: 15px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.sidebar {
+    position: fixed; /* 화면에 고정 */
+    right: 10px; /* 오른쪽 끝에서 10px 떨어짐 */
+    top: 100px; /* 화면 상단에서 100px */
+    width: 200px;
+    background: #ffffff; /* 배경색 */
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+    z-index: 9999; /* 다른 요소들보다 위에 배치 */
+}
+
+
+.recently-viewed-box h3 {
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.recently-viewed-box div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.recently-viewed-box img {
+    width: 60px; /* 원하는 크기로 조정 */
+    height: 60px;
+    border-radius: 5px;
+    transition: transform 0.2s ease-in-out;
+    object-fit: cover; /* 비율을 유지하면서 이미지가 꽉 차도록 */
+}
+
+/* 사이드바 스크롤탑 버튼 */
+   
+#scrollTopBtn:hover {
+    background: #808080;
+}
+
+.top-btn {
+        margin-top: 10px auto;
+        width: 50%;
+        padding: 10px;
+        background: black;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        text-align: center;
+}
