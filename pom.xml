@@ -45,8 +45,13 @@
       <dependency>
          <groupId>org.mybatis.spring.boot</groupId>
          <artifactId>mybatis-spring-boot-starter</artifactId>
-         <version>3.0.4</version>
+         <version>3.0.4</version> 
       </dependency>  
+      <!-- Spring Security 추가 -->
+      <dependency>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-security</artifactId>
+      </dependency>
       <!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-jasper -->
       <dependency>
           <groupId>org.apache.tomcat.embed</groupId>
@@ -67,6 +72,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
+		
 		
       <dependency>
          <groupId>org.springframework.boot</groupId>
