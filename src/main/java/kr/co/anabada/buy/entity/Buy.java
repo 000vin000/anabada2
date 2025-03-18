@@ -25,14 +25,14 @@ public class Buy {
     
     @ManyToOne
     @JoinColumn(name = "itemNo", nullable = false)  
-    private Item item;  
+    private Item itemNo;  
 
     @ManyToOne
     @JoinColumn(name = "userNo", nullable = false) 
-    private User user;  
+    private User userNo;  
 
     @ManyToOne
     @JoinColumn(name = "bidNo", nullable = false) 
-    private Bid bid; 
+    private Bid bidNo; 
 
 }

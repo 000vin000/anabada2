@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.*;
+import kr.co.anabada.user.entity.Buyer;
+import kr.co.anabada.user.entity.Seller;
 import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,11 +33,11 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "sellerNo", nullable = false) 
-    private User seller; 
+    private Seller sellerNo; 
 
     @ManyToOne
     @JoinColumn(name = "buyerNo", nullable = false) 
-    private User buyer;  
+    private Buyer buyerNo;  
 
     @Column(name = "reviewContent", nullable = false, columnDefinition = "TEXT")
     private String reviewContent;  
