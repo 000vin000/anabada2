@@ -33,6 +33,8 @@ public class Bid {
 	@ManyToOne
 	@JoinColumn(name = "userNo", nullable = false)
 	private User user;
+	@Column(nullable = false, columnDefinition = "DEFAULT 'active'")
+	private String bidStatus;
 	@Column(nullable = false)
 	private Integer bidPrice;
 	@Column(nullable = false)

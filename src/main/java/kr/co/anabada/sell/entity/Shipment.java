@@ -3,6 +3,7 @@ package kr.co.anabada.sell.entity;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,11 +37,11 @@ public class Shipment {
 	@OneToOne
 	@JoinColumn(name = "buyerNo", nullable = false)
 	private Buyer buyer;
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "DEFAULT 'waiting'")
 	private String shipStatus;
-	@UpdateTimestamp
-	private LocalDateTime shipDate;
 	private LocalDateTime shipStartDate;
 	private LocalDateTime shipEndDate;
+	@CreatedDate
+	private LocalDateTime shipCreatedDate;
 }
 // jhu
