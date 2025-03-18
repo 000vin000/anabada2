@@ -1,11 +1,8 @@
 package kr.co.anabada.buy.entity;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
 import kr.co.anabada.item.entity.Item; 
 import kr.co.anabada.user.entity.User;  
-import kr.co.anabada.buy.entity.Bid;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -4,10 +4,8 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.*;
-import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,9 +44,11 @@ public class Review {
     private Double reviewRating; 
 
     @CreationTimestamp
-    private LocalDateTime reviewCreatedDate = LocalDateTime.now(); 
+    @Column(name = "reviewCreatedDate", nullable = false, updatable = false)
+    private LocalDateTime reviewCreatedDate; 
 
     @UpdateTimestamp
-    private LocalDateTime reviewUpdatedDate = LocalDateTime.now(); 
+    @Column(name = "reviewUpdatedDate", nullable = false)
+    private LocalDateTime reviewUpdatedDate; 
 
 }
