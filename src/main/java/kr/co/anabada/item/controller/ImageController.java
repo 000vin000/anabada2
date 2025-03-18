@@ -1,5 +1,7 @@
 package kr.co.anabada.item.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,12 +23,12 @@ public class ImageController {
 	
 	@GetMapping("/{itemNo}")
 	public ResponseEntity<byte[]> findFirstByItemNo(@PathVariable Item itemNo) {
-		Image firstImage = service.findFirstByItemNo(itemNo);
+		Optional<Image> firstImage = service.findFirstByItemNo(itemNo);
 		
-		if (firstImage != null) {
+		if (firstImage.isPresent()) {
 			return ResponseEntity.ok()
 								.header(HttpHeaders.CONTENT_TYPE, MediaType.IMAGE_PNG_VALUE)
-								.body(firstImage.getImageFile());
+								.body(firstImage.get().getImageFile());
 		} else {
 			return ResponseEntity.notFound().build();
 		}
