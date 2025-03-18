@@ -3,9 +3,11 @@ package kr.co.anabada.sell.entity;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.*;
 import kr.co.anabada.buy.entity.Bid;
+import kr.co.anabada.buy.entity.Payment;
 import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
@@ -33,20 +35,32 @@ public class Refund {
     @ManyToOne
     @JoinColumn(name = "userNo", nullable = false)  
     private User user; 
+    
+    @ManyToOne
+    @JoinColumn(name = "payNo", nullable = false)
+    private Payment payment; 
 
     @Column(name = "refundReason", columnDefinition = "TEXT", nullable = false)
     private String refundReason; 
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "refundStatus", nullable = false)
-    private String refundStatus;  
+    private RefoundStatus refundStatus;  
 
     @CreationTimestamp
     @Column(name = "refundDate", nullable = false, updatable = false)
     private LocalDateTime refundDate;  
 
-    @CreationTimestamp
+    @UpdateTimestamp
     @Column(name = "refundProcessedDate")
     private LocalDateTime refundProcessedDate;  
+    
+    
+    public enum RefoundStatus{
+    	REQUESTED,
+    	REJECTED,
+    	COMPLETED
+    }
 
 }
 

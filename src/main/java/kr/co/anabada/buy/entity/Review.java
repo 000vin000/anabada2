@@ -29,7 +29,7 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "bidNo", nullable = false)  
-    private Bid bid; 
+    private Bid bidNo; 
 
     @ManyToOne
     @JoinColumn(name = "sellerNo", nullable = false) 
