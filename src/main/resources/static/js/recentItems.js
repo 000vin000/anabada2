@@ -1,10 +1,10 @@
 // 아래는 현재 외부 js 파일채로 사이드바가 있는 페이지에 적용하기
-// JavaScript로 쿠키에 상품 정보 저장
+// JavaScript로 로컬스토리지에 상품 정보 저장
 function addRecentView(itemNo, itemName, itemImage) {
-    const maxItems = 5; // 최대 저장 개수
+    // const maxItems = 5; // 최대 저장 개수
     const storageKey = "recentItems";
 	
-	const expiryTime = 24 * 60 * 60 * 1000; // 24시간 (밀리초 단위)
+	const expiryTime = 7 * 24 * 60 * 60 * 1000; // 24시간 (밀리초 단위)
 	const now = new Date().getTime();
 
     // 기존 로컬스토리지 값 가져오기
@@ -18,9 +18,9 @@ function addRecentView(itemNo, itemName, itemImage) {
 	recentItems.unshift({ id: itemNo, name: itemName, image: itemImage, expiry: now + expiryTime });
 
     // 최대 개수 초과 시 마지막 요소 제거
-    if (recentItems.length > maxItems) {
-        recentItems.pop();
-    }
+    // if (recentItems.length > maxItems) {
+    //     recentItems.pop();
+    // }
 
     // 로컬스토리지에 저장
     localStorage.setItem(storageKey, JSON.stringify(recentItems));
@@ -45,18 +45,35 @@ function displayRecentViews() {
 
     container.innerHTML = ""; // 기존 목록 초기화
 
-    recentItems.forEach(item => {
+    // recentItems.forEach(item => {
+    //     const itemElement = document.createElement("div");
+    //     itemElement.classList.add("recent-item");
+
+    //     itemElement.innerHTML = `
+	// 		<a href="/recentItem">
+	//             <img src="${item.image}" alt="${item.name}" width="50" height="50">
+	// 		</a>
+    //     `;
+
+    //     container.appendChild(itemElement);
+    // }); // 기존 반복문을 통해 보여주던거
+
+    const item = recentItems[0]; // 첫 번째 아이템만 가져오기
+
+    if (item) {
+        // 배열이 비어있지 않은 경우 실행
         const itemElement = document.createElement("div");
         itemElement.classList.add("recent-item");
 
         itemElement.innerHTML = `
-			<a href="/item/detail/${item.id}">
-	            <img src="${item.image}" alt="${item.name}" width="50" height="50">
-			</a>
+            <a href="/recentItem">
+                <img src="" alt="recent" width="50" height="50">
+            </a>
         `;
 
         container.appendChild(itemElement);
-    });
+    }
+
 }
 
 // 페이지 로드 시 최근 본 상품 목록 표시
