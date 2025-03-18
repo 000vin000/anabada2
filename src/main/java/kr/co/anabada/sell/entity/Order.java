@@ -43,7 +43,7 @@ public class Order {
 	@OneToOne
 	@JoinColumn(name = "buyerNo", nullable = false)
 	private Buyer buyer;
-	@Column(nullable = false, columnDefinition = "DEFAULT 'pending'")
+	@Column(nullable = false, columnDefinition = "ENUM('pending','paid') DEFAULT 'pending'")
 	private String orderStatus;
 	@Column(nullable = false, columnDefinition = "DEFAULT '1'")
 	private Integer orderAmount;

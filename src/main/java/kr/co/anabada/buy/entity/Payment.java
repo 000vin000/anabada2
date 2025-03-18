@@ -29,7 +29,7 @@ public class Payment {
 	@OneToOne
 	@JoinColumn(name = "orderNo", nullable = false)
 	private Order order;
-	@Column(nullable = false, columnDefinition = "DEFAULT 'pending'")
+	@Column(nullable = false, columnDefinition = "ENUM('pending','paid','rejected') DEFAULT 'pending'")
 	private String payStatus;
 	private LocalDateTime payCompletedDate;
 	private LocalDateTime payCancelledDate;
