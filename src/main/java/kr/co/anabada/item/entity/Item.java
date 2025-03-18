@@ -43,8 +43,9 @@ public class Item {
 	@JoinColumn(name = "fk_categoryNo", nullable = false)
 	private Item_Category categoryNo;
 	
+	@Enumerated(EnumType.STRING)
 	@Column(name = "itemSaleType", nullable = false)
-	private String itemSaleType;
+	private ItemSaleType itemSaleType = ItemSaleType.auction;
 	
 	@Column(name = "itemTitle", length = 50, nullable = false)
 	private String itemTitle;
@@ -52,8 +53,9 @@ public class Item {
 	@Column(name = "itemContent", columnDefinition = "text")
 	private String itemContent;
 	
+	@Enumerated(EnumType.STRING)
 	@Column(name = "itemStatus", nullable = false)
-	private String itemStatus;
+	private ItemStatus itemStatus = ItemStatus.active;
 	
 	@Column(name = "itemQuality")
 	private Integer itemQuality;
@@ -86,10 +88,17 @@ public class Item {
 	@Column(name = "itemAvgRating")
 	private Double itemAvgRating; // 평균 평점
 	
+	public enum ItemSaleType {
+		auction, shop, exchange, donation
+	}
+	
+	public enum ItemStatus {
+		active, expired, sold
+	}
+	
 	// 기본값 설정
 	@PrePersist
 	public void prePersist() {
-		if (itemStatus == null) { itemStatus = "active"; }
 		if (itemQuantity == null) { itemQuality = 1; }
 		if (itemPrice == null) { itemPrice = 0; }
 		if (itemViewCnt == null) { itemViewCnt = 0; }
