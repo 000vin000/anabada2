@@ -46,7 +46,12 @@
          <groupId>org.mybatis.spring.boot</groupId>
          <artifactId>mybatis-spring-boot-starter</artifactId>
          <version>3.0.4</version> 
-      </dependency>  
+	</dependency>  
+    <!-- WebSocket -->
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-websocket</artifactId>
+    </dependency>
       <!-- JPA 추가 -->
       <dependency>
     	<groupId>org.springframework.boot</groupId>
@@ -81,6 +86,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
+		
 		
 		
       <dependency>
