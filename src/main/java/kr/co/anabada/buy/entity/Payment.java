@@ -2,13 +2,13 @@ package kr.co.anabada.buy.entity;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-import jakarta.validation.constraints.NotNull;
 import kr.co.anabada.sell.entity.Order;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,14 +25,13 @@ public class Payment {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer payNo;
 	@OneToOne
-	@JoinColumn(name = "orderNo")
-	@NotNull
+	@JoinColumn(name = "orderNo", nullable = false)
 	private Order order;
-	@NotNull
+	@Column(nullable = false)
 	private String payStatus;
 	private LocalDateTime payCompletedDate;
 	private LocalDateTime payCancelledDate;
-	@NotNull
+	@Column(nullable = false)
 	private LocalDateTime payData;
 }
 // jhu
