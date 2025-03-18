@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,6 +41,10 @@ public class Buyer {
 
     @Column(name = "buyerPaySuccessRate", nullable = false)
     private Double buyerPaySuccessRate = 0.0;
+    
+    @ManyToOne
+    @JoinColumn(name = "userNo", nullable = false, unique = true)
+    private User user; 
 
 
 }

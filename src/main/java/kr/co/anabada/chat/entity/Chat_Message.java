@@ -5,7 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,6 +41,14 @@ public class Chat_Message {
 
     @Column(name = "msgDate", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime msgDate;
+    
+    @ManyToOne
+    @JoinColumn(name = "roomNo", nullable = false, referencedColumnName = "roomNo")
+    private Chat_Room chatRoom; 
+
+    @ManyToOne
+    @JoinColumn(name = "senderNo", nullable = false, referencedColumnName = "userNo")
+    private User sender; 
 
 
 }
