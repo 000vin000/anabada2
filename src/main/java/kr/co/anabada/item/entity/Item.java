@@ -3,6 +3,7 @@ package kr.co.anabada.item.entity;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.Column;
@@ -81,6 +82,9 @@ public class Item {
 	
 	@Column(name = "itemEndDate")
 	private LocalDateTime itemEndDate;
+	
+	@UpdateTimestamp
+	private LocalDateTime itemUpdatedDate;
 	
 	@Column(name = "itemViewCnt", nullable = false)
 	private Integer itemViewCnt; // 조회수
