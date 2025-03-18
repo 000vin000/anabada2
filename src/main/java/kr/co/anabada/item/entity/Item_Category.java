@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Item_Category {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String categoryNo;
 	
 	@Column(length = 8)
