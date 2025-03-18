@@ -19,15 +19,16 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Item_Category {
 	@Id
+	@Column(name = "categoryNo")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String categoryNo;
 	
-	@Column(length = 8)
+	@Column(name = "categoryParentNo", length = 8)
 	private String categoryParentNo;
 	
-	@Column(nullable = false)
+	@Column(name = "categoryLevel", nullable = false)
 	private Integer categoryLevel;
 	
-	@Column(length = 50, nullable = false)
+	@Column(name = "categoryName", length = 50, nullable = false)
 	private String categoryName;
 }

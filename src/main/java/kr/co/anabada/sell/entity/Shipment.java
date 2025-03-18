@@ -2,13 +2,13 @@ package kr.co.anabada.sell.entity;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-import jakarta.validation.constraints.NotNull;
 import kr.co.anabada.user.entity.Buyer;
 import kr.co.anabada.user.entity.Seller;
 import lombok.AllArgsConstructor;
@@ -26,18 +26,15 @@ public class Shipment {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer shipNo;
 	@OneToOne
-	@JoinColumn(name = "fk_orderNo")
-	@NotNull
+	@JoinColumn(name = "orderNo", nullable = false)
 	private Order order;
 	@OneToOne
-	@JoinColumn(name = "fk_sellerNo")
-	@NotNull
+	@JoinColumn(name = "sellerNo", nullable = false)
 	private Seller seller;
 	@OneToOne
-	@JoinColumn(name = "fK_buyerNo")
-	@NotNull
+	@JoinColumn(name = "buyerNo", nullable = false)
 	private Buyer buyer;
-	@NotNull
+	@Column(nullable = false)
 	private String shipStatus;
 	private LocalDateTime shipDate;
 	private LocalDateTime shipStartDate;

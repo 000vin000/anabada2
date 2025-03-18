@@ -2,14 +2,15 @@ package kr.co.anabada.buy.entity;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
 import kr.co.anabada.item.entity.Item;
+import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,15 +26,14 @@ public class Bid {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer bidNo;
 	@ManyToOne
-	@JoinColumn(name = "fk_itemNo")
-	@NotNull
+	@JoinColumn(name = "itemNo", nullable = false)
 	private Item item;
 	@ManyToOne
-	@NotNull
-	private Integer userNo;
-	@NotNull
+	@JoinColumn(name = "userNo", nullable = false)
+	private User user;
+	@Column(nullable = false)
 	private Integer bidPrice;
-	@NotNull
+	@Column(nullable = false)
 	private LocalDateTime bidTime;
 }
 // jhu
