@@ -2,6 +2,8 @@ package kr.co.anabada.sell.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.*;
 import kr.co.anabada.buy.entity.Bid;
 import kr.co.anabada.item.entity.Item;
@@ -36,11 +38,13 @@ public class Refund {
     private String refundReason; 
 
     @Column(name = "refundStatus", nullable = false)
-    private String refundStatus = "requested";  
+    private String refundStatus;  
 
+    @CreationTimestamp
     @Column(name = "refundDate", nullable = false, updatable = false)
-    private LocalDateTime refundDate = LocalDateTime.now();  
+    private LocalDateTime refundDate;  
 
+    @CreationTimestamp
     @Column(name = "refundProcessedDate")
     private LocalDateTime refundProcessedDate;  
 
