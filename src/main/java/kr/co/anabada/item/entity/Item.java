@@ -23,74 +23,68 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Table(name = "item")
 @Entity
+@Table(name = "item")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Item {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "itemNo")
 	private Integer itemNo;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sellerNo", nullable = false)
-	private Seller sellerNo;
+	private Seller seller;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "categoryNo", nullable = false)
-	private Item_Category categoryNo;
+	private Item_Category category;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "itemSaleType", nullable = false)
+	@Column(nullable = false)
 	private ItemSaleType itemSaleType = ItemSaleType.AUCTION;
 	
-	@Column(name = "itemTitle", length = 50, nullable = false)
+	@Column(length = 50, nullable = false)
 	private String itemTitle;
 	
 	@Lob
-	@Column(name = "itemContent")
 	private String itemContent;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "itemStatus", nullable = false)
+	@Column(nullable = false)
 	private ItemStatus itemStatus = ItemStatus.ACTIVE;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "itemQuality")
 	private ItemQuality itemQuality;
 	
-	@Column(name = "itemQuantity", nullable = false)
+	@Column(nullable = false)
 	private Integer itemQuantity = 1;
 	
-	@Column(name = "itemPrice", nullable = false)
+	@Column(nullable = false)
 	private Long itemPrice = 0L;
 	
-	@Column(name = "itemLatitude", nullable = false)
+	@Column(nullable = false)
 	private Double itemLatitude; // 위도
 	
-	@Column(name = "itemLongitude", nullable = false)
+	@Column(nullable = false)
 	private Double itemLongitude; // 경도
 	
-	@Column(name = "itemStartDate")
 	private LocalDateTime itemStartDate;
 	
-	@Column(name = "itemEndDate")
 	private LocalDateTime itemEndDate;
 	
-	@Column(name = "itemViewCnt", nullable = false)
+	@Column(nullable = false)
 	private Integer itemViewCnt = 0; // 조회수
 	
-	@Column(name = "itemAvgRating")
 	private Double itemAvgRating; // 평균 평점
 	
 	@CreationTimestamp
-	@Column(name = "itemCreateDate", nullable = false, updatable = false)
+	@Column(nullable = false, updatable = false)
 	private LocalDateTime itemCreatedDate;
 	
 	@UpdateTimestamp
-	@Column(name = "itemUpdatedDate", nullable = false)
+	@Column(nullable = false)
 	private LocalDateTime itemUpdatedDate;
 	
 	

@@ -17,59 +17,56 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Entity
+@Table(name = "user")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "User")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "userNo")
     private Integer userNo;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "userType", nullable = false)
+    @Column(nullable = false)
     private UserType userType = UserType.INDIVISUAL;
 
-    @Column(name = "businessRegNo", length = 20, unique = true)
+    @Column(length = 20, unique = true)
     private String businessRegNo;
 
-    @Column(name = "userName", nullable = false, length = 20)
+    @Column(nullable = false, length = 20)
     private String userName;
 
-    @Column(name = "userNick", nullable = false, length = 20, unique = true)
+    @Column(nullable = false, length = 20, unique = true)
     private String userNick;
 
-    @Column(name = "userId", nullable = false, length = 20, unique = true)
+    @Column(nullable = false, length = 20, unique = true)
     private String userId;
 
-    @Column(name = "userPw", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String userPw;
 
-    @Column(name = "userPhone", nullable = false, length = 20, unique = true)
+    @Column(nullable = false, length = 20, unique = true)
     private String userPhone;
 
-    @Column(name = "userEmail", nullable = false, length = 100, unique = true)
+    @Column(nullable = false, length = 100, unique = true)
     private String userEmail;
     
     @Enumerated(EnumType.STRING)
-    @Column(name = "userStatus", nullable = false)
+    @Column(nullable = false)
     private UserStatus userStatus = UserStatus.ACTIVE;
 
-    @Column(name = "userWarnCnt", nullable = false)
+    @Column(nullable = false)
     private Byte userWarnCnt = 0;
 
     @CreationTimestamp
-    @Column(name = "userCreatedDate", nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime userCreatedDate;
 
     @UpdateTimestamp
-    @Column(name = "userUpdatedDate", nullable = false)
+    @Column(nullable = false)
     private LocalDateTime userUpdatedDate;
 
-    @Column(name = "userWithdrawalDate")
     private LocalDateTime userWithdrawalDate;
     
     

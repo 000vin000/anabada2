@@ -21,7 +21,7 @@ import kr.co.anabada.user.entity.User;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Warn")
+@Table(name = "warn")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,18 +38,17 @@ public class Warn {
     @JoinColumn(name = "adminNo", nullable = false)
     private Admin admin;
 
-    @Column(name = "warnReason", nullable = false)
+    @Column(nullable = false)
     private String warnReason;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "warnStatus", nullable = false)
+    @Column(nullable = false)
     private WarnStatus warnStatus;
 
     @CreationTimestamp
-    @Column(name = "warnCreatedDate", nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime warnCreatedDate;
 
-    @Column(name = "warnProcessedDate")
     private LocalDateTime warnProcessedDate;
 
     
