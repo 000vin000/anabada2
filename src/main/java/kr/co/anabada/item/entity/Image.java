@@ -19,12 +19,13 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Image {
 	@Id
+	@Column(name = "imageNo")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer imageNo;
 	
-	@Column(nullable = false)
+	@Column(name = "itemNo", nullable = false)
 	private Integer itemNo;
 	
-	@Column(nullable = false)
+	@Column(name = "imageFile", nullable = false)
 	private byte[] imageFile;
 }
