@@ -26,11 +26,11 @@ public class Bid {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer bidNo;
 	@ManyToOne
-	@JoinColumn(name = "fk_itemNo")
+	@JoinColumn(name = "itemNo")
 	@NotNull
 	private Item item;
 	@ManyToOne
-	@JoinColumn(name = "fk_userNo")
+	@JoinColumn(name = "userNo")
 	@NotNull
 	private User user;
 	@NotNull

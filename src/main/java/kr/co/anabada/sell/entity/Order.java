@@ -28,18 +28,18 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer orderNo;
 	@OneToOne
-	@JoinColumn(name = "fk_itemNo")
+	@JoinColumn(name = "itemNo")
 	@NotNull
 	private Item item;
 	@OneToOne
-	@JoinColumn(name = "fk_bidNo")
+	@JoinColumn(name = "bidNo")
 	private Bid bid;
 	@OneToOne
-	@JoinColumn(name = "fk_sellerNo")
+	@JoinColumn(name = "sellerNo")
 	@NotNull
 	private Seller seller;
 	@OneToOne
-	@JoinColumn(name = "fk_buyerNo")
+	@JoinColumn(name = "buyerNo")
 	private Buyer buyer;
 	@NotNull
 	private String orderStatus;

@@ -25,7 +25,7 @@ public class Payment {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer payNo;
 	@OneToOne
-	@JoinColumn(name = "fk_orderNo")
+	@JoinColumn(name = "orderNo")
 	@NotNull
 	private Order order;
 	@NotNull
