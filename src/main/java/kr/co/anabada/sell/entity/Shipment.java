@@ -26,15 +26,15 @@ public class Shipment {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer shipNo;
 	@OneToOne
-	@JoinColumn(name = "fk_orderNo")
+	@JoinColumn(name = "orderNo")
 	@NotNull
 	private Order order;
 	@OneToOne
-	@JoinColumn(name = "fk_sellerNo")
+	@JoinColumn(name = "sellerNo")
 	@NotNull
 	private Seller seller;
 	@OneToOne
-	@JoinColumn(name = "fK_buyerNo")
+	@JoinColumn(name = "buyerNo")
 	@NotNull
 	private Buyer buyer;
 	@NotNull
