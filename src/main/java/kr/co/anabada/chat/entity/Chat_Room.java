@@ -7,7 +7,12 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import kr.co.anabada.item.entity.Item;
+import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,14 +30,8 @@ public class Chat_Room {
     @Column(name = "roomNo", nullable = false)
     private Integer roomNo;
 
-    @Column(name = "itemNo")
+    @Column(name = "itemNo", insertable = false, updatable = false)
     private Integer itemNo;
-
-    @Column(name = "user1No", nullable = false)
-    private Integer user1No;
-
-    @Column(name = "user2No", nullable = false)
-    private Integer user2No;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "roomStatus", nullable = false)
@@ -43,6 +42,18 @@ public class Chat_Room {
 
     @Column(name = "roomDate", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime roomDate;
+
+    @ManyToOne
+    @JoinColumn(name = "itemNo", nullable = false, insertable = false, updatable = false)
+    private Item item;
+
+    @OneToOne
+    @JoinColumn(name = "user1No", referencedColumnName = "userNo", nullable = false)
+    private User user1;
+
+    @OneToOne
+    @JoinColumn(name = "user2No", referencedColumnName = "userNo", nullable = false)
+    private User user2;
 
 }
 

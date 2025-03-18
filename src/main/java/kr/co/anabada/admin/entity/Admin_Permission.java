@@ -3,7 +3,10 @@ package kr.co.anabada.admin.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,5 +36,9 @@ public class Admin_Permission {
 
     @Column(name = "adminLevel", nullable = false)
     private Byte adminLevel = 1; 
+    
+    @ManyToOne
+    @JoinColumn(name = "userNo", nullable = false) 
+    private User user; 
 
 }

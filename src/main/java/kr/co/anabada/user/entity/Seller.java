@@ -7,6 +7,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,9 +25,6 @@ public class Seller {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sellerNo", nullable = false)
     private Integer sellerNo;
-
-    @Column(name = "userNo", nullable = false, unique = true)
-    private Integer userNo;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "sellerType", nullable = false)
@@ -45,6 +44,10 @@ public class Seller {
 
     @Column(name = "sellerGrade", length = 10)
     private String sellerGrade;
+    
+    @ManyToOne
+    @JoinColumn(name = "userNo", nullable = false)
+    private User user;
 
 
 

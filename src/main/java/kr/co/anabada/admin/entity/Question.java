@@ -5,7 +5,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import kr.co.anabada.item.entity.Item;
+import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,15 +28,6 @@ public class Question {
     @Column(name = "qNo", nullable = false)
     private Integer qNo;
 
-    @Column(name = "itemNo", nullable = false)
-    private Integer itemNo;
-
-    @Column(name = "senderNo", nullable = false)
-    private Integer senderNo;
-
-    @Column(name = "receiverNo", nullable = false)
-    private Integer receiverNo;
-
     @Column(name = "qIsPrivate", nullable = false)
     private Boolean qIsPrivate = false;
 
@@ -45,6 +40,16 @@ public class Question {
     @Column(name = "qDate", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp qDate;
 
-    
+    @ManyToOne
+    @JoinColumn(name = "itemNo", nullable = false)
+    private Item item;
+
+    @ManyToOne
+    @JoinColumn(name = "senderNo", nullable = false)
+    private User sender;
+
+    @ManyToOne
+    @JoinColumn(name = "receiverNo", nullable = false)
+    private User receiver;
 }
 
