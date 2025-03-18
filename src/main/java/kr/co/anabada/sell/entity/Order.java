@@ -43,11 +43,11 @@ public class Order {
 	@OneToOne
 	@JoinColumn(name = "buyerNo", nullable = false)
 	private Buyer buyer;
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "DEFAULT 'pending'")
 	private String orderStatus;
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "DEFAULT '1'")
 	private Integer orderAmount;
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "DEFAULT '0'")
 	private Integer ordershipFee;
 	@Column(nullable = false)
 	@UpdateTimestamp
