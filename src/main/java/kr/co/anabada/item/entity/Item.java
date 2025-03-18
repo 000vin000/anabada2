@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
@@ -48,7 +49,8 @@ public class Item {
 	@Column(name = "itemTitle", length = 50, nullable = false)
 	private String itemTitle;
 	
-	@Column(name = "itemContent", columnDefinition = "text")
+	@Lob
+	@Column(name = "itemContent")
 	private String itemContent;
 	
 	@Enumerated(EnumType.STRING)
