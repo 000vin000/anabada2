@@ -2,6 +2,8 @@ package kr.co.anabada.sell.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -46,6 +48,7 @@ public class Order {
 	@Column(nullable = false)
 	private Integer ordershipFee;
 	@Column(nullable = false)
+	@UpdateTimestamp
 	private LocalDateTime orderDate;
 	private LocalDateTime orderPayDeadline;
 }
