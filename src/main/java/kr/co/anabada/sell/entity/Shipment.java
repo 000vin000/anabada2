@@ -2,6 +2,8 @@ package kr.co.anabada.sell.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,6 +38,7 @@ public class Shipment {
 	private Buyer buyer;
 	@Column(nullable = false)
 	private String shipStatus;
+	@UpdateTimestamp
 	private LocalDateTime shipDate;
 	private LocalDateTime shipStartDate;
 	private LocalDateTime shipEndDate;

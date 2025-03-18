@@ -2,6 +2,7 @@ package kr.co.anabada.item.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.Column;
@@ -70,7 +71,7 @@ public class Item {
 	@Column(name = "itemLongitude", nullable = false)
 	private Double itemLongitude; // 경도
 	
-	@CreatedDate
+	@CreationTimestamp
 	@Column(name = "itemCreateDate")
 	private LocalDateTime itemCreatedDate;
 	

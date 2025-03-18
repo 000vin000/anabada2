@@ -3,9 +3,11 @@ package kr.co.anabada.sell.entity;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
+import kr.co.anabada.buy.entity.Bid;
 import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "refund")
 public class Refund {
 
@@ -41,22 +44,5 @@ public class Refund {
     @Column(name = "refundProcessedDate")
     private LocalDateTime refundProcessedDate;  
 
-  
-    @PrePersist
-    public void prePersist() {
-        if (refundStatus == null) {
-            refundStatus = "requested";  
-        }
-        if (refundDate == null) {
-            refundDate = LocalDateTime.now(); 
-        }
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        if (refundProcessedDate == null && "completed".equals(refundStatus)) {
-            refundProcessedDate = LocalDateTime.now(); 
-        }
-    }
 }
 

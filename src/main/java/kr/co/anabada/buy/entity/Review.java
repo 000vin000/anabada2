@@ -2,9 +2,15 @@ package kr.co.anabada.buy.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+
 import jakarta.persistence.*;
+import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "review")
 public class Review {
 
@@ -38,22 +45,10 @@ public class Review {
     @Column(name = "reviewRating", nullable = false)
     private Double reviewRating; 
 
-    @Column(name = "reviewCreatedDate", nullable = false, updatable = false)
+    @CreationTimestamp
     private LocalDateTime reviewCreatedDate = LocalDateTime.now(); 
 
-    @Column(name = "reviewUpdatedDate", nullable = false)
+    @UpdateTimestamp
     private LocalDateTime reviewUpdatedDate = LocalDateTime.now(); 
 
-    @PrePersist
-    @PreUpdate
-    public void validateReviewRating() {
-        if (reviewRating < 1.0 || reviewRating > 5.0) {
-            throw new IllegalArgumentException("평점은 1.0 이상 5.0 이하여야 합니다.");
-        }
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        this.reviewUpdatedDate = LocalDateTime.now(); 
-    }
 }

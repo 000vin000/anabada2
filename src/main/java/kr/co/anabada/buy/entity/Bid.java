@@ -2,6 +2,8 @@ package kr.co.anabada.buy.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,6 +36,7 @@ public class Bid {
 	@Column(nullable = false)
 	private Integer bidPrice;
 	@Column(nullable = false)
+	@UpdateTimestamp
 	private LocalDateTime bidTime;
 }
 // jhu
