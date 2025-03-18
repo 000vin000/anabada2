@@ -37,7 +37,7 @@ public class Shipment {
 	@OneToOne
 	@JoinColumn(name = "buyerNo", nullable = false)
 	private Buyer buyer;
-	@Column(nullable = false, columnDefinition = "DEFAULT 'waiting'")
+	@Column(nullable = false, columnDefinition = "ENUM('waiting','shipped','in_transit','delivered','failed') DEFAULT 'waiting'")
 	private String shipStatus;
 	private LocalDateTime shipStartDate;
 	private LocalDateTime shipEndDate;
