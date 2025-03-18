@@ -20,14 +20,17 @@ public class Buy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     @Column(name = "buyNo")
-    private Integer buyNo;  
-
+    private Integer buyNo;
+    
+    @ManyToOne
     @JoinColumn(name = "itemNo", nullable = false)  
     private Item item;  
 
+    @ManyToOne
     @JoinColumn(name = "userNo", nullable = false) 
     private User user;  
 
+    @ManyToOne
     @JoinColumn(name = "bidNo", nullable = false) 
     private Bid bid; 
 

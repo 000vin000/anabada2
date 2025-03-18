@@ -21,9 +21,11 @@ public class Refund {
     @Column(name = "refundNo")
     private Integer refundNo;
 
+    @ManyToOne
     @JoinColumn(name = "itemNo", nullable = false) 
     private Item item;  
 
+    @ManyToOne
     @JoinColumn(name = "userNo", nullable = false)  
     private User user; 
 

@@ -20,12 +20,15 @@ public class Review {
     @Column(name = "reviewNo")
     private Integer reviewNo;
 
+    @ManyToOne
     @JoinColumn(name = "bidNo", nullable = false)  
     private Bid bid; 
 
+    @ManyToOne
     @JoinColumn(name = "sellerNo", nullable = false) 
     private User seller; 
 
+    @ManyToOne
     @JoinColumn(name = "buyerNo", nullable = false) 
     private User buyer;  
 
