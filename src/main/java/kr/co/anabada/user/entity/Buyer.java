@@ -24,9 +24,6 @@ public class Buyer {
     @Column(name = "buyerNo", nullable = false)
     private Integer buyerNo;
 
-    @Column(name = "userNo", nullable = false, unique = true)
-    private Integer userNo;
-
     @Column(name = "buyerBidCnt", nullable = false)
     private Integer buyerBidCnt = 0;
 
@@ -43,7 +40,7 @@ public class Buyer {
     private Double buyerPaySuccessRate = 0.0;
     
     @ManyToOne
-    @JoinColumn(name = "userNo", nullable = false, unique = true)
+    @JoinColumn(name = "userNo", nullable = false)
     private User user; 
 
 

@@ -29,9 +29,6 @@ public class Answer {
     @Column(name = "qNo", nullable = false)
     private Integer qNo;
 
-    @Column(name = "responderNo", nullable = false)
-    private Integer responderNo;
-
     @Column(name = "aContent", nullable = false)
     private String aContent;
 
@@ -39,7 +36,7 @@ public class Answer {
     private Timestamp aDate;
     
     @ManyToOne
-    @JoinColumn(name = "qNo", nullable = false)
+    @JoinColumn(name = "qNo", insertable = false, updatable = false)
     private Question question; 
 
     @ManyToOne

@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import kr.co.anabada.user.entity.User;
@@ -27,12 +26,6 @@ public class Chat_Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "msgNo", nullable = false)
     private Integer msgNo;
-
-    @Column(name = "roomNo", nullable = false)
-    private Integer roomNo;
-
-    @Column(name = "senderNo", nullable = false)
-    private Integer senderNo;
 
     @Column(name = "msgContent", nullable = false, columnDefinition = "TEXT")
     private String msgContent;

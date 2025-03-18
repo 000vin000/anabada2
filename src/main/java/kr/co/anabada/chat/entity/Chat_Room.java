@@ -1,6 +1,5 @@
 package kr.co.anabada.chat.entity;
 
-import jakarta.mail.FetchProfile.Item;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,14 +30,8 @@ public class Chat_Room {
     @Column(name = "roomNo", nullable = false)
     private Integer roomNo;
 
-    @Column(name = "itemNo")
+    @Column(name = "itemNo", insertable = false, updatable = false)
     private Integer itemNo;
-
-    @Column(name = "user1No", nullable = false)
-    private Integer user1No;
-
-    @Column(name = "user2No", nullable = false)
-    private Integer user2No;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "roomStatus", nullable = false)
@@ -48,18 +42,18 @@ public class Chat_Room {
 
     @Column(name = "roomDate", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime roomDate;
-    
+
     @ManyToOne
-    @JoinColumn(name = "itemNo", nullable = false)
+    @JoinColumn(name = "itemNo", nullable = false, insertable = false, updatable = false)
     private Item item;
-    
+
     @OneToOne
     @JoinColumn(name = "user1No", referencedColumnName = "userNo", nullable = false)
-    private User user1; 
+    private User user1;
 
     @OneToOne
     @JoinColumn(name = "user2No", referencedColumnName = "userNo", nullable = false)
-    private User user2; 
+    private User user2;
 
 }
 

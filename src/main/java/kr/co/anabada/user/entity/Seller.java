@@ -26,9 +26,6 @@ public class Seller {
     @Column(name = "sellerNo", nullable = false)
     private Integer sellerNo;
 
-    @Column(name = "userNo", nullable = false, unique = true)
-    private Integer userNo;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "sellerType", nullable = false)
     private SellerType sellerType;
@@ -49,8 +46,8 @@ public class Seller {
     private String sellerGrade;
     
     @ManyToOne
-    @JoinColumn(name = "userNo", nullable = false, unique = true)
-    private User user; 
+    @JoinColumn(name = "userNo", nullable = false)
+    private User user;
 
 
 
