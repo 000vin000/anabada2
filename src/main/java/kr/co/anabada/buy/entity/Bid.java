@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import kr.co.anabada.item.entity.Item;
+import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,8 +30,9 @@ public class Bid {
 	@NotNull
 	private Item item;
 	@ManyToOne
+	@JoinColumn(name = "fk_userNo")
 	@NotNull
-	private Integer userNo;
+	private User user;
 	@NotNull
 	private Integer bidPrice;
 	@NotNull
