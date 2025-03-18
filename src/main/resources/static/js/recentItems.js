@@ -67,7 +67,7 @@ function displayRecentViews() {
 
         itemElement.innerHTML = `
             <a href="/recentItem">
-                <img src="" alt="recent" width="50" height="50">
+                <img src="http://localhost:8080/images/${item.itemNo}" alt="recent" width="50" height="50">
             </a>
         `;
 
