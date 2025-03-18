@@ -32,7 +32,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Item {
 	@Id
-	@Column(name = "itemNo")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer itemNo;
 	
