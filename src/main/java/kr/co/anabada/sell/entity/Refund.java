@@ -6,8 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.*;
-import kr.co.anabada.buy.entity.Bid;
 import kr.co.anabada.buy.entity.Payment;
+import kr.co.anabada.item.entity.Bid;
 import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
