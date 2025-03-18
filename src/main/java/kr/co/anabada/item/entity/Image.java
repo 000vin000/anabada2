@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,8 +25,9 @@ public class Image {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer imageNo;
 	
-	@Column(name = "itemNo", nullable = false)
-	private Integer itemNo;
+	@ManyToOne
+	@JoinColumn(name = "itemNo", nullable = false)
+	private Item itemNo;
 	
 	@Column(name = "imageFile", nullable = false)
 	private byte[] imageFile;

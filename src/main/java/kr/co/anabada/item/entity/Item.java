@@ -2,17 +2,23 @@ package kr.co.anabada.item.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import kr.co.anabada.user.entity.Seller;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,11 +36,13 @@ public class Item {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer itemNo;
 	
-	@Column(name = "sellerNo", nullable = false)
-	private Integer sellerNo;
+	@ManyToOne
+	@JoinColumn(name = "fk_sellerNo")
+	private Seller sellerNo;
 	
-	@Column(name = "categoryNo", nullable = false)
-	private String categoryNo;
+	@OneToOne
+	@JoinColumn(name = "fk_categoryNo", nullable = false)
+	private Item_Category categoryNo;
 	
 	@Column(name = "itemSaleType", nullable = false)
 	private String itemSaleType;
@@ -63,7 +71,7 @@ public class Item {
 	@Column(name = "itemLongitude", nullable = false)
 	private Double itemLongitude; // 경도
 	
-	@CreatedDate
+	@CreationTimestamp
 	@Column(name = "itemCreateDate")
 	private LocalDateTime itemCreatedDate;
 	
