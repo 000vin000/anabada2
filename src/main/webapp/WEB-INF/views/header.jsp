@@ -10,15 +10,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="/images/favicon.png" sizes="16x16">
     <title>ANABADA</title>
-	
+   
     <script>
         function submitSearch() {
             const findType = document.getElementById('findType').value;
             const keyword = document.getElementById('keyword').value.trim();
             
             if (!findType) {
-            	alert('검색유형을 선택하세요.');
-            	return;
+               alert('검색유형을 선택하세요.');
+               return;
             }
             if (!keyword) {
                 alert('검색어를 입력하세요.');
@@ -67,19 +67,19 @@
         <nav>
             <ul>
                 <c:choose>
-					<c:when test="${empty loggedInUser}">
+               <c:when test="${empty loggedInUser}">
                         <li><a href="<c:url value='/user/join'/>">회원가입</a></li>
                         <li><a href="<c:url value='/user/login'/>">로그인</a></li>
                     </c:when>
                     <c:otherwise>
-                    	<li><a href="<c:url value='/mypage'/>">마이페이지</a></li>
+                       <li><a href="<c:url value='/mypage'/>">마이페이지</a></li>
                         <li><a href="<c:url value='/user/logout'/>">로그아웃</a></li>
                     </c:otherwise>
                 </c:choose>
             </ul>
         </nav>   
         <div id="itemUpload">
-        	<a href="/mypage/itemup">상품등록</a>
+           <a href="/mypage/itemup">상품등록</a>
         </div>
     </header>
 </body>

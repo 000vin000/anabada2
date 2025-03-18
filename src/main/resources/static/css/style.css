@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* 전체 페이지 */
 body {
-	margin: 0 auto;
+   margin: 0 auto;
 }
 
 /* 카테고리 선택 */
@@ -12,7 +12,7 @@ body {
     text-align: center; /* 자식 요소의 텍스트 가운데 정렬 */
 }
 #categorySearchOption label {
-	margin-right: 10px;	
+   margin-right: 10px;   
 }
 
 #categorySearchOption select {
@@ -33,15 +33,15 @@ body {
 }
 
 #categorySearchOption input[type="button"]:hover {
-	background-color: #2adbe0;
+   background-color: #2adbe0;
 }
 
 #gender {
-	width: 100px;
+   width: 100px;
 }
 
 #clothesType {
-	width: 120px;
+   width: 120px;
 }
 
 /* 정렬 버튼 */
@@ -69,42 +69,42 @@ body {
 
 /* 아이템 리스트 */
 #itemOption {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center; /* 카드 중앙 정렬 */
-	margin: 0 auto; /* 가운데 정렬을 위한 마진 */
-	max-width: 1200px; /* 최대 너비 설정 (필요에 따라 조정) */
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center; /* 카드 중앙 정렬 */
+   margin: 0 auto; /* 가운데 정렬을 위한 마진 */
+   max-width: 1200px; /* 최대 너비 설정 (필요에 따라 조정) */
 }
 
 #itemOption ul {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center; /* 카드 중앙 정렬 */
+   list-style: none;
+   padding: 0;
+   margin: 0;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center; /* 카드 중앙 정렬 */
 }
 
 #itemOption li {
-	background-color: #fff; /* 카드 배경색 */
-	border-radius: 8px; /* 카드 모서리 둥글게 */
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-	padding: 16px; /* 카드 내부 여백 */
-	width: 200px; 
-	height: 300px;
-	margin: 10px; /* 카드 간의 간격 */
-	text-align: center; /* 텍스트 중앙 정렬 */
-	box-sizing: border-box; /* 패딩과 테두리가 너비에 포함되도록 설정 */
+   background-color: #fff; /* 카드 배경색 */
+   border-radius: 8px; /* 카드 모서리 둥글게 */
+   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+   padding: 16px; /* 카드 내부 여백 */
+   width: 200px; 
+   height: 300px;
+   margin: 10px; /* 카드 간의 간격 */
+   text-align: center; /* 텍스트 중앙 정렬 */
+   box-sizing: border-box; /* 패딩과 테두리가 너비에 포함되도록 설정 */
 }
 
 #itemOption img {
-	max-width: 100%; /* 이미지가 카드 너비에 맞게 조정 */
-	height: auto; /* 비율 유지 */
-	border-radius: 4px; /* 이미지 모서리 둥글게 */
+   max-width: 100%; /* 이미지가 카드 너비에 맞게 조정 */
+   height: auto; /* 비율 유지 */
+   border-radius: 4px; /* 이미지 모서리 둥글게 */
 }
 
 #itemOption p {
-	margin: 1px 0; /* 위아래 간격을 8px로 설정 */
+   margin: 1px 0; /* 위아래 간격을 8px로 설정 */
 }
 
 /* 아이템 1개 */
@@ -134,7 +134,7 @@ body {
 }
 
 #line {
-	border: none; /* 기본 테두리 제거 */
+   border: none; /* 기본 테두리 제거 */
     height: 2.5px; /* 두께 설정 */
     background-color: #ccc; /* 회색 배경 */
     margin: 1px 0; /* 위아래 여백 설정 */
@@ -160,15 +160,15 @@ body {
 }
 
 #card {
-	text-decoration: none; /* 링크 밑줄 제거 */
+   text-decoration: none; /* 링크 밑줄 제거 */
 }
 
 
 
 /* 헤더 부분 */
 header {
-	width: 1200px;
-	margin: 0 auto;
+   width: 1200px;
+   margin: 0 auto;
     display: flex;
     justify-content: space-between; /* 양쪽 끝으로 정렬 */
     align-items: center; /* 수직 중앙 정렬 */
@@ -176,9 +176,9 @@ header {
 }
 
 header img {
-	margin-top: 4px;
-	width: 230px; 
-	height: auto; /* 비율 유지 */
+   margin-top: 4px;
+   width: 230px; 
+   height: auto; /* 비율 유지 */
 }
 
 #findOption {
@@ -193,7 +193,7 @@ header img {
 }
 
 #findType, #keyword {
-	border: 1px solid #ccc; /* 테두리 */
+   border: 1px solid #ccc; /* 테두리 */
 }
 
 #findType {
@@ -214,7 +214,7 @@ input[type="button"] {
 }
 
 input[type="button"]:hover {
-	background-color: #2adbe0;
+   background-color: #2adbe0;
 }
 
 nav ul {
@@ -367,7 +367,7 @@ nav ul li a:hover {
 }
 
 .no-style {
-	color: inherit;
+   color: inherit;
     text-decoration: none;
 }
 
@@ -391,7 +391,7 @@ nav ul li a:hover {
 /* 사이드바 스타일 */
 /* 사이드바 컨테이너 */
 .sidebar-container {
-	display: flex;
+   display: flex;
     flex-direction: column;
     align-items: center; /* 내부 요소 전체를 중앙 정렬 */
     position: fixed;
@@ -405,7 +405,7 @@ nav ul li a:hover {
 
 /* 최근 본 상품 */
 .recently-viewed-box {
-	width: 95px;
+   width: 95px;
     padding: 15px;
     background: #fff;
     border-radius: 12px;
@@ -531,7 +531,7 @@ nav ul li a:hover {
         }
         
         #loginBtn:hover {
-        	background-color: #2adbe0;
+           background-color: #2adbe0;
         }
 
         .error-message {
@@ -551,10 +551,10 @@ nav ul li a:hover {
             transition: background-color 0.3s;
         }
 
-		.signup-link:hover {
-			background-color: #e7f9fa;
-		}
-		
+      .signup-link:hover {
+         background-color: #e7f9fa;
+      }
+      
         .signup-link a {
             color: #21afbf;
             text-decoration: none;
@@ -579,30 +579,30 @@ nav ul li a:hover {
     }
     
 .toMypage:hover {
-	background-color: #2adbe0;
+   background-color: #2adbe0;
 }
     
 /* 판매현황 - 상세보기, 수정하기, 삭제하기 버튼 */
 .showDetail {
     color: black;
-	text-decoration: none; /* 밑줄 없애기 */
-	font-size: 16px; /* 글자 크기 */
-	cursor: pointer; /* 마우스 커서 변경 */
-	text-align: center;
+   text-decoration: none; /* 밑줄 없애기 */
+   font-size: 16px; /* 글자 크기 */
+   cursor: pointer; /* 마우스 커서 변경 */
+   text-align: center;
 }
 
 .editRemove {
-	margin: 0 auto; /* 위쪽 여백 */
+   margin: 0 auto; /* 위쪽 여백 */
     padding: 10px 8px;  /* 버튼 내부 여백 */
     color: black;
-	border: none; /* 테두리 없애기 */
-	border-radius: 5px; /* 모서리 둥글게 */
-	text-decoration: none; /* 밑줄 없애기 */
-	font-size: 16px; /* 글자 크기 */
-	cursor: pointer; /* 마우스 커서 변경 */
-	text-align: center;
-	background-color: #21afbf;
-	color: white;
+   border: none; /* 테두리 없애기 */
+   border-radius: 5px; /* 모서리 둥글게 */
+   text-decoration: none; /* 밑줄 없애기 */
+   font-size: 16px; /* 글자 크기 */
+   cursor: pointer; /* 마우스 커서 변경 */
+   text-align: center;
+   background-color: #21afbf;
+   color: white;
 }
 
 /* 상품 등록, 수정 페이지 */
@@ -619,11 +619,11 @@ nav ul li a:hover {
 }
 
 .itemUp div {
-	margin-bottom: 30px;
+   margin-bottom: 30px;
 }
 
 .itemUp input[type="text"] {
-	width: 700px;
+   width: 700px;
 }
 
 .itemUp textarea, input[type="text"], input[type="number"] {
@@ -634,13 +634,13 @@ nav ul li a:hover {
     margin-right: 10px;
 }
 .tabEnd {
-	margin-left: 20px;
+   margin-left: 20px;
 }
 .startEnd {
-	display: flex;
-  	align-items: center; /* 세로 정렬 */
-  	gap: 10px; /* 요소 간 간격 */
-  	margin-right: 5px; /* 라벨과 입력 사이 간격 */
+   display: flex;
+     align-items: center; /* 세로 정렬 */
+     gap: 10px; /* 요소 간 간격 */
+     margin-right: 5px; /* 라벨과 입력 사이 간격 */
 }
 
 input[type="datetime-local"] {
@@ -651,8 +651,8 @@ input[type="datetime-local"] {
 }
 
 .uploadImage {
-	align-items: center;
-	margin-right: 5px;
+   align-items: center;
+   margin-right: 5px;
 }
 
 .uploadCate {
@@ -677,17 +677,17 @@ input[type="radio"] + label {
 }
 
 .uploadPrice {
-	display: flex;
-	margin-right: 5px;
+   display: flex;
+   margin-right: 5px;
 }
 
 .uploadContent {
-	margin-bottom: 10px;
-	margin-right: 10px;
+   margin-bottom: 10px;
+   margin-right: 10px;
 }
 
 .uploadBtn {
-	    display: block; /* 버튼 모양 만들기 */
+       display: block; /* 버튼 모양 만들기 */
         width: 200px;
         margin: 20px auto; /* 위쪽 여백 */
         padding: 10px 20px; /* 버튼 내부 여백 */
@@ -703,80 +703,80 @@ input[type="radio"] + label {
 }
 
 .uploadBtn:hover {
-	background-color: #e7f9fa;
-	transition: background-color 0.3s; /* 배경색 전환 효과 */
+   background-color: #e7f9fa;
+   transition: background-color 0.3s; /* 배경색 전환 효과 */
 }
 
 /* 상품 상세페이지 */
 #NameSection {
-	display: flex;
-	gap: 20px;
-	justify-content: space-between; /* 양 끝으로 배치 */
-	align-items: center; /* 수직 중앙 정렬 */
-	width: 620px;
+   display: flex;
+   gap: 20px;
+   justify-content: space-between; /* 양 끝으로 배치 */
+   align-items: center; /* 수직 중앙 정렬 */
+   width: 620px;
 }
 
 #NameSection div {
-	display: flex;
-	gap: 20px;
+   display: flex;
+   gap: 20px;
 }
 
 #qnaList {
-	text-decoration: none; /* 밑줄 없애기 */
-	width: 90px;
-	padding: 5px;
-	background-color: #ffffff; /* 배경색 */
-	color: #21afbf; /* 글자색 */
-	border-radius: 10px; /* 모서리 둥글게 */
-	text-align: center;
-	cursor: pointer; /* 마우스 커서 변경 */
-	border: 2.5px solid #21afbf; /* 테두리 색상 */
-	font-weight: 700;
-	font-size: 14px;
+   text-decoration: none; /* 밑줄 없애기 */
+   width: 90px;
+   padding: 5px;
+   background-color: #ffffff; /* 배경색 */
+   color: #21afbf; /* 글자색 */
+   border-radius: 10px; /* 모서리 둥글게 */
+   text-align: center;
+   cursor: pointer; /* 마우스 커서 변경 */
+   border: 2.5px solid #21afbf; /* 테두리 색상 */
+   font-weight: 700;
+   font-size: 14px;
 }
 
 #qnaList:hover {
-	background-color: #e7f9fa;
-	transition: background-color 0.3s; /* 배경색 전환 효과 */
+   background-color: #e7f9fa;
+   transition: background-color 0.3s; /* 배경색 전환 효과 */
 }
 
 #bidSection {
-	background-color: #e7f9fa;
-	padding: 10px 30px;
-	width: 570px;
-	border-radius: 10px; /* 모서리 둥글게 */
+   background-color: #e7f9fa;
+   padding: 10px 30px;
+   width: 570px;
+   border-radius: 10px; /* 모서리 둥글게 */
 }
 
 #bidSection input[type="text"] {
-	background-color: white;
+   background-color: white;
 }
 
 #bidList {
-	width: 80px;
-	background-color: white;
-	text-decoration: none; /* 밑줄 없애기 */
-	padding: 6px;
-	color: #21afbf;
-	border-radius: 10px; /* 모서리 둥글게 */
-	font-weight: 700;
-	border: 2.5px solid white;
-	font-size: 14px;
-	transition: border 0.3s;
+   width: 80px;
+   background-color: white;
+   text-decoration: none; /* 밑줄 없애기 */
+   padding: 6px;
+   color: #21afbf;
+   border-radius: 10px; /* 모서리 둥글게 */
+   font-weight: 700;
+   border: 2.5px solid white;
+   font-size: 14px;
+   transition: border 0.3s;
 }
 
 #bidList:hover {
-	border: 2.5px solid #21afbf;
+   border: 2.5px solid #21afbf;
 }
 
 #remainTime {
-	color: #21afbf;
-	font-size: 18px;
-	font-weight: 700;
+   color: #21afbf;
+   font-size: 18px;
+   font-weight: 700;
 }
 
 #btnBid {
-		width: 60px;
-		height: 35px;
+      width: 60px;
+      height: 35px;
         background-color: #21afbf; /* 배경색 */
         color: white; /* 글자색 */
         border: none; /* 테두리 없애기 */
@@ -789,34 +789,34 @@ input[type="radio"] + label {
 }
 
 #btnBid:hover {
-	background-color: #2adbe0;
-	border: 3px solid #2adbe0;
+   background-color: #2adbe0;
+   border: 3px solid #2adbe0;
 }
 
 #btnBid:disabled {
-	background-color: #a0a0a0;
-	border: none;
-	cursor: default;
+   background-color: #a0a0a0;
+   border: none;
+   cursor: default;
 }
 
 #detailSection table {
-	margin-top: 10px;
+   margin-top: 10px;
 }
 
 #detailSection th {
-	width: 100px;
-	font-size: 16px;
+   width: 100px;
+   font-size: 16px;
 }
 
 #detailSection td {
-	border: none;
-	text-align: left; /* 텍스트 좌측 정렬 */
+   border: none;
+   text-align: left; /* 텍스트 좌측 정렬 */
 }
 
 #QnASection {
-	display: flex;
-	width: 620px;
-	margin-bottom: 15px;
+   display: flex;
+   width: 620px;
+   margin-bottom: 15px;
 }
 
 
@@ -1277,5 +1277,3 @@ input[type="radio"] + label {
     margin-top: 10px;
     font-size: 14px;
 }
-
-

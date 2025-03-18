@@ -5,13 +5,25 @@ header {
     display: flex;
     justify-content: space-between; /* 양쪽 끝으로 정렬 */
     align-items: center; /* 수직 중앙 정렬 */
-    padding: 10px 20px; /* 상하좌우 여백 */
+    padding: 10px 50px; /* 상하좌우 여백 */
 }
 
 header img {
 	margin-top: 4px;
 	width: 230px; 
 	height: auto; /* 비율 유지 */
+	align-items: center; /* 수직 중앙 정렬 */
+}
+
+header nav a {
+	text-decoration: none; /* 링크 밑줄 제거 */
+    color: #333; /* 글자 색상 */
+    transition: color 0.3s; /* 색상 전환 효과 */
+    margin-left: 15px;
+}
+
+header nav a:hover {
+	color: #21afbf; /* 마우스 오버 시 색상 */
 }
 
 #findOption {
@@ -34,7 +46,7 @@ header img {
 }
 
 input[type="search"] {
-    width: 300px; /* 검색창 넓이 */
+    width: 800px; /* 검색창 넓이 */
 }
 
 input[type="button"] {
@@ -64,7 +76,7 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    color: #007bff; /* 마우스 오버 시 색상 */
+    color: #21afbf; /* 마우스 오버 시 색상 */
 }
 
 #itemUpload {
