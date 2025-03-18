@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
@@ -52,11 +53,11 @@ public class Chat_Room {
     @JoinColumn(name = "itemNo", nullable = false)
     private Item item;
     
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user1No", referencedColumnName = "userNo", nullable = false)
     private User user1; 
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user2No", referencedColumnName = "userNo", nullable = false)
     private User user2; 
 
