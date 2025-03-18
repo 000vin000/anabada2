@@ -26,50 +26,57 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Item {
 	@Id
+	@Column(name = "itemNo")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer itemNo;
 	
-	@Column(nullable = false)
+	@Column(name = "sellerNo", nullable = false)
 	private Integer sellerNo;
 	
-	@Column(nullable = false)
+	@Column(name = "categoryNo", nullable = false)
 	private String categoryNo;
 	
-	@Column(nullable = false)
+	@Column(name = "itemSaleType", nullable = false)
 	private String itemSaleType;
 	
-	@Column(length = 50, nullable = false)
+	@Column(name = "itemTitle", length = 50, nullable = false)
 	private String itemTitle;
 	
-	@Column(columnDefinition = "text")
+	@Column(name = "itemContent", columnDefinition = "text")
 	private String itemContent;
 	
-	@Column(nullable = false)
+	@Column(name = "itemStatus", nullable = false)
 	private String itemStatus;
 	
+	@Column(name = "itemQuality")
 	private Integer itemQuality;
 	
-	@Column(nullable = false)
+	@Column(name = "itemQuantity", nullable = false)
 	private Integer itemQuantity;
 	
+	@Column(name = "itemPrice")
 	private Integer itemPrice;
 	
-	@Column(nullable = false)
+	@Column(name = "itemLatitude", nullable = false)
 	private Double itemLatitude; // 위도
 	
-	@Column(nullable = false)
+	@Column(name = "itemLongitude", nullable = false)
 	private Double itemLongitude; // 경도
 	
 	@CreatedDate
+	@Column(name = "itemCreateDate")
 	private LocalDateTime itemCreatedDate;
 	
+	@Column(name = "itemStartDate")
 	private LocalDateTime itemStartDate;
 	
+	@Column(name = "itemEndDate")
 	private LocalDateTime itemEndDate;
 	
-	@Column(nullable = false)
+	@Column(name = "itemViewCnt", nullable = false)
 	private Integer itemViewCnt; // 조회수
 	
+	@Column(name = "itemAvgRating")
 	private Double itemAvgRating; // 평균 평점
 	
 	// 기본값 설정
