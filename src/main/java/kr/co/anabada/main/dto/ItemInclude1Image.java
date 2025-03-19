@@ -19,9 +19,12 @@ public class ItemInclude1Image {
 	private Integer item_price;
 	private String user_nick;
 	private String item_quality;
-	private LocalDateTime item_end_date;
+	private LocalDateTime item_sale_start_date;
+	private LocalDateTime item_sale_end_date;
 	private Integer item_view_cnt;
 	private byte[] image_file;
+	
+	private String base64Image;
 	
 	// 경매까지 남은 시간
 	public String remainingTime(LocalDateTime date) {

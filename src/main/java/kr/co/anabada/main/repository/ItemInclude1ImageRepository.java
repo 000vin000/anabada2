@@ -20,9 +20,22 @@ public class ItemInclude1ImageRepository {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ItemInclude1Image.class));
     }
 
-    // 특정 아이템 조회
-    public ItemInclude1Image findByItemNo(Integer itemNo) {
-        String sql = "SELECT * FROM item_include_1image WHERE item_no = ?";
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(ItemInclude1Image.class), itemNo);
+    // 키워드로 검색
+    public List<ItemInclude1Image> findSearchItems(String findType, String keyword) {
+    	if (findType == null || findType.trim().isEmpty()) {
+    		return null;
+    	}
+    	
+        String sql = "SELECT * FROM item_include_1image WHERE ";
+
+        if (findType.equals("itemName")) {
+            sql += "item_title LIKE CONCAT('%', '"+ keyword + "', '%')";
+        } else if (findType.equals("userNick")) {
+            sql += "user_nick = '" + keyword + "'";
+        } else {
+            return null;
+        }
+
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ItemInclude1Image.class));
     }
 }
