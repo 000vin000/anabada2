@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,23 +51,28 @@
             background-color: #f1f1f1;
         }
 
-        /* 입력란 및 버튼 스타일 */
-        input[type="text"] {
-            width: 80%;
-            padding: 10px;
-            margin-top: 10px;
-        }
-
-        button {
-            padding: 10px;
-            width: 15%;
-            margin-top: 10px;
+        /* 시간 스타일 */
+        .timestamp {
+            font-size: 0.8em;
+            color: gray;
+            margin-left: 10px;
         }
     </style>
 </head>
 <body>
     <h1>채팅방 - Room No: ${roomNo}</h1>
-    <div id="chat-box"></div>
+    <div id="chat-box">
+        <!-- 반복문으로 메시지와 시간 표시 -->
+        <c:forEach var="message" items="${messages}">
+            <div class="message ${message.sender == user ? 'sent' : 'received'}">
+                <p>${message.msgContent}</p>
+                <!-- 시간 표시 -->
+                <span class="timestamp">
+                    <fmt:formatDate value="${message.msgDate}" pattern="yyyy-MM-dd HH:mm" />
+                </span>
+            </div>
+        </c:forEach>
+    </div>
     <input type="text" id="message" placeholder="메시지를 입력하세요" />
     <button onclick="sendMessage()">전송</button>
 
@@ -77,20 +83,35 @@
         // WebSocket 메시지를 받으면 채팅박스에 표시
         ws.onmessage = function(event) {
             const chatBox = document.getElementById("chat-box");
-            
-            // 받은 메시지 표시
+            const messageData = event.data.split(","); // 시간,  메시지 구분
+
+            // 받은 메시지
             const messageDiv = document.createElement("div");
             messageDiv.classList.add("message", "received");
             const messageText = document.createElement("p");
-            messageText.textContent = event.data;
+            messageText.textContent = messageData[0]; 
             messageDiv.appendChild(messageText);
+            
+            const timestampSpan = document.createElement("span");
+            timestampSpan.classList.add("timestamp");
+
+            const timestamp = new Date(messageData[1]);
+            const formattedTime = timestamp.getFullYear() + "-" + 
+                                  String(timestamp.getMonth() + 1).padStart(2, '0') + "-" + 
+                                  String(timestamp.getDate()).padStart(2, '0') + " " + 
+                                  String(timestamp.getHours()).padStart(2, '0') + ":" + 
+                                  String(timestamp.getMinutes()).padStart(2, '0');
+
+            timestampSpan.textContent = formattedTime; // 시간 표시
+            messageDiv.appendChild(timestampSpan);
+            
             chatBox.appendChild(messageDiv);
 
             // 스크롤을 자동으로 맨 아래로 내리기
             chatBox.scrollTop = chatBox.scrollHeight;
         };
 
-        // 메시지 보내기 함수
+        // 메시지 보내기
         function sendMessage() {
             const message = document.getElementById("message").value;
             if (message.trim() !== "") {
@@ -102,14 +123,29 @@
                 const messageText = document.createElement("p");
                 messageText.textContent = message;
                 messageDiv.appendChild(messageText);
+
+                const timestampSpan = document.createElement("span");
+                timestampSpan.classList.add("timestamp");
+                const now = new Date();
+                const formattedTime = now.getFullYear() + "-" + 
+                                      String(now.getMonth() + 1).padStart(2, '0') + "-" + 
+                                      String(now.getDate()).padStart(2, '0') + " " + 
+                                      String(now.getHours()).padStart(2, '0') + ":" + 
+                                      String(now.getMinutes()).padStart(2, '0');
+                timestampSpan.textContent = formattedTime;
+
+                messageDiv.appendChild(timestampSpan);
+
                 chatBox.appendChild(messageDiv);
 
-                // 입력란 비우기
+                // 입력란
                 document.getElementById("message").value = "";
 
                 // 서버로 메시지 전송
-                ws.send(message);
-                // 스크롤을 자동으로 맨 아래로 내리기
+                const messageData = message + "," + formattedTime;
+                ws.send(messageData); // 메시지, 시간
+
+                // 스크롤 자동으로 맨 아래로 내리기
                 chatBox.scrollTop = chatBox.scrollHeight;
             }
         }

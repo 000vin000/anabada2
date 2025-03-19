@@ -9,6 +9,8 @@ import kr.co.anabada.chat.repository.ChatMessageRepository;
 import kr.co.anabada.chat.repository.ChatRoomRepository;
 import kr.co.anabada.user.entity.User;
 
+import java.time.LocalDateTime;
+
 @Service
 public class ChatService {
     private final ChatRoomRepository chatRoomRepository;
@@ -28,9 +30,8 @@ public class ChatService {
         message.setChatRoom(chatRoom);
         message.setMsgContent(content);
         message.setSender(sender);
+        message.setMsgDate(LocalDateTime.now());  
 
         return chatMessageRepository.save(message);
     }
-    
-    
 }
