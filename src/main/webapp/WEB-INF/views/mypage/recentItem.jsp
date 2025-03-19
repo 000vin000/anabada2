@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset='utf-8'>
-    <title>Page Title</title>
+    <title>최근 본</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 </head>
 <body>
