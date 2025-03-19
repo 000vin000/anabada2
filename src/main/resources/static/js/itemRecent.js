@@ -4,7 +4,7 @@ function addRecentView(itemNo, itemName, itemImage) {
     // const maxItems = 5; // 최대 저장 개수
     const storageKey = "recentItems";
 	
-	const expiryTime = 7 * 24 * 60 * 60 * 1000; // 24시간 (밀리초 단위)
+	const expiryTime = 7 * 24 * 60 * 60 * 1000; // 7일 (밀리초 단위)
 	const now = new Date().getTime();
 
     // 기존 로컬스토리지 값 가져오기
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 스크롤 위치에 따라 버튼 표시/숨김
     window.addEventListener("scroll", function () {
-        if (window.scrollY > 200) { // 300px 이상 스크롤하면 버튼 표시
+        if (window.scrollY > 200) { // 200px 이상 스크롤하면 버튼 표시
             scrollTopBtn.style.display = "block";
         } else {
             scrollTopBtn.style.display = "none";
