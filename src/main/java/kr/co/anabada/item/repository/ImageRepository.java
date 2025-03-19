@@ -11,4 +11,5 @@ import kr.co.anabada.item.entity.Item;
 @Repository
 public interface ImageRepository extends JpaRepository<Image, Integer> {
 	Optional<Image> findFirstByItemNo(Item itemNo);
+
 }

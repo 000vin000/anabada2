@@ -31,10 +31,11 @@ public class ImageService {
 //                  .toOutputStream(outputStream);
 
         // Entity 저장
+    	byte[] imageBytes = file.getBytes();
         Image image = new Image();
         image.setItemNo(item);
 //        image.setImageFile(outputStream.toByteArray());
-        image.setImageFile(file.getBytes());
+        image.setImageFile(imageBytes); 
 
         return imageRepository.save(image);
     }

@@ -177,6 +177,48 @@
         }
 
     </script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4e78a0563c35e7666f6bede4cee92957&libraries=services"></script>
+<script>
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+            level: 3 // 지도의 확대 레벨
+        };
+
+    // 지도를 미리 생성
+    var map = new daum.maps.Map(mapContainer, mapOption);
+    // 주소-좌표 변환 객체를 생성
+    var geocoder = new daum.maps.services.Geocoder();
+    // 마커를 미리 생성
+    var marker = new daum.maps.Marker({
+        position: new daum.maps.LatLng(37.537187, 127.005476),
+        map: map
+    });
+
+    function searchAddress() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                var addr = data.address; // 최종 주소 변수
+
+                document.getElementById("address").value = addr;
+                geocoder.addressSearch(addr, function(results, status) {
+                    // 정상적으로 검색이 완료됐으면
+                    if (status === daum.maps.services.Status.OK) {
+                        var result = results[0]; // 첫번째 결과의 값을 활용
+                        var coords = new daum.maps.LatLng(result.y, result.x);
+                        mapContainer.style.display = "block";
+                        map.relayout();
+                        map.setCenter(coords); // 지도 중심 변경
+                        marker.setPosition(coords); // 마커를 결과값으로 받은 위치로 이동
+                        
+                        document.getElementById("position").value = result.y + " " + result.x;
+                    }
+                });
+            }
+        }).open();
+    }
+</script>
 </head>
 <body>
 
@@ -253,6 +295,14 @@
             <label for="itemPrice">가격</label>
             <input type="number" id="itemPrice" name="itemPrice" required>
         </div>
+        
+        <input type="text" id="address" placeholder="주소" disabled>
+    	<input type="button" onclick="searchAddress()" value="주소 검색">
+    	<br>
+   		<input type="text" id="detail_address" placeholder="상세주소">
+    	<input type="hidden" id="position" name="position">
+    	<br>
+    	<div id="map" style="width:700px;height:400px;margin-top:10px;display:none"></div>
 
         <input type="submit" value="등록" class="uploadBtn">
     </form>
