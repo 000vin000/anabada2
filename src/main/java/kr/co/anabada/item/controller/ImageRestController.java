@@ -17,7 +17,7 @@ import kr.co.anabada.item.service.ImageService;
 
 @RestController
 @RequestMapping("/images")
-public class ImageController {
+public class ImageRestController {
 	@Autowired
 	private ImageService service;
 	
