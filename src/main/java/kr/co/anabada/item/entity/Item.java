@@ -1,5 +1,6 @@
 package kr.co.anabada.item.entity;
 
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -33,17 +34,17 @@ public class Item {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer itemNo;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "sellerNo", nullable = false)
 	private Seller seller;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "categoryNo", nullable = false)
 	private Item_Category category;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private ItemSaleType itemSaleType = ItemSaleType.AUCTION;
+	private ItemSaleType itemSaleType = ItemSaleType.auction;
 	
 	@Column(length = 50, nullable = false)
 	private String itemTitle;
@@ -53,7 +54,7 @@ public class Item {
 	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private ItemStatus itemStatus = ItemStatus.ACTIVE;
+	private ItemStatus itemStatus = ItemStatus.active;
 
 	@Enumerated(EnumType.STRING)
 	private ItemQuality itemQuality;
@@ -87,19 +88,17 @@ public class Item {
 	@Column(nullable = false)
 	private LocalDateTime itemUpdatedDate;
 	
-	
-	
 	public enum ItemSaleType {
-		AUCTION,
-		SHOP,
-		EXCHANGE,
-		DONATION
+		auction,
+		shop,
+		exchange,
+		donation
 	}
 	
 	public enum ItemStatus {
-		ACTIVE,
-		EXPIRED,
-		SOLD
+		active,
+		expired,
+		sold
 	}
 	
 	public enum ItemQuality {
@@ -107,6 +106,11 @@ public class Item {
 		MEDIUM,
 		HIGH
 	}
+	
+	public String addCommas(Integer num) {
+        NumberFormat formatter = NumberFormat.getInstance();
+        return formatter.format(num);
+    }
 	
 	// 기본값 설정
 	@PrePersist

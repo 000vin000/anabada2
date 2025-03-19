@@ -35,14 +35,12 @@
          <c:if test="${not empty itemList}">
             <c:forEach var="item" items="${itemList}">
                <li>
-                  <a href="/item/detail/${item.itemNo}" id="card">
-                     <img src="data:image/png;base64,${item.base64Image}" alt="${item.itemName} 이미지"/>
+                  <a href="/item/detail/${item.item_no}" id="card">
                      <hr id="line">
-                     <p id="itemName">${item.itemName}</p> 
+                     <p id="itemName">${item.item_title}</p> 
                      <hr id="line">
-                     <p id="itemPrice">${item.addCommas(item.itemPrice)}원 </p>
-                     <p id="itemUserNick">${item.userNick} | 입찰 ${item.bidCount}회</p>
-                     <p id="itemAuction">${item.getItemAuctionStr(item.itemAuction)}</p>
+                     <p id="itemPrice">${item.item_price}원 </p>
+                     <p id="remainingTime">남은 시간 : ${item.remainingTime(item.item_end_date)}</p>
                   </a>
                </li>
             </c:forEach>
