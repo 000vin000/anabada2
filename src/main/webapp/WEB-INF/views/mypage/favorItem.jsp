@@ -33,7 +33,7 @@
 	    <tbody>
 	        <c:forEach var="item" items="${list}">
 	            <tr>
-	                <td><a href="/item/detail/${item.itemNo}" class="no-style"><img src="data:image/png;base64,${item.base64Image}" alt="상품 이미지"></a></td>
+	                <td><a href="/item/detail/${item.itemNo}" class="no-style"><img src="" alt="상품 이미지"></a></td>
 	                <td><a href="/item/detail/${item.itemNo}" class="no-style">${item.itemName}</a></td>
 	                <td>${item.itemPrice} 원 </td>
 	                <td>[${item.bidCount}]</td>

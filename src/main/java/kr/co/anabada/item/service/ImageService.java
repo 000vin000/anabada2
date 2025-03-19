@@ -15,6 +15,8 @@ import kr.co.anabada.item.repository.ImageRepository;
 public class ImageService {
 	@Autowired
 	private ImageRepository imageRepository;
+//	@Autowired
+//	private ItemRepository itemRepository;
 
     public Image saveImage(Item item, MultipartFile file) throws IOException {
         // 원본 이미지 InputStream
@@ -39,7 +41,9 @@ public class ImageService {
         return imageRepository.save(image);
     }
     
-    public Optional<Image> findFirstByItemNo(Item itemNo) {
-    	return imageRepository.findFirstByItemNo(itemNo);
+    public Optional<Image> findFirstByItemNo(Integer itemNo) {
+//    	Item item = itemRepository.findById();
+    	Optional<Image> image = imageRepository.findFirstByItemNo(null);
+    	return image;
     }
 }
