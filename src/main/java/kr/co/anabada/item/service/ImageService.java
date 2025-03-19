@@ -1,7 +1,6 @@
 package kr.co.anabada.item.service;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,13 +9,14 @@ import org.springframework.web.multipart.MultipartFile;
 import kr.co.anabada.item.entity.Image;
 import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.item.repository.ImageRepository;
+import kr.co.anabada.item.repository.ItemRepository;
 
 @Service
 public class ImageService {
 	@Autowired
 	private ImageRepository imageRepository;
-//	@Autowired
-//	private ItemRepository itemRepository;
+	@Autowired
+	private ItemRepository itemRepository;
 
     public Image saveImage(Item item, MultipartFile file) throws IOException {
         // 원본 이미지 InputStream
@@ -42,9 +42,9 @@ public class ImageService {
         return imageRepository.save(image);
     }
     
-    public Optional<Image> findFirstByItemNo(Integer itemNo) {
-//    	Item item = itemRepository.findById();
-    	Optional<Image> image = imageRepository.findFirstByItemNo(null);
+    public Image findFirstByItemNo(Integer itemNo) {
+    	Item item = itemRepository.findByItemNo(itemNo);
+    	Image image = imageRepository.findFirstByItemNo(item);
     	return image;
     }
 }
