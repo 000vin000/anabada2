@@ -22,7 +22,7 @@ public class ImageRestController {
 	private ImageService service;
 	
 	@GetMapping("/{itemNo}")
-	public ResponseEntity<byte[]> findFirstByItemNo(@PathVariable Item itemNo) {
+	public ResponseEntity<byte[]> findFirstByItemNo(@PathVariable Integer itemNo) {
 		Optional<Image> firstImage = service.findFirstByItemNo(itemNo);
 		
 		if (firstImage.isPresent()) {
