@@ -23,7 +23,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "Answer")
 public class Answer {
-   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "answerNo", nullable = false)

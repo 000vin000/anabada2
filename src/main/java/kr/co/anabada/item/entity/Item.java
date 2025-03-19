@@ -1,5 +1,6 @@
 package kr.co.anabada.item.entity;
 
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -33,17 +34,17 @@ public class Item {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer itemNo;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "sellerNo", nullable = false)
 	private Seller seller;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "categoryNo", nullable = false)
 	private Item_Category category;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private ItemSaleType itemSaleType = ItemSaleType.AUCTION;
+	private ItemSaleType itemSaleType = ItemSaleType.auction;
 	
 	@Column(length = 50, nullable = false)
 	private String itemTitle;
@@ -53,7 +54,7 @@ public class Item {
 	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private ItemStatus itemStatus = ItemStatus.ACTIVE;
+	private ItemStatus itemStatus = ItemStatus.active;
 
 	@Enumerated(EnumType.STRING)
 	private ItemQuality itemQuality;
@@ -70,14 +71,24 @@ public class Item {
 	@Column(nullable = false)
 	private Double itemLongitude; // 경도
 	
-	private LocalDateTime itemStartDate;
-	
-	private LocalDateTime itemEndDate;
-	
 	@Column(nullable = false)
 	private Integer itemViewCnt = 0; // 조회수
 	
 	private Double itemAvgRating; // 평균 평점
+	
+	private LocalDateTime itemSaleStartDate;
+	
+	private LocalDateTime itemSaleEndDate;
+
+	private LocalDateTime itemResvStartDate;
+	
+	private LocalDateTime itemResvEndDate;
+	
+	@Column(nullable = false)
+	private boolean itemPurcConfirmed = false;
+
+	@Column(nullable = false)
+	private boolean itemSaleConfirmed = false;
 	
 	@CreationTimestamp
 	@Column(nullable = false, updatable = false)
@@ -87,19 +98,17 @@ public class Item {
 	@Column(nullable = false)
 	private LocalDateTime itemUpdatedDate;
 	
-	
-	
 	public enum ItemSaleType {
-		AUCTION,
-		SHOP,
-		EXCHANGE,
-		DONATION
+		auction,
+		shop,
+		exchange,
+		donation
 	}
 	
 	public enum ItemStatus {
-		ACTIVE,
-		EXPIRED,
-		SOLD
+		active,
+		expired,
+		sold
 	}
 	
 	public enum ItemQuality {
@@ -108,14 +117,19 @@ public class Item {
 		HIGH
 	}
 	
+	public String addCommas(Integer num) {
+        NumberFormat formatter = NumberFormat.getInstance();
+        return formatter.format(num);
+    }
+	
 	// 기본값 설정
 	@PrePersist
 	public void prePersist() {
-		if (itemStartDate == null) {
-			itemStartDate = itemCreatedDate;
+		if (itemSaleStartDate == null) {
+			itemSaleStartDate = itemCreatedDate;
 		}
-		if (itemEndDate == null) {
-			itemEndDate = itemStartDate.plusDays(3);
+		if (itemSaleEndDate == null) {
+			itemSaleEndDate = itemSaleStartDate.plusDays(3);
 		}
 	}
 }
