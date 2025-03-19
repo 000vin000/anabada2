@@ -71,14 +71,24 @@ public class Item {
 	@Column(nullable = false)
 	private Double itemLongitude; // 경도
 	
-	private LocalDateTime itemStartDate;
-	
-	private LocalDateTime itemEndDate;
-	
 	@Column(nullable = false)
 	private Integer itemViewCnt = 0; // 조회수
 	
 	private Double itemAvgRating; // 평균 평점
+	
+	private LocalDateTime itemSaleStartDate;
+	
+	private LocalDateTime itemSaleEndDate;
+
+	private LocalDateTime itemResvStartDate;
+	
+	private LocalDateTime itemResvEndDate;
+	
+	@Column(nullable = false)
+	private boolean itemPurcConfirmed = false;
+
+	@Column(nullable = false)
+	private boolean itemSaleConfirmed = false;
 	
 	@CreationTimestamp
 	@Column(nullable = false, updatable = false)
@@ -115,11 +125,11 @@ public class Item {
 	// 기본값 설정
 	@PrePersist
 	public void prePersist() {
-		if (itemStartDate == null) {
-			itemStartDate = itemCreatedDate;
+		if (itemSaleStartDate == null) {
+			itemSaleStartDate = itemCreatedDate;
 		}
-		if (itemEndDate == null) {
-			itemEndDate = itemStartDate.plusDays(3);
+		if (itemSaleEndDate == null) {
+			itemSaleEndDate = itemSaleStartDate.plusDays(3);
 		}
 	}
 }
