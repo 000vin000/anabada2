@@ -34,17 +34,17 @@ public class Item {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer itemNo;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sellerNo", nullable = false)
 	private Seller seller;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "categoryNo", nullable = false)
 	private Item_Category category;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private ItemSaleType itemSaleType = ItemSaleType.auction;
+	private ItemSaleType itemSaleType = ItemSaleType.AUCTION;
 	
 	@Column(length = 50, nullable = false)
 	private String itemTitle;
@@ -54,7 +54,7 @@ public class Item {
 	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private ItemStatus itemStatus = ItemStatus.active;
+	private ItemStatus itemStatus = ItemStatus.ACTIVE;
 
 	@Enumerated(EnumType.STRING)
 	private ItemQuality itemQuality;
@@ -66,15 +66,15 @@ public class Item {
 	private Long itemPrice = 0L;
 	
 	@Column(nullable = false)
-	private Double itemLatitude; // 위도
+	private Double itemLatitude;
 	
 	@Column(nullable = false)
-	private Double itemLongitude; // 경도
+	private Double itemLongitude;
 	
 	@Column(nullable = false)
-	private Integer itemViewCnt = 0; // 조회수
+	private Integer itemViewCnt = 0;
 	
-	private Double itemAvgRating; // 평균 평점
+	private Double itemAvgRating;
 	
 	private LocalDateTime itemSaleStartDate;
 	
@@ -98,31 +98,8 @@ public class Item {
 	@Column(nullable = false)
 	private LocalDateTime itemUpdatedDate;
 	
-	public enum ItemSaleType {
-		auction,
-		shop,
-		exchange,
-		donation
-	}
+
 	
-	public enum ItemStatus {
-		active,
-		expired,
-		sold
-	}
-	
-	public enum ItemQuality {
-		LOW,
-		MEDIUM,
-		HIGH
-	}
-	
-	public String addCommas(Integer num) {
-        NumberFormat formatter = NumberFormat.getInstance();
-        return formatter.format(num);
-    }
-	
-	// 기본값 설정
 	@PrePersist
 	public void prePersist() {
 		if (itemSaleStartDate == null) {
@@ -131,5 +108,29 @@ public class Item {
 		if (itemSaleEndDate == null) {
 			itemSaleEndDate = itemSaleStartDate.plusDays(3);
 		}
+	}
+	
+	public String addCommas(Integer num) {
+        NumberFormat formatter = NumberFormat.getInstance();
+        return formatter.format(num);
+    }
+	
+	public enum ItemSaleType {
+		AUCTION,
+		SHOP,
+		EXCHANGE,
+		DONATION
+	}
+	
+	public enum ItemStatus {
+		ACTIVE,
+		EXPIRED,
+		SOLD
+	}
+	
+	public enum ItemQuality {
+		LOW,
+		MEDIUM,
+		HIGH
 	}
 }
