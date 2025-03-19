@@ -30,7 +30,7 @@ public class Image {
 	@JoinColumn(name = "itemNo", nullable = false)
 	private Item itemNo;
 	
-	@Column(name = "imageFile", nullable = false)
+	@Column(name = "imageFile", nullable = false, columnDefinition = "LONGBLOB")
 	@Lob
 	private byte[] imageFile;
 }

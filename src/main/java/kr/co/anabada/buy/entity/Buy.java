@@ -1,6 +1,7 @@
 package kr.co.anabada.buy.entity;
 
 import jakarta.persistence.*;
+import kr.co.anabada.item.entity.Bid;
 import kr.co.anabada.item.entity.Item; 
 import kr.co.anabada.user.entity.User;  
 import lombok.AllArgsConstructor;

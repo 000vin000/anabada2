@@ -12,7 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import kr.co.anabada.buy.entity.Bid;
+import kr.co.anabada.item.entity.Bid;
 import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.user.entity.Buyer;
 import kr.co.anabada.user.entity.Seller;

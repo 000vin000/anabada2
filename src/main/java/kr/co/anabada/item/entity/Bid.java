@@ -1,4 +1,4 @@
-package kr.co.anabada.buy.entity;
+package kr.co.anabada.item.entity;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
