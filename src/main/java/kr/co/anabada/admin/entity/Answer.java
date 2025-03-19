@@ -9,7 +9,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import kr.co.anabada.user.entity.Question;
+import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,28 +23,26 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "Answer")
 public class Answer {
-
+   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "aNo", nullable = false)
-    private Integer aNo;
+    @Column(name = "answerNo", nullable = false)
+    private Integer answerNo;
 
-    @Column(name = "qNo", nullable = false)
-    private Integer qNo;
+    @Column(name = "answerContent", nullable = false)
+    private String answerContent;
 
-    @Column(name = "aContent", nullable = false)
-    private String aContent;
-
-    @Column(name = "aDate", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp aDate;
+    @Column(name = "aCreatedDate", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Timestamp aCreatedDate;
+    
+    @OneToOne
+    @JoinColumn(name = "questionNo", nullable = false)
+    private Question question; 
     
     @ManyToOne
-    @JoinColumn(name = "qNo", insertable = false, updatable = false)
-    private Question question; 
+    @JoinColumn(name = "responderNo", nullable = false)  
+    private User responder;
 
-    @ManyToOne
-    @JoinColumn(name = "responderNo", nullable = false)
-    private Question responder; 
 
 }
 
