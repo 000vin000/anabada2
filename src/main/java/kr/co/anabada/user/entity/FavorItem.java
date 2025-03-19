@@ -12,24 +12,20 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import kr.co.anabada.item.entity.Item;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "Favor")
-public class Favor {
-
+@Builder
+public class FavorItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "favorNo", nullable = false)
     private Integer favorNo;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "favorType", nullable = false)
-    private FavorType favorType;
 
     @ManyToOne
     @JoinColumn(name = "itemNo", nullable = false)  
@@ -38,9 +34,4 @@ public class Favor {
     @ManyToOne
     @JoinColumn(name = "userNo", nullable = false)
     private User user; 
-}
-
-enum FavorType {
-    ITEM,
-    SELLER
 }
