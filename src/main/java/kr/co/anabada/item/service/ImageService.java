@@ -1,6 +1,7 @@
 package kr.co.anabada.item.service;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class ImageService {
         return imageRepository.save(image);
     }
     
-    public Image findFirstByItemNo(Item itemNo) {
+    public Optional<Image> findFirstByItemNo(Item itemNo) {
     	return imageRepository.findFirstByItemNo(itemNo);
     }
 }
