@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Admin_Permission")
-public class Admin_Permission {
+@Table(name = "Admin")
+public class Admin {
 
     @Id
     @Column(name = "adminNo", nullable = false)

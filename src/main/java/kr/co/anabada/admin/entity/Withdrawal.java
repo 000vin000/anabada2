@@ -1,4 +1,4 @@
-package kr.co.anabada.user.entity;
+package kr.co.anabada.admin.entity;
 
 import java.time.LocalDateTime;
 
