@@ -57,6 +57,12 @@
             color: gray;
             margin-left: 10px;
         }
+
+        /* 비활성화된 요소 스타일 */
+        .disabled {
+            background-color: #f1f1f1;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -75,48 +81,80 @@
     </div>
     <input type="text" id="message" placeholder="메시지를 입력하세요" />
     <button onclick="sendMessage()">전송</button>
+    <button onclick="leaveChatRoom()" id="leaveButton">나가기</button> <!-- 나가기 버튼 추가 -->
 
     <script>
+        let ws;
         const roomNo = "${roomNo}";
-        const ws = new WebSocket(`ws://localhost:8080/chat/${roomNo}`);
+        const chatBox = document.getElementById("chat-box");
+        const messageInput = document.getElementById("message");
+        const sendButton = document.querySelector("button[onclick='sendMessage()']");
+        const leaveButton = document.getElementById("leaveButton");
 
-        // WebSocket 메시지를 받으면 채팅박스에 표시
-        ws.onmessage = function(event) {
-            const chatBox = document.getElementById("chat-box");
-            const messageData = event.data.split(","); // 시간,  메시지 구분
+        // WebSocket 초기화
+        function initializeWebSocket() {
+            ws = new WebSocket(`ws://localhost:8080/chat/${roomNo}`);
 
-            // 받은 메시지
-            const messageDiv = document.createElement("div");
-            messageDiv.classList.add("message", "received");
-            const messageText = document.createElement("p");
-            messageText.textContent = messageData[0]; 
-            messageDiv.appendChild(messageText);
-            
-            const timestampSpan = document.createElement("span");
-            timestampSpan.classList.add("timestamp");
+            // WebSocket 메시지를 받으면 채팅박스에 표시
+            ws.onmessage = function(event) {
+                const messageData = event.data.split(","); // 시간, 메시지 구분
+                const messageContent = messageData[0];
+                const messageTime = messageData[1];
 
-            const timestamp = new Date(messageData[1]);
-            const formattedTime = timestamp.getFullYear() + "-" + 
-                                  String(timestamp.getMonth() + 1).padStart(2, '0') + "-" + 
-                                  String(timestamp.getDate()).padStart(2, '0') + " " + 
-                                  String(timestamp.getHours()).padStart(2, '0') + ":" + 
-                                  String(timestamp.getMinutes()).padStart(2, '0');
+                const messageDiv = document.createElement("div");
 
-            timestampSpan.textContent = formattedTime; // 시간 표시
-            messageDiv.appendChild(timestampSpan);
-            
-            chatBox.appendChild(messageDiv);
+                if (messageContent === "상대방이 채팅방에서 퇴장하였습니다.") {
+                    // 상대방이 퇴장한 메시지 처리
+                    messageDiv.classList.add("message", "received");
+                    const messageText = document.createElement("p");
+                    messageText.textContent = messageContent;
+                    messageDiv.appendChild(messageText);
 
-            // 스크롤을 자동으로 맨 아래로 내리기
-            chatBox.scrollTop = chatBox.scrollHeight;
-        };
+                    const timestampSpan = document.createElement("span");
+                    timestampSpan.classList.add("timestamp");
+                    timestampSpan.textContent = messageTime; // 시간 표시
+                    messageDiv.appendChild(timestampSpan);
+
+                    chatBox.appendChild(messageDiv);
+
+                    // 채팅 기능 비활성화
+                    disableChatFunctionality();
+
+                    // 나가기 버튼 활성화
+                    leaveButton.disabled = false;
+                    leaveButton.classList.remove("disabled"); // 나가기 버튼의 disabled 클래스 제거
+                } else {
+                    // 일반 메시지 처리
+                    messageDiv.classList.add("message", "received");
+                    const messageText = document.createElement("p");
+                    messageText.textContent = messageContent;
+                    messageDiv.appendChild(messageText);
+
+                    const timestampSpan = document.createElement("span");
+                    timestampSpan.classList.add("timestamp");
+
+                    const timestamp = new Date(messageTime);
+                    const formattedTime = timestamp.getFullYear() + "-" + 
+                                          String(timestamp.getMonth() + 1).padStart(2, '0') + "-" + 
+                                          String(timestamp.getDate()).padStart(2, '0') + " " + 
+                                          String(timestamp.getHours()).padStart(2, '0') + ":" + 
+                                          String(timestamp.getMinutes()).padStart(2, '0');
+
+                    timestampSpan.textContent = formattedTime; // 시간 표시
+                    messageDiv.appendChild(timestampSpan);
+
+                    chatBox.appendChild(messageDiv);
+                }
+
+                // 스크롤을 자동으로 맨 아래로 내리기
+                chatBox.scrollTop = chatBox.scrollHeight;
+            };
+        }
 
         // 메시지 보내기
         function sendMessage() {
-            const message = document.getElementById("message").value;
+            const message = messageInput.value;
             if (message.trim() !== "") {
-                const chatBox = document.getElementById("chat-box");
-
                 // 보낸 메시지 화면에 추가
                 const messageDiv = document.createElement("div");
                 messageDiv.classList.add("message", "sent");
@@ -139,7 +177,7 @@
                 chatBox.appendChild(messageDiv);
 
                 // 입력란
-                document.getElementById("message").value = "";
+                messageInput.value = "";
 
                 // 서버로 메시지 전송
                 const messageData = message + "," + formattedTime;
@@ -151,11 +189,53 @@
         }
 
         // 엔터 키로 메시지 전송
-        document.getElementById("message").addEventListener("keydown", function(event) {
+        messageInput.addEventListener("keydown", function(event) {
             if (event.key === "Enter") {
                 sendMessage();
             }
         });
+
+        // 나가기 버튼 클릭 시
+        function leaveChatRoom() {
+            // 확인 창 표시
+            const userConfirmed = confirm("정말로 채팅방을 나가시겠습니까? 채팅내용이 모두 삭제됩니다.");
+            if (userConfirmed) {
+                // WebSocket 연결 종료
+                if (ws) {
+                    ws.close();
+                    console.log("WebSocket connection closed.");
+                }
+
+                // 채팅방 비활성화
+                disableChatFunctionality();
+
+                // 채팅 내용 삭제
+                chatBox.innerHTML = "";
+
+                // 상품 상세페이지로 리다이렉트 필요
+                alert("채팅방을 나갔습니다.");
+            }
+        }
+
+     	// 채팅 기능 비활성화
+        function disableChatFunctionality() {
+            messageInput.disabled = true;
+            sendButton.disabled = true;
+            leaveButton.disabled = true;
+
+            // 비활성화된 상태로 스타일 적용
+            messageInput.classList.add("disabled");
+            sendButton.classList.add("disabled");
+            leaveButton.classList.add("disabled");
+
+            // 나가기 버튼 활성화되면 disabled 클래스 제거
+            if (leaveButton.disabled === false) {
+                leaveButton.classList.remove("disabled");
+            }
+        }
+
+        // 페이지가 로드될 때 WebSocket 초기화
+        window.onload = initializeWebSocket;
     </script>
 </body>
 </html>

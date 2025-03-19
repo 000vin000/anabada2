@@ -1,6 +1,8 @@
 package kr.co.anabada.chat.repository;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import kr.co.anabada.chat.entity.Chat_Message;
@@ -19,4 +21,9 @@ public interface ChatMessageRepository extends JpaRepository<Chat_Message, Integ
 
     // 특정 사용자에 의해 보내진 메시지 조회
     List<Chat_Message> findBySender(User sender);
+
+    // 채팅방에 있는 유저들의 닉네임을 반환하는 쿼리
+    @Query("SELECT DISTINCT c.sender.userNick FROM Chat_Message c WHERE c.chatRoom.roomNo = :roomNo")
+    List<String> findDistinctByChatRoomRoomNo(@Param("roomNo") Integer roomNo);
 }
+

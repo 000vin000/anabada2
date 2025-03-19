@@ -1,23 +1,21 @@
 package kr.co.anabada.chat.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import kr.co.anabada.chat.service.ChatService;
-import kr.co.anabada.chat.entity.Chat_Message;
 import kr.co.anabada.chat.repository.ChatMessageRepository;
+import kr.co.anabada.chat.service.ChatService;
 
 @Controller
 public class ChatController {
-
-    private final ChatService chatService;
+	
+	@Autowired
     private final ChatMessageRepository chatMessageRepository;
 
     public ChatController(ChatService chatService, ChatMessageRepository chatMessageRepository) {
-        this.chatService = chatService;
         this.chatMessageRepository = chatMessageRepository;
     }
 

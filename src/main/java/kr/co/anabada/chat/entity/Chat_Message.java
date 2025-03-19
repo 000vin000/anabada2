@@ -43,6 +43,4 @@ public class Chat_Message {
     @OneToOne
     @JoinColumn(name = "senderNo", nullable = false)
     private User sender; 
-
-
 }

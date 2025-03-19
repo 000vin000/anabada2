@@ -1,13 +1,13 @@
 package kr.co.anabada.chat.handler;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class ChatHandler extends TextWebSocketHandler {
@@ -49,5 +49,17 @@ public class ChatHandler extends TextWebSocketHandler {
         String userId = session.getId(); // 세션 ID를 사용자 ID로 사용
         sessions.remove(userId);
         System.out.println("User ID: " + userId + " has been disconnected.");
+        
+        String roomNo = (String) session.getAttributes().get("roomNo");
+        if (roomNo != null) {
+            TextMessage leaveMessage = new TextMessage("상대방이 채팅방에서 퇴장하였습니다.");
+            for (Map.Entry<String, WebSocketSession> entry : sessions.entrySet()) {
+                WebSocketSession receiverSession = entry.getValue();
+                String receiverRoomNo = (String) receiverSession.getAttributes().get("roomNo");
+                if (receiverRoomNo.equals(roomNo)) {
+                    receiverSession.sendMessage(leaveMessage);
+                }
+            }
+        }
     }
 }

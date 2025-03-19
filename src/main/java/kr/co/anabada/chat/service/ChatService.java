@@ -1,5 +1,7 @@
 package kr.co.anabada.chat.service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,8 +10,6 @@ import kr.co.anabada.chat.entity.Chat_Room;
 import kr.co.anabada.chat.repository.ChatMessageRepository;
 import kr.co.anabada.chat.repository.ChatRoomRepository;
 import kr.co.anabada.user.entity.User;
-
-import java.time.LocalDateTime;
 
 @Service
 public class ChatService {
