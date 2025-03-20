@@ -33,11 +33,11 @@ public class Chat_Room {
     private Item item;
 
     @ManyToOne
-    @JoinColumn(name = "sender_no", referencedColumnName = "user_no")
+    @JoinColumn(name = "sender_no", referencedColumnName = "userNo")
     private User senderNo;
 
     @ManyToOne
-    @JoinColumn(name = "receiver_no", referencedColumnName = "user_no")
+    @JoinColumn(name = "receiver_no", referencedColumnName = "userNo")
     private User receiverNo;
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
