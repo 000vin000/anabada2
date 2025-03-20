@@ -13,7 +13,7 @@
 	    </a>
 	</div>
 	<div class="nav-item">
-	    <a href="/favorites">
+	    <a href="/mypage/favor">
 	        <span><img alt="favor" src="/images/icon/heart.png"></span>
 	    </a>
 	</div>
