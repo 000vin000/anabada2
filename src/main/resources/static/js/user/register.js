@@ -47,15 +47,22 @@ function registerUser() {
 
     console.log("회원가입 요청 데이터:", JSON.stringify(userData));
 
-	fetch("/userjoin/register", {  // 기존 API 경로 유지
-	    method: "POST",
-	    headers: { "Content-Type": "application/json" },
-	    body: JSON.stringify(userData)
-	})
+    fetch("/userjoin/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData)
+    })
     .then(response => response.json())
     .then(data => {
-        alert(data.message);
-        window.location.href = "/login.html";  // 회원가입 후 로그인 페이지로 이동
+        console.log("회원가입 응답 데이터:", data);
+
+        // 회원가입 성공 시 메시지 출력 후 로그인 페이지로 이동
+        alert(data.message);  // 회원가입 성공 메시지
+        if (data.redirectUrl) {
+            window.location.href = data.redirectUrl;  // 로그인 페이지로 이동
+        } else {
+            window.location.href = "/auth/login.html";  // 기본 로그인 경로
+        }
     })
     .catch(error => {
         console.error("회원가입 오류:", error);
