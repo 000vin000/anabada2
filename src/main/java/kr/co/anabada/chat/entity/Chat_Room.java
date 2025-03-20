@@ -25,9 +25,6 @@ public class Chat_Room {
     @Column(nullable = false)
     private RoomStatus roomStatus = RoomStatus.ACTIVE;
 
-    @Column
-    private LocalDateTime roomLastMsgDate;
-
     @Column(nullable = false, updatable = false)
     private LocalDateTime roomDate;
 
@@ -36,12 +33,12 @@ public class Chat_Room {
     private Item item;
 
     @ManyToOne
-    @JoinColumn(name = "user1No", nullable = false)
-    private User user1;
+    @JoinColumn(name = "sender_no", referencedColumnName = "user_no")
+    private User senderNo;
 
     @ManyToOne
-    @JoinColumn(name = "user2No", nullable = false)
-    private User user2;
+    @JoinColumn(name = "receiver_no", referencedColumnName = "user_no")
+    private User receiverNo;
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Chat_Message> messages;
