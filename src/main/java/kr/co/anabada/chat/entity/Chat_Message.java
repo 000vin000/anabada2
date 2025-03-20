@@ -20,8 +20,8 @@ public class Chat_Message {
     private Integer msgNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chatRoomNo", nullable = false) 
-    private Chat_Room chatRoom;
+    @JoinColumn(name = "roomNo", referencedColumnName = "roomNo") 
+    private Chat_Room chatRoom; 
 
     @ManyToOne
     @JoinColumn(name = "sender_no", referencedColumnName = "userNo")

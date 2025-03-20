@@ -42,7 +42,7 @@ public class Chat_Room {
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Chat_Message> messages;
-
+    
     @PrePersist
     public void prePersist() {
         this.roomDate = LocalDateTime.now();
