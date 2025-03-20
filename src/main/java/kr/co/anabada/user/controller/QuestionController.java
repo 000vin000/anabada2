@@ -1,6 +1,7 @@
 package kr.co.anabada.user.controller;
 
 import kr.co.anabada.user.service.QuestionService;
+import kr.co.anabada.admin.repository.AnswerRepository;
 import kr.co.anabada.user.entity.Question;
 import kr.co.anabada.user.entity.User;
 import kr.co.anabada.user.repository.QuestionRepository;
@@ -10,10 +11,12 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 @Controller
 @RequestMapping("/question")
@@ -27,21 +30,27 @@ public class QuestionController {
     
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private AnswerRepository answerRepository;
 
- // 문의 작성 페이지 이동
+    // 하드코딩된 사용자 ID (예시)
+    private static final int HARD_CODED_USER_ID = 1; 
+
+    // 문의 작성 페이지 이동
     @GetMapping("/write")
     public String showQuestionForm(Model model) {
         model.addAttribute("question", new Question());
-        return "question/write";  // 작성 페이지
+        return "question/write";
     }
     
     // 하드코딩된 사용자로 문의 작성 처리
     @PostMapping("/write")
     public String writeQuestion(@ModelAttribute Question question) {
         // 하드코딩된 senderNo 설정
-        int hardcodedUserNo = 1;
+        int hardcodedUserNo = HARD_CODED_USER_ID;
 
-        // 하드코딩된 User 설정
+ 
         User sender = userRepository.findById(hardcodedUserNo).orElse(null);
         if (sender == null) {
             return "redirect:/error";  // 오류 처리 페이지
@@ -54,21 +63,63 @@ public class QuestionController {
         // Question 저장
         questionService.saveQuestion(question);
 
-        return "redirect:/question/list";  // 문의 목록 페이지로 리다이렉트
+        return "redirect:/question/mypage/myQuestions";  // 문의 목록 페이지로 리다이렉트
     }
 
-    
-// 로그인 구현 후 세션 사용
-//    // 문의 작성 처리
-//    @PostMapping("/write")
-//    public String submitQuestion(@ModelAttribute Question question,
-//                                 @SessionAttribute(name = "loggedInUser", required = false) User user) {
-//        if (user == null) {
-//            return "redirect:/login";  
-//        }
-//
-//        question.setSender(user);  
-//        questionService.saveQuestion(question);  
-//        return "redirect:/question/list";  // 목록 페이지
-//    }
+    // 내 문의사항 페이지 
+    @GetMapping("/mypage/myQuestions")
+    public String showUserQuestions(HttpSession session, Model model) {
+
+        User loggedInUser = userRepository.findById(HARD_CODED_USER_ID).orElse(null);
+        if (loggedInUser == null) {
+            return "redirect:/error"; // 오류 페이지로 리디렉션
+        }
+
+        // 사용자별 문의사항 목록 조회
+        model.addAttribute("userQuestions", questionRepository.findBySender(loggedInUser));
+        return "mypage/myQuestions"; // mypage 폴더에 있는 JSP 페이지로 이동
+    }
+
+    // 문의 삭제 처리 
+    @Transactional
+    @PostMapping("/delete/{questionNo}")
+    public String deleteQuestion(@PathVariable Integer questionNo, @RequestParam(required = false) String from) {
+        // 문의사항 삭제
+    	answerRepository.deleteByQuestion_QuestionNo(questionNo);
+        questionRepository.deleteById(questionNo);
+        
+        if (from != null && from.equals("mypage")) {
+            return "redirect:/question/mypage/myQuestions";  // 내 문의사항 페이지로 리디렉션
+        } else {
+            return "redirect:/question/answerList";  // 답변 리스트 페이지로 리디렉션
+        }
+    }
+
+    @GetMapping("/edit/{questionNo}")
+    public String showEditQuestionForm(@PathVariable Integer questionNo, Model model) {
+        Question question = questionRepository.findById(questionNo).orElse(null);
+        if (question == null) {
+            return "redirect:/error";
+        }
+
+        model.addAttribute("question", question);
+        return "question/edit"; // 수정 페이지로 이동
+    }
+
+    @PostMapping("/edit/{questionNo}")
+    public String updateQuestion(@PathVariable Integer questionNo, @ModelAttribute Question updatedQuestion) {
+        Question question = questionRepository.findById(questionNo).orElse(null);
+        if (question == null) {
+            return "redirect:/error";
+        }
+
+        // 기존 문의사항 정보 업데이트
+        question.setQuestionTitle(updatedQuestion.getQuestionTitle());
+        question.setQuestionContent(updatedQuestion.getQuestionContent());
+
+        // 수정된 내용 저장
+        questionRepository.save(question);
+
+        return "redirect:/question/mypage/myQuestions"; 
+    }
 }
