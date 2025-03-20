@@ -1,6 +1,13 @@
 package kr.co.anabada.chat.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,14 +35,12 @@ public class Chat_Message {
 
     @Column(name = "msgDate", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime msgDate;
-
-    // 채팅방과 다대일 관계
-    @ManyToOne
+    
+    @OneToOne
     @JoinColumn(name = "roomNo", nullable = false)
-    private Chat_Room chatRoom;
+    private Chat_Room chatRoom; 
 
-    // 발신자와 다대일 관계
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "senderNo", nullable = false)
-    private User sender;
+    private User sender; 
 }

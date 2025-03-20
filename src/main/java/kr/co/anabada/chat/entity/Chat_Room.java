@@ -1,14 +1,22 @@
 package kr.co.anabada.chat.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -39,18 +47,14 @@ public class Chat_Room {
     @JoinColumn(name = "itemNo", nullable = false, insertable = false, updatable = false)
     private Item item;
 
-    // 채팅 참여자
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user1No", referencedColumnName = "userNo", nullable = false)
     private User user1;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user2No", referencedColumnName = "userNo", nullable = false)
     private User user2;
 
-    // 채팅방의 메시지들 (양방향 연관 관계)
-    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Chat_Message> messages;
 }
 
 enum RoomStatus {

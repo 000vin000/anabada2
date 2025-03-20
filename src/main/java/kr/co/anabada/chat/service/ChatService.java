@@ -1,23 +1,25 @@
 package kr.co.anabada.chat.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import kr.co.anabada.chat.entity.Chat_Message;
 import kr.co.anabada.chat.entity.Chat_Room;
 import kr.co.anabada.chat.repository.ChatMessageRepository;
 import kr.co.anabada.chat.repository.ChatRoomRepository;
 import kr.co.anabada.user.entity.User;
 
-import java.time.LocalDateTime;
-
 @Service
 public class ChatService {
-    @Autowired
-    private ChatMessageRepository chatMessageRepository;
+    private final ChatRoomRepository chatRoomRepository;
+    private final ChatMessageRepository chatMessageRepository;
 
-    @Autowired
-    private ChatRoomRepository chatRoomRepository;
+    public ChatService(ChatRoomRepository chatRoomRepository, ChatMessageRepository chatMessageRepository) {
+        this.chatRoomRepository = chatRoomRepository;
+        this.chatMessageRepository = chatMessageRepository;
+    }
 
     @Transactional
     public Chat_Message saveMessage(Integer roomNo, String content, User sender) {
@@ -28,7 +30,7 @@ public class ChatService {
         message.setChatRoom(chatRoom);
         message.setMsgContent(content);
         message.setSender(sender);
-        message.setMsgDate(LocalDateTime.now());
+        message.setMsgDate(LocalDateTime.now());  
 
         return chatMessageRepository.save(message);
     }
