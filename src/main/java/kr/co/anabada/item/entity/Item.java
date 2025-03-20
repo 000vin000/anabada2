@@ -2,6 +2,7 @@ package kr.co.anabada.item.entity;
 
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -34,11 +35,11 @@ public class Item {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer itemNo;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "sellerNo", nullable = false)
 	private Seller seller;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "categoryNo", nullable = false)
 	private Item_Category category;
 	
@@ -110,27 +111,67 @@ public class Item {
 		}
 	}
 	
-	public String addCommas(Integer num) {
+	public String getFormattedDate(LocalDateTime date) {
+		if (date == null) {
+			return null;
+		}
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+        return date.format(formatter);
+    }
+	
+	public String addCommas(Long num) {
         NumberFormat formatter = NumberFormat.getInstance();
         return formatter.format(num);
     }
 	
 	public enum ItemSaleType {
-		AUCTION,
-		SHOP,
-		EXCHANGE,
-		DONATION
+		AUCTION("경매"),
+		SHOP("쇼핑몰"),
+		EXCHANGE("교환"),
+		DONATION("나눔");
+		
+		private final String korean;
+	    
+	    ItemSaleType(String korean) {
+	        this.korean = korean;
+	    }
+	    
+	    public String getKorean() {
+	        return korean;
+	    }
 	}
 	
 	public enum ItemStatus {
-		ACTIVE,
-		EXPIRED,
-		SOLD
+		WAITING("대기중"),
+		ACTIVE("판매중"),
+		EXPIRED("종료"),
+		RESERVED("예약중"),
+		SOLD("판매완료");
+		
+		private final String korean;
+	    
+	    ItemStatus(String korean) {
+	        this.korean = korean;
+	    }
+	    
+	    public String getKorean() {
+	        return korean;
+	    }
 	}
 	
 	public enum ItemQuality {
-		LOW,
-		MEDIUM,
-		HIGH
+		LOW("하"),
+		MEDIUM("중"),
+		HIGH("상");
+		
+		private final String korean;
+	    
+	    ItemQuality(String korean) {
+	        this.korean = korean;
+	    }
+	    
+	    public String getKorean() {
+	        return korean;
+	    }
 	}
 }

@@ -35,7 +35,7 @@ public class Bid {
 	@Column(nullable = false, columnDefinition = "ENUM('active','winning','lost','cancelled') default 'active'")
 	private String bidStatus;
 	@Column(nullable = false)
-	private Integer bidPrice;
+	private Long bidPrice;
 	@Column(nullable = false)
 	@UpdateTimestamp
 	private LocalDateTime bidTime;

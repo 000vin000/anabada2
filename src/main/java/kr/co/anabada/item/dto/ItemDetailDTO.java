@@ -1,0 +1,55 @@
+package kr.co.anabada.item.dto;
+
+import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Builder
+public class ItemDetailDTO {
+	private Integer itemNo;
+	private String itemSaleType;
+	private String itemTitle;
+	private String itemContent;	
+	private String itemStatus;
+	private String itemQuality;	
+	private Integer itemQuantity;
+	@Setter
+	private Long itemPrice;	
+	private Integer itemViewCnt;
+	private Double itemAvgRating;
+	
+	private Double itemLatitude;	
+	private Double itemLongitude;
+	
+	private boolean itemPurcConfirmed;
+	private boolean itemSaleConfirmed;
+	
+	private LocalDateTime itemSaleStartDate;
+	private LocalDateTime itemSaleEndDate;
+	private LocalDateTime itemResvStartDate;
+	private LocalDateTime itemResvEndDate;
+	private LocalDateTime itemCreatedDate;
+	private LocalDateTime itemUpdatedDate;
+	
+	private String sellerNick;
+	private String categoryNo;
+//	private List<Image> images;
+//	private List<Review> reviews;
+	
+	
+	
+	public String getFormattedDate(LocalDateTime date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+        return date.format(formatter);
+    }
+	
+	public String addCommas(Integer num) {
+        NumberFormat formatter = NumberFormat.getInstance();
+        return formatter.format(num);
+    }
+}
