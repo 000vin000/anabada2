@@ -4,12 +4,15 @@ import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ItemDetailDTO {
 	private Integer itemNo;
 	private String itemSaleType;
@@ -18,7 +21,6 @@ public class ItemDetailDTO {
 	private String itemStatus;
 	private String itemQuality;	
 	private Integer itemQuantity;
-	@Setter
 	private Long itemPrice;	
 	private Integer itemViewCnt;
 	private Double itemAvgRating;
@@ -36,8 +38,9 @@ public class ItemDetailDTO {
 	private LocalDateTime itemCreatedDate;
 	private LocalDateTime itemUpdatedDate;
 	
+	private Integer sellerNo;
 	private String sellerNick;
-	private String categoryNo;
+	private String categoryName;
 //	private List<Image> images;
 //	private List<Review> reviews;
 	

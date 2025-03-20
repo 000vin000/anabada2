@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityNotFoundException;
+import kr.co.anabada.item.dto.ItemDetailDTO;
 import kr.co.anabada.item.entity.Bid;
 import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.item.entity.Item.ItemStatus;
@@ -26,6 +27,42 @@ public class ItemDetailService {
 	public Item getItem(int itemNo) {
 		return itemDetailRepository.findById(itemNo)
 	            .orElseThrow(() -> new EntityNotFoundException("물품이 존재하지 않습니다."));
+	}
+	
+	public ItemDetailDTO getItemDetailDTO(int itemNo) {
+		Item item = getItem(itemNo);
+		
+//		ItemDetailDTO dto = modelMapper.map(item, ItemDetailDTO.class);
+//		dto.setSellerNo(item.getSeller().getSellerNo());
+//		dto.setSellerNick(item.getSeller().getUser().getUserNick());
+//		dto.setCategoryName(item.getCategory().getCategoryName());
+		ItemDetailDTO dto =	ItemDetailDTO.builder()
+				.itemNo(item.getItemNo())
+				.itemSaleType(item.getItemSaleType().getKorean())
+				.itemTitle(item.getItemTitle())
+				.itemContent(item.getItemContent())
+				.itemStatus(item.getItemStatus().getKorean())
+				.itemQuality((item.getItemQuality() != null) ? item.getItemQuality().getKorean() : null)
+				.itemQuantity(item.getItemQuantity())
+				.itemPrice(item.getItemPrice())
+				.itemViewCnt(item.getItemViewCnt())
+				.itemAvgRating(item.getItemAvgRating())
+				.itemLatitude(item.getItemLatitude())
+				.itemLongitude(item.getItemLongitude())
+				.itemPurcConfirmed(item.isItemPurcConfirmed())
+				.itemSaleConfirmed(item.isItemSaleConfirmed())
+				.itemSaleStartDate(item.getItemSaleStartDate())
+				.itemSaleEndDate(item.getItemSaleEndDate())
+				.itemResvStartDate(item.getItemResvStartDate())
+				.itemResvEndDate(item.getItemResvEndDate())
+				.itemCreatedDate(item.getItemCreatedDate())
+				.itemUpdatedDate(item.getItemUpdatedDate())
+				.sellerNo(item.getSeller().getSellerNo())
+				.sellerNick(item.getSeller().getUser().getUserNick())
+				.categoryName(item.getCategory().getCategoryName())
+				.build();
+		
+		return dto;
 	}
 
 	public Long getPrice(int itemNo) {

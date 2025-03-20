@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import kr.co.anabada.item.dto.ItemDetailDTO;
 import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.item.service.ItemDetailService;
 import kr.co.anabada.user.entity.User;
@@ -31,7 +32,7 @@ public class ItemDetailController {
 	
 	@GetMapping
 	public String getItemDetail(@PathVariable int itemNo, Model model) throws NotFoundException {
-		Item item = itemDetailService.getItem(itemNo);
+		ItemDetailDTO item = itemDetailService.getItemDetailDTO(itemNo);
 		model.addAttribute("item", item);
 		return "item/itemDetail";
 	}
@@ -80,9 +81,9 @@ public class ItemDetailController {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("입찰가를 입력하세요.");
 	    }
 
-		Item item = itemDetailService.getItem(itemNo);
+		ItemDetailDTO itemDetailDTO = itemDetailService.getItemDetailDTO(itemNo);
 	    int userNo = user.getUserNo();
-	    int sellerNo = item.getSeller().getSellerNo();
+	    int sellerNo = itemDetailDTO.getSellerNo();
 	    if (userNo == sellerNo) {
 	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("자신의 상품은 입찰할 수 없습니다.");
 	    }

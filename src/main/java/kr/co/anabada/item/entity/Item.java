@@ -1,8 +1,6 @@
 package kr.co.anabada.item.entity;
 
-import java.text.NumberFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -11,7 +9,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -111,19 +108,6 @@ public class Item {
 		}
 	}
 	
-	public String getFormattedDate(LocalDateTime date) {
-		if (date == null) {
-			return null;
-		}
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
-        return date.format(formatter);
-    }
-	
-	public String addCommas(Long num) {
-        NumberFormat formatter = NumberFormat.getInstance();
-        return formatter.format(num);
-    }
-	
 	public enum ItemSaleType {
 		AUCTION("경매"),
 		SHOP("쇼핑몰"),
@@ -171,7 +155,7 @@ public class Item {
 	    }
 	    
 	    public String getKorean() {
-	        return korean;
+	    	return korean;
 	    }
 	}
 }

@@ -24,7 +24,7 @@
 		</section>
 		
 		<section id="bidSection">
-	        <h2 id="priceHeading">현재가 <label id="currentPrice">${item.addCommas(item.itemPrice)} 원</label></h2>
+	        <h2 id="priceHeading">현재가 <label id="price">${item.addCommas(item.itemPrice)} 원</label></h2>
 	        <p id="desiredBidPrice">희망 입찰가
 	        	<input type="number" id="textPrice" min="0" step="100" disabled="disabled">
 				<input type="submit" id="btnBid" value="입찰" disabled="disabled">
@@ -36,24 +36,24 @@
 		    <table>
 		        <tr>
 		            <th>판매자</th>
-		            <td>${item.seller.user.userNick}</td>
+		            <td>${item.sellerNick}</td>
 		        </tr>
 		        <tr>
 		            <th>카테고리</th>
-		            <td>${item.category.categoryName}</td>
+		            <td>${item.categoryName}</td>
 		        </tr>
 		        <tr>
 		            <th>경매일자</th>
 		            <td>
 		            	${item.itemSaleStartDate != null ? item.getFormattedDate(item.itemSaleStartDate) + " ~ " : ""}
 		            	${item.itemSaleEndDate != null ? item.getFormattedDate(item.itemSaleEndDate) : "무기한"}
-		            	( <label id="currentStatus">${item.itemStatus.getKorean()}</label> )
+		            	( <label id="status">${item.itemStatus}</label> )
 		            </td>
 		        </tr>
 		        <c:if test="${item.itemQuality != null}">
 		        <tr>
 		            <th>품질</th>
-		            <td>${item.itemQuality.getKorean()}</td>
+		            <td>${item.itemQuality}</td>
 		        </tr>
 		        </c:if>
 		        <tr>
@@ -133,7 +133,7 @@
 </script>
 <script>
 	let intervals = [];
-	let currentStatus = "";
+	let status = "";
 	let remainTime = 0;
 	const btnBid = document.getElementById("btnBid");
 	const textPrice = document.getElementById("textPrice");
@@ -227,7 +227,7 @@
         fetch(`/item/detail/${itemNo}/price`)
             .then(response => response.text())
             .then(data => {
-                document.getElementById("currentPrice").innerText = addCommas(data) + " 원";
+                document.getElementById("price").innerText = addCommas(data) + " 원";
             })
     }
 
@@ -235,7 +235,7 @@
     	try {
 	        let response = await fetch(`/item/detail/${itemNo}/status`);
 	        let data = await response.text();
-	        currentStatus = data;
+	        status = data;
 	
 	        if (data === "판매완료" || data === "종료") {
 	            stopAllIntervals();
@@ -254,7 +254,7 @@
 	            btnBid.disabled = true;
 	        }
 
-	        document.getElementById("currentStatus").innerText = data;
+	        document.getElementById("status").innerText = data;
     	} catch (error) {
             console.error('updateStatus(itemNo): ', error);
         }
@@ -267,14 +267,14 @@
 	}
 
 	async function updateRemainTime(itemNo) {
-    	let type = (currentStatus === "대기중") ? "start" : "end";
+    	let type = (status === "대기중") ? "start" : "end";
     	await initRemainTime(itemNo, type);
     	
     	let inner = async function() {
     		if (remainTime <= 0) {
     			await updateStatus(${item.itemNo});
     			
-    			if (currentStatus !== "판매중") {
+    			if (status !== "판매중") {
     				return;
     			} else {
     				await initRemainTime(itemNo, "end");    				
@@ -287,9 +287,9 @@
             let seconds = remainTime % 60;
 
             let timeText = "남은 시간 : ";
-            if (currentStatus === "대기중") {
+            if (status === "대기중") {
             	timeText = "시작까지 " + timeText;
-            } else if (currentStatus === "판매중") {
+            } else if (status === "판매중") {
             	timeText = "종료까지 " + timeText;
             }
             
