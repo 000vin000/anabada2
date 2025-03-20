@@ -4,10 +4,13 @@ body {
 }
 
 .body-container {
-  max-width: 1200px; /* 최대 너비 설정 (원하는 크기로 조정 가능) */
-  margin: 0 auto; /* 좌우 중앙 정렬 */
-  padding: 0 20px; /* 내부 여백 추가 (필요에 따라 조정) */
-  margin-bottom: 50px;
+	max-width: 1200px; /* 최대 너비 설정 (원하는 크기로 조정 가능) */
+	margin: 0 auto; /* 좌우 중앙 정렬 */
+	padding: 0 20px; /* 내부 여백 추가 (필요에 따라 조정) */
+	margin-bottom: 50px;
+	
+	padding-bottom: 60px; /* 네비게이션 높이만큼 여백 */
+	font-family: Arial, sans-serif;
 }
 
 /* 마이페이지 브레드크럼 */
@@ -173,3 +176,38 @@ body {
         font-size: 14px;
         text-align: center;
 }
+
+/* bottom nav bar */
+.bottom-navbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: #fff;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #ddd;
+}
+
+.nav-item {
+    text-align: center;
+    flex: 1;
+}
+
+.nav-item a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #555;
+    font-size: 12px;
+}
+
+.nav-item a i {
+    font-size: 20px;
+    margin-bottom: 3px;
+}
+
