@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+    console.log("login.js 로드됨");
     document.getElementById("loginBtn").addEventListener("click", loginUser);
 });
 
@@ -11,22 +12,30 @@ function loginUser() {
         userPw: userPw
     };
 
-    fetch("/userlogin/login", {  // ✅ API 엔드포인트 유지
+    console.log("로그인 요청 데이터:", JSON.stringify(loginData));
+
+    fetch("/userlogin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loginData)
     })
     .then(response => response.json())
     .then(data => {
-        if (data.message === "로그인 성공!") {
+        console.log("로그인 응답 데이터:", data);
+
+        if (data.message) {
             alert(data.message);
-            window.location.href = "/dashboard.html";  // 로그인 성공 후 페이지 이동
+        }
+
+        // 
+        if (data.redirectUrl) {
+            window.location.href = data.redirectUrl;
         } else {
-            alert(data.message);
+            window.location.href = "/"; 
         }
     })
     .catch(error => {
         console.error("로그인 오류:", error);
-        alert("로그인 실패: " + error.message);
+        alert("로그인 오류: " + error.message);
     });
 }

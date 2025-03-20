@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("register.js 로드됨");
-    document.getElementById("registerBtn").addEventListener("click", registerUser);
+    console.log("join.js 로드됨");
+    document.getElementById("joinBtn").addEventListener("click", joinUser);
 });
 
-function registerUser() {
+function joinUser() {
     let userId = document.getElementById("userId").value;
     let userPw = document.getElementById("userPw").value;
     let userPwConfirm = document.getElementById("userPw2").value;
@@ -20,16 +20,9 @@ function registerUser() {
     let baseAddress = document.getElementById("baseAddress").value;
     let detailAddress = document.getElementById("detailAddress").value;
 
-    // 비밀번호 확인 검증 추가
+    // 최종 제출 시 유효성 검사
     if (userPw !== userPwConfirm) {
         alert("비밀번호가 일치하지 않습니다.");
-        return;
-    }
-
-    // 전화번호 검증 (숫자만 입력 가능)
-    const phonePattern = /^\d{3}-\d{3,4}-\d{4}$/;
-    if (!phonePattern.test(userPhone)) {
-        alert("올바른 전화번호 형식이 아닙니다.");
         return;
     }
 
@@ -47,25 +40,22 @@ function registerUser() {
 
     console.log("회원가입 요청 데이터:", JSON.stringify(userData));
 
-    fetch("/userjoin/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("회원가입 응답 데이터:", data);
-
-        // 회원가입 성공 시 메시지 출력 후 로그인 페이지로 이동
-        alert(data.message);  // 회원가입 성공 메시지
-        if (data.redirectUrl) {
-            window.location.href = data.redirectUrl;  // 로그인 페이지로 이동
-        } else {
-            window.location.href = "/auth/login.html";  // 기본 로그인 경로
-        }
-    })
-    .catch(error => {
-        console.error("회원가입 오류:", error);
-        alert("회원가입 오류: " + error.message);
-    });
+	fetch("/userjoin/join", {
+	    method: "POST",
+	    headers: { "Content-Type": "application/json" },
+	    body: JSON.stringify(userData)
+	})
+	.then(response => response.json())
+	.then(data => {
+	    if (data.error) {
+	        alert(data.error); // 에러 메시지 출력 (중복된 아이디, 닉네임 등)
+	    } else {
+	        alert(data.message);  // 회원가입 성공 메시지
+	        window.location.href = data.redirectUrl;  // 로그인 페이지로 이동
+	    }
+	})
+	.catch(error => {
+	    console.error("회원가입 오류:", error);
+	    alert("회원가입 오류: " + error.message);
+	});
 }

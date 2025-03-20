@@ -18,10 +18,24 @@ public class UserJoinService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    
+    // ✅ 아이디 중복 체크
+    public boolean isUserIdAvailable(String userId) {
+        return userJoinRepository.findByUserId(userId).isEmpty();
+    }
 
-    public void registerUser(UserJoinDTO userJoinDTO) {
+    // ✅ 닉네임 중복 체크
+    public boolean isUserNickAvailable(String userNick) {
+        return userJoinRepository.findByUserNick(userNick).isEmpty();
+    }
+
+    public void joinUser(UserJoinDTO userJoinDTO) {
         if (userJoinRepository.findByUserId(userJoinDTO.getUserId()).isPresent()) {
             throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
+        }
+        
+        if (userJoinRepository.findByUserNick(userJoinDTO.getUserNick()).isPresent()) {
+            throw new IllegalArgumentException("이미 사용 중인 닉네임입니다.");
         }
 
         if (userJoinRepository.findByUserEmail(userJoinDTO.getUserEmail()).isPresent()) {
