@@ -20,16 +20,16 @@ public class Chat_Message {
     private Integer msgNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "roomNo", referencedColumnName = "roomNo") 
+    @JoinColumn(name = "chat_room_no", referencedColumnName = "roomNo") 
     private Chat_Room chatRoom; 
 
     @ManyToOne
     @JoinColumn(name = "sender_no", referencedColumnName = "userNo")
-    private User senderNo;
+    private User senderNo; 
 
     @ManyToOne
     @JoinColumn(name = "receiver_no", referencedColumnName = "userNo")
-    private User receiverNo;
+    private User receiverNo; 
 
     @Column(nullable = false)
     private String senderNick;
