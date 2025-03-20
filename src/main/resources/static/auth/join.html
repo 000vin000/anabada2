@@ -13,8 +13,8 @@
         <label for="userPw">비밀번호:</label>
         <input type="password" id="userPw" name="userPw" required><br>
 
-        <label for="userPwConfirm">비밀번호 확인:</label>
-        <input type="password" id="userPw2" required><br>
+        <label for="userPw2">비밀번호 확인:</label>
+        <input type="password" id="userPw2" required><br>  <!-- ✅ ID 수정 -->
 
         <label for="userName">이름:</label>
         <input type="text" id="userName" name="userName" required><br>
@@ -26,9 +26,9 @@
         <input type="email" id="userEmail" name="userEmail" required><br>
 
         <label>전화번호:</label>
-        <input type="text" id="phone1" name="phone1" required placeholder="010"><br>
-        <input type="text" id="phone2" name="phone2" required placeholder="1234"><br>
-        <input type="text" id="phone3" name="phone3" required placeholder="5678"><br>
+        <input type="text" id="phone1" name="phone1" required placeholder="010" maxlength="3">
+        <input type="text" id="phone2" name="phone2" required placeholder="1234" maxlength="4">
+        <input type="text" id="phone3" name="phone3" required placeholder="5678" maxlength="4"><br>
 
         <label for="baseAddress">기본 주소:</label>
         <input type="text" id="baseAddress" name="baseAddress" required><br>
@@ -39,6 +39,6 @@
         <button type="button" id="registerBtn">회원가입</button>
     </form>
 
-    <script src="/js/register.js"></script>
+    <script src="/js/user/register.js"></script>
 </body>
 </html>
