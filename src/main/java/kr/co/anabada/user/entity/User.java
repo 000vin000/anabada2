@@ -70,7 +70,6 @@ public class User {
     private LocalDateTime userWithdrawalDate;
     
     
-    
     public enum UserType {
         INDIVISUAL,
         BRAND
