@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <div class="sidebar-container">
 	<div class="recently-viewed-box">
-	    <a href="/recent"><img alt="recent" src="/images/recent-repeat-icon.png"></a>
+	    <a href="/recent"><img alt="recent" src="/images/icon/recent-repeat-icon.png"></a>
 	</div>
 <!-- 
 	<div class="recently-viewed-box">
