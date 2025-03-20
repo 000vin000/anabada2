@@ -31,12 +31,14 @@ public class Chat_Room {
     @ManyToOne
     @JoinColumn(name = "itemNo", nullable = false)
     private Item item;
-
-    @JoinColumn(name = "sender_no", referencedColumnName = "userNo")
-    private User senderNo;
-
-    @JoinColumn(name = "receiver_no", referencedColumnName = "userNo")
-    private User receiverNo;
+    
+//    @ManyToOne
+//    @JoinColumn(name = "sender_no", referencedColumnName = "userNo")
+//    private User senderNo;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "receiver_no", referencedColumnName = "userNo")
+//    private User receiverNo;
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Chat_Message> messages;
