@@ -16,7 +16,7 @@
 
 # 프로젝트 결과물
 
-- [스케줄 관리](https://github.com/users/000vin000/projects/3)
+- [스케줄 관리](https://github.com/users/000vin000/projects/4)
 - [프로젝트 과제 수행 계획서](1_프로젝트_과제_수행_계획서.md)
 - [하부르타노트 목록](2_하브루타_노트_목록.md)
 - [PPT 발표자료](3_팀_프로젝트_결과보고서.pptx)
