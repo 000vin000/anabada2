@@ -1,83 +1,109 @@
 package kr.co.anabada.user.entity;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Entity
-@Table(name = "user")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Entity
+@Table(name = "user") // 테이블 이름을 소문자로 변경
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "userNo", nullable = false)
     private Integer userNo;
 
+    // 사용자 타입 (개인 or 브랜드)
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private UserType userType = UserType.INDIVISUAL;
+    @Column(name = "userType", nullable = false, length = 20)
+    private UserType userType = UserType.INDIVIDUAL;
 
-    @Column(length = 20, unique = true)
+    // 사업자 등록번호 (브랜드만 해당)
+    @Column(name = "businessRegNo", length = 20, unique = true)
     private String businessRegNo;
 
-    @Column(nullable = false, length = 20)
-    private String userName;
-
-    @Column(nullable = false, length = 20, unique = true)
-    private String userNick;
-
-    @Column(nullable = false, length = 20, unique = true)
+    // 아이디
+    @NotBlank(message = "필수 입력값입니다.")
+    @Column(name = "userId", nullable = false, length = 20, unique = true)
     private String userId;
 
-    @Column(nullable = false, length = 100)
+    // 비밀번호 (암호화 대비 길이 확장)
+    @NotBlank(message = "필수 입력값입니다.")
+    @Size(min = 6, message = "비밀번호는 6자 이상이어야 합니다.")
+    @Column(name = "userPw", nullable = false, length = 255) // 길이 255 유지
     private String userPw;
 
-    @Column(nullable = false, length = 20, unique = true)
+    // 이름
+    @NotBlank(message = "필수 입력값입니다.")
+    @Column(name = "userName", nullable = false, length = 20)
+    private String userName;
+
+    // 닉네임
+    @NotBlank(message = "필수 입력값입니다.")
+    @Column(name = "userNick", nullable = false, length = 20, unique = true)
+    private String userNick;
+
+    // 이메일
+    @NotBlank(message = "필수 입력값입니다.")
+    @Email(message = "올바른 이메일 형식이 아닙니다.")
+    @Column(name = "userEmail", nullable = false, length = 100, unique = true) // 길이 100 유지
+    private String userEmail;
+
+    // 전화번호
+    @NotBlank(message = "전화번호는 필수 입력값입니다.")
+    @Column(name = "userPhone", nullable = false, length = 20, unique = true)
     private String userPhone;
 
-    @Column(nullable = false, length = 100, unique = true)
-    private String userEmail;
-    
+    // 주소 (기본 주소 + 상세 주소 포함) 복구됨
+    @NotBlank(message = "주소는 필수 입력값입니다.")
+    @Column(name = "userAddress", nullable = false, length = 255)
+    private String userAddress;
+
+    // 사용자 상태 (active, inactive)
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "userStatus", nullable = false)
     private UserStatus userStatus = UserStatus.ACTIVE;
 
-    @Column(nullable = false)
+    // 경고 횟수
+    @Column(name = "userWarnCnt", nullable = false)
     private Byte userWarnCnt = 0;
 
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime userCreatedDate;
+    // 생성일자 (가입일)
+    @Column(name = "userCreatedDate", nullable = false, updatable = false)
+    private LocalDateTime userCreatedDate = LocalDateTime.now();
 
-    @UpdateTimestamp
-    @Column(nullable = false)
-    private LocalDateTime userUpdatedDate;
+    // 수정일자
+    @Column(name = "userUpdatedDate", nullable = false)
+    private LocalDateTime userUpdatedDate = LocalDateTime.now();
 
+    // 탈퇴 요청 일자 (탈퇴 전 inactive 상태에서 저장됨)
+    @Column(name = "userWithdrawalDate")
     private LocalDateTime userWithdrawalDate;
-    
-    
+
+    // 사용자 타입 ENUM
     public enum UserType {
-        INDIVISUAL,
-        BRAND
+        INDIVIDUAL, // 개인 회원 (오타 수정)
+        BRAND       // 사업자 회원
     }
-    
+
+    // 사용자 상태 ENUM
     public enum UserStatus {
-    	ACTIVE,
-    	INACTIVE
+        ACTIVE,   // 활성 상태
+        INACTIVE  // 비활성 (n일 후 삭제)
+    }
+
+    // 업데이트 시 시간 자동 설정
+    @PreUpdate
+    public void preUpdate() {
+        this.userUpdatedDate = LocalDateTime.now();
     }
 }
-
