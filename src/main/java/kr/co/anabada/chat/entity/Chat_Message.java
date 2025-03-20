@@ -21,7 +21,7 @@ public class Chat_Message {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roomNo", referencedColumnName = "roomNo") 
-    private Chat_Room roomNo;
+    private Chat_Room chatRoom; 
 
     @ManyToOne
     @JoinColumn(name = "sender_no", referencedColumnName = "userNo")
