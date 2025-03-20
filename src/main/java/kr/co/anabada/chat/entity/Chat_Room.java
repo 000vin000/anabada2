@@ -32,11 +32,9 @@ public class Chat_Room {
     @JoinColumn(name = "itemNo", nullable = false)
     private Item item;
 
-    @ManyToOne
     @JoinColumn(name = "sender_no", referencedColumnName = "userNo")
     private User senderNo;
 
-    @ManyToOne
     @JoinColumn(name = "receiver_no", referencedColumnName = "userNo")
     private User receiverNo;
 
