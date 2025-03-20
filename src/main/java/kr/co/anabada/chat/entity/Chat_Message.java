@@ -22,12 +22,14 @@ public class Chat_Message {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_room_no", referencedColumnName = "roomNo") 
     private Chat_Room chatRoom; 
-
-    @JoinColumn(name = "sender_no", referencedColumnName = "userNo")
-    private User senderNo; 
-
-    @JoinColumn(name = "receiver_no", referencedColumnName = "userNo")
-    private User receiverNo; 
+    
+//    @ManyToOne
+//    @JoinColumn(name = "sender_no", referencedColumnName = "userNo")
+//    private User senderNo; 
+//    
+//    @ManyToOne
+//    @JoinColumn(name = "receiver_no", referencedColumnName = "userNo")
+//    private User receiverNo; 
 
     @Column(nullable = false)
     private String senderNick;
