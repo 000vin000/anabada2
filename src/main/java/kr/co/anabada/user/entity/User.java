@@ -98,12 +98,19 @@ public class User {
     // 사용자 상태 ENUM
     public enum UserStatus {
         ACTIVE,   // 활성 상태
-        INACTIVE  // 비활성 (n일 후 삭제)
+        INACTIVE,  // 비활성 (n일 후 삭제)
+        WITHDRAWN
     }
 
     // 업데이트 시 시간 자동 설정
+    @PrePersist
+    public void prePersist() {
+        this.userCreatedDate = LocalDateTime.now();
+        this.userUpdatedDate = LocalDateTime.now(); // 자동으로 현재 시간 설정
+    }
+
     @PreUpdate
     public void preUpdate() {
-        this.userUpdatedDate = LocalDateTime.now();
+        this.userUpdatedDate = LocalDateTime.now(); // 업데이트할 때 자동 변경
     }
 }
