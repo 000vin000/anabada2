@@ -12,37 +12,30 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "chat_message")
+@Table(name = "Chat_Message")
 public class Chat_Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "msgNo", nullable = false)
     private Integer msgNo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chat_room_no", referencedColumnName = "roomNo") 
-    private Chat_Room chatRoom; 
-    
-    @ManyToOne
-    @JoinColumn(name = "sender_no", referencedColumnName = "userNo")
-    private User senderNo; 
-    
-    @ManyToOne
-    @JoinColumn(name = "receiver_no", referencedColumnName = "userNo")
-    private User receiverNo; 
-
-    @Column(nullable = false)
-    private String senderNick;
-
-    @Column(nullable = false)
-    private String receiverNick;
-
-    @Column(nullable = false)
+    @Column(name = "msgContent", nullable = false, columnDefinition = "TEXT")
     private String msgContent;
 
-    @Column(nullable = false)
+    @Column(name = "msgIsRead", nullable = false)
+    private Boolean msgIsRead = false;
+
+    @Column(name = "msgDate", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime msgDate;
 
-    @Column(nullable = false)
-    private boolean msgIsRead;
+    // 채팅방과 다대일 관계
+    @ManyToOne
+    @JoinColumn(name = "roomNo", nullable = false)
+    private Chat_Room chatRoom;
+
+    // 발신자와 다대일 관계
+    @ManyToOne
+    @JoinColumn(name = "senderNo", nullable = false)
+    private User sender;
 }
