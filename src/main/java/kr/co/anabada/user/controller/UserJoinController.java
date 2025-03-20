@@ -1,11 +1,14 @@
 package kr.co.anabada.user.controller;
 
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -21,15 +24,34 @@ public class UserJoinController {
     @Autowired
     private UserJoinService userJoinService;
 
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody UserJoinDTO userJoinDTO) {
-        log.info("회원가입 요청 데이터: {}", userJoinDTO);
-        userJoinService.registerUser(userJoinDTO);
-        log.info("회원가입 완료!");
-        
-        return ResponseEntity.ok(Map.of(
-            "message", "회원가입 성공!",
-            "redirectUrl", "/auth/login.html"
-        ));
+    @PostMapping("/join")
+    public ResponseEntity<?> joinUser(@Valid @RequestBody UserJoinDTO userJoinDTO) {
+        try {
+            log.info("회원가입 요청 데이터: {}", userJoinDTO);
+            userJoinService.joinUser(userJoinDTO);
+            log.info("회원가입 완료!");
+
+            return ResponseEntity.ok(Map.of(
+                "message", "회원가입 성공!",
+                "redirectUrl", "/auth/login.html"
+            ));
+        } catch (IllegalArgumentException e) {
+            log.warn("회원가입 실패: {}", e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+    
+    //아이디 중복 체크 API
+    @GetMapping("/checkUserId")
+    public ResponseEntity<?> checkUserId(@RequestParam String userId) {
+        boolean isAvailable = userJoinService.isUserIdAvailable(userId);
+        return ResponseEntity.ok(Map.of("available", isAvailable));
+    }
+
+    //닉네임 중복 체크 API
+    @GetMapping("/checkUserNick")
+    public ResponseEntity<?> checkUserNick(@RequestParam String userNick) {
+        boolean isAvailable = userJoinService.isUserNickAvailable(userNick);
+        return ResponseEntity.ok(Map.of("available", isAvailable));
     }
 }
