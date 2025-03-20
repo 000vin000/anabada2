@@ -11,9 +11,6 @@
 <div class="body-container">
 	<a href="/signup/individual">개인 회원가입</a>
 	<a href="/signup/brand">사업자 회원가입</a>
-	<div>
-		oauth2.0 ~로 회원가입하기
-	</div>
 </div>
 </body>
 </html>
