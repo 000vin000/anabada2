@@ -11,6 +11,6 @@ public class RecentController {
 	@GetMapping
 	public String recentAll() {
 		
-		return "mypage/itemRecent";
+		return "mypage/recentItem";
 	}
 }

@@ -1,4 +1,4 @@
-const RECENT_ITEMS_KEY = "recent_items";
+import { RECENT_ITEMS_KEY } from './config.js';
 
 // 최근 본 아이템 추가 (날짜별로 저장)
 function addRecentItem(itemNo, itemTitle) {
