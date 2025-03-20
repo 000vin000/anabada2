@@ -23,21 +23,26 @@ public class ItemInclude1Image {
 	private LocalDateTime item_sale_end_date;
 	private Integer item_view_cnt;
 	private byte[] image_file;
+	private String category_no;
 	
 	private String base64Image;
 	
 	// 경매까지 남은 시간
 	public String remainingTime(LocalDateTime date) {
-		LocalDateTime now = LocalDateTime.now();
-        Duration duration = Duration.between(now, date);
+	    LocalDateTime now = LocalDateTime.now();
+	    
+	    // 종료 시간이 이미 지난 경우
+	    if (date.isBefore(now)) {
+	        return "경매 종료";
+	    }
 
-        long days = duration.toDays();
-        long hours = duration.toHoursPart();
-        long minutes = duration.toMinutesPart();
+	    Duration duration = Duration.between(now, date);
 
-        return String.format("%d일 %d시간 %d분", days, hours, minutes);
+	    long days = duration.toDays();
+	    long hours = duration.toHoursPart();
+	    long minutes = duration.toMinutesPart();
+
+	    return String.format("%d일 %d시간 %d분", days, hours, minutes);
 	}
-	
-	// 이미지 파일 처리
-	
+
 }

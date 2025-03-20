@@ -9,20 +9,10 @@ window.onload = function() {
 	const findType = params.get("findType");
 	const keyword = params.get("keyword"); 
 	
-	// category
-	const gender = params.get("gender");
-	const clothesType= params.get("clothesType");
-	
 	// URL에서 검색 유형과 검색어를 가져와서 설정
 	if (findType != null && keyword != null) {
 		document.getElementById("findType").value = findType;
 		document.getElementById("keyword").value = keyword;
-	}
-	
-	// URL에서 성별과 종류를 가져와서 설정
-	if (gender != null && clothesType != null) {
-		document.getElementById("gender").value = gender;
-		document.getElementById("clothesType").value = clothesType;
 	}
 	
 	// 정렬
@@ -33,26 +23,27 @@ window.onload = function() {
 	}
 }
 
-function updateItem() {
-	const gender = document.getElementById('gender').value;
-	const clothesType = document.getElementById('clothesType').value;
-	
-	const form = document.createElement('form');
-	form.method = 'GET';
-	form.action = '/category';
-	
-	const genderInput = document.createElement('input');
-	genderInput.type = 'hidden';
-	genderInput.name = 'gender';
-	genderInput.value = gender;
-	
-	const clothesTypeInput = document.createElement('input');
-	clothesTypeInput.type = 'hidden';
-	clothesTypeInput.name = 'clothesType';
-	clothesTypeInput.value = clothesType;
-	
-	form.appendChild(genderInput);
-	form.appendChild(clothesTypeInput);
-	document.body.appendChild(form);
-	form.submit();
+function updateItem(gender, clothesType, clothesTypeDetail) {
+    const form = document.createElement('form');
+    form.method = 'GET';
+    form.action = `/category/${gender}`; // 폼을 전송할 URL 설정
+
+    // clothesType, clothesTypeDetail을 hidden input으로 추가
+    const clothesTypeInput = document.createElement('input');
+    clothesTypeInput.type = 'hidden';
+    clothesTypeInput.name = 'ct';
+    clothesTypeInput.value = clothesType;
+
+    const clothesTypeDetailInput = document.createElement('input');
+    clothesTypeDetailInput.type = 'hidden';
+    clothesTypeDetailInput.name = 'cd';
+    clothesTypeDetailInput.value = clothesTypeDetail;
+
+    // 폼에 입력 요소 추가
+    form.appendChild(clothesTypeInput);
+    form.appendChild(clothesTypeDetailInput);
+
+    // 폼을 body에 추가하고 전송
+    document.body.appendChild(form);
+    form.submit();
 }
