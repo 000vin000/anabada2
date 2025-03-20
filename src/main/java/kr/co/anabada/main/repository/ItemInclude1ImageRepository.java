@@ -38,4 +38,25 @@ public class ItemInclude1ImageRepository {
 
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ItemInclude1Image.class));
     }
+    
+    // 카테고리 검색 - 성별 전체
+    public List<ItemInclude1Image> selectGenderAll(String ct, String cd) {
+    	String param = ct + cd;
+    	String sql = "SELECT * FROM item_include_1image WHERE category_no LIKE CONCAT('%', '" + param + "')";
+    	return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ItemInclude1Image.class));
+    }
+    
+    // 카테고리 검색 - 남성/여성
+    public List<ItemInclude1Image> selectGender(String gender, String ct, String cd) {
+    	String param = gender + ct + cd;
+    	String sql = "SELECT * FROM item_include_1image WHERE category_no LIKE CONCAT('%', '" + param + "')";
+    	return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ItemInclude1Image.class));
+    }
+    
+    // 카테고리 이름
+    public String detailName(String ct, String cd) {
+        String sql = "SELECT DISTINCT category_name FROM item_category WHERE category_no LIKE CONCAT('%', ?, ?, '%')";
+        return jdbcTemplate.queryForObject(sql, String.class, ct, cd);
+    }
+
 }

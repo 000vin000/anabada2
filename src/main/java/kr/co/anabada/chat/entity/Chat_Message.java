@@ -23,13 +23,13 @@ public class Chat_Message {
     @JoinColumn(name = "chatRoomNo", nullable = false) 
     private Chat_Room chatRoom;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "senderNo", nullable = false)  
-    private User sender;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "receiverNo", nullable = false)  
-    private User receiver;
+    @ManyToOne
+    @JoinColumn(name = "sender_no", referencedColumnName = "userNo")
+    private User senderNo;
+
+    @ManyToOne
+    @JoinColumn(name = "receiver_no", referencedColumnName = "userNo")
+    private User receiverNo;
 
     @Column(nullable = false)
     private String senderNick;

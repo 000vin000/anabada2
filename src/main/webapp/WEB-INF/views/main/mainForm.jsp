@@ -17,7 +17,6 @@
     <jsp:include page="../footer.jsp" /> 
 </body>
 <script src="/js/common.js"></script>
-<script src="/js/todaypick.js"></script>
 <script>
         function sortItems() {  
             let sortOrder = document.getElementById("sortOrder");
