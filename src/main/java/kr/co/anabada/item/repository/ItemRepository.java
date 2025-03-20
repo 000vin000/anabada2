@@ -8,4 +8,6 @@ import kr.co.anabada.item.entity.Item;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
 	Item findByItemNo(Integer itemNo);
+	
+	
 }

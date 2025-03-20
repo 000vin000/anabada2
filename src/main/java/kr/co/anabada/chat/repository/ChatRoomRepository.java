@@ -16,5 +16,10 @@ public interface ChatRoomRepository extends JpaRepository<Chat_Room, Integer> {
     Optional<Chat_Room> findByRoomNo(Integer roomNo);
     
     // 특정 사용자와 특정 상품에 해당하는 채팅방 조회
-    Optional<Chat_Room> findByItemAndUser1OrUser2(Item item, User user1, User user2);
+    Optional<Chat_Room> findByItemAndSenderNoOrReceiverNo(Item item, User senderNo, User receiverNo);
+    
+   
+    
+    // 기존 채팅방이 존재하는지 확인하는 메서드 추가
+    Chat_Room findByItemAndSenderNoAndReceiverNo(Item item, User senderNo, User receiverNo);
 }
