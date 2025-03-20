@@ -26,6 +26,10 @@ public class UserJoinController {
         log.info("회원가입 요청 데이터: {}", userJoinDTO);
         userJoinService.registerUser(userJoinDTO);
         log.info("회원가입 완료!");
-        return ResponseEntity.ok(Map.of("message", "회원가입 성공!"));
+        
+        return ResponseEntity.ok(Map.of(
+            "message", "회원가입 성공!",
+            "redirectUrl", "/auth/login.html"
+        ));
     }
 }
