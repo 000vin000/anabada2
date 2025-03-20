@@ -1,8 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <div class="sidebar-container">
 	<div class="recently-viewed-box">
-	    <strong>최근 본 상품</strong>
-	    <div id="recently-viewed">최근 본 상품이 없습니다.</div>
+	    <a href="/recent"><img alt="recent" src="/images/recent-repeat-icon.png"></a>
 	</div>
 <!-- 
 	<div class="recently-viewed-box">
