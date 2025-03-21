@@ -1,63 +1,39 @@
 package kr.co.anabada.chat.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import kr.co.anabada.item.entity.Item;
+import jakarta.persistence.*;
 import kr.co.anabada.user.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
-@Data
+@Entity
+@Table(name = "chat_room")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "Chat_Room")
+@Builder
 public class Chat_Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "roomNo", nullable = false)
-    private Integer roomNo;
-
-    @Column(name = "itemNo", insertable = false, updatable = false)
-    private Integer itemNo;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "roomStatus", nullable = false)
-    private RoomStatus roomStatus;
-
-    @Column(name = "roomLastMsgDate")
-    private LocalDateTime roomLastMsgDate;
-
-    @Column(name = "roomDate", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime roomDate;
+    private Long id; // 채팅방 ID
 
     @ManyToOne
-    @JoinColumn(name = "itemNo", nullable = false, insertable = false, updatable = false)
-    private Item item;
+    @JoinColumn(name = "seller_id", nullable = false)
+    private User seller; // 판매자
 
-    @OneToOne
-    @JoinColumn(name = "user1No", referencedColumnName = "userNo", nullable = false)
-    private User user1;
+    @ManyToOne
+    @JoinColumn(name = "buyer_id", nullable = false)
+    private User buyer; // 구매자
 
-    @OneToOne
-    @JoinColumn(name = "user2No", referencedColumnName = "userNo", nullable = false)
-    private User user2;
+    @Column(nullable = false)
+    private String itemTitle; // 거래 상품 제목
 
-}
+    @Column(nullable = false)
+    private Integer itemNo; // 거래 상품 번호 (itemNo 추가)
 
-enum RoomStatus {
-    ACTIVE,
-    CLOSED
+    @Builder.Default
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now(); // 생성일자
 }
