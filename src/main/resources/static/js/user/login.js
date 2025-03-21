@@ -27,11 +27,14 @@ function loginUser() {
             alert(data.message);
         }
 
-        // 
+        //JWT 토큰 저장
+        if (data.token) {
+            localStorage.setItem("authToken", data.token);
+        }
         if (data.redirectUrl) {
             window.location.href = data.redirectUrl;
         } else {
-            window.location.href = "/"; 
+            window.location.href = "/";
         }
     })
     .catch(error => {
