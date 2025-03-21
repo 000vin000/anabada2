@@ -25,4 +25,6 @@ public interface ChatMessageRepository extends JpaRepository<Chat_Message, Integ
     // 채팅방에 있는 유저들의 닉네임을 반환하는 쿼리
     @Query("SELECT DISTINCT c.sender.userNick FROM Chat_Message c WHERE c.chatRoom.roomNo = :roomNo")
     List<String> findDistinctByChatRoomRoomNo(@Param("roomNo") Integer roomNo);
+
+	Chat_Message saveMessage(Chat_Message message);
 }

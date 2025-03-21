@@ -25,10 +25,10 @@ public class ChatService {
 
     public Chat_Room createChatRoom(Integer itemNo, Integer buyerNo) {
         // 아이템 & 유저 조회
-        Item item = itemRepository.findById(itemNo)
-                .orElseThrow(() -> new IllegalArgumentException("해당 아이템이 없습니다."));
-        User buyer = userRepository.findById(buyerNo)
-                .orElseThrow(() -> new IllegalArgumentException("구매자 정보가 없습니다."));
+        Item item = itemRepository.findByItemNo(itemNo);
+                
+        User buyer = userRepository.findByBuyerNo(buyerNo);
+               
         
         // 아이템에서 셀러 정보 가져오기
         Seller seller = item.getSeller(); 
@@ -39,15 +39,13 @@ public class ChatService {
         chatRoom.setBuyer(buyer);
         chatRoom.setSeller(seller); 
 
-        return chatRoomRepository.save(chatRoom);
+        return chatRoomRepository.saveChatRoom(chatRoom);
     }
 
     public Chat_Message saveMessage(Integer roomNo, Integer senderNo, String content) {
         // 채팅방 & 유저 조회
-        Chat_Room chatRoom = chatRoomRepository.findById(roomNo)
-                .orElseThrow(() -> new IllegalArgumentException("채팅방이 없습니다."));
-        User sender = userRepository.findById(senderNo)
-                .orElseThrow(() -> new IllegalArgumentException("보낸 사람 정보가 없습니다."));
+        Chat_Room chatRoom = chatRoomRepository.findByRoomNo(roomNo);            
+        User sender = userRepository.findBySenderNo(senderNo);
 
         // 메시지 저장
         Chat_Message message = new Chat_Message();
@@ -56,6 +54,6 @@ public class ChatService {
         message.setMsgContent(content);
         message.setMsgIsRead(false);
 
-        return chatMessageRepository.save(message);
+        return chatMessageRepository.saveMessage(message);
     }
 }
