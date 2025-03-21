@@ -41,6 +41,6 @@ public class Chat_Message {
     private Chat_Room chatRoom; 
 
     @OneToOne
-    @JoinColumn(name = "senderNo", nullable = false)
+    @JoinColumn(name = "senderNo", referencedColumnName = "userNo", nullable = false)
     private User sender; 
 }
