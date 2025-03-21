@@ -1,5 +1,7 @@
 package kr.co.anabada.main.service;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -77,5 +79,15 @@ public class MainService {
 		else if (ct.equals("06")) return "가방";
 		else if (ct.equals("07")) return "패션소품";
 		else return "신발";
+	}
+	
+	// 이미지 파일을 Base64로 인코딩
+	public void encodeImageFile(List<ItemInclude1Image> itemList) throws IOException {
+	    for (ItemInclude1Image item : itemList) {
+	        byte[] imageBytes = item.getImage_file();  // image_file을 byte[]로 처리
+	        if (imageBytes != null) {
+	            item.setBase64Image(Base64.getEncoder().encodeToString(imageBytes));
+	        }
+	    }
 	}
 }

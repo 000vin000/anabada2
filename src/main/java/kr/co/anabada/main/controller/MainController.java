@@ -23,7 +23,7 @@ public class MainController {
 	@GetMapping("/")
 	public String getAllItems(@RequestParam(required = false) String sortOrder, Model model) throws IOException {
 		List<ItemInclude1Image> itemList = service.findAll();
-		encodeImageFile(itemList);
+		service.encodeImageFile(itemList);
 		
 		itemList = sort(sortOrder, itemList);
 		
@@ -36,7 +36,7 @@ public class MainController {
 	public String search(@RequestParam String findType, @RequestParam String keyword, 
 	                     @RequestParam(required = false) String sortOrder, Model model) throws IOException {
 		List<ItemInclude1Image> itemList = service.findItems(findType, keyword);
-		encodeImageFile(itemList);
+		service.encodeImageFile(itemList);
 		
 		// 검색 결과가 있을 경우
 		if (itemList != null || !itemList.isEmpty()) {
@@ -53,7 +53,7 @@ public class MainController {
 	public String category(@PathVariable String gender, @RequestParam String ct,
 							@RequestParam String cd, @RequestParam(required = false) String sortOrder, Model model) throws IOException {
 		List<ItemInclude1Image> itemList = service.findByCategory(gender, ct, cd);
-		encodeImageFile(itemList);
+		service.encodeImageFile(itemList);
 		
 		model.addAttribute("gender", gender);
 		model.addAttribute("ct", ct);
@@ -76,15 +76,5 @@ public class MainController {
 			itemList = service.sortByOrder(itemList, sortOrder);
 		}
 		return itemList;
-	}
-	
-	// 이미지 파일을 Base64로 인코딩
-	private void encodeImageFile(List<ItemInclude1Image> itemList) throws IOException {
-	    for (ItemInclude1Image item : itemList) {
-	        byte[] imageBytes = item.getImage_file();  // image_file을 byte[]로 처리
-	        if (imageBytes != null) {
-	            item.setBase64Image(Base64.getEncoder().encodeToString(imageBytes));
-	        }
-	    }
 	}
 }
