@@ -1,5 +1,6 @@
 package kr.co.anabada.item.dto;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -38,9 +39,11 @@ public class ItemDetailDTO {
 	private LocalDateTime itemCreatedDate;
 	private LocalDateTime itemUpdatedDate;
 	
-	private Integer sellerNo;
+	private Integer sellerNo; //seller
 	private String sellerNick;
-	private String categoryName;
+	private String categoryName; //category
+	private BigDecimal pointBalance; //point_account
+	private int imageCount; //image
 //	private List<Image> images;
 //	private List<Review> reviews;
 	

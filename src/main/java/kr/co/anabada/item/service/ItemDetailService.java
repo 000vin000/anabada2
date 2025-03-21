@@ -2,6 +2,7 @@ package kr.co.anabada.item.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,36 +14,44 @@ import kr.co.anabada.item.entity.Bid;
 import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.item.entity.Item.ItemStatus;
 import kr.co.anabada.item.repository.BidRepository;
+import kr.co.anabada.item.repository.ImageRepository;
 import kr.co.anabada.item.repository.ItemDetailRepository;
+import kr.co.anabada.user.entity.Buyer;
+import kr.co.anabada.user.entity.Point_Account;
 import kr.co.anabada.user.entity.User;
+import kr.co.anabada.user.repository.PointAccountRepository;
 
 @Service
 public class ItemDetailService {
 	@Autowired
 	private ItemDetailRepository itemDetailRepository;
-	
 	@Autowired
 	private BidRepository bidRepository;
+	@Autowired
+	private PointAccountRepository pointAccountRepository;
+	@Autowired
+	private ImageRepository imageRepository;
 	
-	public Item getItem(int itemNo) {
+	public Item getItem(Integer itemNo) {
 		return itemDetailRepository.findById(itemNo)
 	            .orElseThrow(() -> new EntityNotFoundException("물품이 존재하지 않습니다."));
 	}
 	
-	public ItemDetailDTO getItemDetailDTO(int itemNo) {
+	public ItemDetailDTO getItemDetailDTO(Integer itemNo, User user) {
 		Item item = getItem(itemNo);
+		Point_Account account = null;
+		if (user != null) {
+			pointAccountRepository.findById(user.getUserNo());
+		}
+		int imageCount = imageRepository.countByItemNo(item);
 		
-//		ItemDetailDTO dto = modelMapper.map(item, ItemDetailDTO.class);
-//		dto.setSellerNo(item.getSeller().getSellerNo());
-//		dto.setSellerNick(item.getSeller().getUser().getUserNick());
-//		dto.setCategoryName(item.getCategory().getCategoryName());
 		ItemDetailDTO dto =	ItemDetailDTO.builder()
 				.itemNo(item.getItemNo())
 				.itemSaleType(item.getItemSaleType().getKorean())
 				.itemTitle(item.getItemTitle())
 				.itemContent(item.getItemContent())
 				.itemStatus(item.getItemStatus().getKorean())
-				.itemQuality((item.getItemQuality() != null) ? item.getItemQuality().getKorean() : null)
+				.itemQuality(item.getItemQuality() != null ? item.getItemQuality().getKorean() : null)
 				.itemQuantity(item.getItemQuantity())
 				.itemPrice(item.getItemPrice())
 				.itemViewCnt(item.getItemViewCnt())
@@ -60,38 +69,40 @@ public class ItemDetailService {
 				.sellerNo(item.getSeller().getSellerNo())
 				.sellerNick(item.getSeller().getUser().getUserNick())
 				.categoryName(item.getCategory().getCategoryName())
+				.pointBalance(account != null ? account.getPointBalance() : null)
+				.imageCount(imageCount)
 				.build();
 		
 		return dto;
 	}
 
-	public Long getPrice(int itemNo) {
+	public Long getPrice(Integer itemNo) {
 		return itemDetailRepository.findItemPriceByItemNo(itemNo)
 	            .orElseThrow(() -> new EntityNotFoundException("가격 정보를 불러올 수 없습니다."));
 	}
 
-	public String getStatus(int itemNo) {
+	public String getStatus(Integer itemNo) {
 		return itemDetailRepository.findItemStatusByItemNo(itemNo)
 	            .map(ItemStatus::getKorean)
 	            .orElseThrow(() -> new EntityNotFoundException("상태 정보를 불러올 수 없습니다."));
 	}
 	
-	public LocalDateTime getSaleStartDate(int itemNo) {
+	public LocalDateTime getSaleStartDate(Integer itemNo) {
 		return itemDetailRepository.findItemSaleStartDateByItemNo(itemNo)
 	            .orElseThrow(() -> new EntityNotFoundException("판매 시작 시간을 불러올 수 없습니다."));
 	}
 	
-	public LocalDateTime getSaleEndDate(int itemNo) {
+	public LocalDateTime getSaleEndDate(Integer itemNo) {
 		return itemDetailRepository.findItemSaleEndDateByItemNo(itemNo)
 	            .orElseThrow(() -> new EntityNotFoundException("판매 종료 시간을 불러올 수 없습니다."));
 	}
 	
-	public List<String> getAllImages(int itemNo) {
+	public List<String> getAllImages(Integer itemNo) {
 		return null;
 	}
 
 	@Transactional
-	public boolean updatePrice(int itemNo, Long newPrice, User user) {
+	public boolean updatePrice(Integer itemNo, Long newPrice, User user) {
 		Item item = getItem(itemNo);
 		Long price = item.getItemPrice();
 		

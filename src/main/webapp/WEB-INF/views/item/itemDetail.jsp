@@ -45,8 +45,8 @@
 		        <tr>
 		            <th>경매일자</th>
 		            <td>
-		            	${item.itemSaleStartDate != null ? item.getFormattedDate(item.itemSaleStartDate) + " ~ " : ""}
-		            	${item.itemSaleEndDate != null ? item.getFormattedDate(item.itemSaleEndDate) : "무기한"}
+		            	${(item.itemSaleStartDate != null) ? item.getFormattedDate(item.itemSaleStartDate).concat(" ~ ") : ""}
+		            	${(item.itemSaleEndDate != null) ? item.getFormattedDate(item.itemSaleEndDate) : "무기한"}
 		            	( <label id="status">${item.itemStatus}</label> )
 		            </td>
 		        </tr>
@@ -63,7 +63,11 @@
 		        <tr>
 		            <th>이미지</th>
 		            <td>
-		            	<!-- image view -->
+		            	<div class="image-slider">
+						    <c:forEach begin="0" end="${item.imageCount-1}" var="index">
+						        <img src="http://192.168.0.41:8080/image/${item.itemNo}/${index}" alt="물품 이미지 ${index+1}">
+						    </c:forEach>
+					    </div>
 		            </td>
 		        </tr>
 		    </table>
@@ -198,23 +202,6 @@
         .catch(error => {
             alert(error.message);
         });
-        
-        /*
-        fetch(`/item/detail/${item.itemNo}/bid?newPrice=` + price, { method: "PATCH" })
-            .then(response => {
-            	if (!response.ok) {
-                    return response.text()
-                    .then(message => { throw new Error(message); }); 
-                }
-                return response.text();
-            })
-            .then(data => {
-            	alert(data);
-            })
-            .catch(error => {
-            	alert(error.message);
-            });
-        */
     });
 	
     function openWindow(name, url) {

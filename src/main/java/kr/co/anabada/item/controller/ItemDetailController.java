@@ -31,8 +31,9 @@ public class ItemDetailController {
 	private ItemDetailService itemDetailService;
 	
 	@GetMapping
-	public String getItemDetail(@PathVariable int itemNo, Model model) throws NotFoundException {
-		ItemDetailDTO item = itemDetailService.getItemDetailDTO(itemNo);
+	public String getItemDetail(@PathVariable Integer itemNo, Model model,
+			@SessionAttribute(name = "loggedInUser", required = false) User user) throws NotFoundException {
+		ItemDetailDTO item = itemDetailService.getItemDetailDTO(itemNo, user);
 		model.addAttribute("item", item);
 		return "item/itemDetail";
 	}
@@ -45,7 +46,7 @@ public class ItemDetailController {
 	
 	@GetMapping("/remainTime/{type}")
 	@ResponseBody
-	public Long getRemainTime(@PathVariable int itemNo, @PathVariable String type) {
+	public Long getRemainTime(@PathVariable Integer itemNo, @PathVariable String type) {
 		switch(type) {
 		case "start":
 			return calculateRemainTime(itemDetailService.getSaleStartDate(itemNo));
@@ -57,20 +58,20 @@ public class ItemDetailController {
 	
 	@GetMapping("/price")
 	@ResponseBody
-    public Long getPrice(@PathVariable int itemNo) {
+    public Long getPrice(@PathVariable Integer itemNo) {
         return itemDetailService.getPrice(itemNo);
     }
 	
 	@GetMapping("/status")
 	@ResponseBody
-	public String getStatus(@PathVariable int itemNo) {
+	public String getStatus(@PathVariable Integer itemNo) {
 		return itemDetailService.getStatus(itemNo);
 	}
 	
 	@PatchMapping("/bid")
 	@ResponseBody
 	public ResponseEntity<String> updatePrice(
-			@PathVariable int itemNo, @RequestBody Map<String, Long> request,
+			@PathVariable Integer itemNo, @RequestBody Map<String, Long> request,
 			@SessionAttribute(name = "loggedInUser", required = false) User user) throws NotFoundException {
 	    if (user == null) {
 	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자 인증 실패");
@@ -81,7 +82,7 @@ public class ItemDetailController {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("입찰가를 입력하세요.");
 	    }
 
-		ItemDetailDTO itemDetailDTO = itemDetailService.getItemDetailDTO(itemNo);
+		ItemDetailDTO itemDetailDTO = itemDetailService.getItemDetailDTO(itemNo, user);
 	    int userNo = user.getUserNo();
 	    int sellerNo = itemDetailDTO.getSellerNo();
 	    if (userNo == sellerNo) {
