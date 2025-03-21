@@ -3,6 +3,7 @@ package kr.co.anabada.chat.entity;
 import jakarta.persistence.*;
 import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.user.entity.User;
+import kr.co.anabada.user.entity.Seller;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,8 +39,13 @@ public class Chat_Room {
 
     // 판매자 (해당 아이템의 판매자)
     @ManyToOne
-    @JoinColumn(name = "sellerNo", referencedColumnName = "userNo", nullable = false)
-    private User seller;
+    @JoinColumn(name = "sellerNo", referencedColumnName = "sellerNo", nullable = false)
+    private Seller seller;
+
+    @Transient
+    public User getSellerUser() {
+        return seller != null ? seller.getUser() : null;
+    }
 }
 
 enum RoomStatus {

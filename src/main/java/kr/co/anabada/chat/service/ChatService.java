@@ -32,13 +32,12 @@ public class ChatService {
         
         // 아이템에서 셀러 정보 가져오기
         Seller seller = item.getSeller(); 
-        User sellerUser = seller.getUser(); 
 
         // 채팅방 생성
         Chat_Room chatRoom = new Chat_Room();        
         chatRoom.setItem(item);
         chatRoom.setBuyer(buyer);
-        chatRoom.setSeller(sellerUser); 
+        chatRoom.setSeller(seller); 
 
         return chatRoomRepository.save(chatRoom);
     }
