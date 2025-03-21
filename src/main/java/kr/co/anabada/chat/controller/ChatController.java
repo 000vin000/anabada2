@@ -1,31 +1,27 @@
 package kr.co.anabada.chat.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-
-import kr.co.anabada.chat.repository.ChatMessageRepository;
+import kr.co.anabada.chat.entity.Chat_Message;
+import kr.co.anabada.chat.entity.Chat_Room;
 import kr.co.anabada.chat.service.ChatService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
+@RequestMapping("/chat")
 public class ChatController {
-	
-	@Autowired
-    private final ChatMessageRepository chatMessageRepository;
 
-    public ChatController(ChatService chatService, ChatMessageRepository chatMessageRepository) {
-        this.chatMessageRepository = chatMessageRepository;
+    @Autowired
+    private ChatService chatService;
+
+    // 채팅방 생성
+    @PostMapping("/create")
+    public Chat_Room createChatRoom(@RequestParam Integer itemNo, @RequestParam Integer buyerNo) {
+        return chatService.createChatRoom(itemNo, buyerNo);
     }
 
-    @GetMapping("/chat/chatRoom")
-    public ModelAndView chatRoom(@RequestParam Integer roomNo) {
-        ModelAndView chatRoom = new ModelAndView("chat/chatRoom");
-                
-        var messages = chatMessageRepository.findByChatRoomRoomNo(roomNo);
-        chatRoom.addObject("messages", messages);
-        chatRoom.addObject("roomNo", roomNo);
-        return chatRoom;
+    // 메시지 저장
+    @PostMapping("/message")
+    public Chat_Message sendMessage(@RequestParam Integer roomNo, @RequestParam Integer senderNo, @RequestParam String content) {
+        return chatService.saveMessage(roomNo, senderNo, content);
     }
 }
