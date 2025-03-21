@@ -210,8 +210,11 @@ body {
     font-size: 12px;
 }
 
-.nav-item a i {
-    font-size: 20px;
-    margin-bottom: 3px;
+.nav-item a img {
+    width: 50px; /* 원하는 크기로 조정 */
+    height: 50px;
+    border-radius: 5px;
+    transition: transform 0.2s ease-in-out;
+    object-fit: cover; /* 비율을 유지하면서 이미지가 꽉 차도록 */
 }
 

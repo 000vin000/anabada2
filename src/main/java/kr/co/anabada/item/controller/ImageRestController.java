@@ -1,5 +1,7 @@
 package kr.co.anabada.item.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -19,16 +21,25 @@ public class ImageRestController {
 	
 	@GetMapping("/{itemNo}")
 	public ResponseEntity<byte[]> findFirstByItemNo(@PathVariable Integer itemNo) {
-		Image firstImage = service.findFirstByItemNo(itemNo);
+		Optional<Image> firstImage = service.findFirstByItemNo(itemNo);
 		
-		if (firstImage != null && firstImage.getImageFile() != null) {
-			String contentType = service.detectImageType(firstImage.getImageFile()); 
+		if (firstImage.isPresent() && firstImage.get().getImageFile() != null) {
+			String contentType = service.detectImageType(firstImage.get().getImageFile());
 			return ResponseEntity.ok()
 								.header(HttpHeaders.CONTENT_TYPE, contentType)
-								.body(firstImage.getImageFile());
+								.body(firstImage.get().getImageFile());
 		} else {
 			return ResponseEntity.notFound().build();
 		}
+	}
+	
+	@GetMapping("/{itemNo}/{index}")
+	public ResponseEntity<byte[]> findByItemNoAndIndex(@PathVariable Integer itemNo, @PathVariable Integer index) {
+		Image image = service.findByItemNoAndIndex(itemNo, index);
+		String contentType = service.detectImageType(image.getImageFile());
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_TYPE, contentType)
+				.body(image.getImageFile());
 	}
 
 }
