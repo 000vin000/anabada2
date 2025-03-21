@@ -18,6 +18,8 @@ public class ChatRoomService {
                 .buyer(buyer)
                 .itemTitle(itemTitle)
                 .itemNo(itemNo)
+                .user1no(seller.getUserNo()) 
+                .user2no(buyer.getUserNo())
                 .build();
         return chatRoomRepository.save(chatRoom);
     }
