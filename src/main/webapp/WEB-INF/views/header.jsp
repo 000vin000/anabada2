@@ -68,12 +68,12 @@
             <ul>
                 <c:choose>
                <c:when test="${empty loggedInUser}">
-                        <li><a href="<c:url value='/user/join'/>">회원가입</a></li>
-                        <li><a href="<c:url value='/user/login'/>">로그인</a></li>
+                        <li><a href="<c:url value='/join'/>">회원가입</a></li>
+                        <li><a href="<c:url value='/login'/>">로그인</a></li>
                     </c:when>
                     <c:otherwise>
                        <li><a href="<c:url value='/mypage'/>">마이페이지</a></li>
-                        <li><a href="<c:url value='/user/logout'/>">로그아웃</a></li>
+                        <li><a href="<c:url value='/logout'/>">로그아웃</a></li>
                     </c:otherwise>
                 </c:choose>
             </ul>

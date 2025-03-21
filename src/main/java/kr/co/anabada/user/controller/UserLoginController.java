@@ -40,6 +40,9 @@ public class UserLoginController {
             return ResponseEntity.status(401).body(Map.of("message", "비밀번호가 일치하지 않습니다."));
         }
 
-        return ResponseEntity.ok(Map.of("message", "로그인 성공!", "userId", user.getUserId()));
+        return ResponseEntity.ok(Map.of(
+            "message", "환영합니다.",
+            "redirectUrl", "/"
+        ));
     }
 }

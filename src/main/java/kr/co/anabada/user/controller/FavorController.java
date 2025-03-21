@@ -19,12 +19,13 @@ public class FavorController {
 	FavorService service;
 	
 	@GetMapping
-	public String favorList(@SessionAttribute(name = "loggedInUser", required = false) User user, Model model) throws IOException {
-		int userNo = user.getUserNo();
+	public String favorList() throws IOException {
+//		@SessionAttribute(name = "loggedInUser", required = false) User user, Model model
+//		int userNo = user.getUserNo();
 //		List<ItemImage> favorItemList = service.selectMyFavor(userNo);
 		
 //		model.addAttribute("list", favorItemList);
-		return "mypage/favor";
+		return "mypage/favorPage";
 	}
 	
 	@GetMapping("/item")

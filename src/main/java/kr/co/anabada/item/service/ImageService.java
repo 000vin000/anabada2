@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -46,19 +48,30 @@ public class ImageService {
         return imageRepository.save(image);
     }
     
-    public Image findFirstByItemNo(Integer itemNo) {
+    public Optional<Image> findFirstByItemNo(Integer itemNo) {
     	Item item = itemRepository.findByItemNo(itemNo);
-    	Image image = imageRepository.findFirstByItemNo(item);
+    	Optional<Image> image = imageRepository.findFirstByItemNo(item);
     	return image;
     }
     
-    // 이미지를 읽고 타입을 판별하는 메소드
-    public String detectImageType(byte[] imageFile) {
-	    try {
-	        String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageFile));
-	        return mimeType != null ? mimeType : MediaType.APPLICATION_OCTET_STREAM_VALUE;
-	    } catch (IOException e) {
-	        return MediaType.APPLICATION_OCTET_STREAM_VALUE;
-	    }
+	public Image findByItemNoAndIndex(Integer itemNo, Integer index) {
+		Item item = itemRepository.findByItemNo(itemNo);
+		List<Image> imageList = imageRepository.findByItemNo(item);
+		if (imageList.get(index) != null) {
+			Image image = imageList.get(index);
+			return image;
+		} else {
+			return null;
+		}
+	}
+	
+	// 이미지를 읽고 타입을 판별하는 메소드
+	public String detectImageType(byte[] imageFile) {
+		try {
+			String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageFile));
+			return mimeType != null ? mimeType : MediaType.APPLICATION_OCTET_STREAM_VALUE;
+		} catch (IOException e) {
+			return MediaType.APPLICATION_OCTET_STREAM_VALUE;
+		}
 	}
 }

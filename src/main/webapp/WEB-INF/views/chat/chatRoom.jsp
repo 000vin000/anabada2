@@ -91,16 +91,11 @@
         const sendButton = document.querySelector("button[onclick='sendMessage()']");
         const leaveButton = document.getElementById("leaveButton");
 
-     // WebSocket URL 확인
+        // WebSocket 초기화
         function initializeWebSocket() {
-            const ws = new WebSocket(`ws://localhost:8080/chat/${roomNo}`);
-            ws.onopen = function() {
-                console.log('WebSocket connection established.');
-            };
-            ws.onerror = function(error) {
-                console.error('WebSocket error:', error);
-            };
-            // WebSocket 메시지 수신 처리
+            ws = new WebSocket(`ws://localhost:8080/chat/${roomNo}`);
+
+            // WebSocket 메시지를 받으면 채팅박스에 표시
             ws.onmessage = function(event) {
                 const messageData = event.data.split(","); // 시간, 메시지 구분
                 const messageContent = messageData[0];
