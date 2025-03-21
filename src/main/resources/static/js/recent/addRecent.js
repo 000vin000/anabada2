@@ -2,7 +2,7 @@ import { RECENT_ITEMS_KEY } from './config.js';
 
 // 최근 본 아이템 추가 (날짜별로 저장)
 function addRecentItem(itemNo, itemTitle) {
-    const imageUrl = `http://localhost:8080/image/${itemNo}`;
+    const imageUrl = `http://192.168.0.41:8080/image/${itemNo}`;
     const dateKey = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
     const newItem = { item_no: itemNo, item_title: itemTitle, image_url: imageUrl };
 
