@@ -1,6 +1,11 @@
 package kr.co.anabada.user.repository;
 
+import kr.co.anabada.item.entity.Item;
+import kr.co.anabada.user.entity.Seller;
 import kr.co.anabada.user.entity.User;
+
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
@@ -10,5 +15,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     // 사용자 ID로 사용자 조회
     User findByUserId(String userId);
+
 }
 
