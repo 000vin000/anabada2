@@ -75,6 +75,6 @@ public class ChatController {
     // 특정 채팅방의 메시지 목록 가져오기
     @GetMapping("/getMessages/{roomNo}")
     public List<Chat_Message> getMessages(@PathVariable Integer roomNo) {
-        return chatMessageService.getMessagesByRoomId(roomNo);
+        return chatMessageService.getMessagesByRoomNo(roomNo);
     }
 }

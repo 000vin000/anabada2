@@ -51,7 +51,7 @@ public class ChatMessageService {
     
     
 
-    public List<Chat_Message> getMessagesByRoomId(Integer roomNo) {      
-        return chatMessageRepository.findByChatRoom_Id(roomNo);
+    public List<Chat_Message> getMessagesByRoomNo(Integer roomNo) {      
+        return chatMessageRepository.findByChatRoomNo(roomNo);
     }
 }
