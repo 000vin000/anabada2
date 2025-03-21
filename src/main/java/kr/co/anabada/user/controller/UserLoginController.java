@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import kr.co.anabada.user.dto.UserLoginDTO;
 import kr.co.anabada.user.entity.User;
 import kr.co.anabada.user.service.UserLoginService;
+import kr.co.anabada.user.util.JwtUtil;
 
 @RestController
 @RequestMapping("/userlogin")
@@ -25,6 +26,9 @@ public class UserLoginController {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    
+    @Autowired
+    private JwtUtil jwtUtil; // JWT 유틸 주입
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@Valid @RequestBody UserLoginDTO userLoginDTO) {
@@ -39,6 +43,9 @@ public class UserLoginController {
         if (!passwordEncoder.matches(userLoginDTO.getUserPw(), user.getUserPw())) {
             return ResponseEntity.status(401).body(Map.of("message", "비밀번호가 일치하지 않습니다."));
         }
+        
+        // ✅ JWT 토큰 생성
+        String token = jwtUtil.generateToken(user.getUserId());
 
         return ResponseEntity.ok(Map.of(
             "message", "환영합니다.",

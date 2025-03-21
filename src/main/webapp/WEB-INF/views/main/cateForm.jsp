@@ -10,6 +10,14 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css"> <%-- 사이드바 css --%>
 </head>
 <body>	
+	<jsp:include page="categoryMenu.jsp" />
+	<div>
+        <p> 
+            <span id="gender">${gender}</span> > 
+            <span id="clothesType">${ct}</span> > 
+            <span id="clothesTypeDetail">${cd}</span>
+        </p>
+    </div>
 	<div class="body-container">
 		<jsp:include page="item.jsp"/>
 	</div>
@@ -17,20 +25,21 @@
 	<jsp:include page="../footer.jsp"/>
 </body>
 <script src="/js/common.js"></script>
-<script src="/js/todaypick.js"></script>
 <script>	
-	function sortItems() {
-		let gender = document.getElementById("gender").value;
-		let clothesType = document.getElementById("clothesType").value;
-		
-		let sortOrder = document.getElementById("sortOrder");
-		let selectedValue = sortOrder.value;
-		
-		sessionStorage.setItem("sortOrder", selectedValue);
-		
-		window.location.href = `?gender=` + gender
-							+ `&clothesType=` + clothesType
-							+ `&sortOrder=` + selectedValue;
-	};
+function sortItems() {
+	let gender = document.getElementById("gender").textContent;
+	let clothesType = document.getElementById("clothesType").textContent;  // cd 값
+	let clothesTypeDetail = document.getElementById("clothesTypeDetail").textContent;  // ct 값
+	
+	let sortOrder = document.getElementById("sortOrder");
+	let selectedValue = sortOrder.value;
+	
+	sessionStorage.setItem("sortOrder", selectedValue);
+	
+	// 새로운 URL 형식에 맞게 수정
+	window.location.href = `/category/${gender}?ct=` + clothesType
+						+ `&cd=` + clothesTypeDetail 
+						+ `&sortOrder=` + selectedValue;
+};
 </script>
 </html>

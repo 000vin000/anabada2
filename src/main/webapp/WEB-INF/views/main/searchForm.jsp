@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css"> <%-- 사이드바 css --%>
 </head>
 <body>
+	<jsp:include page="categoryMenu.jsp" />
 	<div class="body-container">
 		<jsp:include page="item.jsp"/>
 	</div>
