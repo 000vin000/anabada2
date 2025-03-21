@@ -1,5 +1,6 @@
 package kr.co.anabada.item.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -39,9 +40,11 @@ public class ItemDetailService {
 	
 	public ItemDetailDTO getItemDetailDTO(Integer itemNo, User user) {
 		Item item = getItem(itemNo);
-		Point_Account account = null;
+		Point_Account account;
 		if (user != null) {
-			pointAccountRepository.findById(user.getUserNo());
+			account = pointAccountRepository.findById(user.getUserNo()).orElse(null);
+		} else {
+			account = null;
 		}
 		int imageCount = imageRepository.countByItemNo(item);
 		
@@ -66,7 +69,7 @@ public class ItemDetailService {
 				.itemResvEndDate(item.getItemResvEndDate())
 				.itemCreatedDate(item.getItemCreatedDate())
 				.itemUpdatedDate(item.getItemUpdatedDate())
-				.sellerNo(item.getSeller().getSellerNo())
+				.sellerNo(item.getSeller().getUser().getUserNo())
 				.sellerNick(item.getSeller().getUser().getUserNick())
 				.categoryName(item.getCategory().getCategoryName())
 				.pointBalance(account != null ? account.getPointBalance() : null)
@@ -76,7 +79,7 @@ public class ItemDetailService {
 		return dto;
 	}
 
-	public Long getPrice(Integer itemNo) {
+	public BigDecimal getPrice(Integer itemNo) {
 		return itemDetailRepository.findItemPriceByItemNo(itemNo)
 	            .orElseThrow(() -> new EntityNotFoundException("가격 정보를 불러올 수 없습니다."));
 	}
@@ -102,11 +105,11 @@ public class ItemDetailService {
 	}
 
 	@Transactional
-	public boolean updatePrice(Integer itemNo, Long newPrice, User user) {
+	public boolean updatePrice(Integer itemNo, BigDecimal newPrice, User user) {
 		Item item = getItem(itemNo);
-		Long price = item.getItemPrice();
+		BigDecimal price = item.getItemPrice();
 		
-		if (newPrice >= price + 1000) {
+		if (newPrice.compareTo(price.add(new BigDecimal(999))) > 0) {
 			try {
                 int updatedRows = itemDetailRepository.updateItemPrice(itemNo, newPrice);
                 if (updatedRows <= 0) {
@@ -114,12 +117,15 @@ public class ItemDetailService {
                 }
                 
                 Bid bid = Bid.builder()
+                		.user(user)
+                		.item(item)
+                		.bidStatus("active")
                 		.bidPrice(newPrice)
                 		.bidTime(LocalDateTime.now())
-                		.item(item)
-                		.user(user)
                 		.build();
                 bidRepository.save(bid);
+                //TODO update point_account
+                //TODO insert point_transaction
                 return true;
                 
             } catch (Exception e) {

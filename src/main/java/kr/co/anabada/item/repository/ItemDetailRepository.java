@@ -1,5 +1,6 @@
 package kr.co.anabada.item.repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -15,7 +16,7 @@ import kr.co.anabada.item.entity.Item.ItemStatus;
 @Repository
 public interface ItemDetailRepository extends JpaRepository<Item, Integer>{
 	@Query("SELECT itemPrice FROM Item WHERE itemNo = :itemNo")
-	Optional<Long> findItemPriceByItemNo(@Param("itemNo") Integer itemNo);
+	Optional<BigDecimal> findItemPriceByItemNo(@Param("itemNo") Integer itemNo);
 	
 	@Query("SELECT itemStatus FROM Item WHERE itemNo = :itemNo")
 	Optional<ItemStatus> findItemStatusByItemNo(@Param("itemNo") Integer itemNo);
@@ -28,5 +29,5 @@ public interface ItemDetailRepository extends JpaRepository<Item, Integer>{
 	
 	@Modifying
     @Query("UPDATE Item SET itemPrice = :price WHERE itemNo = :itemNo")
-    int updateItemPrice(@Param("itemNo") Integer itemNo, @Param("price") Long price);
+    int updateItemPrice(@Param("itemNo") Integer itemNo, @Param("price") BigDecimal newPrice);
 }

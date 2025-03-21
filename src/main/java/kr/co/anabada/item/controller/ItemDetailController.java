@@ -1,5 +1,6 @@
 package kr.co.anabada.item.controller;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -15,26 +16,29 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.co.anabada.item.dto.ItemDetailDTO;
-import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.item.service.ItemDetailService;
 import kr.co.anabada.user.entity.User;
+import kr.co.anabada.user.service.UserService;
 
 @Controller
 @RequestMapping("/item/detail/{itemNo}")
 public class ItemDetailController {
 	@Autowired
 	private ItemDetailService itemDetailService;
+	@Autowired
+	private UserService userService;
 	
 	@GetMapping
 	public String getItemDetail(@PathVariable Integer itemNo, Model model,
-			@SessionAttribute(name = "loggedInUser", required = false) User user) throws NotFoundException {
-		ItemDetailDTO item = itemDetailService.getItemDetailDTO(itemNo, user);
+			@SessionAttribute(name = "loggedInUser", required = false) User tempUser) throws NotFoundException {
+		User user = userService.findByUserId("asdf0320");
+		ItemDetailDTO item = itemDetailService.getItemDetailDTO(itemNo, user); //test user
 		model.addAttribute("item", item);
+		model.addAttribute("user", user);
 		return "item/itemDetail";
 	}
 	
@@ -58,7 +62,7 @@ public class ItemDetailController {
 	
 	@GetMapping("/price")
 	@ResponseBody
-    public Long getPrice(@PathVariable Integer itemNo) {
+    public BigDecimal getPrice(@PathVariable Integer itemNo) {
         return itemDetailService.getPrice(itemNo);
     }
 	
@@ -72,12 +76,13 @@ public class ItemDetailController {
 	@ResponseBody
 	public ResponseEntity<String> updatePrice(
 			@PathVariable Integer itemNo, @RequestBody Map<String, Long> request,
-			@SessionAttribute(name = "loggedInUser", required = false) User user) throws NotFoundException {
+			@SessionAttribute(name = "loggedInUser", required = false) User tempUser) throws NotFoundException {
+		User user = userService.findByUserId("asdf0320"); //test user
 	    if (user == null) {
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자 인증 실패");
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요한 서비스입니다.");
 	    }
 	    
-	    Long newPrice = request.get("newPrice");
+	    BigDecimal newPrice = BigDecimal.valueOf(request.get("newPrice"));
 	    if (newPrice == null) {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("입찰가를 입력하세요.");
 	    }
@@ -86,7 +91,7 @@ public class ItemDetailController {
 	    int userNo = user.getUserNo();
 	    int sellerNo = itemDetailDTO.getSellerNo();
 	    if (userNo == sellerNo) {
-	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("자신의 상품은 입찰할 수 없습니다.");
+	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("자신의 물품은 입찰할 수 없습니다.");
 	    }
 	    
 	    if (itemDetailService.updatePrice(itemNo, newPrice, user)) {

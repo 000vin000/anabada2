@@ -22,7 +22,7 @@ public class ItemDetailDTO {
 	private String itemStatus;
 	private String itemQuality;	
 	private Integer itemQuantity;
-	private Long itemPrice;	
+	private BigDecimal itemPrice;	
 	private Integer itemViewCnt;
 	private Double itemAvgRating;
 	
@@ -44,7 +44,6 @@ public class ItemDetailDTO {
 	private String categoryName; //category
 	private BigDecimal pointBalance; //point_account
 	private int imageCount; //image
-//	private List<Image> images;
 //	private List<Review> reviews;
 	
 	

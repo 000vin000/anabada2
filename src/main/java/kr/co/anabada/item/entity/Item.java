@@ -1,5 +1,6 @@
 package kr.co.anabada.item.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -60,8 +61,8 @@ public class Item {
 	@Column(nullable = false)
 	private Integer itemQuantity = 1;
 	
-	@Column(nullable = false)
-	private Long itemPrice = 0L;
+	@Column(nullable = false, precision = 12, scale = 2)
+	private BigDecimal itemPrice = BigDecimal.ZERO;
 	
 	@Column(nullable = false)
 	private Double itemLatitude;

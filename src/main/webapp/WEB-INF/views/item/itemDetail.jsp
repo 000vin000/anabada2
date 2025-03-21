@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="isLoggedIn" value="${not empty user}" />
+<c:set var="userNo" value="${user != null ? user.userNo : -1}" />
 <%@ include file="../header.jsp" %>
 <!DOCTYPE html>
 <html>
@@ -15,6 +17,8 @@
 			<div>
 				<h1 class="item-name">${item.itemTitle}</h1>
 				<button id="favor-btn" data-item-id="${item.itemNo}">☆</button>
+				<button id="btnEdit" hidden="hidden">수정</button>
+				<button id="btnDelete" hidden="hidden">삭제</button>
 			</div>
 			<button onclick="openWindow('QnaWindow', '/')" id="qnaList">문의하기</button>
 		</section>
@@ -26,8 +30,8 @@
 		<section id="bidSection">
 	        <h2 id="priceHeading">현재가 <label id="price">${item.addCommas(item.itemPrice)} 원</label></h2>
 	        <p id="desiredBidPrice">희망 입찰가
-	        	<input type="number" id="textPrice" min="0" step="100" disabled="disabled">
-				<input type="submit" id="btnBid" value="입찰" disabled="disabled">
+	        	<input type="number" id="textPrice" min="0" step="100">
+				<input type="submit" id="btnBid" value="입찰">
 			</p>
 			<p><button onclick="openWindow('BidlistWindow', '/')" id="bidList">입찰기록</button></p>
 	    </section>
@@ -63,9 +67,9 @@
 		        <tr>
 		            <th>이미지</th>
 		            <td>
-		            	<div class="image-slider">
+		            	<div>
 						    <c:forEach begin="0" end="${item.imageCount-1}" var="index">
-						        <img src="http://192.168.0.41:8080/image/${item.itemNo}/${index}" alt="물품 이미지 ${index+1}">
+						        <img src="/image/${item.itemNo}/${index}" alt="물품 이미지 ${index+1}">
 						    </c:forEach>
 					    </div>
 		            </td>
@@ -136,24 +140,43 @@
 	}); // jhu
 </script>
 <script>
+	const isLoggedIn = ${isLoggedIn};
+	const userNo = ${userNo};
+	const itemNo = ${item.itemNo};
+	const sellerNo = ${item.sellerNo};
+	const btnEdit = document.getElementById("btnEdit");
+	const btnDelete = document.getElementById("btnDelete");
+	const btnBid = document.getElementById("btnBid");
+	const textPrice = document.getElementById("textPrice");
 	let intervals = [];
 	let status = "";
 	let remainTime = 0;
-	const btnBid = document.getElementById("btnBid");
-	const textPrice = document.getElementById("textPrice");
 
 	document.addEventListener('DOMContentLoaded', async function() {
-		updateStatus(${item.itemNo});
+		if(isLoggedIn) {
+			initIfOwner(userNo, sellerNo);
+		}
+		updateStatus(itemNo);
 		//itemDetail 페이지 타입별 분리시, itemSaleType 검사하는 if 조건 제거
-		if(`${item.itemSaleType}` === "AUCTION" && ${item.itemSaleEndDate != null}) {
-			await updateStatus(${item.itemNo});
-			let inner = await updateRemainTime(${item.itemNo});
+		if(`${item.itemSaleType}` === "경매" && `${item.itemSaleEndDate}` != null) {
+			await updateStatus(itemNo);
+			let inner = await updateRemainTime(itemNo);
 			await inner();
+			console.log(remainTime);
 			
-			startInterval(() => updatePrice(${item.itemNo}), 1000);
+			startInterval(() => updatePrice(itemNo), 1000);
 			startInterval(inner, 1000);
 		}
 	});
+	
+	function initIfOwner(userNo, sellerNo) {
+		if (userNo === sellerNo) {
+            textPrice.disabled = true;
+            btnBid.disabled = true;
+            btnEdit.hidden = false;
+            btnDelete.hidden = false;
+		}
+	}
 	
 	function startInterval(f, s) {
 	    let interval = setInterval(f, s);
@@ -165,43 +188,66 @@
         intervals = [];
     }
     
-    textPrice.addEventListener('keypress', function(e) {
+    textPrice.addEventListener("keypress", function(e) {
         if (!/^\d$/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Tab') {
             e.preventDefault();
         }
     });
 
-    textPrice.addEventListener('input', function() {
+    textPrice.addEventListener("input", function() {
         this.value = this.value.replace(/[^\d]/g, '');
     });
 
     btnBid.addEventListener("click", function() {
-        let price = textPrice.value;
+        const price = textPrice.value;
         
+        if (${empty user}) {
+            alert("로그인이 필요한 서비스입니다.");
+            //login url
+            return;
+        }
         if (!price.trim() || isNaN(Number(price))) {
             return;
         }
-
-        fetch(`/item/detail/${item.itemNo}/bid`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ newPrice: price })
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.text()
-                .then(message => { throw new Error(message); });
-            }
-            return response.text();
-        })
-        .then(data => {
-            alert(data);
-        })
-        .catch(error => {
-            alert(error.message);
-        });
+        if (${empty item.pointBalance}) {
+        	if (confirm("포인트 계정이 없습니다.\n포인트 페이지로 이동하시겠습니까?")) {
+				//point_account url
+        	}
+        	return;
+        }
+        
+        const pointBalance = parseFloat("${item.pointBalance}");
+        if (pointBalance )
+        if (pointBalance < price) {
+            alert("포인트 잔액이 부족합니다.");
+            return;
+        }
+        if (confirm("현재 포인트 잔액은 " + pointBalance + "원 입니다.\n" + price + "원으로 입찰하시겠습니까?")) {
+        	fetch(`/item/detail/${itemNo}/bid`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ newPrice: price })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text()
+                    .then(message => { throw new Error(message); });
+                }
+                return response.text();
+            })
+            .then(data => {
+                alert(data);
+            })
+            .catch(error => {
+                alert(error.message);
+            });
+        } else {
+        	if (confirm("포인트 페이지로 이동하시겠습니까?")) {
+        		//point_account url
+        	}
+        }
     });
 	
     function openWindow(name, url) {
@@ -233,10 +279,7 @@
 	            priceHeading.childNodes[0].textContent = heading;
 	        }
 	    	
-	        if (data === "판매중") {
-	            textPrice.disabled = false;
-	            btnBid.disabled = false;
-	        } else {
+	        if (data != "판매중") {
 	            textPrice.disabled = true;
 	            btnBid.disabled = true;
 	        }
@@ -251,6 +294,7 @@
 		const response = await fetch(`/item/detail/${itemNo}/remainTime/` + type);
         const data = await response.json();
         remainTime = data;
+        console.log(remainTime);
 	}
 
 	async function updateRemainTime(itemNo) {
@@ -259,7 +303,7 @@
     	
     	let inner = async function() {
     		if (remainTime <= 0) {
-    			await updateStatus(${item.itemNo});
+    			await updateStatus(itemNo);
     			
     			if (status !== "판매중") {
     				return;
