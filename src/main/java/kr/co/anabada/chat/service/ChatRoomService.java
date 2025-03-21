@@ -15,6 +15,11 @@ public class ChatRoomService {
 
     @Autowired
     private UserRepository userRepository;  
+    
+    public Chat_Room getChatRoomByRoomNo(Integer roomNo) {
+        return chatRoomRepository.findByRoomNo(roomNo)
+                .orElseThrow(() -> new RuntimeException("Invalid room No."));  // 예외 처리
+    }
 
     public Chat_Room createChatRoom(Integer sellerId, Integer buyerId, String itemTitle, Integer itemNo) {
       

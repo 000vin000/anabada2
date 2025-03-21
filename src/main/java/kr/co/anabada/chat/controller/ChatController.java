@@ -47,7 +47,7 @@ public class ChatController {
     
     @PostMapping("/sendMessage")
     public ResponseEntity<?> sendMessage(@RequestBody SendMessageRequest request) {
-        // roomId로 Chat_Room을 찾기
+        // 채팅방 조회
         Optional<Chat_Room> chatRoomOptional = chatRoomRepository.findByRoomNo(request.getRoomNo());
         
         if (!chatRoomOptional.isPresent()) {
@@ -56,20 +56,26 @@ public class ChatController {
         
         Chat_Room chatRoom = chatRoomOptional.get();
 
+        // 발신자 정보 가져오기
+        Optional<User> senderOptional = userRepository.findById(request.getSenderId());
+        if (!senderOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid sender.");
+        }
+        User sender = senderOptional.get();
+
         // 메시지 생성
         Chat_Message message = new Chat_Message();
         message.setMsgContent(request.getMsgContent());
         message.setMsgIsRead(false);
         message.setMsgDate(LocalDateTime.now());
         message.setChatRoom(chatRoom);  
-        message.setSender(request.getSender()); 
+        message.setSender(sender); // sender 설정
 
         // 메시지 저장
         chatMessageService.saveMessage(message);  
         
         return ResponseEntity.ok("전송완료.");
     }
-
 
 
     // 특정 채팅방의 메시지 목록 가져오기

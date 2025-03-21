@@ -1,14 +1,9 @@
 package kr.co.anabada.chat.dto;
 
-import kr.co.anabada.user.entity.User;
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
+import lombok.Data;
+@Data
 public class SendMessageRequest {
-    private Integer roomNo;
-    private String msgContent;
-    private User sender;  // 실제 사용자 정보를 받을 수 있도록 설정
+    private Integer roomNo;   // 채팅방 번호
+    private String msgContent;  // 메시지 내용
+    private Integer senderId;  // 발신자 ID (User ID)
 }
-
