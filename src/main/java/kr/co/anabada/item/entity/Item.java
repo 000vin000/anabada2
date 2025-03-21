@@ -1,6 +1,6 @@
 package kr.co.anabada.item.entity;
 
-import java.text.NumberFormat;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,7 +10,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,11 +33,11 @@ public class Item {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer itemNo;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "sellerNo", nullable = false)
 	private Seller seller;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "categoryNo", nullable = false)
 	private Item_Category category;
 	
@@ -62,8 +61,8 @@ public class Item {
 	@Column(nullable = false)
 	private Integer itemQuantity = 1;
 	
-	@Column(nullable = false)
-	private Long itemPrice = 0L;
+	@Column(nullable = false, precision = 12, scale = 2)
+	private BigDecimal itemPrice = BigDecimal.ZERO;
 	
 	@Column(nullable = false)
 	private Double itemLatitude;
@@ -110,27 +109,54 @@ public class Item {
 		}
 	}
 	
-	public String addCommas(Integer num) {
-        NumberFormat formatter = NumberFormat.getInstance();
-        return formatter.format(num);
-    }
-	
 	public enum ItemSaleType {
-		AUCTION,
-		SHOP,
-		EXCHANGE,
-		DONATION
+		AUCTION("경매"),
+		SHOP("쇼핑몰"),
+		EXCHANGE("교환"),
+		DONATION("나눔");
+		
+		private final String korean;
+	    
+	    ItemSaleType(String korean) {
+	        this.korean = korean;
+	    }
+	    
+	    public String getKorean() {
+	        return korean;
+	    }
 	}
 	
 	public enum ItemStatus {
-		ACTIVE,
-		EXPIRED,
-		SOLD
+		WAITING("대기중"),
+		ACTIVE("판매중"),
+		EXPIRED("종료"),
+		RESERVED("예약중"),
+		SOLD("판매완료");
+		
+		private final String korean;
+	    
+	    ItemStatus(String korean) {
+	        this.korean = korean;
+	    }
+	    
+	    public String getKorean() {
+	        return korean;
+	    }
 	}
 	
 	public enum ItemQuality {
-		LOW,
-		MEDIUM,
-		HIGH
+		LOW("하"),
+		MEDIUM("중"),
+		HIGH("상");
+		
+		private final String korean;
+	    
+	    ItemQuality(String korean) {
+	        this.korean = korean;
+	    }
+	    
+	    public String getKorean() {
+	    	return korean;
+	    }
 	}
 }
