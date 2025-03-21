@@ -1,8 +1,16 @@
 package kr.co.anabada.chat.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +20,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "chat_message")  
+@Builder
+@Table(name = "Chat_Message")
 public class Chat_Message {
 
     @Id
@@ -28,12 +37,12 @@ public class Chat_Message {
 
     @Column(name = "msgDate", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime msgDate;
+    
+    @OneToOne
+    @JoinColumn(name = "roomNo", nullable = false)
+    private Chat_Room chatRoom; // roomNo를 Integer로 수정
 
-    @ManyToOne  // 변경: @OneToOne -> @ManyToOne
-    @JoinColumn(name = "chat_room_id", nullable = false)  // roomNo -> chat_room_id
-    private Chat_Room chatRoom; // 채팅방 정보 (다대일 관계로 변경)
-
-    @ManyToOne  // 변경: @OneToOne -> @ManyToOne
-    @JoinColumn(name = "sender_no", referencedColumnName = "userNo", nullable = false)  // senderNo -> sender_no
-    private User sender;  // 메시지 발송자 (다대일 관계)
+    @OneToOne
+    @JoinColumn(name = "senderNo", referencedColumnName = "userNo", nullable = false)
+    private User sender; 
 }

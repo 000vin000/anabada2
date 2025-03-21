@@ -1,48 +1,48 @@
 package kr.co.anabada.chat.controller;
 
+import kr.co.anabada.chat.entity.Chat_Message;
 import kr.co.anabada.chat.entity.Chat_Room;
+import kr.co.anabada.chat.service.ChatMessageService;
 import kr.co.anabada.chat.service.ChatRoomService;
 import kr.co.anabada.user.entity.User;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-
+import kr.co.anabada.user.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
-@RequestMapping("/chat")
-@RequiredArgsConstructor
+@RequestMapping("/api/chat")
 public class ChatController {
 
-    private final ChatRoomService chatRoomService;
+    @Autowired
+    private ChatRoomService chatRoomService;
 
-    // 판매자와 구매자의 userNo로 채팅방 조회
-    @GetMapping("/rooms/{sellerUserNo}/{buyerUserNo}")
-    public Optional<Chat_Room> getChatRoomByUsers(@PathVariable Integer sellerUserNo, @PathVariable Integer buyerUserNo) {
-        return chatRoomService.getChatRoomByUsers(sellerUserNo, buyerUserNo);
-    }
+    @Autowired
+    private ChatMessageService chatMessageService;
 
-    // 채팅방 생성 (테스트용)
-    @PostMapping("/create")
-    public Chat_Room createChatRoom(@RequestBody ChatRoomRequest request) {
-        User seller = new User();  // 테스트용 판매자 객체
-        seller.setUserNo(request.getSellerId());
+    @Autowired
+    private UserRepository userRepository;
+
+    // 채팅방 생성
+    @PostMapping("/createRoom")
+    public Chat_Room createRoom(@RequestParam Integer sellerId, @RequestParam Integer buyerId, @RequestParam String itemTitle, @RequestParam Integer itemNo) {
+        User seller = userRepository.findById(sellerId).orElseThrow(() -> new RuntimeException("Seller not found"));
+        User buyer = userRepository.findById(buyerId).orElseThrow(() -> new RuntimeException("Buyer not found"));
         
-        User buyer = new User();  // 테스트용 구매자 객체
-        buyer.setUserNo(request.getBuyerId());
-
-        return chatRoomService.createChatRoom(seller, buyer, request.getItemNo(), request.getItemTitle());
+        return chatRoomService.createChatRoom(seller, buyer, itemTitle, itemNo);
     }
 
-    @Getter
-    @Setter
-    // 채팅방 생성 요청 데이터 클래스
-    public static class ChatRoomRequest {
-        private Integer sellerId;
-        private Integer buyerId;
-        private Integer itemNo;
-        private String itemTitle;
+    // 메시지 전송
+    @PostMapping("/sendMessage")
+    public Chat_Message sendMessage(@RequestParam Integer roomId, @RequestParam Integer senderId, @RequestParam String messageContent) {
+        User sender = userRepository.findById(senderId).orElseThrow(() -> new RuntimeException("Sender not found"));
+        return chatMessageService.sendMessage(roomId, sender, messageContent);
+    }
+
+    // 특정 채팅방의 메시지 목록 가져오기
+    @GetMapping("/getMessages/{roomId}")
+    public List<Chat_Message> getMessages(@PathVariable Integer roomId) {
+        return chatMessageService.getMessagesByRoomId(roomId);
     }
 }

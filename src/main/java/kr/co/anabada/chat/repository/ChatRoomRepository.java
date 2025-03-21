@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface ChatRoomRepository extends JpaRepository<Chat_Room, Long> {
 
     // 상품 번호(itemNo)와 판매자/구매자 정보로 채팅방 찾기
-	 Optional<Chat_Room> findBySellerUserNoOrBuyerUserNo(Integer sellerUserNo, Integer buyerUserNo);
+    Optional<Chat_Room> findById(Integer id);
 }
