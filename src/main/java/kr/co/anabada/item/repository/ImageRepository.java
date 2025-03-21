@@ -14,4 +14,6 @@ public interface ImageRepository extends JpaRepository<Image, Integer> {
 	Optional<Image> findFirstByItemNo(Item item);
 
 	List<Image> findByItemNo(Item item);
+	
+	int countByItemNo(Item item);
 }
