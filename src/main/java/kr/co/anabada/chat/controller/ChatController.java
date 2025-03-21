@@ -39,11 +39,9 @@ public class ChatController {
 
     // 채팅방 생성
     @PostMapping("/createRoom")
-    public Chat_Room createRoom(@RequestParam Integer sellerId, @RequestParam Integer buyerId, @RequestParam String itemTitle, @RequestParam Integer itemNo) {
-        User seller = userRepository.findById(sellerId).orElseThrow(() -> new RuntimeException("Seller not found"));
-        User buyer = userRepository.findById(buyerId).orElseThrow(() -> new RuntimeException("Buyer not found"));
-        
-        return chatRoomService.createChatRoom(seller, buyer, itemTitle, itemNo);
+    public Chat_Room createChatRoom(@RequestParam Integer sellerId, @RequestParam Integer buyerId, 
+                                    @RequestParam String itemTitle, @RequestParam Integer itemNo) {
+        return chatRoomService.createChatRoom(sellerId, buyerId, itemTitle, itemNo);
     }
     
     

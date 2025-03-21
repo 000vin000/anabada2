@@ -36,10 +36,4 @@ public class Chat_Room {
     @Builder.Default
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now(); // 생성일자
-    
-    @Column(name = "user1no", nullable = false)
-    private Integer user1no;
-    
-    @Column(name = "user2no", nullable = false)
-    private Integer user2no;
 }
