@@ -1,18 +1,9 @@
 package kr.co.anabada.chat.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.user.entity.User;
+import kr.co.anabada.user.entity.Seller;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,31 +21,31 @@ public class Chat_Room {
     @Column(name = "roomNo", nullable = false)
     private Integer roomNo;
 
-    @Column(name = "itemNo", insertable = false, updatable = false)
-    private Integer itemNo;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "roomStatus", nullable = false)
-    private RoomStatus roomStatus;
-
-    @Column(name = "roomLastMsgDate")
-    private LocalDateTime roomLastMsgDate;
+    private RoomStatus roomStatus = RoomStatus.ACTIVE;
 
     @Column(name = "roomDate", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime roomDate;
+    private LocalDateTime roomDate = LocalDateTime.now();
 
     @ManyToOne
-    @JoinColumn(name = "itemNo", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "itemNo", nullable = false)
     private Item item;
 
-    @OneToOne
-    @JoinColumn(name = "user1No", referencedColumnName = "userNo", nullable = false)
-    private User user1;
+    // 구매자 (채팅을 시작하는 사용자)
+    @ManyToOne
+    @JoinColumn(name = "buyerNo", referencedColumnName = "userNo", nullable = false)
+    private User buyer;
 
-    @OneToOne
-    @JoinColumn(name = "user2No", referencedColumnName = "userNo", nullable = false)
-    private User user2;
+    // 판매자 (해당 아이템의 판매자)
+    @ManyToOne
+    @JoinColumn(name = "sellerNo", referencedColumnName = "sellerNo", nullable = false)
+    private Seller seller;
 
+    @Transient
+    public User getSellerUser() {
+        return seller != null ? seller.getUser() : null;
+    }
 }
 
 enum RoomStatus {
