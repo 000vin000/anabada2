@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class Chat_Room {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id; // 채팅방 ID (Integer로 수정)
+    @Column(name = "roomNo", nullable = false)
+    private Integer roomNo;
 
     @ManyToOne
     @JoinColumn(name = "seller_id", nullable = false)

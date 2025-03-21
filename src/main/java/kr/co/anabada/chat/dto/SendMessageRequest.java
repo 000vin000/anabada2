@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SendMessageRequest {
-    private Integer roomId;
+    private Integer roomNo;
     private String msgContent;
     private User sender;  // 실제 사용자 정보를 받을 수 있도록 설정
 }

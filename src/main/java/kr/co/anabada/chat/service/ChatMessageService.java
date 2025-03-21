@@ -30,7 +30,7 @@ public class ChatMessageService {
     @Transactional
     public void sendMessage(Integer roomNo, String msgContent, Integer senderNo) {
         // 채팅방을 roomNo로 찾기
-        Chat_Room chatRoom = chatRoomRepository.findById(roomNo).orElseThrow(() -> new RuntimeException("Chat room not found"));
+        Chat_Room chatRoom = chatRoomRepository.findByRoomNo(roomNo).orElseThrow(() -> new RuntimeException("Chat room 찾을 수 없음"));
         
         // 메시지 객체 생성
         Chat_Message chatMessage = Chat_Message.builder()
@@ -38,7 +38,7 @@ public class ChatMessageService {
                 .msgContent(msgContent)
                 .msgDate(LocalDateTime.now())
                 .msgIsRead(false)
-                .sender(userRepository.findById(senderNo).orElseThrow(() -> new RuntimeException("Sender not found"))) // 송신자 설정
+                .sender(userRepository.findById(senderNo).orElseThrow(() -> new RuntimeException("Sender 찾을 수 없음"))) 
                 .build();
 
         // 메시지 저장
@@ -51,8 +51,7 @@ public class ChatMessageService {
     
     
 
-    public List<Chat_Message> getMessagesByRoomId(Integer roomId) {
-        // roomId가 Integer로 처리됨
-        return chatMessageRepository.findByChatRoom_Id(roomId);
+    public List<Chat_Message> getMessagesByRoomId(Integer roomNo) {      
+        return chatMessageRepository.findByChatRoom_Id(roomNo);
     }
 }

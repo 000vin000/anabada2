@@ -48,10 +48,10 @@ public class ChatController {
     @PostMapping("/sendMessage")
     public ResponseEntity<?> sendMessage(@RequestBody SendMessageRequest request) {
         // roomId로 Chat_Room을 찾기
-        Optional<Chat_Room> chatRoomOptional = chatRoomRepository.findById(request.getRoomId());
+        Optional<Chat_Room> chatRoomOptional = chatRoomRepository.findByRoomNo(request.getRoomNo());
         
         if (!chatRoomOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid room ID.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid room No.");
         }
         
         Chat_Room chatRoom = chatRoomOptional.get();
@@ -61,20 +61,20 @@ public class ChatController {
         message.setMsgContent(request.getMsgContent());
         message.setMsgIsRead(false);
         message.setMsgDate(LocalDateTime.now());
-        message.setChatRoom(chatRoom);  // chatRoom을 설정
-        message.setSender(request.getSender());  // sender 설정
+        message.setChatRoom(chatRoom);  
+        message.setSender(request.getSender()); 
 
         // 메시지 저장
-        chatMessageService.saveMessage(message);  // saveMessage 메서드 호출
+        chatMessageService.saveMessage(message);  
         
-        return ResponseEntity.ok("Message sent successfully.");
+        return ResponseEntity.ok("전송완료.");
     }
 
 
 
     // 특정 채팅방의 메시지 목록 가져오기
-    @GetMapping("/getMessages/{roomId}")
-    public List<Chat_Message> getMessages(@PathVariable Integer roomId) {
-        return chatMessageService.getMessagesByRoomId(roomId);
+    @GetMapping("/getMessages/{roomNo}")
+    public List<Chat_Message> getMessages(@PathVariable Integer roomNo) {
+        return chatMessageService.getMessagesByRoomId(roomNo);
     }
 }

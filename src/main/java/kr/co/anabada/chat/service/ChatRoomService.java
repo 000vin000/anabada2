@@ -14,22 +14,20 @@ public class ChatRoomService {
     private ChatRoomRepository chatRoomRepository;
 
     @Autowired
-    private UserRepository userRepository;  // UserRepository 추가
+    private UserRepository userRepository;  
 
     public Chat_Room createChatRoom(Integer sellerId, Integer buyerId, String itemTitle, Integer itemNo) {
-        // sellerId와 buyerId로 User 객체를 찾기
-        User seller = userRepository.findById(sellerId).orElseThrow(() -> new RuntimeException("Seller not found"));
-        User buyer = userRepository.findById(buyerId).orElseThrow(() -> new RuntimeException("Buyer not found"));
+      
+        User seller = userRepository.findById(sellerId).orElseThrow(() -> new RuntimeException("Seller 찾을 수 없음"));
+        User buyer = userRepository.findById(buyerId).orElseThrow(() -> new RuntimeException("Buyer 찾을 수 없음"));
 
-        // Chat_Room 객체 생성
         Chat_Room chatRoom = Chat_Room.builder()
-            .seller(seller)  // User 객체를 직접 넣음
-            .buyer(buyer)    // User 객체를 직접 넣음
+            .seller(seller)  
+            .buyer(buyer)    
             .itemTitle(itemTitle)
             .itemNo(itemNo)
             .build();
 
-        // 채팅방 저장
         return chatRoomRepository.save(chatRoom);
     }
 }

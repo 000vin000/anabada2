@@ -8,6 +8,6 @@ import java.util.List;
 public interface ChatMessageRepository extends CrudRepository<Chat_Message, Integer> {
 
     // Chat_Room의 ID 타입이 Integer로 수정되었으므로, 아래 메소드도 Integer로 수정
-    List<Chat_Message> findByChatRoom_Id(Integer roomId);
+    List<Chat_Message> findByChatRoom_Id(Integer roomNo);
 
 }
