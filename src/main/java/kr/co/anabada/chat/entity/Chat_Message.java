@@ -31,7 +31,7 @@ public class Chat_Message {
     private LocalDateTime msgDate;
 
     @ManyToOne
-    @JoinColumn(name = "room_no", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "room_no", referencedColumnName = "roomNo", nullable = false)
     private Chat_Room chatRoom; // 채팅방 설정
 
     @ManyToOne
