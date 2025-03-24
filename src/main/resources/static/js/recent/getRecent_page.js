@@ -1,5 +1,3 @@
-import { RECENT_ITEMS_KEY } from './config.js';
-
 // 최근 본 목록 가져오기
 function getRecentItems() {
     return JSON.parse(localStorage.getItem(RECENT_ITEMS_KEY)) || {};
