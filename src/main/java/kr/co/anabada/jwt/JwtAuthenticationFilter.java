@@ -1,14 +1,12 @@
-package kr.co.anabada.security.filter;
+package kr.co.anabada.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.anabada.user.service.UserDetailsServiceImpl;
-import kr.co.anabada.user.util.JwtUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -25,31 +23,37 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
-
-        String authorizationHeader = request.getHeader("Authorization");
-        System.out.println("Authorization Header: " + authorizationHeader); // ✅ 헤더 출력 확인
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain chain) throws ServletException, IOException {
 
         String token = jwtUtil.extractToken(request);
-        System.out.println("Extracted Token: " + token); // ✅ 토큰 값 출력
-
+        System.out.println("Extracted Token: " + token);
+        
         if (token != null && jwtUtil.validateToken(token)) {
             String userId = jwtUtil.extractUserId(token);
-            System.out.println("Extracted UserId: " + userId); // ✅ 검증된 사용자 ID 출력
-
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities()
-            );
+            System.out.println("Extracted UserId: " + userId);
+            
+            // 인증 정보 생성 및 SecurityContext에 설정
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(userId, null, null);
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        } else {
-            System.out.println("Invalid Token!"); // ✅ 인증 실패 로그
         }
 
+        //인증 없더라도 다음 필터로 넘긴다
         chain.doFilter(request, response);
     }
 
-
+   
+     //필터를 적용하지 않을 경로
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return path.startsWith("/auth/")
+                || path.equals("/")
+                || path.equals("/login")
+                || path.equals("/join")
+                || path.startsWith("/item/detail/**");
+    }
 }
