@@ -1,5 +1,3 @@
-import { RECENT_ITEMS_KEY } from './config.js';
-
 // 최근 본 아이템 추가 (날짜별로 저장)
 function addRecentItem(itemNo, itemTitle) {
     const imageUrl = `http://192.168.0.41:8080/image/${itemNo}`;
@@ -34,3 +32,19 @@ function groupByDate(items) {
         return acc;
     }, {});
 }
+
+// URL에서 itemNo 가져오기
+function getItemNoFromURL() {
+    const pathParts = window.location.pathname.split('/'); // URL 경로를 '/' 기준으로 분리
+    return pathParts[pathParts.length - 1]; // 마지막 요소가 itemNo
+}
+
+// 페이지 로딩 시 자동 실행
+document.addEventListener('DOMContentLoaded', () => {
+    const itemNo = getItemNoFromURL();
+    const itemTitleElement = document.querySelector(".item-name");
+    if (itemNo && itemTitleElement) {
+        const itemTitle = itemTitleElement.textContent.trim(); // 제목 가져오기
+        addRecentItem(itemNo, itemTitle);
+    }
+});
