@@ -28,16 +28,17 @@ public class JwtUtil {
         this.refreshTokenExpiration = refreshTokenExpiration;
     }
 
-    // Access Token 생성
+    //Access Token 만들기
     public String generateAccessToken(String userId) {
         return generateToken(userId, accessTokenExpiration);
     }
 
-    // Refresh Token 생성
+    //Refresh Token 만들기
     public String generateRefreshToken(String userId) {
         return generateToken(userId, refreshTokenExpiration);
     }
 
+    // 내부 공통 토큰 만들기
     private String generateToken(String userId, long expiration) {
         return Jwts.builder()
                 .setSubject(userId)
@@ -47,7 +48,12 @@ public class JwtUtil {
                 .compact();
     }
 
-    // 토큰 추출
+    //AccessToken 추출
+    public String extractAccessToken(HttpServletRequest request) {
+        return extractToken(request); // 내부 위임
+    }
+
+    //내부 공통 토큰 추출
     public String extractToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -56,7 +62,7 @@ public class JwtUtil {
         return null;
     }
 
-    // 유효성
+    //토큰 유효성 검증
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
@@ -66,7 +72,7 @@ public class JwtUtil {
         }
     }
 
-    // 아이디 추출
+    //사용자 아이디 추출
     public String extractUserId(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
