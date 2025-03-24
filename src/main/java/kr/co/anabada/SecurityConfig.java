@@ -34,16 +34,17 @@ public class SecurityConfig {
 
             .authorizeHttpRequests(auth -> auth
             		
-                // 인증 없이 접근 가능한 공개 경로들
+                // 인증 없이 접근 가능한 공개 경로
                 .requestMatchers(
                     "/", "/login", "/join",
                     "/auth/**", "/userjoin/**", "/userlogin/**",
                     "/item/detail/**"
                 ).permitAll()
 
-                // 증이 반드시 필요한 경로들
+                // 인증이 반드시 필요한 경로들
                 .requestMatchers(
-                    "/user/mypage", "/user/update"  // 예: 마이페이지, 회원정보 수정
+                    "/user/mypage", "/user/update"
+
                 ).authenticated()
 
                 // 외의 모든 요청은 허용
@@ -56,7 +57,7 @@ public class SecurityConfig {
 
             // JWT 인증 필터 등록
             .addFilterBefore(
-                new JwtAuthenticationFilter(jwtUtil, userDetailsService),
+                new JwtAuthenticationFilter(jwtUtil),
                 UsernamePasswordAuthenticationFilter.class
             );
 
