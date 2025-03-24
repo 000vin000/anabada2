@@ -1,5 +1,3 @@
-import { RECENT_ITEMS_KEY } from './config.js';
-
 // 최근 본 목록 가져오기
 function getRecentItems() {
     return JSON.parse(localStorage.getItem(RECENT_ITEMS_KEY)) || {};
@@ -20,14 +18,13 @@ function displayRecentViews() {
     if (recentItems.length > 0) {
         // 배열이 비어있지 않은 경우 실행
         const itemElement = document.createElement("div");
-        itemElement.classList.add("recent-item");
+        itemElement.classList.add("recent_item");
 
         itemElement.innerHTML = `
             <a href="/recent">
-                <img src="http://localhost:8080/image/${item.itemNo}" alt="recent" width="50" height="50">
+                <img src="${item.image_url}" alt="recent" width="60" height="60">
             </a>
         `;
-		// TODO 추후에 주소를 도메인으로 바꿔야함
 
         container.appendChild(itemElement);
     }
