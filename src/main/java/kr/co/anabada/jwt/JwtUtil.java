@@ -4,6 +4,8 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import kr.co.anabada.user.entity.User; // User 엔티티 임포트
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +16,8 @@ import java.util.Date;
 public class JwtUtil {
 
     private final Key key;
-
-    private final long accessTokenExpiration;   // 15분
-    private final long refreshTokenExpiration;  // 7일
+    private final long accessTokenExpiration;
+    private final long refreshTokenExpiration;
 
     public JwtUtil(
             @Value("${jwt.secret}") String secretKey,
@@ -27,6 +28,7 @@ public class JwtUtil {
         this.accessTokenExpiration = accessTokenExpiration;
         this.refreshTokenExpiration = refreshTokenExpiration;
     }
+
 
     //Access Token 만들기
     public String generateAccessToken(String userId) {
@@ -40,10 +42,15 @@ public class JwtUtil {
 
     // 내부 공통 토큰 만들기
     private String generateToken(String userId, long expiration) {
+
+    public String generateAccessToken(User user) {
         return Jwts.builder()
-                .setSubject(userId)
+                .setSubject(user.getUserId()) // sub = userId
+                .claim("userNo", user.getUserNo())
+                .claim("userNick", user.getUserNick())
+                .claim("userType", user.getUserType())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiration))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -54,6 +61,7 @@ public class JwtUtil {
     }
 
     //내부 공통 토큰 추출
+
     public String extractToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -80,5 +88,15 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    // ✅ 커스텀 claim 추출 (userNo, userType 등)
+    public Object extractClaim(String token, String claimName) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get(claimName);
     }
 }
