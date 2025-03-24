@@ -6,6 +6,7 @@
 <%@ include file="../header.jsp" %>
 <!DOCTYPE html>
 <html>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <head>
 	<meta charset="UTF-8">
 	<title>${item.itemTitle}</title>
@@ -152,7 +153,7 @@
 	let status = "";
 	let remainTime = 0;
 
-	document.addEventListener('DOMContentLoaded', async function() {
+	document.addEventListener("DOMContentLoaded", async function() {
 		if(isLoggedIn) {
 			initIfOwner(userNo, sellerNo);
 		}
@@ -162,7 +163,6 @@
 			await updateStatus(itemNo);
 			let inner = await updateRemainTime(itemNo);
 			await inner();
-			console.log(remainTime);
 			
 			startInterval(() => updatePrice(itemNo), 1000);
 			startInterval(inner, 1000);
@@ -189,20 +189,20 @@
     }
     
     textPrice.addEventListener("keypress", function(e) {
-        if (!/^\d$/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Tab') {
+        if (!/^\d$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab") {
             e.preventDefault();
         }
     });
 
     textPrice.addEventListener("input", function() {
-        this.value = this.value.replace(/[^\d]/g, '');
+        this.value = this.value.replace(/[^\d]/g, "");
     });
 
     btnBid.addEventListener("click", function() {
         const price = textPrice.value;
         
-        if (${empty user}) {
-            alert("로그인이 필요한 서비스입니다.");
+        if (!isLoggedIn) {
+         	Swal.fire("오류", "로그인이 필요한 서비스입니다.", "error");
             //login url
             return;
         }
@@ -210,49 +210,67 @@
             return;
         }
         if (${empty item.pointBalance}) {
-        	if (confirm("포인트 계정이 없습니다.\n포인트 페이지로 이동하시겠습니까?")) {
-				//point_account url
-        	}
+        	Swal.fire({
+      			title: "포인트 계정 검색 오류",
+      			html: `<p>포인트 계정이 없습니다.</p>
+      				   <p>포인트 페이지로 이동하시겠습니까?</p>`,
+				icon: "error",
+				showCancelButton: true,
+				confirmButtonText: "이동",
+				cancelButtonText: "취소"
+      		});
+        	//point_account url
         	return;
         }
         
         const pointBalance = parseFloat("${item.pointBalance}");
-        if (pointBalance )
         if (pointBalance < price) {
-            alert("포인트 잔액이 부족합니다.");
+        	Swal.fire({
+        		title: "포인트 잔액 부족",
+        		html: "현재 포인트 잔액은 <b>" + addCommas(pointBalance) + "원</b>입니다.",
+        		icon: "error",
+        		confirmButtonText: "확인"
+        	});
             return;
         }
-        if (confirm("현재 포인트 잔액은 " + pointBalance + "원 입니다.\n" + price + "원으로 입찰하시겠습니까?")) {
-        	fetch(`/item/detail/${itemNo}/bid`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ newPrice: price })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.text()
-                    .then(message => { throw new Error(message); });
-                }
-                return response.text();
-            })
-            .then(data => {
-                alert(data);
-            })
-            .catch(error => {
-                alert(error.message);
-            });
-        } else {
-        	if (confirm("포인트 페이지로 이동하시겠습니까?")) {
-        		//point_account url
-        	}
-        }
+        
+        Swal.fire({
+        	title: "입찰 확인",
+        	html: "<p>현재 포인트 잔액은 <b>" + addCommas(pointBalance) + "원</b>입니다.</p>"
+        		+ "<p><b>" + addCommas(price) + "원</b>으로 입찰하시겠습니까?</p>",
+        	icon: "question",
+        	showCancelButton: true,
+        	confirmButtonText: "입찰",
+        	cancelButtonText: "취소"
+        }).then((result) => {
+       		if (result.isConfirmed) {
+       			fetch(`/item/detail/${itemNo}/bid`, {
+                     method: "PATCH",
+                     headers: {
+                         "Content-Type": "application/json"
+                     },
+                     body: JSON.stringify({ newPrice: price })
+				})
+				.then(response => {
+					if (!response.ok) {
+						return response.text()
+						.then(message => { throw new Error(message); });
+					}
+					return response.text();
+                 })
+                 .then(data => {
+					Swal.fire("입찰 완료", data, "success");
+					})
+					.catch(error => {
+					Swal.fire("오류", error.message, "error");
+				});
+			}
+		});
     });
 	
     function openWindow(name, url) {
         window.open(
-            url, name, 'width=650,height=800,scrollbars=yes'
+            url, name, "width=650,height=800,scrollbars=yes"
         );
     }
 
@@ -286,7 +304,7 @@
 
 	        document.getElementById("status").innerText = data;
     	} catch (error) {
-            console.error('updateStatus(itemNo): ', error);
+            console.error("updateStatus(itemNo): ", error);
         }
     }
 	
@@ -294,7 +312,6 @@
 		const response = await fetch(`/item/detail/${itemNo}/remainTime/` + type);
         const data = await response.json();
         remainTime = data;
-        console.log(remainTime);
 	}
 
 	async function updateRemainTime(itemNo) {

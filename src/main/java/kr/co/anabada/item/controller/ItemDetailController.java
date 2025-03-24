@@ -34,9 +34,9 @@ public class ItemDetailController {
 	
 	@GetMapping
 	public String getItemDetail(@PathVariable Integer itemNo, Model model,
-			@SessionAttribute(name = "loggedInUser", required = false) User tempUser) throws NotFoundException {
-		User user = userService.findByUserId("asdf0320");
-		ItemDetailDTO item = itemDetailService.getItemDetailDTO(itemNo, user); //test user
+			@SessionAttribute(name = "loggedInUser", required = false) User tuser) throws NotFoundException {
+		User user = userService.findByUserId("hj-rxl"); //test user
+		ItemDetailDTO item = itemDetailService.getItemDetailDTO(itemNo, user);
 		model.addAttribute("item", item);
 		model.addAttribute("user", user);
 		return "item/itemDetail";
@@ -76,8 +76,8 @@ public class ItemDetailController {
 	@ResponseBody
 	public ResponseEntity<String> updatePrice(
 			@PathVariable Integer itemNo, @RequestBody Map<String, Long> request,
-			@SessionAttribute(name = "loggedInUser", required = false) User tempUser) throws NotFoundException {
-		User user = userService.findByUserId("asdf0320"); //test user
+			@SessionAttribute(name = "loggedInUser", required = false) User tuser) throws NotFoundException {
+		User user = userService.findByUserId("hj-rxl"); //test user
 	    if (user == null) {
 	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요한 서비스입니다.");
 	    }
