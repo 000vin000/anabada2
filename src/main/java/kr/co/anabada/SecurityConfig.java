@@ -44,6 +44,7 @@ public class SecurityConfig {
                 // 인증이 반드시 필요한 경로들
                 .requestMatchers(
                     "/user/mypage", "/user/update"
+
                 ).authenticated()
 
                 // 외의 모든 요청은 허용

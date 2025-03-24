@@ -58,4 +58,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 || path.equals("/join")
                 || path.startsWith("/item/detail/");
     }
+
 }

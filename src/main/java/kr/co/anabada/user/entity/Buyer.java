@@ -1,5 +1,10 @@
 package kr.co.anabada.user.entity;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,11 +23,14 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "Buyer")
 public class Buyer {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "buyerNo", nullable = false)
     private Integer buyerNo;
+    
+    @ManyToOne
+    @JoinColumn(name = "userNo", nullable = false)
+    private User user; 
 
     @Column(name = "buyerBidCnt", nullable = false)
     private Integer buyerBidCnt = 0;
@@ -38,10 +46,12 @@ public class Buyer {
 
     @Column(name = "buyerPaySuccessRate", nullable = false)
     private Double buyerPaySuccessRate = 0.0;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime buyerCreatedDate;
     
-    @ManyToOne
-    @JoinColumn(name = "userNo", nullable = false)
-    private User user; 
-
-
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private LocalDateTime buyerUpdatedDate;
 }
