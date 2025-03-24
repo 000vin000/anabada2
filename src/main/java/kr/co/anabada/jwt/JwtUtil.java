@@ -4,6 +4,8 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import kr.co.anabada.user.entity.User; // User 엔티티 임포트
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +16,8 @@ import java.util.Date;
 public class JwtUtil {
 
     private final Key key;
-
-    private final long accessTokenExpiration;   // 15분
-    private final long refreshTokenExpiration;  // 7일
+    private final long accessTokenExpiration;
+    private final long refreshTokenExpiration;
 
     public JwtUtil(
             @Value("${jwt.secret}") String secretKey,
@@ -28,26 +29,30 @@ public class JwtUtil {
         this.refreshTokenExpiration = refreshTokenExpiration;
     }
 
-    // Access Token 생성
-    public String generateAccessToken(String userId) {
-        return generateToken(userId, accessTokenExpiration);
-    }
-
-    // Refresh Token 생성
-    public String generateRefreshToken(String userId) {
-        return generateToken(userId, refreshTokenExpiration);
-    }
-
-    private String generateToken(String userId, long expiration) {
+    // ✅ AccessToken 생성 (User 엔티티 기반)
+    public String generateAccessToken(User user) {
         return Jwts.builder()
-                .setSubject(userId)
+                .setSubject(user.getUserId()) // sub = userId
+                .claim("userNo", user.getUserNo())
+                .claim("userNick", user.getUserNick())
+                .claim("userType", user.getUserType())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiration))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // 토큰 추출
+    // ✅ RefreshToken은 userId만 담음
+    public String generateRefreshToken(String userId) {
+        return Jwts.builder()
+                .setSubject(userId)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpiration))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    // ✅ Authorization 헤더에서 Bearer 토큰 추출
     public String extractToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -56,7 +61,7 @@ public class JwtUtil {
         return null;
     }
 
-    // 유효성
+    // ✅ 토큰 유효성 검증
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
@@ -66,7 +71,7 @@ public class JwtUtil {
         }
     }
 
-    // 아이디 추출
+    // ✅ userId (sub) 추출
     public String extractUserId(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -74,5 +79,15 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    // ✅ 커스텀 claim 추출 (userNo, userType 등)
+    public Object extractClaim(String token, String claimName) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get(claimName);
     }
 }

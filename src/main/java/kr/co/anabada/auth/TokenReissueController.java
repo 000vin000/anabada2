@@ -13,6 +13,8 @@ import kr.co.anabada.jwt.CookieUtil;
 import kr.co.anabada.jwt.JwtUtil;
 import kr.co.anabada.jwt.RefreshToken;
 import kr.co.anabada.jwt.RefreshTokenRepository;
+import kr.co.anabada.user.entity.User;
+import kr.co.anabada.user.service.UserLoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,7 +27,9 @@ public class TokenReissueController {
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final UserLoginService userLoginService;
 
+    
     @PostMapping("/reissue")
     public ResponseEntity<?> reissueAccessToken(HttpServletRequest request, HttpServletResponse response) {
         String refreshToken = cookieUtil.getRefreshTokenFromRequest(request);
@@ -42,8 +46,13 @@ public class TokenReissueController {
             log.warn("DB에 저장된 Refresh Token과 일치하지 않음");
             return ResponseEntity.status(401).body("Refresh Token이 일치하지 않습니다.");
         }
+        
+        User user = userLoginService.findByUserId(userId).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(401).body("유저 정보를 찾을 수 없습니다.");
+        }
 
-        String newAccessToken = jwtUtil.generateAccessToken(userId);
+        String newAccessToken = jwtUtil.generateAccessToken(user);
 
         log.info("Access Token 재발급 성공 - userId: {}", userId);
 

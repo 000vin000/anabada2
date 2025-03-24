@@ -51,7 +51,7 @@ public class AuthController {
             return ResponseEntity.status(401).body(Map.of("message", "비밀번호가 일치하지 않습니다."));
         }
 
-        String accessToken = jwtUtil.generateAccessToken(user.getUserId());
+        String accessToken = jwtUtil.generateAccessToken(user);
         String refreshToken = jwtUtil.generateRefreshToken(user.getUserId());
 
         //RefreshToken DB 저장
