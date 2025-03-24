@@ -39,44 +39,48 @@ public class ChatController {
 
     // 채팅방 생성
     @PostMapping("/createRoom")
-    public Chat_Room createRoom(@RequestParam Integer sellerId, @RequestParam Integer buyerId, @RequestParam String itemTitle, @RequestParam Integer itemNo) {
-        User seller = userRepository.findById(sellerId).orElseThrow(() -> new RuntimeException("Seller not found"));
-        User buyer = userRepository.findById(buyerId).orElseThrow(() -> new RuntimeException("Buyer not found"));
-        
-        return chatRoomService.createChatRoom(seller, buyer, itemTitle, itemNo);
+    public Chat_Room createChatRoom(@RequestParam Integer sellerId, @RequestParam Integer buyerId, 
+                                    @RequestParam String itemTitle, @RequestParam Integer itemNo) {
+        return chatRoomService.createChatRoom(sellerId, buyerId, itemTitle, itemNo);
     }
     
     
     @PostMapping("/sendMessage")
     public ResponseEntity<?> sendMessage(@RequestBody SendMessageRequest request) {
-        // roomId로 Chat_Room을 찾기
-        Optional<Chat_Room> chatRoomOptional = chatRoomRepository.findById(request.getRoomId());
+        // 채팅방 조회
+        Optional<Chat_Room> chatRoomOptional = chatRoomRepository.findByRoomNo(request.getRoomNo());
         
         if (!chatRoomOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid room ID.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid room No.");
         }
         
         Chat_Room chatRoom = chatRoomOptional.get();
+
+        // 발신자 정보 가져오기
+        Optional<User> senderOptional = userRepository.findById(request.getSenderId());
+        if (!senderOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid sender.");
+        }
+        User sender = senderOptional.get();
 
         // 메시지 생성
         Chat_Message message = new Chat_Message();
         message.setMsgContent(request.getMsgContent());
         message.setMsgIsRead(false);
         message.setMsgDate(LocalDateTime.now());
-        message.setChatRoom(chatRoom);  // chatRoom을 설정
-        message.setSender(request.getSender());  // sender 설정
+        message.setChatRoom(chatRoom);  
+        message.setSender(sender); // sender 설정
 
         // 메시지 저장
-        chatMessageService.saveMessage(message);  // saveMessage 메서드 호출
+        chatMessageService.saveMessage(message);  
         
-        return ResponseEntity.ok("Message sent successfully.");
+        return ResponseEntity.ok("전송완료.");
     }
 
 
-
     // 특정 채팅방의 메시지 목록 가져오기
-    @GetMapping("/getMessages/{roomId}")
-    public List<Chat_Message> getMessages(@PathVariable Integer roomId) {
-        return chatMessageService.getMessagesByRoomId(roomId);
+    @GetMapping("/getMessages/{roomNo}")
+    public List<Chat_Message> getMessages(@PathVariable Integer roomNo) {
+        return chatMessageService.getMessagesByRoomNo(roomNo);
     }
 }
