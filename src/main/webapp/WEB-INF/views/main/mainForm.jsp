@@ -14,6 +14,7 @@
 	<jsp:include page="categoryMenu.jsp" />
 	<div style="background-color: #FFF0F0;">
 	    <div class="weather-container"></div>
+	    <strong>추천 거래 (3km 이내)</strong>
 		<div id="item-list"><!-- 아이템 리스트 --></div>
 	</div>
     <div class="body-container">
@@ -32,8 +33,5 @@
         
         window.location.href = `?sortOrder=` + selectedValue;
     };     
-    document.getElementById("weatherButton").addEventListener("click", function() {
-        window.location.href = "/weather"; // '/weather' 경로로 이동
-    });
 </script>
 </html>

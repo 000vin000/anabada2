@@ -115,18 +115,18 @@ function showPosition(position) {
                 hour12: false  // 24시간 형식 사용
             }).replace(/\./g, '-').replace(/\s/g, '').replace(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})/, '$1-$2-$3 $4:$5');
 
-            //const fourDaysAheadData = data.list[25];  // 4th day forecast is the 25th entry
-            //const fourDaysAheadDate = new Date(fourDaysAheadData.dt * 1000);
-            //const fourDaysFormattedDate = `${fourDaysAheadDate.getFullYear()}-${String(fourDaysAheadDate.getMonth() + 1).padStart(2, '0')}-${String(fourDaysAheadDate.getDate()).padStart(2, '0')}`;
+            const fourDaysAheadData = data.list[25];  // 4th day forecast is the 25th entry
+            const fourDaysAheadDate = new Date(fourDaysAheadData.dt * 1000);
+            const fourDaysFormattedDate = `${fourDaysAheadDate.getFullYear()}-${String(fourDaysAheadDate.getMonth() + 1).padStart(2, '0')}-${String(fourDaysAheadDate.getDate()).padStart(2, '0')}`;
 			
-			const temp = closestTimeData.main.temp;
-			if (temp && lat && lon) {
+			const temp = fourDaysAheadData.main.temp;
+			if (temp) {
 			    fetch("/weather", {
 			        method: "POST",
 			        headers: {
 			            "Content-Type": "application/json"
 			        },
-			        body: JSON.stringify({ temp: temp, lat: lat, lon: lon }) // 서버로 전송
+			        body: JSON.stringify({ temp: temp }) // 서버로 전송
 			    })
 			    .then(response => {
 			        if (!response.ok) {
@@ -159,12 +159,12 @@ function showPosition(position) {
 				                <p class="remainTime">${item.item_sale_end_date}</p>
 				            `;
 				            
-				            liElement.appendChild(aElement); 
-				            ulElement.appendChild(liElement);
+				            liElement.appendChild(aElement); // <a>를 <li>에 추가
+				            ulElement.appendChild(liElement); // <li>를 <ul>에 추가
 				        });
-				        itemListContainer.appendChild(ulElement); 
+				        itemListContainer.appendChild(ulElement); // <ul>을 컨테이너에 추가
 				    } else {
-				        itemListContainer.innerHTML += '<p>검색된 아이템이 없습니다.</p>';
+				        itemListContainer.innerHTML = '<p>검색된 아이템이 없습니다.</p>';
 				    }
 				})
 			    .catch(error => {
@@ -184,6 +184,14 @@ function showPosition(position) {
 	                        ${closestTimeData.main.temp} °C <br>
 	                    </p>
 	                </div>
+	                <div class="weather-item">
+	                    <p class="future-weather">
+							<strong>배송 예정</strong>
+							${fourDaysFormattedDate}
+	                        <img src="../images/weather/${weatherIconMapping[fourDaysAheadData.weather[0].description] || 'cloudy.png'}" alt="weather icon">
+	                        ${fourDaysAheadData.main.temp} °C <br>
+	                    </p>
+					</div>
                 </div>
                 <table class="weather-table">
                     <thead>
