@@ -1,16 +1,18 @@
 package kr.co.anabada.jwt;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
-import kr.co.anabada.user.entity.User; // User 엔티티 임포트
+import java.security.Key;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
-import java.util.Date;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 public class JwtUtil {
@@ -85,7 +87,7 @@ public class JwtUtil {
                 .getSubject();
     }
 
-    // ✅ 커스텀 claim 추출 (userNo, userType 등)
+    //커스텀 claim 추출 (userNo, userType 등)
     public Object extractClaim(String token, String claimName) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -93,5 +95,17 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .get(claimName);
+    }
+    
+    //쿠키에서 토큰 꺼내기
+    public String extractTokenFromCookie(HttpServletRequest request, String tokenName) {
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if (tokenName.equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 }
