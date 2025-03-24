@@ -89,9 +89,9 @@ public class QuestionController {
         questionRepository.deleteById(questionNo);
         
         if (from != null && from.equals("mypage")) {
-            return "redirect:/question/mypage/myQuestions";  // 내 문의사항 페이지로 리디렉션
+            return "redirect:/question/mypage/myQuestions";  
         } else {
-            return "redirect:/question/answerList";  // 답변 리스트 페이지로 리디렉션
+            return "redirect:/question/answerList";  
         }
     }
 

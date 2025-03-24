@@ -33,6 +33,7 @@ public class Payment {
 	private String payStatus;
 	private LocalDateTime payCompletedDate;
 	private LocalDateTime payCancelledDate;
+	private Long payPrice;
 	@Column(nullable = false)
 	@UpdateTimestamp
 	private LocalDateTime payDate;
