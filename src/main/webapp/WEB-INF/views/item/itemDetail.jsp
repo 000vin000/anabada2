@@ -85,21 +85,9 @@
     <jsp:include page="../sidebar.jsp" />
   	<jsp:include page="../footer.jsp"/>
 </body>
-<script src="/js/todaypick.js"></script>
-<script>
-	document.addEventListener("DOMContentLoaded", () => {
-		const itemNo = window.location.pathname.split('/').pop(); // 상품상세페이지로 갔을때 넘버 가져오기
-		// /로 배열을 나누고 마지막 요소를 itemNo에 저장함
-		const itemName = document.querySelector(".item-name").innerText;
-		// 이름을 가져오려고 이너텍스트를 훔쳐오는 부분
-		const itemImage = document.querySelector(".item-image")?.src || "";
-		// 페이지에서 이미지 클래스를 찾아서 첫번째 이미지를 가져와서 저장함 실패하면 비어있도록 수정
-		
-		if (itemNo) {
-			addRecentView(itemNo, itemName, itemImage);
-		}
-	}); // jhu
-</script>
+<script src="/js/recent/config.js"></script>
+<script src="/js/recent/addRecent.js"></script>
+<script src="/js/recent/getRecent_sidebar.js"></script>
 <script>
 	function addCommas(num) {
 	    if (isNaN(num)) {

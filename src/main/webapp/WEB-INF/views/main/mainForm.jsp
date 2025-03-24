@@ -26,6 +26,8 @@
     <jsp:include page="../main/bottom_nav.jsp" />
 </body>
 <script src="/js/common.js"></script>
+<script src="/js/recent/config.js"></script>
+<script src="/js/recent/getRecent_sidebar.js"></script>
 <script>
     function sortItems() {  
         let sortOrder = document.getElementById("sortOrder");

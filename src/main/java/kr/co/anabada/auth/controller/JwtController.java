@@ -1,4 +1,4 @@
-package kr.co.anabada.auth;
+package kr.co.anabada.auth.controller;
 
 import java.util.Map;
 
@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @Slf4j
-public class TokenReissueController {
+public class JwtController {
 
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;

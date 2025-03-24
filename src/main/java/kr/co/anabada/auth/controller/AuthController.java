@@ -1,4 +1,4 @@
-package kr.co.anabada.auth;
+package kr.co.anabada.auth.controller;
 
 import java.util.Map;
 import java.util.Optional;

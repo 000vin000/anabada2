@@ -12,14 +12,14 @@
 </head>
 <body>
 <div class="body-container">
-   	<div>
-   			최근 본
-   		<div>
-   			날짜별로
-   			이미지, 물품정보(판매자 이름 가격)
-   		</div>
-   	</div>
+    <h2>최근 본</h2>
+    <button id="delete-recent"><img src="/images/icon/xicon.png" width="32"></button>
+    <div class="recent-items-container" id="recent-items" >
+        <!-- 최근 본 아이템 목록이 여기에 추가됨 -->
+    </div>
 </div>
 	<jsp:include page="../footer.jsp" />
 </body>
+<script src="/js/recent/config.js"></script>
+<script src="/js/recent/getRecent_page.js"></script>
 </html>
