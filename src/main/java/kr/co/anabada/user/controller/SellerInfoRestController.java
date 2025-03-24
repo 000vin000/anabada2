@@ -11,7 +11,7 @@ import kr.co.anabada.user.entity.Seller;
 import kr.co.anabada.user.service.SellerService;
 
 @RestController
-@RequestMapping("/sellerinfo")
+@RequestMapping("/api/sellerinfo")
 public class SellerInfoRestController {
 	@Autowired
 	private SellerService service;
