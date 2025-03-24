@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <title>아이템 목록</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/styleTemp.css">
     <script src="/js/weather.js"></script> 
 </head>
 <body>
@@ -21,6 +22,7 @@
     </div>
     <jsp:include page="../sidebar.jsp" />
     <jsp:include page="../footer.jsp" />
+    <jsp:include page="../main/bottom_nav.jsp" />
 </body>
 <script src="/js/common.js"></script>
 <script>
