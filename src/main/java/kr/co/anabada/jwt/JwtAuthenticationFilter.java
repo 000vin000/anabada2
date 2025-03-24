@@ -47,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
-
+ 
     // 필터를 적용하지 않을 경로
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
