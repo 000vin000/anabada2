@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>🔐 JWT 인증 테스트</title>
+</head>
+<body>
+  <h2>🔧 JWT 테스트 페이지</h2>
+
+  <input type="text" id="userId" placeholder="아이디" />
+  <input type="password" id="userPw" placeholder="비밀번호" />
+  <button onclick="login()">로그인</button>
+  <button onclick="checkLogin()">인증 상태 확인</button>
+  <button onclick="reissue()">토큰 재발급</button>
+  <button onclick="logout()">로그아웃</button>
+
+  <script type="text/javascript">
+    async function login() {
+      const userId = document.getElementById("userId").value;
+      const userPw = document.getElementById("userPw").value;
+
+      const res = await fetch("/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, userPw })
+      });
+
+      const data = await res.json();
+      console.log("✅ 로그인 응답:", data);
+
+      if (res.ok) {
+        localStorage.setItem("Token", data.accessToken);
+        alert("로그인 성공!");
+      } else {
+        alert("로그인 실패: " + data.message);
+      }
+    }
+
+    async function checkLogin() {
+      const token = localStorage.getItem("Token");
+
+      const res = await fetch("/userlogin/check", {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      });
+
+      const data = await res.json();
+      console.log("🔍 인증 체크 결과:", data);
+      alert(data.authenticated ? "로그인 유지 중!" : "로그인 안됨!");
+    }
+
+    async function reissue() {
+      const res = await fetch("/auth/reissue", { method: "POST" });
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem("Token", data.accessToken);
+        alert("🔄 Access Token 재발급 성공!");
+      } else {
+        alert("❌ 재발급 실패: " + data);
+      }
+    }
+
+    async function logout() {
+      const token = localStorage.getItem("Token");
+
+      const res = await fetch("/auth/logout", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      });
+
+      const data = await res.json();
+      localStorage.removeItem("Token");
+      alert("🚪 로그아웃 완료: " + data.message);
+    }
+  </script>
+</body>
+</html>

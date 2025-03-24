@@ -47,21 +47,14 @@
                 submitSearch();
             }
         }
-
-        function logoutUser() {
-            localStorage.removeItem("Token"); // 토큰 삭제
-            window.location.href = "/login";  // 로그인 페이지로 이동
-        }
     </script>
 </head>
 
 <body>
     <header>
         <a href="/"><img src="/images/logo.png" alt="로고" /></a>
-		
-		<a href="/">경매</a>|<a href="#">브랜드</a>
-		
-        <!-- 검색 영역 -->
+
+        <!--검색-->
         <div id="findOption">
             <select id="findType" name="findType">
                 <option value="" selected disabled>검색유형</option>
@@ -72,22 +65,22 @@
             <input type="button" id="find" value="검색" onclick="submitSearch()">
         </div>
 
-        <!-- 버튼 영역: JS에서 보여줄지 제어 -->
         <nav>
             <ul>
                 <li><a id="loginBtn" href="/auth/login.html">로그인</a></li>
                 <li><a id="joinBtn" href="/auth/join.html">회원가입</a></li>
                 <li><a id="mypageBtn" href="/mypage.html" style="display: none;">마이페이지</a></li>
-                <li><a id="logoutBtn" href="#" style="display: none;" onclick="logoutUser()">로그아웃</a></li>
+                <li><a id="logoutBtn" href="#" style="display: none;">로그아웃</a></li>
             </ul>
         </nav>   
 
-        <!-- 상품등록: 로그인 사용자만 보이게 하고 싶다면 authCheck.js에서 처리 -->
+        <!-- 로그인된 사용자 -->
         <div id="itemUpload" style="display: none;">
             <a href="/mypage/itemup">상품등록</a>
         </div>
     </header>
 
-    <script src="/js/user/authCheck.js"></script> <!-- ✅ 로그인 상태에 따라 버튼 제어 -->
+    <script type="module" src="/js/user/authCheck.js"></script>
+    <script type="module" src="/js/user/logout.js"></script>
 </body>
 </html>
