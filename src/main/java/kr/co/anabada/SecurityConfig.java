@@ -38,15 +38,12 @@ public class SecurityConfig {
                 .requestMatchers(
                     "/", "/login", "/join",
                     "/auth/**", "/userjoin/**", "/userlogin/**",
-                    "/item/detail/**",
-                    "/test/public"  //테스트용 공개 API
+                    "/item/detail/**"
                 ).permitAll()
 
                 // 증이 반드시 필요한 경로들
                 .requestMatchers(
-                    "/user/mypage", "/user/update",  // 예: 마이페이지, 회원정보 수정
-                    "/auction/bid", "/item/upload", // 예: 입찰, 아이템 등록
-                    "/test/protected"                // ✅ 테스트용 인증 API
+                    "/user/mypage", "/user/update"  // 예: 마이페이지, 회원정보 수정
                 ).authenticated()
 
                 // 외의 모든 요청은 허용
