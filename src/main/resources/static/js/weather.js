@@ -148,7 +148,7 @@ function showPosition(position) {
 				            const liElement = document.createElement('li'); // <li> 요소 생성
 				            const aElement = document.createElement('a'); // <a> 요소 생성
 							aElement.className = "card";
-				            aElement.href = '#'; // 링크 설정
+				            aElement.href = '/item/detail/' + item.item_no; // 링크 설정
 
 				            // 아이템 HTML 구성
 				            aElement.innerHTML = `
