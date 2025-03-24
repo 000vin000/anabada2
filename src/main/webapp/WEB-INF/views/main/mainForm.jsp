@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <title>아이템 목록</title>
-    <link rel="stylesheet" type="text/css" href="/css/style.css"> <%-- 사이드바 css --%>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <script src="/js/weather.js"></script> 
 </head>
 <body>
@@ -21,7 +21,7 @@
         <jsp:include page="item.jsp" />
     </div>
     <jsp:include page="../sidebar.jsp" />
-    <jsp:include page="../footer.jsp" /> 
+    <jsp:include page="../footer.jsp" />
 </body>
 <script src="/js/common.js"></script>
 <script>

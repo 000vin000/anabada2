@@ -1,4 +1,4 @@
-package kr.co.anabada.main.controller;
+package kr.co.anabada.mypage.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

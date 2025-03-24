@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <title>아이템 목록</title>
-    <link rel="stylesheet" type="text/css" href="/css/style.css"> <%-- 사이드바 css --%>
+    <link rel="stylesheet" type="text/css" href="/css/style.css"> 
 </head>
 <body>
 	<jsp:include page="categoryMenu.jsp" />
