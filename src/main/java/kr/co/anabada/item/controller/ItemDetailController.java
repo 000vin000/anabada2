@@ -34,8 +34,8 @@ public class ItemDetailController {
 	
 	@GetMapping
 	public String getItemDetail(@PathVariable Integer itemNo, Model model,
-			@SessionAttribute(name = "loggedInUser", required = false) User tuser) throws NotFoundException {
-		User user = userService.findByUserId("hj-rxl"); //test user
+			@SessionAttribute(name = "loggedInUser", required = false) User user) throws NotFoundException {
+
 		ItemDetailDTO item = itemDetailService.getItemDetailDTO(itemNo, user);
 		model.addAttribute("item", item);
 		model.addAttribute("user", user);
