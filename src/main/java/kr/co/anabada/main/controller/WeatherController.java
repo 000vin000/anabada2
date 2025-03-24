@@ -35,14 +35,14 @@ public class WeatherController {
     @PostMapping("/weather")
     public ResponseEntity<List<ItemInclude1Image>> updateTemp(@RequestBody TempRequest tempRequest, Model model) throws IOException {
         String temp = tempRequest.getTemp();
-        System.out.println("서버에서 받은 온도 값: " + temp);        
-        
-        // lat, lon기준 3km 반경에 있는 아이템 가져오기
-        String lat = tempRequest.getLat(); // 위도
-        String lon = tempRequest.getLon(); // 경도
-        
+        System.out.println("서버에서 받은 온도 값: " + temp);
+
+        // 온도 값을 문자열로 변환하여 모델에 추가
+        String tempString = service.getTempLevel(temp);
+        model.addAttribute("tempString", tempString); // tempString을 뷰로 전달
+
         // 아이템 리스트를 가져오는 부분
-        List<ItemInclude1Image> itemList = service.getTempList(temp, lat, lon);
+        List<ItemInclude1Image> itemList = service.getTempList(temp);
         mainService.encodeImageFile(itemList);
 
         return ResponseEntity.ok(itemList);

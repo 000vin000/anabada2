@@ -3,7 +3,6 @@ package kr.co.anabada.chat.entity;
 import jakarta.persistence.*;
 import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,9 +12,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Builder
-@Table(name = "Chat_Message")
+@Table(name = "chat_message")  
 public class Chat_Message {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "msgNo", nullable = false)
@@ -30,11 +29,11 @@ public class Chat_Message {
     @Column(name = "msgDate", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime msgDate;
 
-    @ManyToOne
-    @JoinColumn(name = "room_no", referencedColumnName = "roomNo", nullable = false)
-    private Chat_Room chatRoom; // 채팅방 설정
+    @ManyToOne  // 변경: @OneToOne -> @ManyToOne
+    @JoinColumn(name = "chat_room_id", nullable = false)  // roomNo -> chat_room_id
+    private Chat_Room chatRoom; // 채팅방 정보 (다대일 관계로 변경)
 
-    @ManyToOne
-    @JoinColumn(name = "sender_no", referencedColumnName = "userNo", nullable = false)
-    private User sender; // 발신자 설정
+    @ManyToOne  // 변경: @OneToOne -> @ManyToOne
+    @JoinColumn(name = "sender_no", referencedColumnName = "userNo", nullable = false)  // senderNo -> sender_no
+    private User sender;  // 메시지 발송자 (다대일 관계)
 }

@@ -12,6 +12,4 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TempRequest {
 	private String temp;
-	private String lat;
-	private String lon;
 }

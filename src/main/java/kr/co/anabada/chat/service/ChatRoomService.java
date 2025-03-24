@@ -3,36 +3,31 @@ package kr.co.anabada.chat.service;
 import kr.co.anabada.chat.entity.Chat_Room;
 import kr.co.anabada.chat.repository.ChatRoomRepository;
 import kr.co.anabada.user.entity.User;
-import kr.co.anabada.user.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
+@RequiredArgsConstructor
 public class ChatRoomService {
 
-    @Autowired
-    private ChatRoomRepository chatRoomRepository;
+    private final ChatRoomRepository chatRoomRepository;
 
-    @Autowired
-    private UserRepository userRepository;  
-    
-    public Chat_Room getChatRoomByRoomNo(Integer roomNo) {
-        return chatRoomRepository.findByRoomNo(roomNo)
-                .orElseThrow(() -> new RuntimeException("Invalid room No."));  // 예외 처리
+    // 판매자 또는 구매자의 userNo로 채팅방 조회
+    public Optional<Chat_Room> getChatRoomByUsers(Integer sellerUserNo, Integer buyerUserNo) {
+        return chatRoomRepository.findBySellerUserNoOrBuyerUserNo(sellerUserNo, buyerUserNo);
     }
 
-    public Chat_Room createChatRoom(Integer sellerId, Integer buyerId, String itemTitle, Integer itemNo) {
-      
-        User seller = userRepository.findById(sellerId).orElseThrow(() -> new RuntimeException("Seller 찾을 수 없음"));
-        User buyer = userRepository.findById(buyerId).orElseThrow(() -> new RuntimeException("Buyer 찾을 수 없음"));
-
+    // 채팅방 생성 메서드 (테스트용)
+    public Chat_Room createChatRoom(User seller, User buyer, Integer itemNo, String itemTitle) {
         Chat_Room chatRoom = Chat_Room.builder()
-            .seller(seller)  
-            .buyer(buyer)    
-            .itemTitle(itemTitle)
-            .itemNo(itemNo)
-            .build();
-
+                .seller(seller)
+                .buyer(buyer)
+                .itemNo(itemNo)
+                .itemTitle(itemTitle)
+                .build();
+        
         return chatRoomRepository.save(chatRoom);
     }
 }

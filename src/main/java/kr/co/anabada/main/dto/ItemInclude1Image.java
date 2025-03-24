@@ -21,8 +21,6 @@ public class ItemInclude1Image {
 	private String item_quality;
 	private LocalDateTime item_sale_start_date;
 	private LocalDateTime item_sale_end_date;
-	private Double item_latitude;
-	private Double item_longitude;
 	private Integer item_view_cnt;
 	private byte[] image_file;
 	private String category_no;

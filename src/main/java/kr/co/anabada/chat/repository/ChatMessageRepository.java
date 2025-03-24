@@ -1,13 +1,18 @@
 package kr.co.anabada.chat.repository;
 
+import org.apache.ibatis.annotations.Param;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
 import kr.co.anabada.chat.entity.Chat_Message;
-import kr.co.anabada.chat.entity.Chat_Room;
-import org.springframework.data.repository.CrudRepository;
+import kr.co.anabada.user.entity.User;
+
 import java.util.List;
 
-public interface ChatMessageRepository extends CrudRepository<Chat_Message, Integer> {
+@Repository
+public interface ChatMessageRepository extends JpaRepository<Chat_Message, Integer> {
 
-    // Chat_Room의 ID 타입이 Integer로 수정되었으므로, 아래 메소드도 Integer로 수정
-	 List<Chat_Message> findByChatRoom_roomNo(Integer roomNo);
-
+    // 채팅방의 id로 읽지 않은 메시지 찾기
+    List<Chat_Message> findByChatRoomIdAndMsgIsReadFalse(Integer roomNo);
 }

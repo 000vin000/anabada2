@@ -1,6 +1,5 @@
 package kr.co.anabada.item.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.UpdateTimestamp;
@@ -33,10 +32,10 @@ public class Bid {
 	@ManyToOne
 	@JoinColumn(name = "userNo", nullable = false)
 	private User user;
-	@Column(nullable = false, precision = 12, scale = 2, columnDefinition = "ENUM('active','winning','lost','cancelled') default 'active'")
+	@Column(nullable = false, columnDefinition = "ENUM('active','winning','lost','cancelled') default 'active'")
 	private String bidStatus;
 	@Column(nullable = false)
-	private BigDecimal bidPrice;
+	private Integer bidPrice;
 	@Column(nullable = false)
 	@UpdateTimestamp
 	private LocalDateTime bidTime;

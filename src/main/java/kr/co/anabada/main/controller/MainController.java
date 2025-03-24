@@ -13,16 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.anabada.main.dto.ItemInclude1Image;
-import kr.co.anabada.main.service.CategoryService;
 import kr.co.anabada.main.service.MainService;
 
 @Controller
 public class MainController {
 	@Autowired
 	private MainService service;
-	
-	@Autowired
-	private CategoryService cateService;
 	
 	@GetMapping("/")
 	public String getAllItems(@RequestParam(required = false) String sortOrder, Model model) throws IOException {
@@ -58,15 +54,6 @@ public class MainController {
 							@RequestParam String cd, @RequestParam(required = false) String sortOrder, Model model) throws IOException {
 		List<ItemInclude1Image> itemList = service.findByCategory(gender, ct, cd);
 		service.encodeImageFile(itemList);
-		
-		if (!cd.substring(0, 3).equals("sel") || !(cd.length() == 5)) {
-			return null;
-		}
-		cd = cd.substring(cd.length()-2, cd.length());
-		
-		gender = cateService.getGenderName(gender);
-		cd = cateService.getClothesTypeDetailName(ct, cd);
-		ct = cateService.getClothesTypeName(ct);
 		
 		model.addAttribute("gender", gender);
 		model.addAttribute("ct", ct);

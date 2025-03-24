@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.co.anabada.main.GenderNotFoundException;
 import kr.co.anabada.main.dto.ItemInclude1Image;
 import kr.co.anabada.main.repository.ItemInclude1ImageRepository;
 
@@ -51,6 +50,7 @@ public class MainService {
 	    return list;
 	}
 
+
 	// 카테고리 검색
 	public List<ItemInclude1Image> findByCategory(String gender, String ct, String cd) {
 		List<ItemInclude1Image> itemList = null;
@@ -60,10 +60,27 @@ public class MainService {
 		
 		if (gender.equals("00")) itemList = repo.selectGenderAll(ct, cd);
 		else if (gender.equals("10") || gender.equals("20")) itemList = repo.selectGender(gender, ct, cd);
-		else throw new GenderNotFoundException("Gender not found for: " + gender);
+		
 		return itemList;
 	}
 
+	public String matchGender(String gender) {
+		if (gender.equals("00")) return "전체";
+		else if (gender.equals("10")) return "남성";
+		else return "여성";
+	}
+
+	public String matchClothesType(String ct) {
+		if (ct.equals("01")) return "아우터";
+		else if (ct.equals("02")) return "상의";
+		else if (ct.equals("03")) return "하의";
+		else if (ct.equals("04")) return "원피스";
+		else if (ct.equals("05")) return "스커트";
+		else if (ct.equals("06")) return "가방";
+		else if (ct.equals("07")) return "패션소품";
+		else return "신발";
+	}
+	
 	// 이미지 파일을 Base64로 인코딩
 	public void encodeImageFile(List<ItemInclude1Image> itemList) throws IOException {
 	    for (ItemInclude1Image item : itemList) {
