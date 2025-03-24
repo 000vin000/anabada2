@@ -49,14 +49,14 @@ public class ImageService {
     }
     
     public Optional<Image> findFirstByItemNo(Integer itemNo) {
-    	Item item = itemRepository.findByItemNo(itemNo);
-    	Optional<Image> image = imageRepository.findFirstByItemNo(item);
+    	Optional<Item> item = itemRepository.findById(itemNo);
+    	Optional<Image> image = imageRepository.findFirstByItemNo(item.get());
     	return image;
     }
     
 	public Image findByItemNoAndIndex(Integer itemNo, Integer index) {
-		Item item = itemRepository.findByItemNo(itemNo);
-		List<Image> imageList = imageRepository.findByItemNo(item);
+		Optional<Item> item = itemRepository.findById(itemNo);
+		List<Image> imageList = imageRepository.findByItemNo(item.get());
 		if (imageList.get(index) != null) {
 			Image image = imageList.get(index);
 			return image;
