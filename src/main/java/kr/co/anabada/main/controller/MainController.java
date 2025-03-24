@@ -59,9 +59,14 @@ public class MainController {
 		List<ItemInclude1Image> itemList = service.findByCategory(gender, ct, cd);
 		service.encodeImageFile(itemList);
 		
+		if (!cd.substring(0, 3).equals("sel") || !(cd.length() == 5)) {
+			return null;
+		}
+		cd = cd.substring(cd.length()-2, cd.length());
+		
 		gender = cateService.getGenderName(gender);
+		cd = cateService.getClothesTypeDetailName(ct, cd);
 		ct = cateService.getClothesTypeName(ct);
-		cd = cateService.getClothesTypeDetailName(cd);
 		
 		model.addAttribute("gender", gender);
 		model.addAttribute("ct", ct);

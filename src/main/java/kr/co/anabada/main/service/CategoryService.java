@@ -16,12 +16,20 @@ public class CategoryService {
 		String value = null;
 		
 		if (gender.equals("00")) value =  "전체";
-		else value = mapper.getGenderName(gender);
+		else if (gender.equals("10")) value = "남성";
+		else if (gender.equals("20")) value = "여성";
+		else return null;
 		
 		if (value != null && !value.isEmpty()) { return value; }
 		else throw new GenderNotFoundException("Gender not found for: " + gender);
 	}
 
+	// level 4
+	public String getClothesTypeDetailName(String ct, String cd) {
+		String cateDetail = ct + cd;
+		return mapper.findCateDetail(cateDetail);
+	}
+	
 	// level 3
 	public String getClothesTypeName(String ct) {
 		if (ct.equals("01")) return "아우터";
@@ -34,11 +42,4 @@ public class CategoryService {
 		else if (ct.equals("08")) return "신발";
 		else return "-";
 	}
-
-	// level 4
-	public String getClothesTypeDetailName(String cd) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
