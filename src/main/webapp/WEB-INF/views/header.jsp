@@ -49,8 +49,8 @@
         }
 
         function logoutUser() {
-            localStorage.removeItem("Token"); // ✅ 토큰 삭제
-            window.location.href = "/login";  // ✅ 로그인 페이지로 이동
+            localStorage.removeItem("Token"); // 토큰 삭제
+            window.location.href = "/login";  // 로그인 페이지로 이동
         }
     </script>
 </head>
@@ -58,7 +58,9 @@
 <body>
     <header>
         <a href="/"><img src="/images/logo.png" alt="로고" /></a>
-
+		
+		<a href="/">경매</a>|<a href="#">브랜드</a>
+		
         <!-- 검색 영역 -->
         <div id="findOption">
             <select id="findType" name="findType">
