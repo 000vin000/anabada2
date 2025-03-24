@@ -23,14 +23,16 @@ function loginUser() {
     .then(data => {
         console.log("로그인 응답 데이터:", data);
 
-        if (data.message) {
-            alert(data.message);
-        }
+        if (data.message) alert(data.message);
 
-        //JWT 토큰 저장
-        if (data.token) {
-            localStorage.setItem("authToken", data.token);
-        }
+		if (data.accessToken) {
+		    console.log("토큰 저장됨:", data.accessToken);
+		    localStorage.setItem("Token", data.accessToken); //키 값으로 저장
+		} else {
+		    console.warn("accessToken 없음. 로그인 실패");
+		}
+
+        // 메인으로
         if (data.redirectUrl) {
             window.location.href = data.redirectUrl;
         } else {

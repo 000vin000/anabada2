@@ -19,8 +19,7 @@ public class WeatherRepository {
 	@SuppressWarnings("deprecation")
 	public List<String> getCateNoByTemp(String tempLevel) {
 	    String sql = "SELECT category_no FROM item_category "
-	                + "WHERE category_temperature LIKE CONCAT('%', ?, '%') "
-	                + "AND category_no LIKE '10%'";
+	                + "WHERE category_temperature LIKE CONCAT('%', ?, '%') ";	            
 
 	    return jdbcTemplate.query(sql, new Object[]{tempLevel}, (rs, rowNum) -> rs.getString("category_no"));
 	}

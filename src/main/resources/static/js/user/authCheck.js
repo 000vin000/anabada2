@@ -1,24 +1,24 @@
-/**
- * 토큰이 있으면 자동 로그인 유지
- */
-document.addEventListener("DOMContentLoaded", function () {
-    const token = localStorage.getItem("authToken");
+import { checkAuth } from "./authService.js";
+import { updateUI } from "./uiControl.js";
 
-    if (token) {
-        console.log("로그인 상태 유지됨");
-        fetch("/userlogin/check", {
-            method: "GET",
-            headers: { "Authorization": "Bearer " + token }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (!data.authenticated) {
-                localStorage.removeItem("authToken"); // 만료되면 토큰 삭제
-            }
-        })
-        .catch(error => {
-            console.error("로그인 확인 오류:", error);
-            localStorage.removeItem("authToken");
-        });
-    }
+document.addEventListener("DOMContentLoaded", async function () {
+  console.log("authCheck.js 시작됨");
+
+  const isAuthenticated = await checkAuth();
+  console.log("인증 상태:", isAuthenticated);
+
+  updateUI(isAuthenticated);
+
+  const currentPath = window.location.pathname;
+  const publicPages = ["/", "/login", "/join"];
+
+  if (!isAuthenticated && !publicPages.includes(currentPath)) {
+    console.warn("비로그인 상태 - 로그인 페이지로 이동");
+    window.location.href = "/login";
+  }
+
+  if (isAuthenticated && (currentPath === "/login" || currentPath === "/join")) {
+    console.log("로그인 상태인데 로그인/회원가입 페이지 접근 → 홈으로 이동");
+    window.location.href = "/";
+  }
 });
