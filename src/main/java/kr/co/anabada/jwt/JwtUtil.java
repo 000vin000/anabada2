@@ -42,15 +42,10 @@ public class JwtUtil {
 
     // 내부 공통 토큰 만들기
     private String generateToken(String userId, long expiration) {
-
-    public String generateAccessToken(User user) {
         return Jwts.builder()
-                .setSubject(user.getUserId()) // sub = userId
-                .claim("userNo", user.getUserNo())
-                .claim("userNick", user.getUserNick())
-                .claim("userType", user.getUserType())
+                .setSubject(userId)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiration))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
