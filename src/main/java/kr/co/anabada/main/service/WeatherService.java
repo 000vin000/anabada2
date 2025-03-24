@@ -18,9 +18,8 @@ public class WeatherService {
 	public List<ItemInclude1Image> getTempList(String temp, String lat, String lon) {
 		String tempLevel = getTempLevel(temp);
 
-		Double latitude = Double.valueOf(lat);
+		Double latitude = Double.valueOf(lat); 
 		Double longitude = Double.valueOf(lon);
-		System.out.println(latitude + ","+ longitude);
 		
 		// 범위별 카테고리 목록
 		List<String> cateList = repo.getCateNoByTemp(tempLevel);
