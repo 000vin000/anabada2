@@ -51,8 +51,9 @@ public class Seller {
 	@Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal sellerTotalSales = BigDecimal.ZERO;
 
-    @Column(name = "sellerGrade", length = 10)
-    private String sellerGrade;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private SellerGrade sellerGrade = SellerGrade.HANGER;
     
     @Column(name="sellerAvgRating", nullable = false)
     private double sellerAvgRating = 0;
@@ -70,6 +71,37 @@ public class Seller {
 	public enum SellerType {
 	    INDIVIDUAL,
 	    BRAND
+	}
+	
+	public enum SellerGrade {
+	    HANGER(0, 10, "옷걸이"),
+	    BUNDLE(11, 30, "보따리"),
+	    SMALL_SHOP(31, 50, "구멍가게"),
+	    STORE(51, 100, "상점"),
+	    MART(101, Integer.MAX_VALUE, "마트");
+	    
+	    private final int minSalesCount;
+	    private final int maxSalesCount;
+	    private final String korean;
+	    
+	    SellerGrade(int minSalesCount, int maxSalesCount, String korean) {
+	        this.minSalesCount = minSalesCount;
+	        this.maxSalesCount = maxSalesCount;
+	        this.korean = korean;
+	    }
+	    
+	    public static SellerGrade fromSalesCount(int salesCount) {
+	        for (SellerGrade grade : values()) {
+	            if (salesCount >= grade.minSalesCount && salesCount <= grade.maxSalesCount) {
+	                return grade;
+	            }
+	        }
+	        return HANGER;
+	    }
+	    
+	    public int getMinSales() { return minSalesCount; }
+	    public int getMaxSales() { return maxSalesCount; }
+	    public String getKorean() { return korean; }
 	}
 }
 
