@@ -31,30 +31,42 @@ public class JwtUtil {
         this.refreshTokenExpiration = refreshTokenExpiration;
     }
 
-
-    //Access Token 만들기
+    //Access Token userId만
     public String generateAccessToken(String userId) {
-        return generateToken(userId, accessTokenExpiration);
+        return generateToken(userId, null, null, null, accessTokenExpiration);
+    }
+    //Access Token
+    public String generateAccessToken(String userId, Long userNo, String userType, String nickname) {
+        return generateToken(userId, userNo, userType, nickname, accessTokenExpiration);
     }
 
-    //Refresh Token 만들기
+    //Refresh Token
     public String generateRefreshToken(String userId) {
-        return generateToken(userId, refreshTokenExpiration);
+        return generateToken(userId, null, null, null, refreshTokenExpiration);
     }
 
-    // 내부 공통 토큰 만들기
-    private String generateToken(String userId, long expiration) {
-        return Jwts.builder()
+    //공통 토큰
+    private String generateToken(String userId, Long userNo, String userType, String nickname, long expiration) {
+        var builder = Jwts.builder()
                 .setSubject(userId)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration));
+
+        // 커스텀 claim
+        if (userNo != null) builder.claim("userNo", userNo);
+        if (userType != null) builder.claim("userType", userType);
+        if (nickname != null) builder.claim("nickname", nickname);
+
+        return builder
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
+    
 
+    
     //AccessToken 추출
     public String extractAccessToken(HttpServletRequest request) {
-        return extractToken(request); // 내부 위임
+        return extractToken(request);
     }
 
     //내부 공통 토큰 추출
