@@ -16,4 +16,5 @@ public interface SellerRepository extends JpaRepository<Seller, Integer> {
     BigDecimal sumTotalSales();
 	
 	Seller findByUser(User user);
+	
 }
