@@ -21,7 +21,7 @@ public class Chat_Room {
     private Integer roomNo;
 
     @ManyToOne
-    @JoinColumn(name = "seller_id", referencedColumnName = "sellerNo", nullable = false)
+    @JoinColumn(name = "seller_id", referencedColumnName = "userNo", nullable = false)
     private Seller seller; // 판매자
 
     @ManyToOne

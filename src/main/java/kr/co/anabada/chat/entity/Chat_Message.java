@@ -37,4 +37,6 @@ public class Chat_Message {
     @ManyToOne
     @JoinColumn(name = "sender_no", referencedColumnName = "userNo", nullable = false)
     private User sender; // 발신자 설정
+    
+    private String formattedMsgDate;
 }
