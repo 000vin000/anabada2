@@ -17,7 +17,7 @@
 		<section id="NameSection">
 			<div>
 				<h1 class="item-name">${item.itemTitle}</h1>
-				<button id="favor-btn" data-item-id="${item.itemNo}">☆</button>
+				<button id="favor-btn" data-item-no="${item.itemNo}">☆</button>
 				<button id="btnEdit" hidden="hidden">수정</button>
 				<button id="btnDelete" hidden="hidden">삭제</button>
 			</div>
@@ -86,6 +86,7 @@
 <script src="/js/recent/config.js"></script>
 <script src="/js/recent/addRecent.js"></script>
 <script src="/js/recent/getRecent_sidebar.js"></script>
+<script src="/js/favor/favorItem.js"></script>
 <script>
 	function addCommas(num) {
 	    if (isNaN(num)) {
