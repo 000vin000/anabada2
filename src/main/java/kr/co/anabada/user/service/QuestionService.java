@@ -22,7 +22,9 @@ public class QuestionService {
     }
 
     // 특정 사용자 질문조회
-    public List<Question> findByUser(User user) {
-        return questionRepository.findBySender(user); 
+    public List<Question> getQuestionsBySenderNo(Integer senderNo) {
+        // senderNo로 관련된 Question을 조회
+        List<Question> questions = questionRepository.findBySender_UserNo(senderNo);
+        return questions;
     }
 }

@@ -10,7 +10,7 @@ import kr.co.anabada.admin.repository.AnswerRepository;
 
 @Service
 public class AnswerService {
-	 @Autowired
+	 	@Autowired
 	    private AnswerRepository answerRepository;
 
 	    // 답변 저장

@@ -14,7 +14,7 @@ public class JwtAuthHelper {
         String token = jwtUtil.extractAccessToken(request);
         if (token != null && jwtUtil.validateToken(token)) {
             String userId = jwtUtil.extractUserId(token);
-            Long userNo = toLong(jwtUtil.extractClaim(token, "userNo"));
+            Integer userNo = toInteger(jwtUtil.extractClaim(token, "userNo"));  // 🔁 Integer
             String userType = toString(jwtUtil.extractClaim(token, "userType"));
             String nickname = toString(jwtUtil.extractClaim(token, "nickname"));
 
@@ -23,10 +23,10 @@ public class JwtAuthHelper {
         return null;
     }
 
-    private Long toLong(Object value) {
-        if (value instanceof Number) return ((Number) value).longValue();
+    private Integer toInteger(Object value) {
+        if (value instanceof Number) return ((Number) value).intValue(); // ✅ 안전 변환
         try {
-            return Long.parseLong(value.toString());
+            return Integer.parseInt(value.toString());
         } catch (Exception e) {
             return null;
         }

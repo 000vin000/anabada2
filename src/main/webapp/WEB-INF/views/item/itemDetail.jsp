@@ -17,13 +17,11 @@
 		<section id="NameSection">
 			<div>
 				<h1 class="item-name">${item.itemTitle}</h1>
-				<button id="favor-btn" data-item-id="${item.itemNo}">☆</button>
+				<button id="favor-btn" data-item-no="${item.itemNo}">☆</button>
 				<button id="btnEdit" hidden="hidden">수정</button>
 				<button id="btnDelete" hidden="hidden">삭제</button>
 			</div>
-			<button onclick="location.href='/chat/inquire'" id="qnaList">문의하기</button>
-
-
+			<button onclick="openWindow('QnaWindow', '/')" id="qnaList">문의하기</button>
 		</section>
 		
 		<section id="QnASection">
@@ -88,6 +86,7 @@
 <script src="/js/recent/config.js"></script>
 <script src="/js/recent/addRecent.js"></script>
 <script src="/js/recent/getRecent_sidebar.js"></script>
+<script src="/js/favor/favorItem.js"></script>
 <script>
 	function addCommas(num) {
 	    if (isNaN(num)) {
@@ -97,38 +96,6 @@
 	    num = Number(num).toString();
 	    return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
-</script>
-<script>
-	document.addEventListener("DOMContentLoaded", function () {
-	    const favBtn = document.getElementById("favor-btn");
-	    const itemNo = favBtn.dataset.itemNo;
-	    const favImg = document.createElement("img");
-	    favImg.alt = "☆";
-	   	favBtn.innerHTML = "";
-	    favBtn.appendChild(favImg);
-	    
-	    function updateFavoriteUI(isFavorite) {
-			favImg.src = isFavorite ? "/images/favor-star-filled.png" : "/images/favor-star-empty.png";
-	    }
-		
-    	fetch(`/api/favor/${itemNo}`)
-    		.then(res => res.json())
-       		.then(data => {
-       			updateFavoriteUI(data.isFavorite);
-       	})
-	    
-	    async function toggleFavorite() {
-	        const response = await fetch(`/api/favor/${itemNo}`, { method: "POST" });
-	        if (response.status === 401) {
-	            alert("로그인이 필요합니다.");
-	        } else {
-		        const isFavorited = await response.json();
-		        updateFavoriteUI(isFavorited);
-	        }
-	    }
-	
-	    favBtn.addEventListener("click", toggleFavorite);
-	}); // jhu
 </script>
 <script>
 	const isLoggedIn = ${isLoggedIn};
