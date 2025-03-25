@@ -1,141 +1,106 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>고객센터</title>
-<style>
-    .tabs {
-        display: flex;
-        border-bottom: 2px solid #ddd;
-    }
-    .tab {
-        padding: 10px 20px;
-        cursor: pointer;
-        margin-right: 10px;
-    }
-    .tab:hover {
-        background-color: #f0f0f0;
-    }
-    .tab.active {
-        background-color: #007bff;
-        color: white;
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-    table th, table td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
-</style>
-<script>
-    function switchTab(tabName) {
-        // 모든 탭을 비활성화
-        document.querySelectorAll('.tab').forEach(function(tab) {
-            tab.classList.remove('active');
-        });
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <title>고객센터</title>
+    
+      <style>
+         nav {
+            margin-bottom: 20px;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+        </style>
 
-        // 선택된 탭을 활성화
-        document.getElementById(tabName).classList.add('active');
-        
-        // 모든 테이블을 숨기고, 선택된 테이블만 표시
-        document.querySelectorAll('.tab-content').forEach(function(content) {
-            content.style.display = 'none';
-        });
-        
-        document.getElementById(tabName + '-table').style.display = 'block';
-    }
-</script>
-</head>
+ </head>
 <body>
-
+ <nav>
+        <ul>
+            <!-- '재무관리' 탭을 대시보드로 연결 -->
+            <li><a href="/dashboard">재무관리</a></li> <!-- 대시보드 페이지로 연결 -->
+            <li><a href="/management">고객관리</a></li>
+        </ul>
+    </nav>
     <h1>고객센터</h1>
 
-    <!-- 탭 메뉴 -->
-    <div class="tabs">
-        <div class="tab active" id="brand" onclick="switchTab('brand')">브랜드 계정</div>
-        <div class="tab" id="personal" onclick="switchTab('personal')">개인 계정</div>
-    </div>
+      <!-- 처리 결과 메시지 -->
+    <c:if test="${not empty message}">
+        <div class="alert">
+            ${message}
+        </div>
+    </c:if>
 
-    <!-- 브랜드 계정 신고 관리 -->
-    <div class="tab-content" id="brand-table" style="display:block;">
-        <h2>브랜드 계정 신고 관리</h2>
-        <table>
+    <div id="report-table" style="display:block;">
+        <h2>신고 목록</h2>
+        <table border="1">
             <thead>
                 <tr>
                     <th>신고 번호</th>
-                    <th>유저 이름</th>  <!-- 유저 번호 대신 유저 이름으로 표시 -->
+                    <th>사용자 ID</th>
                     <th>경고 사유</th>
                     <th>경고 상태</th>
                     <th>신고 생성일</th>
                     <th>신고 처리일</th>
-                    <th>처리하기</th>
+                    <th>승인하기</th>
+                    <th>거부하기</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- 브랜드 신고 목록을 반복문으로 표시 -->
-                <c:forEach var="report" items="${brandReports}">
+                <c:forEach var="warn" items="${warns}">
                     <tr>
-                        <td>${report.warnNo}</td>
-                        <td>${report.userName}</td> <!-- userName을 추가하여 유저 이름 표시 -->
-                        <td>${report.warnReason}</td>
-                        <td>${report.warnStatus}</td>
-                        <td>${report.warnCreatedDate}</td>
-                        <td>${report.warnProcessedDate != null ? report.warnProcessedDate : '처리 안됨'}</td> <!-- 처리일자가 있으면 표시, 없으면 '처리 안됨' 표시 -->
-                        <td><a href="/report/handle/${report.warnNo}">처리하기</a></td>
+                        <td>${warn.warnNo}</td>
+                        <td>${warn.user.userId}</td>
+                        <td>${warn.warnReason}</td>
+                        <td>${warn.warnStatus}</td>
+                        <td>${warn.warnCreatedDate}</td>
+                        <td>${warn.warnProcessedDate != null ? warn.warnProcessedDate : '처리 안됨'}</td>
+                        <td>
+                            <c:if test="${warn.warnStatus == 'REQUESTED'}">
+                                <form action="/management/approve/${warn.warnNo}" method="post" style="display:inline;">
+                                    <button type="submit" onclick="return confirm('정말 승인하시겠습니까?')">승인하기</button>
+                                </form>
+                            </c:if>
+                        </td>
+                        <td>
+                            <c:if test="${warn.warnStatus == 'REQUESTED'}">
+                                <form action="/management/reject/${warn.warnNo}" method="post" style="display:inline;">
+                                    <button type="submit" onclick="return confirm('정말 거부하시겠습니까?')">거부하기</button>
+                                </form>
+                            </c:if>
+                        </td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
     </div>
 
-    <!-- 개인 계정 신고 관리 -->
-    <div class="tab-content" id="personal-table" style="display:none;">
-        <h2>개인 계정 신고 관리</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>신고 번호</th>
-                    <th>유저 이름</th>
-                    <th>경고 사유</th>
-                    <th>경고 상태</th>
-                    <th>신고 생성일</th>
-                    <th>신고 처리일</th>
-                    <th>처리하기</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- 개인 신고 목록을 반복문으로 표시 -->
-                <c:forEach var="report" items="${personalReports}">
-                    <tr>
-                        <td>${report.warnNo}</td>
-                        <td>${report.userName}</td> <!-- userName을 추가하여 유저 이름 표시 -->
-                        <td>${report.warnReason}</td>
-                        <td>${report.warnStatus}</td>
-                        <td>${report.warnCreatedDate}</td>
-                        <td>${report.warnProcessedDate != null ? report.warnProcessedDate : '처리 안됨'}</td>
-                        <td><a href="/report/handle/${report.warnNo}">처리하기</a></td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-    </div>
-    
-    <!-- 고객센터 -->
     <div class="container mt-5">
-        <h2>고객센터</h2>
-
-        <!-- 질문 목록을 테이블 형식으로 표시 -->
+        <h2>질문 목록</h2>
         <table border="1" cellpadding="10">
             <thead>
                 <tr>
                     <th>질문 번호</th>
+                    <th>질문자 ID</th>
+                    <th>질문 제목</th>
                     <th>질문 내용</th>
                     <th>답변 내용</th>
                     <th>답변하기</th>
@@ -143,40 +108,33 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- 모든 질문에 대해 반복 -->
                 <c:forEach var="question" items="${questions}">
                     <tr>
                         <td>${question.questionNo}</td>
+                        <td>${question.sender.userId}</td>
+                        <td>${question.questionTitle}</td>
                         <td>${question.questionContent}</td>
-                        
-                        <!-- 질문에 대한 답변 내용 -->
                         <td>
-                            <!-- 해당 질문 번호에 해당하는 답변을 찾기 -->
-                            <c:set var="hasAnswer" value="false"/>
-                            <c:forEach var="answer" items="${answers}">
-                                <c:if test="${answer.question.questionNo == question.questionNo}">
-                                    <p>${answer.answerContent}</p>
-                                    <c:set var="hasAnswer" value="true"/>
-                                </c:if>
-                            </c:forEach>
-
-                            <!-- 답변이 없으면 "답변 없음" 표시 -->
-                            <c:if test="${!hasAnswer}">
-                                답변 없음
+                <c:set var="answers" value="${answersByQuestionNo[question.questionNo]}" />
+                <c:choose>
+                    <c:when test="${not empty answers}">
+                        <c:forEach var="answer" items="${answers}">
+                            ${answer.answerContent}<br>
+                        </c:forEach>
+                    </c:when>
+                   		<c:otherwise>답변 없음</c:otherwise>
+                </c:choose>
+           		 </td>
+                     	 <td>
+                           <c:if test="${empty answers}">
+                                <a href="/question/answer/${question.questionNo}">답변하기</a>
                             </c:if>
                         </td>
-
-                        <!-- 답변하기 버튼 --> 
-                        <c:if test="${!hasAnswer}">
-                            <td><a href="/question/answer/${question.questionNo}">답변하기</a></td>
-                        </c:if>
-
-                        <!-- 삭제 버튼 (답변이 없을 경우에만 삭제 버튼 표시) -->
                         <td>
-                            <c:if test="${!hasAnswer}">
+                             <c:if test="${empty answers}">
                                 <form action="/question/delete/${question.questionNo}?from=answerList" method="post" style="display:inline;">
                                     <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
-                                </form><br>
+                                </form>
                             </c:if>
                         </td>
                     </tr>
