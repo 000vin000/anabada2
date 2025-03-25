@@ -39,8 +39,6 @@ public class AuthController {
         String userId = requestData.get("userId");
         String userPw = requestData.get("userPw");
 
-        log.info("로그인 시도: userId={}, userPw={}", userId, userPw);
-
         Optional<User> userOpt = userLoginService.findByUserId(userId);
         if (userOpt.isEmpty()) {
             return ResponseEntity.status(401).body(Map.of("message", "존재하지 않는 사용자입니다."));
@@ -51,17 +49,24 @@ public class AuthController {
             return ResponseEntity.status(401).body(Map.of("message", "비밀번호가 일치하지 않습니다."));
         }
 
-        String accessToken = jwtUtil.generateAccessToken(user.getUserId());
+        String accessToken = jwtUtil.generateAccessToken(
+                user.getUserId(),
+                user.getUserNo(),
+                user.getUserType().name(),
+                user.getUserNick()
+        );
+
         String refreshToken = jwtUtil.generateRefreshToken(user.getUserId());
 
-        //RefreshToken DB 저장
         refreshTokenRepository.save(RefreshToken.builder()
                 .userId(user.getUserId())
                 .token(refreshToken)
                 .build());
 
-        //쿠키 저장
         cookieUtil.addRefreshTokenCookie(response, refreshToken, 7 * 24 * 60 * 60);
+
+        //accessToken을 응답 헤더에 추가
+        response.setHeader("Authorization", "Bearer " + accessToken);
 
         return ResponseEntity.ok(Map.of(
                 "message", "로그인 성공",
@@ -70,15 +75,14 @@ public class AuthController {
         ));
     }
 
+
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletResponse response, Authentication auth) {
         String userId = (String) auth.getPrincipal(); 
 
-        refreshTokenRepository.deleteById(userId); //DB에서 RefreshToken 삭제
-        cookieUtil.deleteRefreshTokenCookie(response); //쿠키 삭제
+        refreshTokenRepository.deleteById(userId);
+        cookieUtil.deleteRefreshTokenCookie(response);  // 로그아웃 시 쿠키 삭제
 
-        log.info("로그아웃 완료 - userId: {}", userId);
         return ResponseEntity.ok(Map.of("message", "로그아웃 완료"));
     }
-
 }
