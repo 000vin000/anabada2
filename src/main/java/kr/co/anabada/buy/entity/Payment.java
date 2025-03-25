@@ -1,5 +1,6 @@
 package kr.co.anabada.buy.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.UpdateTimestamp;
@@ -33,7 +34,8 @@ public class Payment {
 	private String payStatus;
 	private LocalDateTime payCompletedDate;
 	private LocalDateTime payCancelledDate;
-	private Long payPrice;
+	@Column(nullable = false, precision = 12, scale = 2)
+	private BigDecimal payPrice;
 	@Column(nullable = false)
 	@UpdateTimestamp
 	private LocalDateTime payDate;
