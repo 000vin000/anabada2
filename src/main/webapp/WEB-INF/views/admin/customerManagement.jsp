@@ -142,6 +142,41 @@
             </tbody>
         </table>
     </div>
+    
+    <!-- 공지사항 목록 -->
+    <div class="container mt-5">
+        <h2>공지사항 목록</h2>
+        <a href="/notice/create" style="display: inline-block; margin-bottom: 15px;">공지사항 등록하기</a>
+        <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>공지사항 번호</th>
+                    <th>제목</th>
+                    <th>내용</th>
+                    <th>수정하기</th>
+                    <th>삭제하기</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="notices" items="${notices}">
+                    <tr>
+                        <td>${notices.noticeNo}</td>
+                        <td>${notices.noticeTitle}</td>
+                        <td>${notices.noticeContent}</td>
+                        <td>
+                            <a href="/notice/edit/${notices.noticeNo}">수정하기</a>
+                        </td>
+                        <td>
+                            <form action="/notice/delete/${notices.noticeNo}" method="post" style="display:inline;">
+                                <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+                            </form>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </div>
+    
 
 </body>
 </html>
