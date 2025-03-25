@@ -41,7 +41,7 @@ public class User {
     @Size(min = 6, message = "비밀번호는 6자 이상이어야 합니다.")
     @Column(name = "userPw", nullable = false, length = 255) // 길이 255 유지
     private String userPw;
-
+    
     // 이름
     @NotBlank(message = "필수 입력값입니다.")
     @Column(name = "userName", nullable = false, length = 20)
@@ -89,6 +89,11 @@ public class User {
     @Column(name = "userWithdrawalDate")
     private LocalDateTime userWithdrawalDate;
 
+    // 보안 비밀번호
+    @Column(nullable = true)
+    private String userPin; 
+    
+    
     // 사용자 타입 ENUM
     public enum UserType {
         INDIVIDUAL, // 개인 회원 (오타 수정)
