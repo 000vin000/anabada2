@@ -1,5 +1,6 @@
 package kr.co.anabada.user.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -42,16 +43,19 @@ public class Seller {
     private String sellerDesc;
 
     @Column(name = "sellerItemCnt", nullable = false)
-    private Integer sellerItemCnt = 0;
+    private int sellerItemCnt = 0;
 
     @Column(name = "sellerTransCnt", nullable = false)
-    private Integer sellerTransCnt = 0;
+    private int sellerTransCnt = 0;
 
-    @Column(name = "sellerTotalSales", nullable = false)
-    private Long sellerTotalSales = 0L;
+	@Column(nullable = false, precision = 12, scale = 2)
+    private BigDecimal sellerTotalSales = BigDecimal.ZERO;
 
     @Column(name = "sellerGrade", length = 10)
     private String sellerGrade;
+    
+    @Column(name="sellerAvgRating", nullable = false)
+    private double sellerAvgRating = 0;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

@@ -34,7 +34,7 @@ public class Answer {
     @Column(name = "aCreatedDate", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp aCreatedDate;
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "questionNo", nullable = false)
     private Question question; 
     

@@ -38,7 +38,7 @@ public class DashboardController {
 
         long todayAmount = 0;
         for (Object[] data : dailySales) {
-            todayAmount += (Long) data[1];  // 금액 합산
+            todayAmount += ((BigDecimal) data[1]).longValue();  // BigDecimal을 long으로 변환 후 합산
         }
 
         // 주매출 데이터 구하기 (일주일 시작일과 종료일)
@@ -72,7 +72,7 @@ public class DashboardController {
             List<Object[]> dailySalesInRange = paymentRepository.sumTotalSalesByDateRange(startOfDayForWeek.toLocalDateTime(), endOfDayForWeek.toLocalDateTime());
             long dailyAmount = 0;
             for (Object[] data : dailySalesInRange) {
-                dailyAmount += ((Long) data[1]);  // 금액 합산
+                dailyAmount += ((BigDecimal) data[1]).longValue();  // BigDecimal을 long으로 변환 후 합산
             }
 
             // 날짜를 추가할 때 날짜를 "MM/dd" 형식으로 포맷하여 추가
@@ -91,22 +91,21 @@ public class DashboardController {
 
         for (Object[] data : monthlySales) {
             Integer month = (Integer) data[0];  // 첫 번째 인덱스는 월 (1월=1, 2월=2, ..., 12월=12)
-            Long amountObj = (Long) data[1];  // 두 번째 인덱스는 금액
+            BigDecimal amountObj = (BigDecimal) data[1];  // 두 번째 인덱스는 금액 (BigDecimal)
 
             if (month == 0) {
                 month = 1;  // 만약 0이면 1월로 처리
             }
 
-            BigDecimal amount = new BigDecimal(amountObj);  // 금액을 BigDecimal로 변환
-            monthlySalesAmounts.set(month - 1, amount.doubleValue());  // 1월은 index 0, 2월은 index 1, ...
-            monthlyTotalSales += amount.doubleValue(); // 월매출 총합 계산
+            monthlySalesAmounts.set(month - 1, amountObj.doubleValue());  // 1월은 index 0, 2월은 index 1, ...
+            monthlyTotalSales += amountObj.doubleValue(); // 월매출 총합 계산
         }
 
         // 모델에 데이터 추가
-        model.addAttribute("todaySalesAmount", new BigDecimal(todayAmount).doubleValue());
+        model.addAttribute("todaySalesAmount", todayAmount);  // 오늘 매출
         model.addAttribute("dailySalesLabels", dailySalesLabels);
         model.addAttribute("dailySalesAmounts", dailySalesAmounts);
-        model.addAttribute("weeklySalesAmount", new BigDecimal(weeklySales).doubleValue()); // 주매출
+        model.addAttribute("weeklySalesAmount", weeklySales); // 주매출
         model.addAttribute("monthlySalesAmounts", monthlySalesAmounts); // 월매출 데이터 (그래프용)
         model.addAttribute("monthlySalesTotal", monthlyTotalSales); // 월매출 총합
 

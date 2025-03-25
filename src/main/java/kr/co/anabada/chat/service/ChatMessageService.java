@@ -1,5 +1,8 @@
 package kr.co.anabada.chat.service;
 
+import kr.co.anabada.chat.dto.ChatMessageDTO;
+import kr.co.anabada.chat.dto.ChatRoomDTO;
+import kr.co.anabada.chat.dto.SenderDTO;
 import kr.co.anabada.chat.entity.Chat_Message;
 import kr.co.anabada.chat.entity.Chat_Room;
 import kr.co.anabada.chat.repository.ChatMessageRepository;
@@ -14,6 +17,7 @@ import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ChatMessageService {
@@ -44,14 +48,39 @@ public class ChatMessageService {
         // 메시지 저장
         chatMessageRepository.save(chatMessage);
     }
+
     // saveMessage 메서드 추가
     public void saveMessage(Chat_Message message) {
-        chatMessageRepository.save(message);  // Chat_Message 객체를 DB에 저장
+        chatMessageRepository.save(message);  
     }
     
-    
+    // ChatMessage 엔티티를 ChatMessageDTO로 변환하는 메서드
+    private ChatMessageDTO convertToDTO(Chat_Message chatMessage) {
+        ChatMessageDTO dto = new ChatMessageDTO();
+        dto.setMsgNo(chatMessage.getMsgNo());
+        dto.setMsgContent(chatMessage.getMsgContent());
+        dto.setMsgIsRead(chatMessage.getMsgIsRead());
+        dto.setMsgDate(chatMessage.getMsgDate());
 
-    public List<Chat_Message> getMessagesByRoomNo(Integer roomNo) {      
-        return chatMessageRepository.findByChatRoom_roomNo(roomNo);
+        // SenderDTO 설정
+        SenderDTO senderDTO = new SenderDTO();
+        senderDTO.setUserNo(chatMessage.getSender().getUserNo());
+        senderDTO.setUserId(chatMessage.getSender().getUserId());
+        senderDTO.setUserNick(chatMessage.getSender().getUserNick());
+        dto.setSender(senderDTO);
+
+        // ChatRoomDTO 설정
+        ChatRoomDTO chatRoomDTO = new ChatRoomDTO();
+        chatRoomDTO.setRoomNo(chatMessage.getChatRoom().getRoomNo());
+        chatRoomDTO.setItemTitle(chatMessage.getChatRoom().getItemTitle());
+        chatRoomDTO.setItemNo(chatMessage.getChatRoom().getItemNo());
+        dto.setChatRoom(chatRoomDTO);
+
+        return dto;
+    }
+
+    public List<ChatMessageDTO> getMessagesByRoomNo(Integer roomNo) {
+        List<Chat_Message> messages = chatMessageRepository.findByChatRoomRoomNo(roomNo);
+        return messages.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 }

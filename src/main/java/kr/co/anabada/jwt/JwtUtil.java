@@ -1,22 +1,25 @@
 package kr.co.anabada.jwt;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
+import java.security.Key;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
-import java.util.Date;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 public class JwtUtil {
 
     private final Key key;
-
-    private final long accessTokenExpiration;   // 15분
-    private final long refreshTokenExpiration;  // 7일
+    private final long accessTokenExpiration;
+    private final long refreshTokenExpiration;
 
     public JwtUtil(
             @Value("${jwt.secret}") String secretKey,
@@ -28,26 +31,46 @@ public class JwtUtil {
         this.refreshTokenExpiration = refreshTokenExpiration;
     }
 
-    // Access Token 생성
+    //Access Token userId만
     public String generateAccessToken(String userId) {
-        return generateToken(userId, accessTokenExpiration);
+        return generateToken(userId, null, null, null, accessTokenExpiration);
+    }
+    //Access Token
+    public String generateAccessToken(String userId, Long userNo, String userType, String nickname) {
+        return generateToken(userId, userNo, userType, nickname, accessTokenExpiration);
     }
 
-    // Refresh Token 생성
+    //Refresh Token
     public String generateRefreshToken(String userId) {
-        return generateToken(userId, refreshTokenExpiration);
+        return generateToken(userId, null, null, null, refreshTokenExpiration);
     }
 
-    private String generateToken(String userId, long expiration) {
-        return Jwts.builder()
+    //공통 토큰
+    private String generateToken(String userId, Long userNo, String userType, String nickname, long expiration) {
+        var builder = Jwts.builder()
                 .setSubject(userId)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration));
+
+        // 커스텀 claim
+        if (userNo != null) builder.claim("userNo", userNo);
+        if (userType != null) builder.claim("userType", userType);
+        if (nickname != null) builder.claim("nickname", nickname);
+
+        return builder
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
+    
 
-    // 토큰 추출
+    
+    //AccessToken 추출
+    public String extractAccessToken(HttpServletRequest request) {
+        return extractToken(request);
+    }
+
+    //내부 공통 토큰 추출
+
     public String extractToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -56,7 +79,7 @@ public class JwtUtil {
         return null;
     }
 
-    // 유효성
+    //토큰 유효성 검증
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
@@ -66,7 +89,7 @@ public class JwtUtil {
         }
     }
 
-    // 아이디 추출
+    //사용자 아이디 추출
     public String extractUserId(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -74,5 +97,27 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    //커스텀 claim 추출 (userNo, userType 등)
+    public Object extractClaim(String token, String claimName) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get(claimName);
+    }
+    
+    //쿠키에서 토큰 꺼내기
+    public String extractTokenFromCookie(HttpServletRequest request, String tokenName) {
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if (tokenName.equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 }

@@ -29,8 +29,6 @@ public class AnswerController {
     @Autowired
     private AdminRepository adminRepository; 
     
-    @Autowired
-    private AnswerRepository answerRepository;
 
     // 답변 작성 페이지
     @GetMapping("/answer/{questionNo}")
@@ -75,6 +73,6 @@ public class AnswerController {
         // 답변 저장
         answerService.saveAnswer(answer);
 
-        return "redirect:/question/answerList"; 
+        return "redirect:/management"; 
     }
 }

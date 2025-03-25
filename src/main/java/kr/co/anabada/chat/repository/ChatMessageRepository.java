@@ -7,7 +7,11 @@ import java.util.List;
 
 public interface ChatMessageRepository extends CrudRepository<Chat_Message, Integer> {
 
-    // Chat_Room의 ID 타입이 Integer로 수정되었으므로, 아래 메소드도 Integer로 수정
-	 List<Chat_Message> findByChatRoom_roomNo(Integer roomNo);
+    List<Chat_Message> findByChatRoom_RoomNo(Integer roomNo);
+    
+   // ChatRoom의 roomNo를 기준으로 메시지 조회
+   List<Chat_Message> findByChatRoomRoomNo(Integer roomNo);
+   
+
 
 }
