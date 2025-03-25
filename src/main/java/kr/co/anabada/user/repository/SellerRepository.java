@@ -1,9 +1,12 @@
 package kr.co.anabada.user.repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import kr.co.anabada.user.entity.Seller;
@@ -16,4 +19,11 @@ public interface SellerRepository extends JpaRepository<Seller, Integer> {
     BigDecimal sumTotalSales();
 	
 	Seller findByUser(User user);
+
+	@Query("SELECT sellerNo FROM Seller")
+	List<Integer> findAllSellerNos(); //userProfile
+	
+	@Modifying
+    @Query("UPDATE Seller SET sellerGrade = :sellerGrade WHERE sellerNo = :sellerNo")
+    int updateSellerGrade(@Param("sellerNo") Integer sellerNo, @Param("sellerGrade") String sellerGrade); //userProfile
 }
