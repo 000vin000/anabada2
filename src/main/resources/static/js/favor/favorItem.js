@@ -19,7 +19,9 @@ document.addEventListener("DOMContentLoaded", function () {
     async function toggleFavorite() {
         const response = await fetch(`/api/favor/item/${itemNo}`, { method: "POST" });
         if (response.status === 401) {
-            alert("로그인이 필요합니다.");
+			if (confirm("로그인이 필요한 서비스입니다.\n로그인 하시겠습니까?")) {
+	            window.location.href = "/auth/login.html"; // 로그인 페이지 경로로 이동
+	        }
         } else {
 	        const isFavorited = await response.json();
 	        updateFavoriteUI(isFavorited);
