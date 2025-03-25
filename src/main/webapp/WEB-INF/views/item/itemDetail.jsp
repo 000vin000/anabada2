@@ -21,7 +21,9 @@
 				<button id="btnEdit" hidden="hidden">수정</button>
 				<button id="btnDelete" hidden="hidden">삭제</button>
 			</div>
-			<button onclick="openWindow('QnaWindow', '/')" id="qnaList">문의하기</button>
+			<button onclick="location.href='/chat/inquire'" id="qnaList">문의하기</button>
+
+
 		</section>
 		
 		<section id="QnASection">

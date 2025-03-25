@@ -34,8 +34,9 @@ public class Payment {
 	private String payStatus;
 	private LocalDateTime payCompletedDate;
 	private LocalDateTime payCancelledDate;
+	@Builder.Default
 	@Column(nullable = false, precision = 12, scale = 2)
-	private BigDecimal payPrice;
+	private BigDecimal payPrice = BigDecimal.ZERO;
 	@Column(nullable = false)
 	@UpdateTimestamp
 	private LocalDateTime payDate;
