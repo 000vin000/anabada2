@@ -1,6 +1,7 @@
 package kr.co.anabada.chat.entity;
 
 import jakarta.persistence.*;
+import kr.co.anabada.user.entity.Seller;
 import kr.co.anabada.user.entity.User;
 import lombok.*;
 
@@ -20,11 +21,11 @@ public class Chat_Room {
     private Integer roomNo;
 
     @ManyToOne
-    @JoinColumn(name = "seller_id", nullable = false)
-    private User seller; // 판매자
+    @JoinColumn(name = "seller_id", referencedColumnName = "userNo", nullable = false)
+    private Seller seller; // 판매자
 
     @ManyToOne
-    @JoinColumn(name = "buyer_id", nullable = false)
+    @JoinColumn(name = "buyer_id", referencedColumnName = "userNo", nullable = false)
     private User buyer; // 구매자
 
     @Column(nullable = false)
