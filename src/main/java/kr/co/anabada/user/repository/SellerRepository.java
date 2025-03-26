@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import kr.co.anabada.user.entity.Seller;
+import kr.co.anabada.user.entity.Seller.SellerGrade;
 import kr.co.anabada.user.entity.User;
 
 @Repository
@@ -25,5 +26,5 @@ public interface SellerRepository extends JpaRepository<Seller, Integer> {
 	
 	@Modifying
     @Query("UPDATE Seller SET sellerGrade = :sellerGrade WHERE sellerNo = :sellerNo")
-    int updateSellerGrade(@Param("sellerNo") Integer sellerNo, @Param("sellerGrade") String sellerGrade); //userProfile
+    int updateSellerGrade(@Param("sellerNo") Integer sellerNo, @Param("sellerGrade") SellerGrade sellerGrade); //userProfile
 }
