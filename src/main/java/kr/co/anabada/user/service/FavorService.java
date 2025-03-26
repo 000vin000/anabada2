@@ -45,7 +45,7 @@ public class FavorService {
 	public boolean isFavorItem(Integer userNo, Integer itemNo) {
         User user = getUserById(userNo);
         Item item = getItemById(itemNo);
-		return favorItemRepo.countByUserAndItem(user, item);
+		return favorItemRepo.countByUserAndItem(user, item) > 0;
 	}
 	
 	public void deleteFavorItem(Integer userNo, Integer itemNo) {
@@ -71,7 +71,7 @@ public class FavorService {
 	public boolean isFavorSeller(Integer userNo, Integer sellerNo) {
         User user = getUserById(userNo);
         Seller seller = getSellerById(sellerNo);
-		return favorSellerRepo.countByUserAndSeller(user, seller);
+		return favorSellerRepo.countByUserAndSeller(user, seller) > 0;
 	}
 	
 	public void deleteFavorSeller(Integer userNo, Integer sellerNo) {
