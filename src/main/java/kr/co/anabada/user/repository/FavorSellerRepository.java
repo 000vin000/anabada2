@@ -13,6 +13,6 @@ import kr.co.anabada.user.entity.User;
 public interface FavorSellerRepository extends JpaRepository<FavorSeller, Integer> {
 	List<FavorSeller> findByUser(User user);
 	FavorSeller findByUserAndSeller(User user, Seller seller);
-	boolean countByUserAndSeller(User user, Seller seller);
+	int countByUserAndSeller(User user, Seller seller);
 	void deleteByUserAndSeller(User user, Seller seller);
 }
