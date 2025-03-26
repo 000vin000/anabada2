@@ -48,8 +48,8 @@ public class UserLoginController {
             log.warn("비밀번호 불일치: {}", userId);
             return ResponseEntity.status(401).body(Map.of("message", "비밀번호가 일치하지 않습니다."));
         }
-
-        String accessToken = jwtUtil.generateAccessToken(user.getUserId());
+        
+        String accessToken = jwtUtil.generateAccessToken(user.getUserId(), Long.valueOf(user.getUserNo().longValue()), user.getUserType().toString(), user.getUserNick());
         log.info("로그인 성공! Access 토큰 발급됨: {}", accessToken);
 
         String refreshToken = jwtUtil.generateRefreshToken(user.getUserId());
