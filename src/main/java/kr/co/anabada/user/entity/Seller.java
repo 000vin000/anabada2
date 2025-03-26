@@ -2,6 +2,9 @@ package kr.co.anabada.user.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -74,9 +77,9 @@ public class Seller {
 	}
 	
 	public enum SellerGrade {
-	    HANGER(0, 10, "옷걸이"),
-	    BUNDLE(11, 30, "보따리"),
-	    SMALL_SHOP(31, 50, "구멍가게"),
+	    HANGER(0, 1, "옷걸이"),
+	    BUNDLE(2, 3, "보따리"),
+	    SMALL_SHOP(4, 50, "구멍가게"),
 	    STORE(51, 100, "상점"),
 	    MART(101, Integer.MAX_VALUE, "마트");
 	    
@@ -91,7 +94,10 @@ public class Seller {
 	    }
 	    
 	    public static SellerGrade fromSalesCount(int salesCount) {
-	        for (SellerGrade grade : values()) {
+	        SellerGrade[] grades = values(); 
+	        Arrays.sort(grades, Comparator.comparing(SellerGrade::getMaxSales).reversed());
+	        
+	        for (SellerGrade grade : grades) {
 	            if (salesCount >= grade.minSalesCount && salesCount <= grade.maxSalesCount) {
 	                return grade;
 	            }
