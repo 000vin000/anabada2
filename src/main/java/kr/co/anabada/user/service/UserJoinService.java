@@ -19,12 +19,12 @@ public class UserJoinService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     
-    // ✅ 아이디 중복 체크
+    //아이디 중복 체크
     public boolean isUserIdAvailable(String userId) {
         return userJoinRepository.findByUserId(userId).isEmpty();
     }
 
-    // ✅ 닉네임 중복 체크
+    //닉네임 중복 체크
     public boolean isUserNickAvailable(String userNick) {
         return userJoinRepository.findByUserNick(userNick).isEmpty();
     }

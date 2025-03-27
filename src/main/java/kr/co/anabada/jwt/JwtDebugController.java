@@ -14,7 +14,7 @@ public class JwtDebugController {
 
     private final JwtUtil jwtUtil;
 
-    // ✅ Access Token + Refresh Token 확인 API
+    //Access Token + Refresh Token 확인 API
     @GetMapping("/check")
     public ResponseEntity<?> checkToken(HttpServletRequest request) {
         // Access Token: 헤더에서 추출
@@ -33,7 +33,7 @@ public class JwtDebugController {
         ));
     }
 
-    // ✅ Access Token의 사용자 정보 출력
+    //Access Token의 사용자 정보 출력
     @GetMapping("/access-info")
     public ResponseEntity<?> getAccessTokenInfo(HttpServletRequest request) {
         String token = jwtUtil.extractAccessToken(request);
@@ -49,7 +49,7 @@ public class JwtDebugController {
         ));
     }
 
-    // ✅ Refresh Token에서 userId 추출 (다른 정보는 없음)
+    //Refresh Token에서 userId 추출 (다른 정보는 없음)
     @GetMapping("/refresh-info")
     public ResponseEntity<?> getRefreshTokenInfo(HttpServletRequest request) {
         String token = jwtUtil.extractTokenFromCookie(request, "refreshToken");

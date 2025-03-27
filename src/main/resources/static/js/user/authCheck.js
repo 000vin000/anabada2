@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   const currentPath = window.location.pathname;
 
-  //로그인 상태에서 로그인/회원가입 페이지 들어가면 홈으로 리다이렉트
+ 
   if (isAuthenticated && (currentPath === "/login" || currentPath === "/join")) {
     console.log("로그인 상태인데 로그인/회원가입 페이지 접근 → 홈으로 이동");
     window.location.href = "/";

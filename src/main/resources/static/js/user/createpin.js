@@ -10,7 +10,7 @@ document.getElementById("pinForm").addEventListener("submit", async function (e)
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": "Bearer " + localStorage.getItem("Token") // ✅ accessToken → Token 으로 수정
+      "Authorization": "Bearer " + localStorage.getItem("Token") 
     },
     body: JSON.stringify({ userPin: pin })
   });

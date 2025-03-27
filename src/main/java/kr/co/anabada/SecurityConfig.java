@@ -19,7 +19,7 @@ public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter; // ✅ 추가
+    private final JwtAuthenticationFilter jwtAuthenticationFilter; // 
 
     public SecurityConfig(JwtUtil jwtUtil,
                           UserDetailsServiceImpl userDetailsService,
@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .loginPage("/auth/login.html").permitAll()
             )
 
-            // ✅ JwtAuthenticationFilter를 빈으로 주입받아 등록
+            //JwtAuthenticationFilter를 빈으로 주입받아 등록
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
