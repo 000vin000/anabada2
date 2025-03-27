@@ -34,6 +34,6 @@ export async function fetchWithAuth(url, options = {}) {
       window.location.href = "/login";
     }
   }
-
+  
   return response;
 }

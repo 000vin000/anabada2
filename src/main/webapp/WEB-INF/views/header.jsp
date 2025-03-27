@@ -69,7 +69,7 @@
             <ul>
                 <li><a id="loginBtn" href="/auth/login.html">로그인</a></li>
                 <li><a id="joinBtn" href="/auth/join.html">회원가입</a></li>
-                <li><a id="mypageBtn" href="/mypage.html" style="display: none;">마이페이지</a></li>
+                <li><a id="mypageBtn" href="/mypage" style="display: none;">마이페이지</a></li>
                 <li><a id="logoutBtn" href="#" style="display: none;">로그아웃</a></li>
             </ul>
         </nav>   

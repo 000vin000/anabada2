@@ -19,10 +19,14 @@ public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter; // ✅ 추가
 
-    public SecurityConfig(JwtUtil jwtUtil, UserDetailsServiceImpl userDetailsService) {
+    public SecurityConfig(JwtUtil jwtUtil,
+                          UserDetailsServiceImpl userDetailsService,
+                          JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Bean
@@ -33,21 +37,14 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
             .authorizeHttpRequests(auth -> auth
-            		
-                // 인증 없이 접근 가능한 공개 경로
                 .requestMatchers(
                     "/", "/login", "/join",
                     "/auth/**", "/userjoin/**", "/userlogin/**",
                     "/item/detail/**"
                 ).permitAll()
-
-                // 인증이 반드시 필요한 경로들
                 .requestMatchers(
                     "/user/mypage", "/user/update"
-
                 ).authenticated()
-
-                // 외의 모든 요청은 허용
                 .anyRequest().permitAll()
             )
 
@@ -55,11 +52,8 @@ public class SecurityConfig {
                 .loginPage("/auth/login.html").permitAll()
             )
 
-            // JWT 인증 필터 등록
-            .addFilterBefore(
-                new JwtAuthenticationFilter(jwtUtil),
-                UsernamePasswordAuthenticationFilter.class
-            );
+            // ✅ JwtAuthenticationFilter를 빈으로 주입받아 등록
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
