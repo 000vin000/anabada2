@@ -19,7 +19,7 @@ export async function goToUpdateInfo() {
     const data = await res.json();
 
     if (data.hasPin) {
-      location.href = "/user/pinauth.html"; // ✅ updatepin → pinauth 로 변경됨
+      location.href = "/user/pinauth.html"; 
     } else {
       location.href = "/user/createpin.html";
     }

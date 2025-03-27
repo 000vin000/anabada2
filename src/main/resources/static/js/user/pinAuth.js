@@ -10,13 +10,13 @@ document.getElementById("pinForm").addEventListener("submit", async function (e)
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": "Bearer " + localStorage.getItem("Token") // ✅ accessToken → Token 으로 수정
+      "Authorization": "Bearer " + localStorage.getItem("Token") 
     },
     body: JSON.stringify({ userPin: pin })
   });
 
   if (res.ok) {
-    window.location.href = "/user/updateinfo.html"; // ✅ 수정된 경로
+    window.location.href = "/user/updateinfo.html"; 
   } else {
     document.getElementById("message").textContent = "2차 비밀번호가 일치하지 않습니다.";
   }

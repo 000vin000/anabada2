@@ -18,19 +18,19 @@
                 const res = await fetchWithAuth("/user/pin/info"); // 회원정보 조회 API
                 if (!res.ok) {
                     const errorText = await res.text();
-                    document.getElementById("result").innerText = `❌ 인증 실패: ${errorText}`;
+                    document.getElementById("result").innerText = ` 인증 실패: ${errorText}`;
                 } else {
                     const data = await res.json();
-                    document.getElementById("result").innerText = `✅ 인증 성공: ${JSON.stringify(data)}`;
+                    document.getElementById("result").innerText = ` 인증 성공: ${JSON.stringify(data)}`;
                 }
             } catch (err) {
-                document.getElementById("result").innerText = `⚠️ 요청 실패: ${err}`;
+                document.getElementById("result").innerText = ` 요청 실패: ${err}`;
             }
         });
     </script>
 </head>
 <body>
     <h2>JWT 인증 테스트 페이지</h2>
-    <p id="result">🔄 사용자 인증 상태 확인 중...</p>
+    <p id="result">사용자 인증 상태 확인 중...</p>
 </body>
 </html>

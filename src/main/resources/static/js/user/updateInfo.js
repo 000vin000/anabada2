@@ -1,7 +1,7 @@
 /**
  * 정보수정
  */
-const accessToken = localStorage.getItem("Token"); // ✅ accessToken 키 이름 수정
+const accessToken = localStorage.getItem("Token"); 
 
 // 기본 정보 불러오기
 window.onload = async () => {
