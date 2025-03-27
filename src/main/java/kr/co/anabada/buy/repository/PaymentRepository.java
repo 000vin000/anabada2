@@ -40,21 +40,4 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
     	       "ORDER BY p.payCompletedDate")
     	List<Object[]> sumTotalSalesByDateRangeWithPaymentId(@Param("startDate") LocalDateTime startDate, 
     	                                                     @Param("endDate") LocalDateTime endDate);
-    
-    @Query("SELECT COUNT(*) FROM Payment p JOIN p.order o "
-    	 + "WHERE o.seller.sellerNo = :sellerNo AND p.payStatus = 'paid'")
-    int countBySellerNo(@Param("sellerNo") Integer sellerNo); //userProfile
-
-    @Query("SELECT SUM(p.payPrice) FROM Payment p JOIN p.order o "
-    	 + "WHERE o.seller.sellerNo = :sellerNo AND p.payStatus = 'paid'")
-    BigDecimal sumSalesBySellerNo(@Param("sellerNo") Integer sellerNo); //userProfile
-
-	@Query("SELECT COUNT(*) FROM Payment p JOIN p.order o "
-		 + "WHERE o.seller.sellerNo = :sellerNo AND p.payStatus = 'paid' "
-		 + "AND p.payCompletedDate BETWEEN :startDate AND :endDate")
-	int countBySellerNoAndDateRange(
-			@Param("sellerNo") Integer sellerNo, 
-			@Param("startDate") LocalDateTime startDate, 
-			@Param("endDate") LocalDateTime endDate
-    ); //userProfile
 }

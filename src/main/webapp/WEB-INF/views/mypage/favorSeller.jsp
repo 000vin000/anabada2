@@ -4,7 +4,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>ANABADA</title>
+	<title>title</title>
 </head>
 <body>
 

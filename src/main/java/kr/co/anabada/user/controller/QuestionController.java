@@ -105,7 +105,7 @@ public class QuestionController {
         }
 
         model.addAttribute("question", question);
-        return "question/questionUpdate"; // 수정 페이지로 이동
+        return "question/edit"; // 수정 페이지로 이동
     }
 
     // 문의 수정 처리

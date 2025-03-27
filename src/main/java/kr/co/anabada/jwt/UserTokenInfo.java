@@ -11,4 +11,3 @@ public class UserTokenInfo {
     private String userType;
     private String nickname;
 }
-//반환 DTO
