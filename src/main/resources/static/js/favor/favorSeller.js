@@ -10,14 +10,22 @@ document.addEventListener("DOMContentLoaded", function () {
 		favImg.src = isFavorite ? "/images/favor-star-filled.png" : "/images/favor-star-empty.png";
     }
 	
-	fetch(`/api/favor/seller/${sellerNo}`)
+	fetch(`/api/favor/seller/${sellerNo}`, {
+		method: "GET",
+	    headers: {
+	        "Authorization": `Bearer ${localStorage.getItem("Token")}`,
+	    }})
 		.then(res => res.json())
    		.then(data => {
    			updateFavoriteUI(data.isFavorite);
    	})
     
     async function toggleFavorite() {
-        const response = await fetch(`/api/favor/seller/${sellerNo}`, { method: "POST" });
+        const response = await fetch(`/api/favor/seller/${sellerNo}`, { 
+			method: "POST", 
+			headers: {
+	        	"Authorization": `Bearer ${localStorage.getItem("Token")}`,
+		    }});
         if (response.status === 401) {
 			if (confirm("로그인이 필요한 서비스입니다.\n로그인 하시겠습니까?")) {
 	            window.location.href = "/auth/login.html"; // 로그인 페이지 경로로 이동

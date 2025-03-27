@@ -1,10 +1,12 @@
 package kr.co.anabada.user.service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.item.repository.ItemRepository;
 import kr.co.anabada.user.entity.FavorItem;
@@ -48,6 +50,7 @@ public class FavorService {
 		return favorItemRepo.countByUserAndItem(user, item) > 0;
 	}
 	
+	@Transactional
 	public void deleteFavorItem(Integer userNo, Integer itemNo) {
         User user = getUserById(userNo);
         Item item = getItemById(itemNo);
@@ -74,6 +77,7 @@ public class FavorService {
 		return favorSellerRepo.countByUserAndSeller(user, seller) > 0;
 	}
 	
+	@Transactional
 	public void deleteFavorSeller(Integer userNo, Integer sellerNo) {
         User user = getUserById(userNo);
         Seller seller = getSellerById(sellerNo);
@@ -91,5 +95,15 @@ public class FavorService {
     		favorSellerRepo.save(FavorSeller.builder().user(user).seller(seller).build());
 		    return true; // 추가됨
     	}
+	}
+
+	public List<FavorItem> findItemByUser(Integer userNo) {
+		User user = getUserById(userNo);
+		return favorItemRepo.findByUser(user);
+	}
+	
+	public List<FavorSeller> findSellerByUser(Integer userNo) {
+		User user = getUserById(userNo);
+		return favorSellerRepo.findByUser(user);
 	}
 }
