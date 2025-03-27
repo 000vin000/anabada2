@@ -1,10 +1,8 @@
 package kr.co.anabada.admin.controller;
 
 import kr.co.anabada.admin.entity.Answer;
-import kr.co.anabada.admin.entity.Notice;
 import kr.co.anabada.admin.entity.Warn;
 import kr.co.anabada.admin.repository.AnswerRepository;
-import kr.co.anabada.admin.repository.NoticeRepository;
 import kr.co.anabada.admin.repository.WarnRepository;
 import kr.co.anabada.admin.service.WarnService;
 import kr.co.anabada.user.entity.Question;
@@ -35,10 +33,8 @@ public class ManagementController {
 
     @Autowired
     private WarnService warnService;
-    
-    @Autowired
-    private NoticeRepository noticeRepository;
 
+    // 신고 처리 페이지
     @GetMapping("/management")
     public String getManagement(Model model) {
         List<Question> questions = questionRepository.findAll();
@@ -50,17 +46,15 @@ public class ManagementController {
             List<Answer> answers = answerRepository.findByQuestion_questionNo(question.getQuestionNo());
             answersByQuestionNo.put(question.getQuestionNo(), answers);
         }
+        //List<Answer> answers = answerRepository.findAll();
         
         List<Warn> warns = warnRepository.findAll();
-        
-        List<Notice> notices = noticeRepository.findAll();
 
         model.addAttribute("questions", questions);
         model.addAttribute("answersByQuestionNo", answersByQuestionNo);
         model.addAttribute("warns", warns);
-        model.addAttribute("notices", notices);
         
-        return "admin/customerManagement";  // 모든 질문을 보여주는 페이지로 이동
+        return "admin/customer-management";  // 모든 질문을 보여주는 페이지로 이동
     }
     
     @PostMapping("/management/approve/{warnNo}")
