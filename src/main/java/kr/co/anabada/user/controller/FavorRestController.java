@@ -1,7 +1,21 @@
 package kr.co.anabada.user.controller;
 
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.servlet.http.HttpServletRequest;
+import kr.co.anabada.jwt.JwtAuthHelper;
+import kr.co.anabada.jwt.UserTokenInfo;
+import kr.co.anabada.user.service.FavorService;
 
 @RestController
 @RequestMapping("/api/favor")
