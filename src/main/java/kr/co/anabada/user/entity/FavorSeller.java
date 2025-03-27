@@ -2,6 +2,7 @@ package kr.co.anabada.user.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.Column;
@@ -32,6 +33,6 @@ public class FavorSeller {
     @ManyToOne
     @JoinColumn(name = "userNo", nullable = false)
     private User user;
-    @CreatedDate
+    @CreationTimestamp
     private LocalDateTime favorCreatedDate;
 } // jhu
