@@ -79,7 +79,7 @@
       </section>
        
        <button onclick="window.history.back()" class="toMypage">뒤로가기</button>
-=======
+
 	<div class="body-container">
 		<section id="NameSection">
 			<div>
@@ -155,17 +155,17 @@
   	<jsp:include page="../footer.jsp"/>
 >>>>>>> branch 'main' of https://github.com/000vin000/anabada2.git
 </body>
-<<<<<<< HEAD
+
 
 <script src="/js/todaypick.js"></script>
-=======
+
 <script src="/js/recent/config.js"></script>
 <script src="/js/recent/addRecent.js"></script>
 <script src="/js/recent/getRecent_sidebar.js"></script>
 <script src="/js/favor/favorItem.js"></script>
->>>>>>> branch 'main' of https://github.com/000vin000/anabada2.git
+
 <script>
-<<<<<<< HEAD
+
    // Pass isLoggedIn to JavaScript
    var isLoggedIn = ${isLoggedIn};
 
@@ -219,7 +219,7 @@
           });
       }
    });
-=======
+
 	function addCommas(num) {
 	    if (isNaN(num)) {
 	        return num;
@@ -228,9 +228,9 @@
 	    num = Number(num).toString();
 	    return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
->>>>>>> branch 'main' of https://github.com/000vin000/anabada2.git
+
 </script>
-<<<<<<< HEAD
+
 
 <script>
    function addCommas(num) {
@@ -243,7 +243,7 @@
    }
 </script>
 </html>
-=======
+
 <script>
 	const isLoggedIn = ${isLoggedIn};
 	const userNo = ${userNo};
@@ -464,4 +464,4 @@
     }
 </script>
 </html>
->>>>>>> branch 'main' of https://github.com/000vin000/anabada2.git
+
