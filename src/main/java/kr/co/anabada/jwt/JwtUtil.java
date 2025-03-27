@@ -1,5 +1,7 @@
 package kr.co.anabada.jwt;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
@@ -20,6 +22,8 @@ public class JwtUtil {
     private final Key key;
     private final long accessTokenExpiration;
     private final long refreshTokenExpiration;
+    
+    public static final String AUTHORIZATION_HEADER = "Authorization";
 
     public JwtUtil(
             @Value("${jwt.secret}") String secretKey,
@@ -77,6 +81,15 @@ public class JwtUtil {
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
+    }
+    
+  //헤더에서 토큰 가져오기
+    public String getTokenFromRequest(HttpServletRequest req) {
+        String tokenValue = req.getHeader(AUTHORIZATION_HEADER);
+        if (tokenValue != null && !tokenValue.isEmpty()) {
+            return URLDecoder.decode(tokenValue, StandardCharsets.UTF_8);
+        }
+        return null;
     }
 
     public String extractUserId(String token) {

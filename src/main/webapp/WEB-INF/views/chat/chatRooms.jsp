@@ -4,26 +4,29 @@
 
 <h2>채팅 목록</h2>
 
-<c:choose>
-    <c:when test="${empty chatRooms}">
-        <p>채팅방이 없습니다.</p>
-        <button class="btn btn-primary" id="createChatBtn"
-            data-seller-id="${sellerId}" 
-            data-item-title="${itemTitle}" 
-            data-item-no="${itemNo}">
-            채팅 생성
-        </button>
-    </c:when>
-    <c:otherwise>
-        <ul>
-            <c:forEach var="chatRoom" items="${chatRooms}">
-                <li>
-                    <a href="<spring:url value='/chat/getMessages/${chatRoom.roomNo}'/>">${chatRoom.itemTitle}</a>
-                </li>
-            </c:forEach>
-        </ul>
-    </c:otherwise>
-</c:choose>
+<!-- 채팅방 목록을 표시할 컨테이너 추가 -->
+<div id="chat-room-list-container">
+    <c:choose>
+        <c:when test="${empty chatRooms}">
+            <p>채팅방이 없습니다.</p>
+            <button class="btn btn-primary" id="createChatBtn"
+                data-seller-id="${sellerId}" 
+                data-item-title="${itemTitle}" 
+                data-item-no="${itemNo}">
+                채팅 생성
+            </button>
+        </c:when>
+        <c:otherwise>
+            <ul>
+                <c:forEach var="chatRoom" items="${chatRooms}">
+                    <li>
+                        <a href="<spring:url value='/chat/getMessages/${chatRoom.roomNo}'/>">${chatRoom.itemTitle}</a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </c:otherwise>
+    </c:choose>
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -31,7 +34,7 @@
         
         if (createChatBtn) {
             createChatBtn.onclick = function() {
-                const buyerId = ${userNo};  // 현재 로그인된 사용자 ID
+                const buyerId = ${userNo};
                 const sellerId = this.getAttribute("data-seller-id");
                 const itemTitle = this.getAttribute("data-item-title");
                 const itemNo = this.getAttribute("data-item-no");
@@ -41,7 +44,6 @@
                     return;
                 }
 
-                // JSON 형식으로 채팅방 생성 요청
                 fetch("/chat/createRoom", {
                     method: "POST",
                     headers: {

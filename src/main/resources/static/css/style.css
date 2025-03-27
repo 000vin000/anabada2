@@ -721,7 +721,7 @@ input[type="radio"] + label {
    gap: 20px;
 }
 
-#qnaList {
+#chatList {
    text-decoration: none; /* 밑줄 없애기 */
    width: 90px;
    padding: 5px;

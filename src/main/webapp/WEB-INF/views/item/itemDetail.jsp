@@ -21,7 +21,9 @@
 				<button id="btnEdit" hidden="hidden">수정</button>
 				<button id="btnDelete" hidden="hidden">삭제</button>
 			</div>
-			<button onclick="openWindow('QnaWindow', '/')" id="qnaList">문의하기</button>
+			<div>
+				<button id="chatList">문의하기</button>
+			</div>
 		</section>
 		
 		<section id="QnASection">
@@ -87,6 +89,7 @@
 <script src="/js/recent/addRecent.js"></script>
 <script src="/js/recent/getRecent_sidebar.js"></script>
 <script src="/js/favor/favorItem.js"></script>
+<script src="/js/chat/chatRoomList.js"></script>
 <script>
 	function addCommas(num) {
 	    if (isNaN(num)) {
