@@ -30,7 +30,7 @@ public class FavorRestController {
     public ResponseEntity<?> checkFavorItem(@PathVariable Integer itemNo, HttpServletRequest req) {
 		UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
 		if (user == null) {
-			return ResponseEntity.ok(Map.of("isFavorite", false));
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "로그인이 필요한 기능입니다"));
 		}
 		boolean isFavorite = service.isFavorItem(user.getUserNo(), itemNo);
 	    return ResponseEntity.ok(Map.of("isFavorite", isFavorite));
