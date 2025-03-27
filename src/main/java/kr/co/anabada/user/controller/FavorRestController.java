@@ -6,31 +6,66 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/favor")
 public class FavorRestController {
-//	@Autowired
-//	private FavorService service;
-//	
-//	@GetMapping("/{itemNo}")
-//    public ResponseEntity<?> checkFavorite(@SessionAttribute(name = "loggedInUser", required = false) User user, @PathVariable int itemNo) {
-//		if (user == null) {
-//			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("isFavorite", false));
-//		}
-//		boolean isFavorite = service.isFavorite(user.getUserNo(), itemNo);
-//	    return ResponseEntity.ok(Map.of("isFavorite", isFavorite));
-//    }
-//	
-//	@PostMapping("/{itemNo}")
-//	public ResponseEntity<?> addFavor(@SessionAttribute(name = "loggedInUser", required = false) User user, @PathVariable int itemNo) {
-//		if (user == null) {
-//			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "로그인이 필요한 기능입니다"));
-//		}
-//		
-//		boolean isFavorited = service.toggleFavorite(user.getUserNo(), itemNo);
-//        return ResponseEntity.ok(isFavorited);
-//	}
-//	
-//	@DeleteMapping("/{itemNo}")
-//	public String removeFavor(@SessionAttribute(name = "loggedInUser", required = false) User user, @PathVariable int itemNo) {
-//		service.removeFavor(user.getUserNo(), itemNo);
-//		return "즐겨찾기를 해제했습니다.";
-//	}
+	@Autowired
+	private FavorService service;
+	@Autowired
+	private JwtAuthHelper jwtAuthHelper;
+	
+	// 물품
+	@GetMapping("/item/{itemNo}")
+    public ResponseEntity<?> checkFavorItem(@PathVariable Integer itemNo, HttpServletRequest req) {
+		UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
+		if (user == null) {
+			return ResponseEntity.ok(Map.of("isFavorite", false));
+		}
+		boolean isFavorite = service.isFavorItem(user.getUserNo(), itemNo);
+	    return ResponseEntity.ok(Map.of("isFavorite", isFavorite));
+    }
+	
+	@PostMapping("/item/{itemNo}")
+	public ResponseEntity<?> addFavorItem(@PathVariable Integer itemNo, HttpServletRequest req) {
+		UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
+		if (user == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "로그인이 필요한 기능입니다"));
+		}
+		boolean isFavorited = service.toggleFavorItem(user.getUserNo(), itemNo);
+        return ResponseEntity.ok(isFavorited);
+	}
+	
+	@DeleteMapping("/item/{itemNo}")
+	public String deleteFavorItem(@PathVariable Integer itemNo, HttpServletRequest req) {
+		UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
+		
+		service.deleteFavorItem(user.getUserNo(), itemNo);
+		return "즐겨찾기를 해제했습니다.";
+	}
+	
+	// 판매자
+	@GetMapping("/seller/{sellerNo}")
+    public ResponseEntity<?> checkFavorSeller(@PathVariable Integer sellerNo, HttpServletRequest req) {
+		UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
+		if (user == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "로그인이 필요한 기능입니다"));
+		}
+		boolean isFavorite = service.isFavorSeller(user.getUserNo(), sellerNo);
+	    return ResponseEntity.ok(Map.of("isFavorite", isFavorite));
+    }
+	
+	@PostMapping("/seller/{sellerNo}")
+	public ResponseEntity<?> addFavorSeller(@PathVariable Integer sellerNo, HttpServletRequest req) {
+		UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
+		if (user == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "로그인이 필요한 기능입니다"));
+		}
+		boolean isFavorited = service.toggleFavorSeller(user.getUserNo(), sellerNo);
+        return ResponseEntity.ok(isFavorited);
+	}
+	
+	@DeleteMapping("/seller/{sellerNo}")
+	public String deleteFavorSeller(@PathVariable Integer sellerNo, HttpServletRequest req) {
+		UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
+		service.deleteFavorSeller(user.getUserNo(), sellerNo);
+		
+		return "즐겨찾기를 해제했습니다.";
+	}
 }
