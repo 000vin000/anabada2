@@ -1,5 +1,7 @@
 package kr.co.anabada.user.controller;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.anabada.jwt.JwtAuthHelper;
 import kr.co.anabada.jwt.UserTokenInfo;
+import kr.co.anabada.user.entity.FavorItem;
+import kr.co.anabada.user.entity.FavorSeller;
 import kr.co.anabada.user.service.FavorService;
 
 @RestController
@@ -81,5 +85,25 @@ public class FavorRestController {
 		service.deleteFavorSeller(user.getUserNo(), sellerNo);
 		
 		return "즐겨찾기를 해제했습니다.";
+	}
+	
+	@GetMapping("/itemlist")
+	public ResponseEntity<?> favorItemList(HttpServletRequest req) {
+		UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
+		if (user == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "로그인이 필요한 기능입니다"));
+		}
+		List<FavorItem> itemList = service.findItemByUser(user.getUserNo());
+		return ResponseEntity.ok(itemList != null ? itemList : Collections.emptyList());
+	}
+	
+	@GetMapping("/sellerlist")
+	public ResponseEntity<?> favorSellerList(HttpServletRequest req) {
+		UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
+		if (user == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "로그인이 필요한 기능입니다"));
+		}
+		List<FavorSeller> sellerList = service.findSellerByUser(user.getUserNo());
+		return ResponseEntity.ok(sellerList != null ? sellerList : Collections.emptyList());
 	}
 }
