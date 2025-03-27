@@ -12,7 +12,7 @@
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-<<<<<<< HEAD
+
    <div class="body-container">
       <section id="NameSection">
          <div>
@@ -146,14 +146,14 @@
 		</section>
 	    
     	<button onclick="window.history.back()" class="toMypage">뒤로가기</button>
->>>>>>> branch 'main' of https://github.com/000vin000/anabada2.git
+
     </div>
     <jsp:include page="../sidebar.jsp" />
-<<<<<<< HEAD
+
     <jsp:include page="../footer.jsp"/>
-=======
+
   	<jsp:include page="../footer.jsp"/>
->>>>>>> branch 'main' of https://github.com/000vin000/anabada2.git
+
 </body>
 
 
