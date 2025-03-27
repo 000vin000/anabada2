@@ -12,5 +12,6 @@ import kr.co.anabada.user.entity.Seller;
 public interface ItemRepository extends JpaRepository<Item, Integer> {
 
 	List<Item> findBySeller(Seller seller);
-	
+
+	int countBySeller_SellerNo(Integer sellerNo); //userProfile
 }
