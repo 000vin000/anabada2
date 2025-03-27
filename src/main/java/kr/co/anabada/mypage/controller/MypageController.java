@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
-import kr.co.anabada.coin.entity.Goods;
+
 import kr.co.anabada.coin.service.GoodsService;
 import kr.co.anabada.jwt.JwtAuthHelper;
 import kr.co.anabada.jwt.UserTokenInfo;
