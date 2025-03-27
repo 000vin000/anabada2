@@ -70,7 +70,6 @@ public class JwtUtil {
     }
 
     //내부 공통 토큰 추출
-
     public String extractToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
