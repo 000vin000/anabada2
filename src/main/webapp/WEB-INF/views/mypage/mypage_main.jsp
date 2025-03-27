@@ -11,9 +11,6 @@
 <body>
 <div class="body-container">
 	<div>
-		보유중인 코인 
-	</div>
-	<div>
 		사용자 정보
 	</div>
 	<div>

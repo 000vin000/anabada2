@@ -66,4 +66,5 @@ public class WeatherService {
 		}
 		return result;
 	}
+
 }
