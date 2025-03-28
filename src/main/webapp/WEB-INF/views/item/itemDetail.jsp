@@ -162,11 +162,8 @@
 <script src="/js/recent/addRecent.js"></script>
 <script src="/js/recent/getRecent_sidebar.js"></script>
 <script src="/js/favor/favorItem.js"></script>
-<<<<<<< HEAD
-
-=======
 <script src="/js/chat/chatRoomList.js"></script>
->>>>>>> branch 'main' of https://github.com/000vin000/anabada2.git
+
 <script>
 
    // Pass isLoggedIn to JavaScript

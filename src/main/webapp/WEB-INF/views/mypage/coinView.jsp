@@ -2,12 +2,12 @@
     pageEncoding="UTF-8"%>
 <body>
 	<div class="cashSection" style="background-color: #FFF0F0">
-		<p>보유금액</p>
+		<div id="currentCash"><!-- 보유금액 --></div>
 		<button onclick="openChargeCash('금액충전', '/chargeCash')">금액충전</button>
 		<p>코인으로 전환</p>
 	</div>
 	<div class="coinSection">
-		<p>코인 잔액</p>
+		<div id="currentCoin"><!-- 보유코인 --></div>
 		<p>거래 내역</p>
 	</div>
 
@@ -17,3 +17,4 @@
     	window.open(url, name, "width=500,height=300,top=200,left=600,resizable=yes,scrollbars=yes,status=no,menubar=no,toolbar=no,location=no");
 	}
 </script>
+<script src="/js/mypage.js"></script>

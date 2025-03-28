@@ -34,33 +34,77 @@
 </body>
 
 <script>
-	// 폼 전환
-	function updateForm() {
-		var selectedValue = document.querySelector('input[name="chargetype"]:checked').value;
-		document.getElementById("nopassbookForm").style.display = selectedValue === "nopassbook" ? "block" : "none";
-		document.getElementById("cardForm").style.display = selectedValue === "card" ? "block" : "none";
-	}
+    window.onload = function() {
+        var token = localStorage.getItem("Token");  // 로컬 스토리지에서 JWT 토큰을 가져옵니다.
 
-	// 폼 제출 
-	function handleSubmit(event) {		
-		event.preventDefault(); // 기본 폼 제출 방지
+        if (token) {
+            // 페이지 로딩 시 서버에 토큰을 보내는 요청을 할 수 있습니다.
+            fetch('/chargeCash', {
+                method: 'GET',  // 또는 POST 등 필요한 메소드로 변경
+                headers: {
+                    'Authorization': 'Bearer ' + token,  // 토큰을 'Bearer' 타입으로 헤더에 추가
+                    'Content-Type': 'application/json'  // 필요한 경우 Content-Type도 추가
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('응답 데이터:', data);
+            })
+            .catch(error => {
+                console.error('에러 발생:', error);
+            });
+        } else {
+            console.log('토큰이 존재하지 않습니다.');
+        }
+    }
 
-		var selectedValue = document.querySelector('input[name="chargetype"]:checked').value;
-		var amountField = selectedValue === "nopassbook" ? document.getElementById("amount") : document.getElementById("cardAmount");
+    // 폼 전환
+    function updateForm() {
+        var selectedValue = document.querySelector('input[name="chargetype"]:checked').value;
+        document.getElementById("nopassbookForm").style.display = selectedValue === "nopassbook" ? "block" : "none";
+        document.getElementById("cardForm").style.display = selectedValue === "card" ? "block" : "none";
+    }
 
-		if (!amountField || !amountField.value) {
-			alert("충전 금액을 입력해 주세요.");
-			return false; // 폼 제출 방지
-		}
+    // 폼 제출 
+    function handleSubmit(event) {        
+        event.preventDefault(); // 기본 폼 제출 방지
 
-		alert(amountField.value + "원 충전되었습니다."); // 알림 표시
+        var selectedValue = document.querySelector('input[name="chargetype"]:checked').value;
+        var amountField = selectedValue === "nopassbook" ? document.getElementById("amount") : document.getElementById("cardAmount");
 
-		// 1초 후에 form 제출
-		setTimeout(function() {
-			document.getElementById("chargeForm").submit();
-		}, 1000);
+        if (!amountField || !amountField.value) {
+            alert("충전 금액을 입력해 주세요.");
+            return false; // 폼 제출 방지
+        }
 
-		return false; 
-	}
+        // 로컬 스토리지에서 JWT 토큰 가져오기
+        var token = localStorage.getItem("Token");
+
+        // Ajax 요청을 통해 서버에 폼 데이터 전송
+        var formData = new FormData(document.getElementById("chargeForm"));
+
+        fetch('/submitCharge', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Authorization': 'Bearer ' + token,  // JWT 토큰을 헤더에 포함
+            }
+        })
+        .then(response => response.json())  // 서버 응답을 JSON으로 받음
+        .then(data => {
+            // data가 객체일 경우, 그 안에 메시지를 정확히 꺼내서 alert로 표시
+            alert(data.message || "충전 실패");  // 응답에 'message' 키를 포함시켜 메시지를 전달
+            setTimeout(function() {
+                document.getElementById("chargeForm").submit();
+                window.close();
+            }, 1000);
+        })
+        .catch(error => {
+            alert("충전 실패: " + error);
+        });
+
+        return false; 
+    }
 </script>
+
 </html>

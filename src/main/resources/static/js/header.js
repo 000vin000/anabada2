@@ -36,22 +36,3 @@ function handleKeyPress(event) {
         submitSearch();
     }
 }
-
-document.getElementById('mypageBtn').addEventListener('click', function () {
-    fetch(`/mypage`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('Token')}`
-        }
-    	, credentials : "include"
-    }).then(response => response.json())
-	.then(html => {
-		document.open();
-		document.write(html);
-		document.close();
-	})
-	.catch(error => {
-        console.error('오류 발생:', error);
-        // alert('서버 오류가 발생했습니다.');
-    });
-});
