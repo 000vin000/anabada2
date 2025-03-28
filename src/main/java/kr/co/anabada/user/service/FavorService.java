@@ -2,6 +2,7 @@ package kr.co.anabada.user.service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,8 +40,13 @@ public class FavorService {
         return itemRepo.findById(itemNo).orElseThrow(() -> new NoSuchElementException("Item not found"));
     }
     
-    private Seller getSellerById(Integer sellerNo) {
-    	return sellerRepo.findById(sellerNo).orElseThrow(() -> new NoSuchElementException("Seller not found"));
+    private Seller getSellerByUser(Integer sellerUserNo) {
+    	Optional<User> user = userRepo.findById(sellerUserNo);
+    	Seller seller = sellerRepo.findByUser(user.get());
+    	if (seller == null) {
+    		throw new NoSuchElementException("Seller not found");
+    	}
+    	return seller;
     }
 	
     // 물품 즐겨찾기
@@ -71,22 +77,22 @@ public class FavorService {
 	}
 	
 	// 판매자 즐겨찾기
-	public boolean isFavorSeller(Integer userNo, Integer sellerNo) {
+	public boolean isFavorSeller(Integer userNo, Integer sellerUserNo) {
         User user = getUserById(userNo);
-        Seller seller = getSellerById(sellerNo);
+        Seller seller = getSellerByUser(sellerUserNo);
 		return favorSellerRepo.countByUserAndSeller(user, seller) > 0;
 	}
 	
 	@Transactional
-	public void deleteFavorSeller(Integer userNo, Integer sellerNo) {
+	public void deleteFavorSeller(Integer userNo, Integer sellerUserNo) {
         User user = getUserById(userNo);
-        Seller seller = getSellerById(sellerNo);
+        Seller seller = getSellerByUser(sellerUserNo);
         favorSellerRepo.deleteByUserAndSeller(user, seller);
 	}
 
-	public boolean toggleFavorSeller(Integer userNo, Integer sellerNo) {
+	public boolean toggleFavorSeller(Integer userNo, Integer sellerUserNo) {
         User user = getUserById(userNo);
-        Seller seller = getSellerById(sellerNo);
+        Seller seller = getSellerByUser(sellerUserNo);
 		FavorSeller favor = favorSellerRepo.findByUserAndSeller(user, seller);
 		if (favor != null) {
 			favorSellerRepo.delete(favor);

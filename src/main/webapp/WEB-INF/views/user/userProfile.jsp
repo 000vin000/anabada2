@@ -14,6 +14,7 @@
 	<div class="profile-container">
 		<div class="profile-header">
 			<h1>${profile.userNick}(${profile.userId})의 프로필</h1>
+			<button id="favor-btn" data-seller-no="${profile.userNo}">☆</button>
 		</div>
 
 		<div class="profile-info">
@@ -92,7 +93,6 @@
     }
 </script>
 <script src="/js/recent/config.js"></script>
-<script src="/js/recent/addRecent.js"></script>
 <script src="/js/recent/getRecent_sidebar.js"></script>
-<script src="/js/favor/favorItem.js"></script>
+<script src="/js/favor/favorSeller.js"></script>
 </html>
