@@ -1,7 +1,5 @@
 package kr.co.anabada.user.controller;
 
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +14,7 @@ public class FavorController {
 	FavorService service;
 	
 	@GetMapping
-	public String favorList() throws IOException {
+	public String favorList() {
 		return "mypage/favorPage";
 	}
 }

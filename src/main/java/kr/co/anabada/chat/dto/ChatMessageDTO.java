@@ -12,4 +12,5 @@ public class ChatMessageDTO {
     private String formattedMsgDate;
     private SenderDTO sender;
     private ChatRoomDTO chatRoom;
+    private Integer roomNo;
 }

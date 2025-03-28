@@ -20,10 +20,8 @@ public class MypageController {
     public String mypage(HttpServletRequest request, Model model) {
         // 요청 헤더에서 Authorization 값 가져오기
 		UserTokenInfo userInfo = jwtAuthHelper.getUserFromRequest(request);
-		// System.out.println(userInfo.getNickname());
-		// 
-		// model.addAttribute("user", userInfo);
-
+		System.out.println(userInfo.getNickname());
+		
         return "mypage/mypage_main";
     }
 }

@@ -25,14 +25,15 @@ function loginUser() {
 
         if (data.message) alert(data.message);
 
-		if (data.accessToken) {
-		    console.log("토큰 저장됨:", data.accessToken);
-		    localStorage.setItem("Token", data.accessToken); //키 값으로 저장
-		} else {
-		    console.warn("accessToken 없음. 로그인 실패");
-		}
+        // accessToken이 있으면 저장
+        if (data.accessToken) {
+            console.log("토큰 저장됨:", data.accessToken);
+            localStorage.setItem("Token", data.accessToken);
+        } else {
+            console.warn("accessToken 없음. 로그인 실패");
+        }
 
-        // 메인으로
+        // 메인 또는 리디렉션
         if (data.redirectUrl) {
             window.location.href = data.redirectUrl;
         } else {

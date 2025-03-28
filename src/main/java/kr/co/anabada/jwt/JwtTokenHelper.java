@@ -16,7 +16,7 @@ public class JwtTokenHelper {
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserJoinRepository userJoinRepository;
 
-    // ✅ 1. AccessToken에서 유저 정보 추출
+    //AccessToken에서 유저 정보 추출
     public UserTokenInfo extractUserInfoFromAccessToken(String token) {
         if (!jwtUtil.validateToken(token)) return null;
 
@@ -28,7 +28,7 @@ public class JwtTokenHelper {
         return new UserTokenInfo(userId, userNo, userType, nickname);
     }
 
-    // ✅ 2. RefreshToken으로 유저 조회
+    // RefreshToken으로 유저 조회
     public Optional<User> findUserByRefreshToken(String refreshToken) {
         if (!jwtUtil.validateToken(refreshToken)) return Optional.empty();
 
@@ -42,7 +42,7 @@ public class JwtTokenHelper {
         return userJoinRepository.findByUserId(userId);
     }
 
-    // ✅ 3. HttpServletRequest에서 AccessToken으로 바로 User 정보 추출
+    //HttpServletRequest에서 AccessToken으로 바로 User 정보 추출
     public UserTokenInfo getUserFromRequest(HttpServletRequest request) {
         String token = jwtUtil.extractAccessToken(request);
         return extractUserInfoFromAccessToken(token);

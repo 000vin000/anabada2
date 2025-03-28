@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserLoginRepository userLoginRepository; //UserRepository UserLoginRepository로 변경
+    private final UserLoginRepository userLoginRepository;
 
     public UserDetailsServiceImpl(UserLoginRepository userLoginRepository) {
         this.userLoginRepository = userLoginRepository;
@@ -18,13 +18,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userLoginRepository.findByUserId(username) //UserLoginRepository 활용
+        User user = userLoginRepository.findByUserId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다: " + username));
 
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUserId())
-                .password(user.getUserPw()) //userPw 필드 기준
-                .authorities("ROLE_USER")
-                .build();
+        return new UserDetailsImpl(user);
     }
 }

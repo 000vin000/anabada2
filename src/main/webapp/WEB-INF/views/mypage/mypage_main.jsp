@@ -11,8 +11,14 @@
 <body>
 <div class="body-container">
 	<div>
-		사용자 정보
+		보유중인 코인 
 	</div>
+	
+	<!-- 사용자 정보 -->
+	<section class="user-info">
+		<h3>사용자 정보</h3>
+		<a href="#" onclick="goToUpdateInfo()">회원정보 수정</a>
+	</section>
 	<div>
 		주문내역
 		취소 반품 교환 내역
@@ -39,7 +45,12 @@
 		상품 문의 내역
 		공지 사항
 	</div>
-</div>
+
+<!-- J회원정보 수정 -->
+<script type="module">
+  import { goToUpdateInfo } from '/js/user/goToUpdateInfo.js';  // ✅ 리팩토링된 파일명 반영
+  window.goToUpdateInfo = goToUpdateInfo;
+</script>
 <jsp:include page="../footer.jsp" />
 <jsp:include page="../main/bottom_nav.jsp" />
 </body>
