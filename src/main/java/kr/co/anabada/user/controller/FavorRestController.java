@@ -59,30 +59,30 @@ public class FavorRestController {
 	}
 	
 	// 판매자
-	@GetMapping("/seller/{sellerNo}")
-    public ResponseEntity<?> checkFavorSeller(@PathVariable Integer sellerNo, HttpServletRequest req) {
+	@GetMapping("/seller/{sellerUserNo}")
+    public ResponseEntity<?> checkFavorSeller(@PathVariable Integer sellerUserNo, HttpServletRequest req) {
 		UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
 		if (user == null) {
 			return ResponseEntity.ok(Map.of("isFavorite", false));
 		}
-		boolean isFavorite = service.isFavorSeller(user.getUserNo(), sellerNo);
+		boolean isFavorite = service.isFavorSeller(user.getUserNo(), sellerUserNo);
 	    return ResponseEntity.ok(Map.of("isFavorite", isFavorite));
     }
 	
-	@PostMapping("/seller/{sellerNo}")
-	public ResponseEntity<?> addFavorSeller(@PathVariable Integer sellerNo, HttpServletRequest req) {
+	@PostMapping("/seller/{sellerUserNo}")
+	public ResponseEntity<?> addFavorSeller(@PathVariable Integer sellerUserNo, HttpServletRequest req) {
 		UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
 		if (user == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "로그인이 필요한 기능입니다"));
 		}
-		boolean isFavorited = service.toggleFavorSeller(user.getUserNo(), sellerNo);
+		boolean isFavorited = service.toggleFavorSeller(user.getUserNo(), sellerUserNo);
         return ResponseEntity.ok(isFavorited);
 	}
 	
-	@DeleteMapping("/seller/{sellerNo}")
-	public String deleteFavorSeller(@PathVariable Integer sellerNo, HttpServletRequest req) {
+	@DeleteMapping("/seller/{sellerUserNo}")
+	public String deleteFavorSeller(@PathVariable Integer sellerUserNo, HttpServletRequest req) {
 		UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
-		service.deleteFavorSeller(user.getUserNo(), sellerNo);
+		service.deleteFavorSeller(user.getUserNo(), sellerUserNo);
 		
 		return "즐겨찾기를 해제했습니다.";
 	}

@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const favBtn = document.getElementById("favor-btn");
-    const sellerNo = favBtn.dataset.sellerNo;
+    const sellerUserNo = favBtn.dataset.sellerNo;
     const favImg = document.createElement("img");
     favImg.alt = "☆";
    	favBtn.innerHTML = "";
@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		favImg.src = isFavorite ? "/images/favor-star-filled.png" : "/images/favor-star-empty.png";
     }
 	
-	fetch(`/api/favor/seller/${sellerNo}`, {
+	fetch(`/api/favor/seller/${sellerUserNo}`, {
 		method: "GET",
 	    headers: {
 	        "Authorization": `Bearer ${localStorage.getItem("Token")}`,
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
    	})
     
     async function toggleFavorite() {
-        const response = await fetch(`/api/favor/seller/${sellerNo}`, { 
+        const response = await fetch(`/api/favor/seller/${sellerUserNo}`, { 
 			method: "POST", 
 			headers: {
 	        	"Authorization": `Bearer ${localStorage.getItem("Token")}`,
