@@ -53,8 +53,8 @@ public class ItemDetailDTO {
         return date.format(formatter);
     }
 	
-	public String addCommas(Integer num) {
-        NumberFormat formatter = NumberFormat.getInstance();
-        return formatter.format(num);
+    public String getFormattedPrice(BigDecimal price) {
+        if (price == null) return "0";
+        return NumberFormat.getInstance().format(price);
     }
 }

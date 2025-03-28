@@ -19,9 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import kr.co.anabada.item.dto.ItemDetailDTO;
 import kr.co.anabada.item.service.ItemDetailService;
+import kr.co.anabada.jwt.JwtAuthHelper;
+import kr.co.anabada.jwt.UserTokenInfo;
 import kr.co.anabada.user.entity.User;
+import kr.co.anabada.user.repository.UserRepository;
 import kr.co.anabada.user.service.UserService;
 
 @Controller
@@ -30,15 +35,17 @@ public class ItemDetailController {
 	@Autowired
 	private ItemDetailService itemDetailService;
 	@Autowired
-	private UserService userService;
+	private UserRepository userRepository;
+	@Autowired
+	private JwtAuthHelper jwtAuthHelper;
 	
 	@GetMapping
-	public String getItemDetail(@PathVariable Integer itemNo, Model model,
-			@SessionAttribute(name = "loggedInUser", required = false) User user) throws NotFoundException {
-
-		ItemDetailDTO item = itemDetailService.getItemDetailDTO(itemNo, user);
+	public String getItemDetail(@PathVariable Integer itemNo, Model model, HttpServletRequest req) throws NotFoundException {
+		UserTokenInfo userTokenInfo = jwtAuthHelper.getUserFromRequest(req);
+		Integer userNo = (userTokenInfo != null) ? userTokenInfo.getUserNo() : null;
+		ItemDetailDTO item = itemDetailService.getItemDetailDTO(itemNo, userNo);
 		model.addAttribute("item", item);
-		model.addAttribute("user", user);
+		model.addAttribute("user", userTokenInfo);
 		return "item/itemDetail";
 	}
 	
@@ -75,10 +82,9 @@ public class ItemDetailController {
 	@PatchMapping("/bid")
 	@ResponseBody
 	public ResponseEntity<String> updatePrice(
-			@PathVariable Integer itemNo, @RequestBody Map<String, Long> request,
-			@SessionAttribute(name = "loggedInUser", required = false) User tuser) throws NotFoundException {
-		User user = userService.findByUserId("hj-rxl"); //test user
-	    if (user == null) {
+			@PathVariable Integer itemNo, @RequestBody Map<String, Long> request, HttpServletRequest req) throws NotFoundException {
+		UserTokenInfo userTokenInfo = jwtAuthHelper.getUserFromRequest(req);
+	    if (userTokenInfo == null) {
 	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요한 서비스입니다.");
 	    }
 	    
@@ -87,13 +93,15 @@ public class ItemDetailController {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("입찰가를 입력하세요.");
 	    }
 
-		ItemDetailDTO itemDetailDTO = itemDetailService.getItemDetailDTO(itemNo, user);
-	    int userNo = user.getUserNo();
+	    int userNo = userTokenInfo.getUserNo();
+		ItemDetailDTO itemDetailDTO = itemDetailService.getItemDetailDTO(itemNo, userNo);
 	    int sellerNo = itemDetailDTO.getSellerNo();
 	    if (userNo == sellerNo) {
 	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("자신의 물품은 입찰할 수 없습니다.");
 	    }
 	    
+	    User user = userRepository.findById(userNo)
+	            .orElseThrow(() -> new EntityNotFoundException("유저 정보를 불러올 수 없습니다."));
 	    if (itemDetailService.updatePrice(itemNo, newPrice, user)) {
 	        return ResponseEntity.ok("입찰 완료되었습니다.");
 	    } else {
