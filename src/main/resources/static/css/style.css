@@ -1584,7 +1584,7 @@ input[type="radio"] + label {
     text-align: center;
 }
 
-#remainTime {
+#remain-time {
     font-size: 24px;
     font-weight: 700;
     display: block;

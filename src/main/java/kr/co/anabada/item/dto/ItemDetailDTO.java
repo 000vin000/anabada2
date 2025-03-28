@@ -49,15 +49,11 @@ public class ItemDetailDTO {
 	
 	
 	public String getFormattedDate(LocalDateTime date) {
-		System.out.println("실행");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
-        System.out.println(date);
-        System.out.println(date.format(formatter) + "??");
         return date.format(formatter);
     }
 	
     public String getFormattedPrice(BigDecimal price) {
-    	System.out.println("실행");
         if (price == null) return "0";
         return NumberFormat.getInstance().format(price);
     }

@@ -43,9 +43,7 @@ public class ItemDetailController {
 	public String getItemDetail(@PathVariable Integer itemNo, Model model, HttpServletRequest req) throws NotFoundException {
 		UserTokenInfo userTokenInfo = jwtAuthHelper.getUserFromRequest(req);
 		Integer userNo = (userTokenInfo != null) ? userTokenInfo.getUserNo() : null;
-		System.out.println(userNo);
 		ItemDetailDTO item = itemDetailService.getItemDetailDTO(itemNo, userNo);
-		System.out.println(item.getItemSaleStartDate());
 		model.addAttribute("item", item);
 		model.addAttribute("user", userTokenInfo);
 		return "item/itemDetail";
@@ -86,7 +84,6 @@ public class ItemDetailController {
 	public ResponseEntity<String> updatePrice(
 			@PathVariable Integer itemNo, @RequestBody Map<String, Long> request, HttpServletRequest req) throws NotFoundException {
 		UserTokenInfo userTokenInfo = jwtAuthHelper.getUserFromRequest(req);
-		System.out.println(userTokenInfo);
 	    if (userTokenInfo == null) {
 	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요한 서비스입니다.");
 	    }

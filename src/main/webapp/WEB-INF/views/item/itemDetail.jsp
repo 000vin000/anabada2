@@ -115,7 +115,6 @@
 <script src="/js/recent/addRecent.js"></script>
 <script src="/js/recent/getRecent_sidebar.js"></script>
 <script src="/js/favor/favorItem.js"></script>
-<script src="/js/chat/chatRoomList.js"></script>
 <script>
 	function addCommas(num) {
 	    if (isNaN(num)) {
@@ -131,7 +130,6 @@
 	const userNo = ${userNo};
 	const itemNo = ${item.itemNo};
 	const sellerNo = ${item.sellerNo};
-	const itemStart = ${item.itemSaleStartDate};
 	const editBtn = document.getElementById("edit-btn");
 	const deleteBtn = document.getElementById("delete-btn");
 	const bidBtn = document.getElementById("bid-btn");
@@ -141,8 +139,6 @@
 	let remainTime = 0;
 
 	document.addEventListener("DOMContentLoaded", async function() {
-		console.log(itemStart);
-		console.log();
 		if(isLoggedIn) {
 			initIfOwner(userNo, sellerNo);
 		}
@@ -276,6 +272,7 @@
 	        let response = await fetch(`/item/detail/${itemNo}/status`);
 	        let data = await response.text();
 	        status = data;
+			console.log(status);
 	
 	        if (data === "판매완료" || data === "종료") {
 	            stopAllIntervals();
