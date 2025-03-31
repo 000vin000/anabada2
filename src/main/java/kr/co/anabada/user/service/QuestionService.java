@@ -27,4 +27,8 @@ public class QuestionService {
         List<Question> questions = questionRepository.findBySender_UserNo(senderNo);
         return questions;
     }
+    
+    public Question getQuestionByNo(Integer questionNo) {
+        return questionRepository.findById(questionNo).orElse(null);  // 해당 questionNo에 대한 문의사항 조회
+    }
 }
