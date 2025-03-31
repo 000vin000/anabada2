@@ -34,7 +34,7 @@ public class Account { // 현금 입출금 내역
 	
 	@ManyToOne
 	@JoinColumn(name = "userNo", nullable = false)
-	private User UserNo;
+	private User userNo;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
