@@ -38,7 +38,7 @@ public class GoodsService {
 	}
 
 	// 사용자 보유 잔액 업데이트
-	public Goods updateGoods(Integer userNo, BigDecimal insertAmount) {
+	public Goods updateGoodsCash(Integer userNo, BigDecimal insertAmount) {
 		User user = getUserById(userNo);
 		Goods goods = goodsRepo.findByUser(user);
 		goods.setGoodsCash(insertAmount);
