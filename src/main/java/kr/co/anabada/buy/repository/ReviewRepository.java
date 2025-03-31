@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import kr.co.anabada.buy.entity.Review;
 
 @Repository
-public interface ReviewRepository extends JpaRepository<Review, Integer>{
+public interface ReviewRepository extends JpaRepository<Review, Integer> {
 	
 }

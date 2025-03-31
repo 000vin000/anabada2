@@ -29,7 +29,10 @@ function loadFavorItems() {
             data.forEach(item => {
                 const li = document.createElement("li");
                 li.innerHTML = `
-                    ${item.favorCreatedDate} 
+					<a href="/item/detail/${item.item.itemNo}">
+                        <img src="http://192.168.0.41:8080/image/${item.item.itemNo}" alt="${item.item.itemTitle}" width="50">
+                        <span>${item.item.itemTitle}</span>
+                    </a>
                     <button onclick="removeFavorItem(${item.item.itemNo})">삭제</button>
                 `;
                 itemList.appendChild(li);
@@ -56,9 +59,12 @@ function loadFavorSellers() {
             data.forEach(seller => {
 	            const li = document.createElement("li");
 	            li.innerHTML = `
-	                ${seller.favorCreatedDate} 
+					<a href="/user/profile/${seller.seller.user.userNo}">
+		                <span>${seller.seller.user.userNick}</span> 
+					</a>
 	                <button onclick="removeFavorSeller(${seller.seller.sellerNo})">삭제</button>
 	            `;
+				sellerList.appendChild(li);
             });
         })
         .catch(error => console.error("관심판매자 불러오기 실패:", error));
