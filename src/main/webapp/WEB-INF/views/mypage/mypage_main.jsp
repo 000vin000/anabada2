@@ -46,7 +46,7 @@
 		상품 문의 내역
 		공지 사항
 	</div>
-
+</div>
 <!-- J회원정보 수정 -->
 <script type="module">
   import { goToUpdateInfo } from '/js/user/goToUpdateInfo.js';  // ✅ 리팩토링된 파일명 반영
