@@ -31,7 +31,7 @@
       </section>
       
       <section id="bidSection">
-           <h2 id="priceHeading">현재가 <label id="price">${item.addCommas(item.itemPrice)} 원</label></h2>
+           <h2 id="priceHeading">현재가 <label id="price">${item.getFormattedPrice(item.itemPrice)} 원</label></h2>
            <p id="desiredBidPrice">희망 입찰가
               <input type="number" id="textPrice" min="0" step="100">
             <input type="submit" id="btnBid" value="입찰">
