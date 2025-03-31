@@ -54,13 +54,13 @@ function formatDate(dateString) {
     return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
-// 데이터 받아오기
+// 데이터 보여주기
 function populateConversionHistory(data) {
 	const tbody = document.querySelector("#conversionModal tbody");
 
 	tbody.innerHTML = '';
-
 	console.log(data);
+	
 	if (Array.isArray(data.conList)) {
 		data.conList.forEach(conversion => {
 			const row = document.createElement("tr");

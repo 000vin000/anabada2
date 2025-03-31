@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
+import kr.co.anabada.coin.entity.Account;
 import kr.co.anabada.coin.entity.Conversion;
 import kr.co.anabada.coin.entity.Goods;
+import kr.co.anabada.coin.service.AccountService;
 import kr.co.anabada.coin.service.ConversionService;
 import kr.co.anabada.coin.service.GoodsService;
 import kr.co.anabada.jwt.JwtAuthHelper;
@@ -33,6 +35,9 @@ public class CoinRestController {
 
     @Autowired
     private ConversionService conversionService;
+    
+    @Autowired
+    private AccountService accountService;
 
     // 마이페이지에 현재 정보 추가
     @GetMapping
@@ -69,6 +74,7 @@ public class CoinRestController {
     	return ResponseEntity.ok(Map.of("goods", goods));
     }
     
+    // 코인 전환 신청 내역
     @GetMapping("/conversionList")
     public ResponseEntity<?> getConversionList(HttpServletRequest req) {
     	UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
@@ -84,6 +90,7 @@ public class CoinRestController {
     	return ResponseEntity.ok(Map.of("conList", conversion));
     }
     
+    // 코인 전환 신청 내역 삭제
     @DeleteMapping("cancelConversion/{conversionNo}")
     public ResponseEntity<?> deleteConversionList(HttpServletRequest req, @PathVariable Integer conversionNo) {
     	UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
@@ -103,5 +110,21 @@ public class CoinRestController {
     	conversionService.deleteConversion(conversionNo);
     	
     	return ResponseEntity.ok(Map.of("message", "신청 취소 되었습니다."));
+    }
+    
+    // 현금 충전 내역
+    @GetMapping("/chargeList")
+    public ResponseEntity<?> getChargeList(HttpServletRequest req) {
+    	UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
+    	if (user == null) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "로그인이 필요합니다."));
+        }
+    	
+    	List<Account> chargeList = accountService.getChargeList(user.getUserNo());
+    	System.out.println(chargeList);
+    	
+    	return ResponseEntity.ok(Map.of("chargeList", chargeList));
     }
 }

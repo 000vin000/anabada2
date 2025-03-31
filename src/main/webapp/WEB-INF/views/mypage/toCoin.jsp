@@ -62,7 +62,7 @@ function toCoinSubmit(event) {
         setTimeout(function() {
             document.getElementById("toCoin").submit();
             window.close();
-        }, 1000);
+        }, 500);
     })
     .catch(error => {
         alert("전환 실패: " + error);
