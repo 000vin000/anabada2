@@ -59,6 +59,7 @@ function loadFavorSellers() {
 	                ${seller.favorCreatedDate} 
 	                <button onclick="removeFavorSeller(${seller.seller.sellerNo})">삭제</button>
 	            `;
+				sellerList.appendChild(li);
             });
         })
         .catch(error => console.error("관심판매자 불러오기 실패:", error));
