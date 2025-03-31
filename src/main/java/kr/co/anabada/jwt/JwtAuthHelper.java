@@ -13,8 +13,6 @@ public class JwtAuthHelper {
     public UserTokenInfo getUserFromRequest(HttpServletRequest request) {
         String token = jwtUtil.extractAccessToken(request);
         
-        System.out.println("token1: " + token);
-        
         if (token != null && jwtUtil.validateToken(token)) {
             String userId = jwtUtil.extractUserId(token);
             Integer userNo = toInteger(jwtUtil.extractClaim(token, "userNo"));  
