@@ -3,9 +3,11 @@ package kr.co.anabada.admin.controller;
 import kr.co.anabada.admin.entity.Answer;
 import kr.co.anabada.admin.entity.Notice;
 import kr.co.anabada.admin.entity.Warn;
+import kr.co.anabada.admin.entity.Withdrawal;
 import kr.co.anabada.admin.repository.AnswerRepository;
 import kr.co.anabada.admin.repository.NoticeRepository;
 import kr.co.anabada.admin.repository.WarnRepository;
+import kr.co.anabada.admin.repository.WithdrawalRepository;
 import kr.co.anabada.admin.service.WarnService;
 import kr.co.anabada.user.entity.Question;
 import kr.co.anabada.user.repository.QuestionRepository;
@@ -38,6 +40,9 @@ public class ManagementController {
     
     @Autowired
     private NoticeRepository noticeRepository;
+    
+    @Autowired
+    private WithdrawalRepository withdrawalRepository;
 
     @GetMapping("/management")
     public String getManagement(Model model) {
@@ -54,11 +59,15 @@ public class ManagementController {
         List<Warn> warns = warnRepository.findAll();
         
         List<Notice> notices = noticeRepository.findAll();
+        
+        List<Withdrawal> withdrawals = withdrawalRepository.findAll();
+
 
         model.addAttribute("questions", questions);
         model.addAttribute("answersByQuestionNo", answersByQuestionNo);
         model.addAttribute("warns", warns);
         model.addAttribute("notices", notices);
+        model.addAttribute("withdrawals", withdrawals);
         
         return "admin/customerManagement";  // 모든 질문을 보여주는 페이지로 이동
     }

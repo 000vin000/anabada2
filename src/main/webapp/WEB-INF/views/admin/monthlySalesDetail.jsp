@@ -10,20 +10,21 @@
 
 <h1>월매출 상세보기</h1>
 
-<p>월 매출 기간: ${startOfMonth} ~ ${endOfMonth}</p>
+<p>매출 기간: ${startOfYear} ~ ${endOfYear}</p>
 
 <!-- 월 매출 테이블 -->
 <table border="1">
     <thead>
         <tr>
             <th>월</th>
-            <th>총 매출</th>
+            <th>총 매출 (₩)</th>
         </tr>
     </thead>
     <tbody>
+        <!-- 월별 매출 데이터를 출력 -->
         <c:forEach var="sale" items="${monthlySales}">
             <tr>
-                <td>${sale[0]}</td>  <!-- 월 -->
+                <td>${sale[0]}</td>  <!-- 월 (1~12) -->
                 <td>${sale[1]}</td>  <!-- 총 매출 -->
             </tr>
         </c:forEach>
@@ -34,4 +35,3 @@
 
 </body>
 </html>
-

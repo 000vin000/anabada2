@@ -26,11 +26,14 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
     Long sumTotalSalesByWeek(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
     // 월매출 데이터 구하기 (월별)
-    @Query("SELECT MONTH(p.payCompletedDate), SUM(p.payPrice) " +
-           "FROM Payment p WHERE p.payStatus = 'paid' AND p.payCompletedDate BETWEEN :startDate AND :endDate " +
-           "GROUP BY MONTH(p.payCompletedDate) ORDER BY MONTH(p.payCompletedDate)")
-    List<Object[]> sumTotalSalesByMonth(@Param("startDate") LocalDateTime startDate, 
-                                         @Param("endDate") LocalDateTime endDate);
+    @Query("SELECT EXTRACT(MONTH FROM p.payCompletedDate) AS month, SUM(p.payPrice) AS totalSales " +
+    	       "FROM Payment p " +
+    	       "WHERE p.payStatus = 'paid' AND p.payCompletedDate BETWEEN :startDate AND :endDate " +
+    	       "GROUP BY EXTRACT(MONTH FROM p.payCompletedDate) " +
+    	       "ORDER BY month")
+    	List<Object[]> sumTotalSalesByMonth(@Param("startDate") LocalDateTime startDate, 
+    	                                     @Param("endDate") LocalDateTime endDate);
+
     
     @Query("SELECT p FROM Payment p WHERE p.payCompletedDate BETWEEN :startDate AND :endDate")
     List<Payment> findPaymentsByDateRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);

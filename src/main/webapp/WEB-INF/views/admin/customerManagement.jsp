@@ -177,6 +177,35 @@
         </table>
     </div>
     
+    <!-- 탈퇴 사용자 목록 테이블 -->
+    <div class="container mt-5">
+        <h2>탈퇴 신청 목록</h2>
+        <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>일련번호</th>
+                    <th>사용자 ID</th>
+                    <th>이메일</th>
+                    <th>탈퇴 타입</th>
+                    <th>탈퇴 사유</th>
+                    <th>생성일자</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="withdrawal" items="${withdrawals}">
+                    <tr>
+                        <td>${withdrawal.withdrawalNo}</td>
+                        <td>${withdrawal.user.userId}</td>
+                        <td>${withdrawal.withdrawalEmail}</td>
+                        <td>${withdrawal.withdrawalType}</td>
+                        <td>${withdrawal.withdrawalReason}</td>
+                        <td>${withdrawal.withdrawalCreatedDate}</td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </div>
+    
 
 </body>
 </html>
