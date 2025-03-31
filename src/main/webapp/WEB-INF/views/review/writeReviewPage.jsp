@@ -9,23 +9,37 @@
 <body>
 <div class="body-container">
 	<div class="product-info">
-	    <img src="http://192.168.0.41:8080/image/${item_no}" alt="상품 이미지">
-	    <h2>상품명</h2>
-	    <p>가격: ₩xx,xxx</p>
+	    <img src="http://192.168.0.41:8080/image/${item_no}" alt="${item_title}">
+	    <h2>${item_title}</h2>
 	</div>
-	<div class="review-form">
+	<form id="reviewForm">
+	  <div>
 	    <label>별점:</label>
-	    <div class="star-rating">
-	        <input type="radio" id="star5" name="rating" value="5"><label for="star5">⭐</label>
-	        <input type="radio" id="star4" name="rating" value="4"><label for="star4">⭐</label>
-	        <input type="radio" id="star3" name="rating" value="3"><label for="star3">⭐</label>
-	        <input type="radio" id="star2" name="rating" value="2"><label for="star2">⭐</label>
-	        <input type="radio" id="star1" name="rating" value="1"><label for="star1">⭐</label>
+	    <div id="reviewRating">
+	      <!-- 별점: 0.5 ~ 5.0까지 0.5 단위 -->
+	      <span>
+	        <input type="radio" id="star5" name="reviewRating" value="5.0"><label for="star5">★</label>
+	        <input type="radio" id="star4_5" name="reviewRating" value="4.5"><label for="star4_5">☆</label>
+	        <input type="radio" id="star4" name="reviewRating" value="4.0"><label for="star4">★</label>
+	        <input type="radio" id="star3_5" name="reviewRating" value="3.5"><label for="star3_5">☆</label>
+	        <input type="radio" id="star3" name="reviewRating" value="3.0"><label for="star3">★</label>
+	        <input type="radio" id="star2_5" name="reviewRating" value="2.5"><label for="star2_5">☆</label>
+	        <input type="radio" id="star2" name="reviewRating" value="2.0"><label for="star2">★</label>
+	        <input type="radio" id="star1_5" name="reviewRating" value="1.5"><label for="star1_5">☆</label>
+	        <input type="radio" id="star1" name="reviewRating" value="1.0"><label for="star1">★</label>
+	        <input type="radio" id="star0_5" name="reviewRating" value="0.5"><label for="star0_5">☆</label>
+	      </span>
 	    </div>
+	  </div>
 	
-	    <textarea id="reviewText" placeholder="리뷰를 입력하세요"></textarea>
-	    <button onclick="submitReview()">리뷰 작성</button>
-	</div>
+	  <div>
+	    <label for="reviewContent">리뷰 내용:</label><br>
+	    <textarea id="reviewContent" name="reviewContent" rows="4" cols="50"></textarea>
+	  </div>
+	
+	  <button type="submit">리뷰 등록</button>
+	</form>
 </div>
 </body>
+<script src="/js/review/writeReview.js"></script>
 </html>
