@@ -6,11 +6,11 @@
 <%@ include file="../header.jsp"%>
 <!DOCTYPE html>
 <html>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <head>
 <meta charset="UTF-8">
 <title>${item.itemTitle}</title>
 <link rel="stylesheet" type="text/css" href="/css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 </head>
 <body>
 <body>
@@ -21,8 +21,8 @@
 				<button id="favor-btn" data-item-no="${item.itemNo}">☆</button>
 			</div>
 			<div class="item-action-buttons">
-				<button id="edit-btn" class="action-btn" hidden="hidden">수정</button>
-				<button id="delete-btn" class="action-btn" hidden="hidden">삭제</button>
+				<button id="edit-btn" class="action-btn" hidden>수정</button>
+				<button id="delete-btn" class="action-btn" hidden>삭제</button>
 				<button id="chatList" class="qna-btn">문의하기</button>
 			</div>
 		</div>
@@ -39,25 +39,28 @@
 						</c:forEach>
 					</div>
 				</c:if>
-				<c:if test="${item.imageCount == 0}">
+				<c:if test="${item.imageCount eq 0}">
 					<div class="gallery-main-image"
 						style="display: flex; align-items: center; justify-content: center; color: #999">
-						이미지가 없습니다</div>
+						이미지가 없습니다
+					</div>
 				</c:if>
 			</div>
 
 			<div class="item-info-section">
-				<div class="time-section">
+				<div id="time-section" class="time-section"
+					${(item.itemStatus ne '대기중' and item.itemStatus ne '판매중') ? 'hidden' : ''}>
 					<span id=remain-time-heading>경매 종료까지 남은 시간</span>
 					<span id="remain-time">계산 중</span>
 				</div>
 
 				<div class="bid-section">
-					<h2 id="price-heading">현재가</h2>
+					<h2 id="price-heading">${item.itemStatus}</h2>
 					<span id="price">${item.getFormattedPrice(item.itemPrice)} 원</span>
 
-					<div>
-						<label for="price-heading">희망 입찰가</label>
+					<div id="price-input-section" ${item.itemStatus ne '판매중' ? 'hidden' : ''}>
+						<br>
+						<h2 id="price-heading">희망 입찰가</h2>
 						<div class="bid-input-group">
 							<input type="number" id="price-text" min="0" step="100"
 								placeholder="입찰 금액을 입력하세요"> <input type="submit"
@@ -87,13 +90,13 @@
 				<div class="detail-item">
 					<span class="detail-label">경매 기간</span>
 					<span class="detail-value">
-						${(item.itemSaleStartDate != null) ? item.getFormattedDate(item.itemSaleStartDate).concat(" ~ ") : ""}
-						${(item.itemSaleEndDate != null) ? item.getFormattedDate(item.itemSaleEndDate) : "무기한"}
+						${(item.itemSaleStartDate ne null) ? item.getFormattedDate(item.itemSaleStartDate).concat(" ~ ") : ""}
+						${(item.itemSaleEndDate ne null) ? item.getFormattedDate(item.itemSaleEndDate) : "무기한"}
 						<span id="status">${item.itemStatus}</span>
 					</span>
 				</div>
 
-				<c:if test="${item.itemQuality != null}">
+				<c:if test="${not empty item.itemQuality}">
 					<div class="detail-item">
 						<span class="detail-label">품질</span>
 						<span class="detail-value">${item.itemQuality}</span>
@@ -107,238 +110,246 @@
 		<button onclick="window.history.back()" class="back-button">뒤로가기</button>
 	</div>
 
-
 	<jsp:include page="../sidebar.jsp" />
 	<jsp:include page="../footer.jsp" />
-</body>
-<script src="/js/recent/config.js"></script>
-<script src="/js/recent/addRecent.js"></script>
-<script src="/js/recent/getRecent_sidebar.js"></script>
-<script src="/js/favor/favorItem.js"></script>
-<script>
-	function addCommas(num) {
-	    if (isNaN(num)) {
-	        return num;
-	    }
 	
-	    num = Number(num).toString();
-	    return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-	}
-</script>
-<script>
-	const isLoggedIn = ${isLoggedIn};
-	const userNo = ${userNo};
-	const itemNo = ${item.itemNo};
-	const sellerNo = ${item.sellerNo};
-	const editBtn = document.getElementById("edit-btn");
-	const deleteBtn = document.getElementById("delete-btn");
-	const bidBtn = document.getElementById("bid-btn");
-	const priceText = document.getElementById("price-text");
-	let intervals = [];
-	let status = "";
-	let remainTime = 0;
-
-	document.addEventListener("DOMContentLoaded", async function() {
-		if(isLoggedIn) {
-			initIfOwner(userNo, sellerNo);
+	<script src="/js/recent/config.js"></script>
+	<script src="/js/recent/addRecent.js"></script>
+	<script src="/js/recent/getRecent_sidebar.js"></script>
+	<script src="/js/favor/favorItem.js"></script>
+	<script>
+		function addCommas(num) {
+		    if (isNaN(num)) {
+		        return num;
+		    }
+		
+		    num = Number(num).toString();
+		    return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		}
-		updateStatus(itemNo);
-		//itemDetail 페이지 타입별 분리시, itemSaleType 검사하는 if 조건 제거
-		if(`${item.itemSaleType}` === "경매" && `${item.itemSaleEndDate}` != null) {
+	</script>
+	<script>
+		const isLoggedIn = ${isLoggedIn};
+		const userNo = ${userNo};
+		const itemNo = ${item.itemNo};
+		const sellerNo = ${item.sellerNo};
+		
+		const priceInputSection = document.getElementById("price-input-section");
+		const timeSection = document.getElementById("time-section");
+		const editBtn = document.getElementById("edit-btn");
+		const deleteBtn = document.getElementById("delete-btn");
+		const bidBtn = document.getElementById("bid-btn");
+		const priceText = document.getElementById("price-text");
+		
+		let intervals = [];
+		let status = "";
+	
+		document.addEventListener("DOMContentLoaded", async function() {
 			await updateStatus(itemNo);
-			let inner = await updateRemainTime(itemNo);
-			await inner();
-			
-			startInterval(() => updatePrice(itemNo), 1000);
-			startInterval(inner, 1000);
-		}
-	});
-	
-	function initIfOwner(userNo, sellerNo) {
-		if (userNo === sellerNo) {
-            priceText.disabled = true;
-            bidBtn.disabled = true;
-            editBtn.hidden = false;
-            deleteBtn.hidden = false;
-		}
-	}
-	
-	function startInterval(f, s) {
-	    let interval = setInterval(f, s);
-	    intervals.push(interval);
-	}
-    
-    function stopAllIntervals() {
-        intervals.forEach(id => clearInterval(id));
-        intervals = [];
-    }
-    
-    function changeMainImage(src) {
-        document.getElementById('main-image').src = src;
-    }
-    
-    priceText.addEventListener("keypress", function(e) {
-        if (!/^\d$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab") {
-            e.preventDefault();
-        }
-    });
-
-    priceText.addEventListener("input", function() {
-        this.value = this.value.replace(/[^\d]/g, "");
-    });
-
-    bidBtn.addEventListener("click", function() {
-        const price = priceText.value;
-        
-        if (!price.trim() || isNaN(Number(price))) {
-            return;
-        }
-        if (${empty item.pointBalance}) {
-        	Swal.fire({
-      			title: "포인트 계정 검색 오류",
-      			html: `<p>포인트 계정이 없습니다.</p>
-      				   <p>포인트 페이지로 이동하시겠습니까?</p>`,
-				icon: "error",
-				showCancelButton: true,
-				confirmButtonText: "이동",
-				cancelButtonText: "취소"
-      		});
-        	//point_account url
-        	return;
-        }
-        
-        const pointBalance = parseFloat("${item.pointBalance}");
-        if (pointBalance < price) {
-        	Swal.fire({
-        		title: "포인트 잔액 부족",
-        		html: "현재 포인트 잔액은 <b>" + addCommas(pointBalance) + "원</b>입니다.",
-        		icon: "error",
-        		confirmButtonText: "확인"
-        	});
-            return;
-        }
-        
-        Swal.fire({
-        	title: "입찰 확인",
-        	html: "<p>현재 포인트 잔액은 <b>" + addCommas(pointBalance) + "원</b>입니다.</p>"
-        		+ "<p><b>" + addCommas(price) + "원</b>으로 입찰하시겠습니까?</p>",
-        	icon: "question",
-        	showCancelButton: true,
-        	confirmButtonText: "입찰",
-        	cancelButtonText: "취소"
-        }).then((result) => {
-       		if (result.isConfirmed) {
-       			fetch(`/item/detail/${itemNo}/bid`, {
-                     method: "PATCH",
-                     headers: {
-             	     	 "Authorization": `Bearer ${localStorage.getItem("Token")}`,
-                         "Content-Type": "application/json"
-                     },
-                     body: JSON.stringify({ newPrice: price })
-				})
-				.then(response => {
-					if (!response.ok) {
-						return response.text()
-						.then(message => { throw new Error(message); });
-					}
-					return response.text();
-                 })
-                 .then(data => {
-					Swal.fire("입찰 완료", data, "success");
-					})
-					.catch(error => {
-					Swal.fire("오류", error.message, "error");
-				});
+			if((status === "대기중" || status === "판매중") && `${item.itemSaleEndDate}` != null) {
+				await startInterval(() => updateStatus(itemNo));
+				let inner = await updateRemainTime(itemNo);
+				await inner();
+				
+				startInterval(() => updatePrice(itemNo), 1000);
+				startInterval(inner, 1000);
 			}
 		});
-    });
-	
-    function openWindow(name, url) {
-        window.open(
-            url, name, "width=650,height=800,scrollbars=yes"
-        );
-    }
-
-    function updatePrice(itemNo) {
-        fetch(`/item/detail/${itemNo}/price`)
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("price").innerText = addCommas(data) + " 원";
-            })
-    }
-
-    async function updateStatus(itemNo) {
-    	try {
-	        let response = await fetch(`/item/detail/${itemNo}/status`);
-	        let data = await response.text();
-	        status = data;
-			console.log(status);
-	
-	        if (data === "판매완료" || data === "종료") {
-	            stopAllIntervals();
-
-				document.getElementById("remain-time-heading").innerText = "";
-	            const priceHeading = document.getElementById("price-heading");
-	            const heading = (data === "예약중" || data === "판매완료") ? "낙찰가" : "종료가";
-	            priceHeading.childNodes[0].textContent = heading;
+		
+		function startInterval(f, s) {
+		    let interval = setInterval(f, s);
+		    intervals.push(interval);
+		}
+	    
+	    function stopAllIntervals() {
+	        intervals.forEach(id => {
+	        	clearInterval(id);
+	        	console.log("stopped interval id: " + id)
+	        	});
+	        intervals = [];
+	    }
+	    
+	    function changeMainImage(src) {
+	        document.getElementById("main-image").src = src;
+	    }
+	    
+	    priceText.addEventListener("keypress", function(e) {
+	        if (!/^\d$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab") {
+	            e.preventDefault();
 	        }
+	    });
+	
+	    priceText.addEventListener("input", function() {
+	        this.value = this.value.replace(/[^\d]/g, "");
+	    });
+	
+	    bidBtn.addEventListener("click", function() {
+	        const price = priceText.value;
+	        
+	        if (!price.trim() || isNaN(Number(price))) {
+	            return;
+	        }
+	        if (${empty item.pointBalance}) {
+	        	Swal.fire({
+	      			title: "포인트 계정 검색 오류",
+	      			html: `<p>포인트 계정이 없습니다.</p>
+	      				   <p>포인트 페이지로 이동하시겠습니까?</p>`,
+					icon: "error",
+					showCancelButton: true,
+					confirmButtonText: "이동",
+					cancelButtonText: "취소"
+	      		});
+	        	//point_account url
+	        	return;
+	        }
+	        
+	        const pointBalance = parseFloat("${item.pointBalance}");
+	        if (pointBalance < price) {
+	        	Swal.fire({
+	        		title: "포인트 잔액 부족",
+	        		html: "현재 포인트 잔액은 <b>" + addCommas(pointBalance) + "원</b>입니다.",
+	        		icon: "error",
+	        		confirmButtonText: "확인"
+	        	});
+	            return;
+	        }
+	        
+	        Swal.fire({
+	        	title: "입찰 확인",
+	        	html: "<p>현재 포인트 잔액은 <b>" + addCommas(pointBalance) + "원</b>입니다.</p>"
+	        		+ "<p><b>" + addCommas(price) + "원</b>으로 입찰하시겠습니까?</p>",
+	        	icon: "question",
+	        	showCancelButton: true,
+	        	confirmButtonText: "입찰",
+	        	cancelButtonText: "취소"
+	        }).then((result) => {
+	       		if (result.isConfirmed) {
+	       			fetch(`/item/detail/${itemNo}/bid`, {
+	                     method: "PATCH",
+	                     headers: {
+	             	     	 "Authorization": `Bearer ${localStorage.getItem("Token")}`,
+	                         "Content-Type": "application/json"
+	                     },
+	                     body: JSON.stringify({ newPrice: price })
+					})
+					.then(response => {
+						if (!response.ok) {
+							return response.text()
+							.then(message => { throw new Error(message); });
+						}
+						return response.text();
+	                 })
+	                 .then(data => {
+						Swal.fire("입찰 완료", data, "success");
+						})
+						.catch(error => {
+						Swal.fire("오류", error.message, "error");
+					});
+				}
+			});
+	    });
+		
+	    function openWindow(name, url) {
+	        window.open(
+	            url, name, "width=650,height=800,scrollbars=yes"
+	        );
+	    }
+	
+	    function updatePrice(itemNo) {
+	        fetch(`/item/detail/${itemNo}/price`)
+	            .then(response => response.text())
+	            .then(data => {
+	                document.getElementById("price").innerText = addCommas(data) + " 원";
+	            })
+	    }
+	
+	    async function updateStatus(itemNo) {
+	    	try {
+		        let response = await fetch(`/item/detail/${itemNo}/status`);
+		        let data = await response.text();
+		        status = data;
+		
+		        if (data !== "대기중" && data !== "판매중") {
+		            stopAllIntervals();
+		            priceInputSection.hidden = true;
+		            timeSection.hidden = true;
+		        }
+	
+		        document.getElementById("status").innerText = data;
+		        document.getElementById("price-heading").innerText = data;
+	    	} catch (error) {
+	            console.error("updateStatus(itemNo): ", error);
+	        }
+	    }
+		
+		async function getRemainTime(itemNo) {
+			const response = await fetch(`/item/detail/${itemNo}/remainTime`);
+	        const data = await response.json();
+	        const { remainTime, type } = data;
+	        document.getElementById("remain-time-heading").innerText = "경매 " + type + "까지 남은 시간";
+	        return { remainTime, type };
+		}
+	
+		async function updateRemainTime(itemNo) {
+			response = await getRemainTime(itemNo);
+			let { remainTime } = response;
+			const { type } = response;
 	    	
-	        if (data != "판매중") {
-	            priceText.disabled = true;
-	            bidBtn.disabled = true;
-	        }
-
-	        document.getElementById("status").innerText = data;
-    	} catch (error) {
-            console.error("updateStatus(itemNo): ", error);
-        }
-    }
+	    	let inner = async function() {
+	    		if (remainTime <= 0) {
+	    			if (type === "종료") {
+	    				return;
+	    			} else if (await waitForStatus(itemNo, "판매중")) {
+	    				remainTime = (await getRemainTime(itemNo)).remainTime;
+	    				priceInputSection.hidden = false;
+	    			}
+	    		}
 	
-	async function initRemainTime(itemNo, type) {
-		const response = await fetch(`/item/detail/${itemNo}/remainTime/` + type);
-        const data = await response.json();
-        const typeText = (type === "start") ? "시작" : "종료";
-        remainTime = data;
-        document.getElementById("remain-time-heading").innerText = "경매 " + typeText + "까지 남은 시간";
-	}
-
-	async function updateRemainTime(itemNo) {
-    	let type = (status === "대기중") ? "start" : "end";
-    	await initRemainTime(itemNo, type);
-    	
-    	let inner = async function() {
-    		if (remainTime <= 0) {
-    			await updateStatus(itemNo);
-    			
-    			if (status !== "판매중") {
-    				return;
-    			} else {
-    				await initRemainTime(itemNo, "end");    				
-    			}
-    		}
-
-    		let days = Math.floor(remainTime / 86400);
-            let hours = Math.floor((remainTime % 86400) / 3600);
-            let minutes = Math.floor((remainTime % 3600) / 60);
-            let seconds = remainTime % 60;
-
-            let timeText = "";
-            if (days > 0) {
-            	timeText += days + "일 ";
-            }
-            if (hours > 0) {
-            	timeText += hours + "시간 ";
-            }
-            if (minutes > 0) {
-            	timeText += minutes + "분 ";
-            }
-            timeText += seconds + "초";
-
-            document.getElementById("remain-time").innerText = timeText;
-            remainTime--;
-        };
-        
-        return inner;
-    }
-</script>
+	            document.getElementById("remain-time").innerText = formatTimeText(remainTime);
+	            remainTime--;
+	        };
+	        
+	        return inner;
+	    }
+		
+		function formatTimeText(remainTime) {
+			let days = Math.floor(remainTime / 86400);
+	        let hours = Math.floor((remainTime % 86400) / 3600);
+	        let minutes = Math.floor((remainTime % 3600) / 60);
+	        let seconds = remainTime % 60;
+	
+	        let timeText = "";
+	        if (days > 0) timeText += days + "일 ";
+	        if (hours > 0) timeText += hours + "시간 ";
+	        if (minutes > 0) timeText += minutes + "분 ";
+	        if (seconds > 0) timeText += seconds + "초";
+	        
+	        return timeText;
+		}
+	
+		async function waitForStatus(itemNo, targetStatus, maxAttempts = 10, interval = 500) {
+		    if (status === targetStatus) {
+		        return true;
+		    }
+		    
+		    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+		        try {
+		            const response = await fetch(`/item/detail/${itemNo}/status`);
+		            const currentStatus = await response.text();
+		            
+		            status = currentStatus;
+		            
+		            if (currentStatus === targetStatus) {
+		                return true;
+		            }
+		            
+		            await new Promise(resolve => setTimeout(resolve, interval));
+		        } catch (error) {
+		            console.error("waitForStatus(itemNo, targetStatus): " + error);
+		        }
+		    }
+		    
+		    return false;
+		}
+	</script>
+</body>
 </html>

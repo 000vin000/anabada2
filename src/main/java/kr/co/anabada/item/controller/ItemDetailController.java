@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.anabada.item.dto.ItemDetailDTO;
+import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.item.service.ItemDetailService;
 import kr.co.anabada.jwt.JwtAuthHelper;
 import kr.co.anabada.jwt.UserTokenInfo;
@@ -49,22 +50,15 @@ public class ItemDetailController {
 		return "item/itemDetail";
 	}
 	
-	private Long calculateRemainTime(LocalDateTime itemDate) {
-        LocalDateTime now = LocalDateTime.now();
-        Duration duration = Duration.between(now, itemDate);
-        return duration.getSeconds();
-    }
-	
-	@GetMapping("/remainTime/{type}")
+	@GetMapping("/remainTime")
 	@ResponseBody
-	public Long getRemainTime(@PathVariable Integer itemNo, @PathVariable String type) {
-		switch(type) {
-		case "start":
-			return calculateRemainTime(itemDetailService.getSaleStartDate(itemNo));
-		case "end":
-			return calculateRemainTime(itemDetailService.getSaleEndDate(itemNo));
-		}
-		return null;
+	public Map<String, Object> getRemainTime(@PathVariable Integer itemNo) {
+		Item item = itemDetailService.getItem(itemNo);
+
+		System.out.println(item.getTimeLeft().getSeconds() + ", " + (item.isWaiting() ? "시작": "종료"));
+		return Map.of(
+				"remainTime", item.getTimeLeft().getSeconds(),
+				"type", item.isWaiting() ? "시작": "종료");
 	}
 	
 	@GetMapping("/price")
