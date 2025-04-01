@@ -12,13 +12,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
+import kr.co.anabada.coin.dto.ChangeCoinDTO;
 import kr.co.anabada.coin.entity.Account;
 import kr.co.anabada.coin.entity.Conversion;
 import kr.co.anabada.coin.entity.Goods;
 import kr.co.anabada.coin.service.AccountService;
+import kr.co.anabada.coin.service.ChangeCoinService;
 import kr.co.anabada.coin.service.ConversionService;
 import kr.co.anabada.coin.service.GoodsService;
 import kr.co.anabada.jwt.JwtAuthHelper;
@@ -39,6 +42,9 @@ public class CoinRestController {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private ChangeCoinService coinService;
+    
     // 마이페이지에 현재 정보 추가
     @GetMapping
     public ResponseEntity<?> checkCurrentCashCoin(HttpServletRequest req) {
@@ -126,5 +132,21 @@ public class CoinRestController {
     	System.out.println(chargeList);
     	
     	return ResponseEntity.ok(Map.of("chargeList", chargeList));
+    }
+    
+    // 코인 사용 내역
+    @GetMapping("/useCoinList")
+    public ResponseEntity<?> getUseCoinList(HttpServletRequest req) {
+    	UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
+    	if (user == null) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "로그인이 필요합니다."));
+        }
+    	
+    	List<ChangeCoinDTO> coinList = coinService.getUseList(user.getUserNo());
+    	System.out.println(coinList);
+    	
+    	return ResponseEntity.ok(Map.of("coinList", coinList));
     }
 }
