@@ -9,8 +9,8 @@
     <title>대시보드</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js 라이브러리 추가 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-   <style>
-         nav {
+    <style>
+        nav {
             margin-bottom: 20px;
         }
         nav ul {
@@ -31,8 +31,7 @@
         nav ul li a:hover {
             text-decoration: underline;
         }
-        
-        
+
         .dashboard-box {
             margin: 20px;
             padding: 20px;
@@ -68,9 +67,8 @@
         </ul>
     </nav>
 
-
     <h1>관리자 대시보드</h1>
-    
+
     <div class="dashboard-box">
         <h3>일매출</h3>
         <p><strong>₩${todaySalesAmount}</strong></p>
@@ -85,7 +83,7 @@
 
     <div class="dashboard-box">
         <h3>월매출</h3>
-       	 <p><strong>₩${monthlySalesTotal}</strong></p>
+        <p><strong>₩${monthlySalesTotal}</strong></p>
         <a href="/monthly-details">상세보기</a>
     </div>
 
@@ -119,13 +117,13 @@
         };
 
         // 월매출 그래프 데이터 설정
+        const monthlySalesAmounts = ${monthlySalesGraphAmounts};
+
         const monthlySalesData = {
-            labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],  // 1월 ~ 12월
             datasets: [{
                 label: '월매출',
-                data: [<c:forEach var="amount" items="${monthlySalesAmounts}">
-                    ${amount},
-                </c:forEach>],
+                data: monthlySalesAmounts,
                 borderColor: 'rgba(153, 102, 255, 1)',
                 borderWidth: 2,
                 fill: false
@@ -170,6 +168,9 @@
                         title: {
                             display: true,
                             text: '금액 (₩)'
+                        },
+                        ticks: {
+                            beginAtZero: true
                         }
                     }
                 }

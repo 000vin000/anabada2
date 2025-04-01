@@ -12,13 +12,18 @@ public class JwtAuthHelper {
 
     public UserTokenInfo getUserFromRequest(HttpServletRequest request) {
         String token = jwtUtil.extractAccessToken(request);
+        
         if (token != null && jwtUtil.validateToken(token)) {
             String userId = jwtUtil.extractUserId(token);
             Integer userNo = toInteger(jwtUtil.extractClaim(token, "userNo"));  
             String userType = toString(jwtUtil.extractClaim(token, "userType"));
             String nickname = toString(jwtUtil.extractClaim(token, "nickname"));
 
-            return new UserTokenInfo(userId, userNo, userType, nickname);
+            UserTokenInfo userTokenInfo = new UserTokenInfo(userId, userNo, userType, nickname);
+            
+            System.out.println("userTokenInfo: " + userTokenInfo);
+            
+            return userTokenInfo;
         }
         return null;
     }

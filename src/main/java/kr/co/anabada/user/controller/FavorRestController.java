@@ -107,3 +107,4 @@ public class FavorRestController {
 		return ResponseEntity.ok(sellerList != null ? sellerList : Collections.emptyList());
 	}
 }
+
