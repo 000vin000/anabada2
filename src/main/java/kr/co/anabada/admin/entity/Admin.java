@@ -1,16 +1,7 @@
 package kr.co.anabada.admin.entity;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
-import org.hibernate.annotations.CreationTimestamp;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -27,38 +18,27 @@ import lombok.NoArgsConstructor;
 @Table(name = "Admin")
 public class Admin {
 
-	 @Id
-	 @GeneratedValue(strategy = GenerationType.IDENTITY)  
-	 @Column(name = "adminNo")
-	 private Integer adminNo;  
+    @Id
+    @Column(name = "adminNo", nullable = false)
+    private Integer adminNo;
 
-	 @Column(nullable = false, unique = true, length = 20)
-	 String adminId; 
+    @Column(name = "canManageIndivisual", nullable = false)
+    private Boolean canManageIndivisual = false;
 
-	 @Column(name = "adminPw", nullable = false, length = 100)
-	 private String adminPw;  
+    @Column(name = "canManageBrand", nullable = false)
+    private Boolean canManageBrand = false;
 
-	 @Column(nullable = false)
-	 private Boolean canManageIndivisual = false;  // 개인관리 권한
+    @Column(name = "canManageFinances", nullable = false)
+    private Boolean canManageFinances = false;
 
-	 @Column(nullable = false)
-	 private Boolean canManageBrand = false;  // 브랜드관리 권한
+    @Column(name = "adminDept", nullable = false, length = 30)
+    private String adminDept;
 
-	 @Column(nullable = false)
-	 private Boolean canManageFinances = false;  // 재무관리 권한
+    @Column(name = "adminLevel", nullable = false)
+    private Byte adminLevel = 1; 
+    
+    @ManyToOne
+    @JoinColumn(name = "userNo", nullable = false) 
+    private User userNo; 
 
-	 @Column(nullable = false, length = 30)
-	 private String adminDept;
-
-	 @Enumerated(EnumType.STRING)
-	 @Column(nullable = false)
-	 private AdminLevel adminLevel; 
-
-	 @CreationTimestamp
-	 @Column(nullable = false, updatable = false)
-	 private LocalDateTime adminCreatedDate;  // 생성일자
-	 
-	 public enum AdminLevel {
-		    MANAGER, MASTER
-		}
 }

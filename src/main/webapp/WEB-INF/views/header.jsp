@@ -35,7 +35,7 @@
 
         <!-- 로그인된 사용자 -->
         <div id="itemUpload" style="display: none;">
-            <a href="/mypage/itemup">상품등록</a>
+            <a href="/item/mypage/itemup">상품등록</a>
         </div>
     </header>
 

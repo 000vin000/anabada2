@@ -4,14 +4,15 @@
 	<div class="cashSection" style="background-color: #FFF0F0">
 		<div id="currentCash"><!-- 보유금액 --></div>
 		<button onclick="openChargeCash('금액충전', '/chargeCash')">금액충전</button>
-		<button>충전 내역</button>
+		<button id="chargeList">충전 내역</button>
 		<br>
 		<button onclick="openCashToCoin('코인으로전환', '/toCoin')">코인으로 전환</button>
 		<button id="toCoinList">신청 내역</button>
 	</div>
-	<div class="coinSection">
+	<div class="coinSection" style="background-color: #E6F4F1">
 		<div id="currentCoin"><!-- 보유코인 --></div>
 		<p>거래 내역</p>
+		<p>현금으로 전환</p>
 	</div>
 
     <!-- 모달 스타일 -->
@@ -82,6 +83,26 @@
         }
     </style>
     
+    <!-- 충전 내역 모달 -->
+    <div id="chargeListModal" class="modal" style="display: none;">
+    	<div class="modal-content">
+    		<span class="close" onclick="closeChargeListModal()">&times;</span>
+    		<h2>충전 내역</h2>
+    		<table border="1">
+				<thead>
+					<tr>
+						<th>충전 일자</th>
+						<th>금액</th>
+						<th>충전 방식</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- 내역 -->
+				</tbody>
+			</table>
+    	</div>
+    </div>
+    
 	<!-- 신청 내역 모달 -->
 	<div id="conversionModal" class="modal" style="display: none;">
 		<div class="modal-content">
@@ -103,7 +124,6 @@
 			</table>
 		</div>
 	</div>
-
 </body>
 <script>
 function openChargeCash(name, url) {
@@ -114,4 +134,5 @@ function openCashToCoin(name, url) {
 }
 </script>
 <script src="/js/mypage.js"></script>
+<script src="/js/chargeListModal.js"></script>
 <script src="/js/conversionModal.js"></script>

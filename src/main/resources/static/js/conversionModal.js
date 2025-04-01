@@ -54,13 +54,13 @@ function formatDate(dateString) {
     return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
-// 데이터 받아오기
+// 데이터 보여주기
 function populateConversionHistory(data) {
 	const tbody = document.querySelector("#conversionModal tbody");
 
 	tbody.innerHTML = '';
-
 	console.log(data);
+	
 	if (Array.isArray(data.conList)) {
 		data.conList.forEach(conversion => {
 			const row = document.createElement("tr");
@@ -74,7 +74,7 @@ function populateConversionHistory(data) {
 				<td>${conversion.conversionAmount}</td>
 				<td>${status}</td>
 				<td>${formattedConversionAt}</td>
-				<td><button class="toCoinCancel" data-conversion-no="${conversion.conversionNo}">신청 취소</button></td>
+				${!conversion.conversionAt ? `<td><button class="toCoinCancel" data-conversion-no="${conversion.conversionNo}">신청 취소</button></td>` : '<td></td>'}
 			`;
 			tbody.appendChild(row);
 		});
