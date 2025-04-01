@@ -12,19 +12,20 @@ import kr.co.anabada.user.repository.UserRepository;
 
 @Service
 public class AdminService {
-	@Autowired
-	private UserRepository userRepo;
-	
-	@Autowired
-	private AdminRepository adminRepo;
-	
-	private User getUserById(Integer userNo) {
+   @Autowired
+   private UserRepository userRepo;
+   
+   @Autowired
+   private AdminRepository adminRepo;
+   
+   private User getUserById(Integer userNo) {
         return userRepo.findById(userNo).orElseThrow(() -> new NoSuchElementException("User not found"));
     }
-	
-	// 관리자 찾기
-	public Admin findByUserNo(Integer userNo) {
-		User user = getUserById(userNo);
-		return adminRepo.findByUserNo(user);
-	}
+   
+   // 관리자 찾기
+   public Admin findByUserNo(Integer userNo) {
+      User user = getUserById(userNo);
+      return adminRepo.findByUserNo(user);
+   }
 }
+
