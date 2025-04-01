@@ -46,11 +46,16 @@ public class UserLoginController {
             log.warn("비밀번호 불일치: {}", userId);
             return ResponseEntity.status(401).body(Map.of("message", "비밀번호가 일치하지 않습니다."));
         }
+        
+        String role = "ROLE_USER"; // 기본적으로 'ROLE_USER'
+        if ("ADMIN".equals(user.getUserType().toString())) {
+            role = "ROLE_ADMIN"; // 'ADMIN'일 경우 'ROLE_ADMIN' 부여
+        }
 
         String accessToken = jwtUtil.generateAccessToken(
             user.getUserId(),
             user.getUserNo(),
-            user.getUserType().toString(),
+            role,
             user.getUserNick()
         );
         log.info("로그인 성공! Access 토큰 발급됨: {}", accessToken);
