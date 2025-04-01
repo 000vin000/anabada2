@@ -17,7 +17,7 @@ function loadCurrentCashCoin() {
 		if (data.length != 0) {
 			console.log(data);
 			currentCash.innerHTML = "<p>보유 금액 : " + `${data.goods.goodsCash}` + " 원</p>";
-			currentCoin.innerHTML = "<p>보유 코인 : " + `${data.goods.goodsCoin}` + " 개</p>";
+			currentCoin.innerHTML = "<p>보유 코인 : " + `${data.goods.goodsCoin}` + " 코인</p>";
 			return;
 		}
 	}).catch(error => console.error("사용자 받아오기 실패:", error)); 

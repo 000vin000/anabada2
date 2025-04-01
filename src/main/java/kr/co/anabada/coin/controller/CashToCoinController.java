@@ -2,8 +2,10 @@ package kr.co.anabada.coin.controller;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +34,12 @@ public class CashToCoinController {
 	@PostMapping("/changeChargeToCoin")
 	public ResponseEntity<?> submitChange(HttpServletRequest req, @RequestParam Integer changeCashToCoin) {
 		UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
+		
+		if (user == null) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "로그인이 필요합니다."));
+        }
 		
 		// 충전 신청 금액
 		BigDecimal amount = BigDecimal.valueOf(changeCashToCoin);

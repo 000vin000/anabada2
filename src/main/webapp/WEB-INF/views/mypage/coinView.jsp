@@ -9,9 +9,10 @@
 		<button onclick="openCashToCoin('코인으로전환', '/toCoin')">코인으로 전환</button>
 		<button id="toCoinList">신청 내역</button>
 	</div>
-	<div class="coinSection">
+	<div class="coinSection" style="background-color: #E6F4F1">
 		<div id="currentCoin"><!-- 보유코인 --></div>
 		<p>거래 내역</p>
+		<p>현금으로 전환</p>
 	</div>
 
     <!-- 모달 스타일 -->
