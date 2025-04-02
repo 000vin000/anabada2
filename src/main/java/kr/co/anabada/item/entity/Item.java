@@ -21,14 +21,17 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import kr.co.anabada.user.entity.Seller;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "item")
-@Getter
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "item")
 public class Item {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -17,7 +17,7 @@ import kr.co.anabada.jwt.UserTokenInfo;
 import kr.co.anabada.user.dto.UserPinRequestDto;
 import kr.co.anabada.user.entity.User;
 import kr.co.anabada.user.repository.UserLoginRepository;
-import kr.co.anabada.user.service.UserUpdateService;
+import kr.co.anabada.user.service.UserInfoUpdateService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserPinController {
 
-    private final UserUpdateService userUpdateService;
+    private final UserInfoUpdateService userUpdateService;
     private final JwtTokenHelper jwtTokenHelper;
     private final UserLoginRepository userLoginRepository;
 

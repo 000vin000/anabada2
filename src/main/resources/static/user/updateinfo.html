@@ -7,14 +7,42 @@
 <body>
   <h2>회원정보 수정</h2>
   <form id="updateForm">
-    <label>이름: <input type="text" id="userName" required></label><br>
-    <label>닉네임: <input type="text" id="userNick" required></label><br>
-    <label>전화번호: <input type="text" id="userPhone" required></label><br>
-    <label>주소: <input type="text" id="userAddress" required></label><br>
-    <button type="submit">정보 수정</button>
-  </form>
-  <p id="message"></p>
+    <label for="userId">아이디:</label>
+    <input type="text" id="userId" name="userId" readonly><br>
 
-  <script src="/js/user/updateInfo.js"></script>
+    <label for="userEmail">이메일:</label>
+    <input type="email" id="userEmail" name="userEmail" readonly><br>
+
+    <label for="userName">이름:</label>
+    <input type="text" id="userName" name="userName" readonly><br>
+
+    <label for="userNick">닉네임:</label>
+    <input type="text" id="userNick" name="userNick">
+    <button type="button" id="checkUserNickBtn">중복 체크</button>
+    <span id="userNickCheckMessage" style="margin-left: 10px; font-size: 12px;"></span><br>
+
+    <label for="phone1">전화번호:</label>
+    <input type="text" id="phone1" maxlength="3"> -
+    <input type="text" id="phone2" maxlength="4"> -
+    <input type="text" id="phone3" maxlength="4">
+    <span id="phoneWarning" style="margin-left: 10px; font-size: 12px; color: red;"></span><br>
+
+    <label for="baseAddress">기본 주소:</label>
+    <input type="text" id="baseAddress"><br>
+
+    <label for="detailAddress">상세 주소:</label>
+    <input type="text" id="detailAddress"><br>
+
+    <button type="button" id="updateBtn">수정 완료</button>
+  </form>
+
+<script type="module" src="/js/user/tokenUtil.js"></script>
+<script type="module" src="/js/user/fetchWithAuth.js"></script>
+<script type="module" src="/js/user/authService.js"></script>
+<script type="module" src="/js/user/uiControl.js"></script>
+<script type="module" src="/js/user/updateinfoCheck.js"></script>
+<script type="module" src="/js/user/updateInfo.js"></script>
+<script type="module" src="/js/user/liveValidation.js"></script>
+
 </body>
 </html>
