@@ -47,12 +47,17 @@ public class Account { // 현금 입출금 내역
 	private BigDecimal accountBalance;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
 	private PayType accountPayType = PayType.NOPASSBOOK;
 	
 	@CreationTimestamp
 	@Column(nullable = false, updatable = false)
 	private LocalDateTime accountAt;
+	
+	// 출금 시 - 은행
+	private String accountBankForWithdraw;
+	
+	// 출금 시 - 계좌번호
+	private String accountNumberForWithdraw;
 	
 	public enum PayType {
 		NOPASSBOOK("무통장입금"),
