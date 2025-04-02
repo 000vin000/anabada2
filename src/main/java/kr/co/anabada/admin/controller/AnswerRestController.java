@@ -87,23 +87,4 @@ public class AnswerRestController {
 
         return ResponseEntity.ok(Map.of("message", "답변이 성공적으로 등록되었습니다."));
     }
-    
-    @DeleteMapping("/answer/{questionNo}")
-    public ResponseEntity<?> deleteAnswer(@PathVariable Integer questionNo, HttpServletRequest request) {
-        List<Answer> answers = answerService.getAnswersByQuestionNo(questionNo);
-        
-        if (answers.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "삭제할 답변 정보를 찾을 수 없습니다."));
-        }
-
-        // 답변 내용 삭제 (데이터를 완전히 지우는 게 아니라, 내용만 비우기)
-        for (Answer answer : answers) {
-            answer.setAnswerContent("");  // 답변 내용만 삭제
-            answerService.saveAnswer(answer);
-        }
-
-        return ResponseEntity.ok(Map.of("message", "답변 내용이 삭제되었습니다."));
-    }
-
-
 }
