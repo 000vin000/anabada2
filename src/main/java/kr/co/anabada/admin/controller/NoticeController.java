@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
 @Controller
-@RequestMapping("/notice")
+@RequestMapping("/admin/notice")
 public class NoticeController {
 	
 	@Autowired
@@ -55,7 +55,7 @@ public class NoticeController {
         notice.setAdmin(admin);  // 관리자 번호 할당
         noticeService.saveNotice(notice);
 
-        return "redirect:/management";
+        return "redirect:/admin/management";
     }
     
     // 공지사항 수정 페이지 (선택적으로 구현)
@@ -94,7 +94,7 @@ public class NoticeController {
 
         noticeRepository.save(notice);
 
-        return "redirect:/management";  // 공지사항 목록 페이지로 리다이렉트
+        return "redirect:/admin/management";  // 공지사항 목록 페이지로 리다이렉트
     }
 
 
@@ -108,6 +108,6 @@ public class NoticeController {
 
         noticeRepository.delete(notice);
 
-        return "redirect:/management";  // 공지사항 목록 페이지로 리다이렉트
+        return "redirect:/admin/management";  // 공지사항 목록 페이지로 리다이렉트
     }
 }

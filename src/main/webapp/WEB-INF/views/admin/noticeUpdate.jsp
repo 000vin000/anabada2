@@ -9,7 +9,7 @@
 <body>
     <h1>공지사항 수정</h1>
     
-    <form action="/notice/update/${notice.noticeNo}" method="post">
+    <form action="/admin/notice/update/${notice.noticeNo}" method="post">
         <div>
             <label for="noticeTitle">제목:</label>
             <input type="text" id="noticeTitle" name="noticeTitle" value="${notice.noticeTitle}" required>
@@ -21,7 +21,7 @@
         </div>
         
         <button type="submit">수정하기</button>
-        <a href="/management">취소</a> 
+        <a href="/admin/management">취소</a> 
     </form>
 </body>
 </html>

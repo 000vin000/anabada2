@@ -73,6 +73,6 @@ public class AnswerController {
         // 답변 저장
         answerService.saveAnswer(answer);
 
-        return "redirect:/management"; 
+        return "redirect:/admin/management"; 
     }
 }

@@ -1,6 +1,7 @@
 package kr.co.anabada.coin.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -8,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.anabada.admin.entity.Admin;
 import kr.co.anabada.coin.entity.Conversion;
 import kr.co.anabada.coin.entity.Conversion.ConversionType;
 import kr.co.anabada.coin.repository.ConversionRepository;
@@ -50,5 +52,11 @@ public class ConversionService {
 	// 신청 취소
 	public void deleteConversion(Integer conversionNo) {
 		conversionRepo.deleteById(conversionNo);
+	}
+
+	// 관리자가 수락
+	public int acceptConversion(Integer conversionNo, Admin admin) {
+		LocalDateTime now = LocalDateTime.now();
+		return conversionRepo.updateConversion(conversionNo, admin, now);
 	}
 }

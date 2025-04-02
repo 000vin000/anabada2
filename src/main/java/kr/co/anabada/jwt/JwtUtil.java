@@ -57,7 +57,7 @@ public class JwtUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + expiration));
 
         if (userNo != null) builder.claim("userNo", userNo);
-        if (userType != null) builder.claim("roles", userType);
+        if (userType != null) builder.claim("roles", Collections.singletonList(userType));
         if (nickname != null) builder.claim("nickname", nickname);
 
         return builder
@@ -116,14 +116,8 @@ public class JwtUtil {
     
     public List<String> extractRoles(String token) {
         Object roles = extractClaim(token, "roles");
-        if (roles instanceof String) {
-            // roles가 단일 문자열일 경우 (예: "ADMIN")
-            return Collections.singletonList(roles.toString());
-        } else if (roles instanceof List) {
-            // roles가 리스트일 경우
-            return ((List<?>) roles).stream()
-                    .map(Object::toString)
-                    .collect(Collectors.toList());
+        if (roles instanceof List) {
+            return ((List<?>) roles).stream().map(Object::toString).collect(Collectors.toList());
         }
         return Collections.emptyList();
     }

@@ -3,16 +3,18 @@
 <body>
 	<div class="cashSection" style="background-color: #FFF0F0">
 		<div id="currentCash"><!-- 보유금액 --></div>
-		<button onclick="openChargeCash('금액충전', '/chargeCash')">금액충전</button>
+		<button onclick="openChargeCash('금액 충전', '/chargeCash')">금액충전</button>
 		<button id="chargeList">충전 내역</button>
 		<br>
-		<button onclick="openCashToCoin('코인으로전환', '/toCoin')">코인으로 전환</button>
+		<button onclick="openCashToCoin('코인으로 전환', '/toCoin')">코인으로 전환</button>
 		<button id="toCoinList">신청 내역</button>
 	</div>
 	<div class="coinSection" style="background-color: #E6F4F1">
 		<div id="currentCoin"><!-- 보유코인 --></div>
-		<p>거래 내역</p>
-		<p>현금으로 전환</p>
+		<button id="useCoin">변동 내역</button>
+		<br>
+		<button onclick="openCoinToCash('현금으로 전환', '/toCash')">현금으로 전환</button>
+		<p>전환 내역</p>
 	</div>
 
     <!-- 모달 스타일 -->
@@ -124,6 +126,30 @@
 			</table>
 		</div>
 	</div>
+	
+	<!-- 코인 변동 내역 모달 -->
+	<div id="useCoinModal" class=modal style="display: none;">
+		<div class="modal-content">
+			<span class="close" onclick="closeUseCoinModal()">&times;</span>
+			<h2>코인 변동 내역</h2>
+			<p>
+				<label style="color: blue">코인 획득</label> / <label style="color: red">코인 사용</label>
+			</p>
+			<table border="1">
+				<thead>
+					<tr>
+						<th>일자</th>
+						<th>내용</th>
+						<th>금액</th> <!-- 획득(charge, cancel, winning)/사용(bid, fee, cash) -->
+						<th>상품</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- 내역 -->
+				</tbody>
+			</table>
+		</div>
+	</div>
 </body>
 <script>
 function openChargeCash(name, url) {
@@ -132,7 +158,11 @@ function openChargeCash(name, url) {
 function openCashToCoin(name, url) {
 	window.open(url, name, "width=500,height=300,top=200,left=600,resizable=yes,scrollbars=yes,status=no,menubar=no,toolbar=no,location=no");
 }
+function openCoinToCash(name, url) {
+	window.open(url, name, "width=500,height=300,top=200,left=600,resizable=yes,scrollbars=yes,status=no,menubar=no,toolbar=no,location=no");
+}
 </script>
 <script src="/js/mypage.js"></script>
 <script src="/js/chargeListModal.js"></script>
 <script src="/js/conversionModal.js"></script>
+<script src="/js/useCoinModal.js"></script>

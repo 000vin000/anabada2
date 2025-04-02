@@ -26,4 +26,9 @@ public class MypageController {
 	public String toCoin() {
 		return "mypage/toCoin";
 	}
+	
+	@GetMapping("/toCash")
+	public String toCash() {
+		return "mypage/toCash";
+	}
 }

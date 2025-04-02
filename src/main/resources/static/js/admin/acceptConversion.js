@@ -85,7 +85,7 @@ function showToCashConversionList(data) {
         });
 }
 
-// ✅ 전환 수락 처리
+// 전환 수락 처리
 function acceptConversion(conversionNo) {
     const token = localStorage.getItem("Token");
 
@@ -103,8 +103,8 @@ function acceptConversion(conversionNo) {
         return response.json();
     })
     .then(data => {
-        alert(data.message || "전환이 승인되었습니다.");
-        checkAdminAndGetList(); // ✅ 목록 새로고침
+        alert(data.message || "전환 승인");
+        checkAdminAndGetList(); 
     })
     .catch(error => {
         console.error("전환 승인 에러:", error);
