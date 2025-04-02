@@ -8,13 +8,16 @@
 		<br>
 		<button onclick="openCashToCoin('코인으로 전환', '/toCoin')">코인으로 전환</button>
 		<button id="toCoinList">신청 내역</button>
+		<br>
+		<button onclick="openWithdrawal('출금 신청', '/withdrawal')">출금 신청</button>
+		<button>출금 신청 내역</button>
 	</div>
 	<div class="coinSection" style="background-color: #E6F4F1">
 		<div id="currentCoin"><!-- 보유코인 --></div>
 		<button id="useCoin">변동 내역</button>
 		<br>
 		<button onclick="openCoinToCash('현금으로 전환', '/toCash')">현금으로 전환</button>
-		<p>전환 내역</p>
+		<button id="toCashList">신청 내역</button>
 	</div>
 
     <!-- 모달 스타일 -->
@@ -133,7 +136,7 @@
 			<span class="close" onclick="closeUseCoinModal()">&times;</span>
 			<h2>코인 변동 내역</h2>
 			<p>
-				<label style="color: blue">코인 획득</label> / <label style="color: red">코인 사용</label>
+				<label style="color: blue">획득</label> / <label style="color: red">사용</label>
 			</p>
 			<table border="1">
 				<thead>
@@ -161,8 +164,12 @@ function openCashToCoin(name, url) {
 function openCoinToCash(name, url) {
 	window.open(url, name, "width=500,height=300,top=200,left=600,resizable=yes,scrollbars=yes,status=no,menubar=no,toolbar=no,location=no");
 }
+function openWithdrawal(name, url) {
+	window.open(url, name, "width=500,height=300,top=200,left=600,resizable=yes,scrollbars=yes,status=no,menubar=no,toolbar=no,location=no");
+}
 </script>
 <script src="/js/mypage.js"></script>
 <script src="/js/chargeListModal.js"></script>
 <script src="/js/conversionModal.js"></script>
 <script src="/js/useCoinModal.js"></script>
+<script src="/js/conversionCoinModal.js"></script>

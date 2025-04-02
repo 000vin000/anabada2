@@ -21,7 +21,7 @@
 <script src="../js/cashToCoin.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    let token = localStorage.getItem("Token");
+    const token = localStorage.getItem("Token");
 
     if (!token) {
         document.getElementById("currentCash").innerText = "로그인 필요";
