@@ -61,4 +61,24 @@ public class JwtTokenHelper {
     private String toString(Object value) {
         return value != null ? value.toString() : null;
     }
+    
+    // userNo 추출 ( 정빈 추가 )
+    public UserTokenInfo getUserNoFromRequest(HttpServletRequest req) {
+        // 요청에서 토큰 추출
+        String token = jwtUtil.extractToken(req);
+        
+        // 토큰이 없거나 유효하지 않으면 null 반환
+        if (token == null || !jwtUtil.validateToken(token)) {
+            return null;
+        }
+
+        // 토큰에서 사용자 정보 추출
+        String userId = jwtUtil.extractUserId(token);
+        Integer userNo = (Integer) jwtUtil.extractClaim(token, "userNo");
+        String userType = (String) jwtUtil.extractClaim(token, "userType");
+        String nickname = (String) jwtUtil.extractClaim(token, "nickname");
+
+        // 사용자 정보를 담은 UserTokenInfo 객체 반환
+        return new UserTokenInfo(userId, userNo, userType, nickname);
+    }
 }

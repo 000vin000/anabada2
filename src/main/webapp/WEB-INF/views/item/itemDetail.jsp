@@ -22,7 +22,7 @@
 			<div class="item-action-buttons">
 				<button id="edit-btn" class="action-btn" hidden>수정</button>
 				<button id="delete-btn" class="action-btn" hidden>삭제</button>
-				<button id="chatList" class="qna-btn">문의하기</button>
+				<button id="inquiryBtn">문의하기</button>
 			</div>
 		</div>
 
@@ -116,6 +116,7 @@
 	<script src="/js/recent/addRecent.js"></script>
 	<script src="/js/recent/getRecent_sidebar.js"></script>
 	<script src="/js/favor/favorItem.js"></script>
+	<script src="/js/chat/chatRoom.js"></script>
 	<script>
 		function addCommas(num) {
 		    if (isNaN(num)) {
