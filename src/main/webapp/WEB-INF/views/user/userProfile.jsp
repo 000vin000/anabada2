@@ -14,7 +14,7 @@
 <body>
 	<div class="profile-container">
 		<div class="profile-header">
-			<h1>${profile.userNick}(${profile.userId})의 프로필</h1>
+			<h1>${profile.userNick}(${profile.userId})의프로필</h1>
 			<button id="favor-btn" data-seller-no="${profile.userNo}">☆</button>
 		</div>
 
@@ -40,51 +40,59 @@
 		</div>
 
 		<div class="profile-tabs">
-            <button class="tab-button active" onclick="openTab('sell-tab')">판매 아이템</button>
-            <button class="tab-button" onclick="openTab('buy-tab')">구매 아이템</button>
-        </div>
+			<button class="tab-button active" onclick="openTab('sell-tab')">판매 아이템</button>
+			<button class="tab-button" onclick="openTab('buy-tab')">구매 아이템</button>
+		</div>
 
-        <div id="sell-tab" class="tab-content active">
-            <div class="items-header">
-                <h2>판매 아이템</h2>
-                <div class="sort-dropdown">
-                    <select id="sell-sort-options" onchange="changeSorting('sell', this.value)">
-                        <option value="recent" selected>최신순</option>
-                        <option value="priceAsc">가격 낮은순</option>
-                        <option value="priceDesc">가격 높은순</option>
-                        <option value="titleAsc">제목순</option>
-                    </select>
-                </div>
-            </div>
-            <div id="sell-items-container">
-            <!-- 아이템 목록은 JavaScript로 렌더링 -->
-            </div>
-        </div>
+		<div id="sell-tab" class="tab-content active">
+			<div class="items-header">
+				<h2>판매 아이템</h2>
+				<div class="sort-dropdown">
+					<select id="sell-sort-options" onchange="changeSorting('sell', this.value)">
+						<option value="recent" selected>최신순</option>
+						<option value="priceAsc">가격 낮은순</option>
+						<option value="priceDesc">가격 높은순</option>
+						<option value="titleAsc">제목순</option>
+					</select>
+				</div>
+			</div>
+			<div id="sell-items-container">
+				<!-- 아이템 목록은 JavaScript로 렌더링 -->
+			</div>
+			<div id="sell-pagination" class="pagination-container">
+				<!-- 페이지네이션은 JavaScript로 렌더링 -->
+			</div>
+		</div>
 
 		<div id="buy-tab" class="tab-content">
-            <div class="items-header">
-                <h2>구매 아이템</h2>
-                <div class="sort-dropdown">
-                    <select id="buy-sort-options" onchange="changeSorting('buy', this.value)">
-                        <option value="recent" selected>최신순</option>
-                        <option value="priceAsc">가격 낮은순</option>
-                        <option value="priceDesc">가격 높은순</option>
-                        <option value="titleAsc">제목순</option>
-                    </select>
-                </div>
-            </div>
-            <div id="buy-items-container">
-            <!-- 아이템 목록은 JavaScript로 렌더링 -->
-            </div>
-        </div>
-    </div>
-	
+			<div class="items-header">
+				<h2>구매 아이템</h2>
+				<div class="sort-dropdown">
+					<select id="buy-sort-options" onchange="changeSorting('buy', this.value)">
+						<option value="recent" selected>최신순</option>
+						<option value="priceAsc">가격 낮은순</option>
+						<option value="priceDesc">가격 높은순</option>
+						<option value="titleAsc">제목순</option>
+					</select>
+				</div>
+			</div>
+			<div id="buy-items-container">
+				<!-- 아이템 목록은 JavaScript로 렌더링 -->
+			</div>
+			<div id="buy-pagination" class="pagination-container">
+				<!-- 페이지네이션은 JavaScript로 렌더링 -->
+			</div>
+		</div>
+	</div>
+
 	<script>
 		const contextPath = '${pageContext.request.contextPath}';
 		const userNo = ${profile.userNo};
-		let page = 0;
-		let size = 8;
-		let sort = 'recent';
+		let sellPage = 0;
+		let buyPage = 0;
+		let size = 10;
+		let sellSort = 'recent';
+		let buySort = 'recent';
 		
 		document.addEventListener('DOMContentLoaded', function() {
 		    loadSellItems();
@@ -109,34 +117,133 @@
 	        }
 	    }
 		
+		function changeSorting(type, newSort) {
+		    if (type === 'sell') {
+		        sellSort = newSort;
+		        sellPage = 0;
+		        loadSellItems();
+		    } else if (type === 'buy') {
+		        buySort = newSort;
+		        buyPage = 0;
+		        loadBuyItems();
+		    }
+		}
+		
+		function changePage(type, newPage) {
+		    if (type === 'sell') {
+		        sellPage = newPage;
+		        loadSellItems();
+		    } else if (type === 'buy') {
+		        buyPage = newPage;
+		        loadBuyItems();
+		    }
+		    window.scrollTo({ top: 0, behavior: 'smooth' });
+		}
+		
 		function loadSellItems() {
-		    document.getElementById('sell-items-container').innerHTML = '<p>판매 아이템 로딩 중</p>';
+		    document.getElementById('sell-items-container').innerHTML = '<div class="loading-message">판매 아이템 로딩 중</div>';
 		    
-		    const url = '/user/profile/' + userNo + '/sells?page=' + page + '&size=' + size + '&sort=' + sort;
+		    const url = '/user/profile/' + userNo + '/sells?page=' + sellPage + '&size=' + size + '&sort=' + sellSort;
 		    fetch(url)
 		        .then(response => response.json())
 			    .then(data => {
 			        displayItems(data, 'sell-items-container');
+			        displayPagination(data, 'sell-pagination', 'sell');
 			    })
 		        .catch(error => {
 		            console.error('오류 발생:', error);
-		            document.getElementById('items-container').innerHTML = '<p>데이터 로드 실패</p>';
+		            document.getElementById('items-container').innerHTML = '<div class="empty-message">데이터 로드 실패</div>';
 		        });
 		}
 		
 		function loadBuyItems() {
-		    document.getElementById('buy-items-container').innerHTML = '<p>구매 아이템 로딩 중</p>';
+		    document.getElementById('buy-items-container').innerHTML = '<div class="loading-message">구매 아이템 로딩 중</div>';
 		    
-		    const url = '/user/profile/' + userNo + '/buys?page=' + page + '&size=' + size + '&sort=' + sort;
+		    const url = '/user/profile/' + userNo + '/buys?page=' + buyPage + '&size=' + size + '&sort=' + buySort;
 		    fetch(url)
 		        .then(response => response.json())
 		        .then(data => {
 		            displayItems(data, 'buy-items-container');
+		            displayPagination(data, 'buy-pagination', 'buy');
 		        })
 		        .catch(error => {
 		            console.error('오류 발생:', error);
-		            document.getElementById('items-container').innerHTML = '<p>데이터 로드 실패</p>';
+		            document.getElementById('items-container').innerHTML = '<div class="empty-message">데이터 로드 실패</div>';
 		        });
+		}
+		
+		function displayPagination(data, containerId, type) {
+		    const container = document.getElementById(containerId);
+		    container.innerHTML = '';
+		    
+		    if (!data || !data.totalPages) {
+		        return;
+		    }
+		    
+		    const totalPages = data.totalPages;
+		    const currentPage = data.number;
+		    
+		    const ul = document.createElement('ul');
+		    ul.className = 'pagination';
+		    
+		    const prevLi = document.createElement('li');
+		    const prevLink = document.createElement('a');
+		    prevLink.href = '#';
+		    prevLink.innerHTML = '&laquo;';
+		    
+		    if (currentPage === 0) {
+		        prevLink.className = 'disabled';
+		    } else {
+		        prevLink.onclick = function(e) {
+		            e.preventDefault();
+		            changePage(type, currentPage - 1);
+		        };
+		    }
+		    
+		    prevLi.appendChild(prevLink);
+		    ul.appendChild(prevLi);
+		    
+		    const startPage = Math.max(0, currentPage - 2);
+		    const endPage = Math.min(totalPages - 1, currentPage + 2);
+		    
+		    for (let i = startPage; i <= endPage; i++) {
+		        const pageLi = document.createElement('li');
+		        const pageLink = document.createElement('a');
+		        pageLink.href = '#';
+		        pageLink.textContent = i + 1;
+		        
+		        if (i === currentPage) {
+		            pageLink.className = 'active';
+		        } else {
+		            pageLink.onclick = function(e) {
+		                e.preventDefault();
+		                changePage(type, i);
+		            };
+		        }
+		        
+		        pageLi.appendChild(pageLink);
+		        ul.appendChild(pageLi);
+		    }
+		    
+		    // 다음 버튼
+		    const nextLi = document.createElement('li');
+		    const nextLink = document.createElement('a');
+		    nextLink.href = '#';
+		    nextLink.innerHTML = '&raquo;';
+		    
+		    if (currentPage === totalPages - 1) {
+		        nextLink.className = 'disabled';
+		    } else {
+		        nextLink.onclick = function(e) {
+		            e.preventDefault();
+		            changePage(type, currentPage + 1);
+		        };
+		    }
+		    
+		    nextLi.appendChild(nextLink);
+		    ul.appendChild(nextLi);
+		    
+		    container.appendChild(ul);
 		}
 		
 		function displayItems(data, containerId) {
@@ -144,7 +251,7 @@
 		    container.innerHTML = '';
 
 		    if (!data || !data.content || data.content.length === 0) {
-		        container.innerHTML = '<p>아이템이 없습니다.</p>';
+		        container.innerHTML = '<div class="empty-message">아이템이 없습니다.</div>';
 		        return;
 		    }
 
@@ -152,15 +259,8 @@
 		    grid.className = 'items-grid';
 
 		    data.content.forEach(item => {
-		        const itemNo = item.itemNo;
-		        const itemTitle = item.itemTitle;
-		        const formattedPrice = item.formattedPrice;
-		        const imageUrl = contextPath + '/image/' + itemNo;
-		        const detailUrl = contextPath + '/item/detail/' + itemNo;
-
-		        if (itemNo === undefined || itemTitle === undefined || formattedPrice === undefined) {
-		             return;
-		        }
+		        const imageUrl = contextPath + '/image/' + item.itemNo;
+		        const detailUrl = contextPath + '/item/detail/' + item.itemNo;
 
 		        const link = document.createElement('a');
 		        link.href = detailUrl;
@@ -171,7 +271,7 @@
 
 		        const img = document.createElement('img');
 		        img.src = imageUrl;
-		        img.alt = itemTitle;
+		        img.alt = item.itemTitle;
 		        img.className = 'item-image';
 		        img.onerror = () => {
 		            img.alt = '이미지가 없습니다';
@@ -179,15 +279,43 @@
 
 		        const infoDiv = document.createElement('div');
 		        infoDiv.className = 'item-details';
+		        
+		        const statusDiv = document.createElement('div');
+                statusDiv.className = 'item-status '
+                	+ (item.itemStatus !== '대기중' && item.itemStatus === '판매중' ? 'status-selling' : 'status-sold');
+                statusDiv.textContent = item.itemStatus;
 
 		        const titleDiv = document.createElement('div');
 		        titleDiv.className = 'item-title';
-		        titleDiv.textContent = itemTitle;
+		        titleDiv.textContent = item.itemTitle;
 
 		        const priceDiv = document.createElement('div');
 		        priceDiv.className = 'item-price';
-		        priceDiv.textContent = formattedPrice + '원';
+		        priceDiv.textContent = item.formattedPrice + '원';
+		        
+		        const metaDiv = document.createElement('div');
+                metaDiv.className = 'item-meta';
+                
+                const viewsDiv = document.createElement('div');
+                viewsDiv.className = 'item-meta-item';
+                viewsDiv.innerHTML = '조회 ' + item.viewCount;
+                
+                const bidsDiv = document.createElement('div');
+                bidsDiv.className = 'item-meta-item';
+                bidsDiv.innerHTML = '입찰 ' + item.bidCount;
 
+                metaDiv.appendChild(viewsDiv);
+                metaDiv.appendChild(bidsDiv);
+                
+                if (item.itemSoldDate != null) {
+                    const dateDiv = document.createElement('div');
+                    dateDiv.className = 'item-meta-item';
+                    dateDiv.innerHTML = '낙찰 ' + item.formattedDate;
+                    metaDiv.appendChild(dateDiv);
+                }
+                
+                infoDiv.appendChild(statusDiv);
+                infoDiv.appendChild(metaDiv);
 		        infoDiv.appendChild(titleDiv);
 		        infoDiv.appendChild(priceDiv);
 		        itemCardDiv.appendChild(img);
@@ -199,7 +327,7 @@
 		    container.appendChild(grid);
 		}
 	</script>
-	
+
 	<script src="/js/recent/config.js"></script>
 	<script src="/js/recent/getRecent_sidebar.js"></script>
 	<script src="/js/favor/favorSeller.js"></script>

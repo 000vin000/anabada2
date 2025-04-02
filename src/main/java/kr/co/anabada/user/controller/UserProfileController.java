@@ -37,9 +37,6 @@ public class UserProfileController {
 		model.addAttribute("userNo", userNo);
 		model.addAttribute("profile", profile);
 
-		System.out.println(userNo);
-		System.out.println(profile);
-
 		return "user/userProfile";
 	}
 
@@ -48,7 +45,7 @@ public class UserProfileController {
 	public Page<UserProfileDTO.ItemSummaryDTO> getSellItems(
 			@PathVariable Integer targetUserNo,
 			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "8") int size,
+			@RequestParam(defaultValue = "10") int size,
 			@RequestParam(defaultValue = "recent") String sort) {
 
 		return userProfileService.getSellSummaryDTOs(targetUserNo, page, size, sort);
@@ -59,7 +56,7 @@ public class UserProfileController {
 	public Page<UserProfileDTO.ItemSummaryDTO> getBuyItems(
 			@PathVariable Integer targetUserNo,
 			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "8") int size,
+			@RequestParam(defaultValue = "10") int size,
 			@RequestParam(defaultValue = "recent") String sort) {
 
 		return userProfileService.getBuySummaryDTOs(targetUserNo, page, size, sort);

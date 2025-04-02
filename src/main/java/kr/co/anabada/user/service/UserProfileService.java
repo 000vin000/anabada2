@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
 import kr.co.anabada.item.entity.Item;
+import kr.co.anabada.item.repository.BidRepository;
 import kr.co.anabada.item.repository.ItemDetailRepository;
 import kr.co.anabada.user.dto.UserProfileDTO;
 import kr.co.anabada.user.dto.UserProfileDTO.ItemSummaryDTO;
@@ -29,6 +30,8 @@ public class UserProfileService {
 	private BuyerService buyerService;
 	@Autowired
 	private ItemDetailRepository itemDetailRepository;
+	@Autowired
+	private BidRepository bidRepository;
 
 	public UserProfileDTO getUserProfileDTO(Integer userNo) {
 		User user = userRepository.findById(userNo)
@@ -96,6 +99,8 @@ public class UserProfileService {
 				.itemPrice(item.getItemPrice())
 				.itemStatus(item.getItemStatus().getKorean())
 				.itemSoldDate(item.getItemSoldDate())
+				.viewCount(item.getItemViewCnt())
+				.bidCount(bidRepository.countByItemItemNo(item.getItemNo()))
 				.build();
 	}
 }
