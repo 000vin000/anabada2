@@ -57,10 +57,10 @@
 
         <div>
             <label for="itemSaleType">판매타입</label><br>
-            <label for="itemSaleType0"><input type="radio" id="itemSaleType0" name="itemSaleType" value="auction" required>경매</label>
-            <label for="itemSaleType1"><input type="radio" id="itemSaleType1" name="itemSaleType" value="shop" required>쇼핑</label>
-            <label for="itemSaleType2"><input type="radio" id="itemSaleType2" name="itemSaleType" value="exchange" required>교환</label>
-            <label for="itemSaleType3"><input type="radio" id="itemSaleType3" name="itemSaleType" value="donation" required>기부</label>
+            <label for="itemSaleType0"><input type="radio" id="itemSaleType0" name="itemSaleType" value="AUCTION" required>경매</label>
+            <label for="itemSaleType1"><input type="radio" id="itemSaleType1" name="itemSaleType" value="SHOP" required>쇼핑</label>
+            <label for="itemSaleType2"><input type="radio" id="itemSaleType2" name="itemSaleType" value="EXCHANGE" required>교환</label>
+            <label for="itemSaleType3"><input type="radio" id="itemSaleType3" name="itemSaleType" value="DONATION" required>기부</label>
         </div>
 
         <label for="description" class="uploadContent">내용</label>
@@ -68,9 +68,9 @@
 
         <label for="itemQuality">상품품질</label>
         <div class="uploadCate">
-            <label for="itemQuality0"><input type="radio" id="itemQuality0" name="itemQuality" value="high" required>상</label>
-            <label for="itemQuality1"><input type="radio" id="itemQuality1" name="itemQuality" value="mid" required>중</label>
-            <label for="itemQuality2"><input type="radio" id="itemQuality2" name="itemQuality" value="low" required>하</label>
+            <label for="itemQuality0"><input type="radio" id="itemQuality0" name="itemQuality" value="HIGH" required>상</label>
+            <label for="itemQuality1"><input type="radio" id="itemQuality1" name="itemQuality" value="MEDIUM" required>중</label>
+            <label for="itemQuality2"><input type="radio" id="itemQuality2" name="itemQuality" value="LOW" required>하</label>
         </div>
 
         <div>
@@ -272,22 +272,15 @@
 	    const level2 = document.getElementById("categoryLevel2").value;
 	    const level1 = document.getElementById("categoryLevel1").value;
 	
-	    let categoryNo = "";
-	
-	    // 가장 하위에서 선택된 값으로 설정
-	    if (level3) {
-	        categoryNo = level3;
-	    } else if (level2) {
-	        categoryNo = level2;
-	    } else if (level1) {
-	        categoryNo = level1;
-	    }
-	
-	    if (!categoryNo) {
-	        alert("카테고리를 선택해주세요.");
+	    if (!level1 || !level2 || !level3) {
+	        alert("카테고리를 모두 선택해주세요.");
+	        event.preventDefault();
 	        return false;
 	    }
 	
+	    // 가장 하위에서 선택된 값으로 설정
+	    let categoryNo = "10" + level1 + level2 + level3;
+	    
 	    // hidden input에 categoryNo 값 설정
 	    document.getElementById("categoryNo").value = categoryNo;
 	

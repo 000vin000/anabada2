@@ -39,10 +39,11 @@ public class ItemController {
     // 아이템 등록 처리
     @PostMapping("/mypage/itemup")
     public String submit(@Valid @ModelAttribute("itemupCommand") Item item,
-                         BindingResult errors,
-                         @RequestParam("imageFiles[]") MultipartFile[] imageFiles,
-                         @RequestParam("position") String position,
-                         Model model) {
+    						@RequestParam String categoryNo,
+    						@RequestParam String position,
+							BindingResult errors,
+							@RequestParam("imageFiles[]") MultipartFile[] imageFiles,
+							Model model) {
         
         if (errors.hasErrors()) {
             return "mypage/itemup";  // 오류 발생 시 폼 다시 반환
