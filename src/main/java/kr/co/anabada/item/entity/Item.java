@@ -35,7 +35,7 @@ public class Item {
 	private Integer itemNo;
 
     @ManyToOne
-    @JoinColumn(name = "seller_no", referencedColumnName = "seller_no")
+    @JoinColumn(name = "seller_no", nullable = false)
     private Seller seller;
 
 	@ManyToOne
