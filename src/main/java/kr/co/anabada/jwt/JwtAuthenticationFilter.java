@@ -67,17 +67,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 // SecurityContext에 인증 정보 설정
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                log.info("Authentication successfully set for user: " + userId);
             }
-        }
-
-        // 인증 정보가 SecurityContext에 설정된 후 로그 출력
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            log.info("Current Authentication in SecurityContext: " + authentication.getName());
-            log.info("Roles in SecurityContext: " + authentication.getAuthorities());
-        } else {
-            log.warn("No Authentication found in SecurityContext.");
         }
 
         // 필터 체인을 계속 진행

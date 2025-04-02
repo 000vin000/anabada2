@@ -27,10 +27,7 @@ public class UserDetailsImpl implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
     	 Collection<? extends GrantedAuthority> authorities = 
     		        Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getUserType().name()));
-    		    
-    		    // 권한 리스트 로그 출력
-    		    System.out.println("Authorities: " + authorities);
-    		    
+
     		    return authorities;
     }
     
