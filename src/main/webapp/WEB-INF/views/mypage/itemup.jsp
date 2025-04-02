@@ -59,7 +59,7 @@
         <div>
             <label for="itemSaleType">판매타입</label><br>
             <label for="itemSaleType0"><input type="radio" id="itemSaleType0" name="itemSaleType" value="AUCTION" required>경매</label>
-            <label for="itemSaleType1"><input type="radio" id="itemSaleType1" name="itemSaleType" value="SHOP" required>쇼핑</label>
+            <!-- <label for="itemSaleType1"><input type="radio" id="itemSaleType1" name="itemSaleType" value="SHOP" required>쇼핑</label> 개인은 판매타입을 쇼핑으로 설정할 수 없음 -->
             <label for="itemSaleType2"><input type="radio" id="itemSaleType2" name="itemSaleType" value="EXCHANGE" required>교환</label>
             <label for="itemSaleType3"><input type="radio" id="itemSaleType3" name="itemSaleType" value="DONATION" required>기부</label>
         </div>
