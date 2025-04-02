@@ -1281,47 +1281,27 @@ input[type="radio"] + label {
 
 
 /* userProfile */
-    /* 메인 컨테이너 */
-    .profile-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-    
-    /* 프로필 헤더 */
-    .profile-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-bottom: 2px solid #43BFC7;
-        padding-bottom: 15px;
-        margin-bottom: 30px;
-    }
-    
-    .profile-header h1 {
-        font-size: 24px;
-        color: #222;
-        margin: 0;
-    }
-    
-    #favor-btn {
-        background: none;
-        border: 2px solid #43BFC7;
-        color: #43BFC7;
-        font-size: 20px;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    
-    #favor-btn:hover {
-        background-color: #43BFC7;
-        color: white;
-    }
+.profile-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 20px;
+}
 
-/* userProfile.jsp */
+.profile-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 2px solid #43BFC7;
+	padding-bottom: 15px;
+	margin-bottom: 30px;
+}
+
+.profile-header h1 {
+	font-size: 24px;
+	color: #222;
+	margin: 0;
+}
+
 .profile-info {
 	background: #fff;
 	border-radius: 8px;
@@ -1571,14 +1551,12 @@ input[type="radio"] + label {
 	background-color: #f9f9f9;
 }
 
-/* 로딩 상태 */
 .loading-message {
 	text-align: center;
 	padding: 20px;
 	color: #666;
 }
 
-/* 빈 상태 메시지 */
 .empty-message {
 	text-align: center;
 	padding: 40px 20px;
@@ -1586,6 +1564,8 @@ input[type="radio"] + label {
 	border-radius: 8px;
 	color: #666;
 }
+
+
 
 /* itemDetail.jsp */
 .item-detail-container {
@@ -1637,20 +1617,6 @@ input[type="radio"] + label {
 .action-btn:hover {
     background: #43BFC7;
     color: white;
-}
-
-#favor-btn {
-    font-size: 24px;
-    background: none;
-    border: none;
-    color: #F9A825;
-    cursor: pointer;
-    padding: 0 10px;
-    transition: transform 0.3s ease;
-}
-
-#favor-btn:hover {
-    transform: scale(1.2);
 }
 
 .qna-btn {

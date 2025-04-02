@@ -45,7 +45,7 @@ public class UserProfileController {
 	public Page<UserProfileDTO.ItemSummaryDTO> getSellItems(
 			@PathVariable Integer targetUserNo,
 			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size,
+			@RequestParam(defaultValue = "4") int size,
 			@RequestParam(defaultValue = "recent") String sort) {
 
 		return userProfileService.getSellSummaryDTOs(targetUserNo, page, size, sort);
@@ -56,7 +56,7 @@ public class UserProfileController {
 	public Page<UserProfileDTO.ItemSummaryDTO> getBuyItems(
 			@PathVariable Integer targetUserNo,
 			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size,
+			@RequestParam(defaultValue = "4") int size,
 			@RequestParam(defaultValue = "recent") String sort) {
 
 		return userProfileService.getBuySummaryDTOs(targetUserNo, page, size, sort);
