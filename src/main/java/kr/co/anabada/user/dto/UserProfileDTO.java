@@ -46,6 +46,7 @@ public class UserProfileDTO {
         private LocalDateTime itemSoldDate;
         
         public String getFormattedDate() {
+        	if (itemSoldDate == null) return null;
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
             return itemSoldDate.format(formatter);
         }

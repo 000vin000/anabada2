@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +36,8 @@ public class UserProfileService {
 		Seller seller = sellerService.findById(userNo);
 		Buyer buyer = buyerService.getBuyer(userNo);
 
-		Page<ItemSummaryDTO> sellSummaryPage = getSellSummaryDTOs(userNo, 0, 10);
-		List<ItemSummaryDTO> sellSummaryList = sellSummaryPage.getContent();
+		List<ItemSummaryDTO> recentSellItems = getSellSummaryDTOs(userNo, 0, 10, "recent").getContent();
+		List<ItemSummaryDTO> recentBuyItems = getBuySummaryDTOs(userNo, 0, 10, "recent").getContent();
 
 		UserProfileDTO dto = UserProfileDTO.builder()
 				.userNo(user.getUserNo())
@@ -47,22 +48,54 @@ public class UserProfileService {
 				.sellerAvgRating(seller.getSellerAvgRating())
 				.sellerGrade(seller.getSellerGrade().getKorean())
 				.buyerBidCnt(buyer.getBuyerBidCnt())
-				.sellSummaryDTOs(sellSummaryList)
+				.sellSummaryDTOs(recentSellItems)
+				.buySummaryDTOs(recentBuyItems)
 				.build();
 
 		return dto;
 	}
 
-	public Page<UserProfileDTO.ItemSummaryDTO> getSellSummaryDTOs(Integer userNo, int page, int size) {
-		Pageable pageable = PageRequest.of(page, size);
-		Page<Item> items = itemDetailRepository.findRecentBySellerNo(userNo, pageable);
+	public Page<UserProfileDTO.ItemSummaryDTO> getSellSummaryDTOs(Integer targetUserNo, int page, int size, String sort) {
+		Pageable pageable = mapToItemSort(page, size, sort);
+		Page<Item> items = itemDetailRepository.findBySellerUserUserNo(targetUserNo, pageable);
+		return items.map(this::convertToItemSummaryDTO);
+	}
 
-		return items.map(item -> UserProfileDTO.ItemSummaryDTO.builder()
+	public Page<UserProfileDTO.ItemSummaryDTO> getBuySummaryDTOs(Integer targetUserNo, int page, int size, String sort) {
+		Pageable pageable = mapToItemSort(page, size, sort);
+		Page<Item> items = itemDetailRepository.findBuysByUserNo(targetUserNo, pageable);
+		return items.map(this::convertToItemSummaryDTO);
+	}
+
+	private Pageable mapToItemSort(int page, int size, String sort) {
+		Pageable pageable;
+
+		switch (sort) {
+		case "priceAsc":
+			pageable = PageRequest.of(page, size, Sort.by("itemPrice").ascending());
+			break;
+		case "priceDesc":
+			pageable = PageRequest.of(page, size, Sort.by("itemPrice").descending());
+			break;
+		case "titleAsc":
+			pageable = PageRequest.of(page, size, Sort.by("itemTitle").ascending());
+			break;
+		case "recent":
+		default:
+			pageable = PageRequest.of(page, size, Sort.by("itemCreatedDate").descending());
+			break;
+		}
+
+		return pageable;
+	}
+
+	private ItemSummaryDTO convertToItemSummaryDTO(Item item) {
+		return ItemSummaryDTO.builder()
 				.itemNo(item.getItemNo())
 				.itemTitle(item.getItemTitle())
 				.itemPrice(item.getItemPrice())
 				.itemStatus(item.getItemStatus().getKorean())
 				.itemSoldDate(item.getItemSoldDate())
-				.build());
+				.build();
 	}
 }
