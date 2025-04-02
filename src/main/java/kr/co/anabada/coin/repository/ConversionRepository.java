@@ -24,4 +24,7 @@ public interface ConversionRepository extends JpaRepository<Conversion, Integer>
 	@Query("UPDATE Conversion c SET c.adminNo = :adminNo, c.conversionAt = :now WHERE c.conversionNo = :conversionNo")
 	int updateConversion(Integer conversionNo, Admin adminNo, LocalDateTime now);
 
+	@Query("SELECT c FROM Conversion c WHERE c.userNo = :userNo AND c.conversionType = 'TOCASH'")
+	List<Conversion> toCashfindByUserNo(User userNo);
+
 }

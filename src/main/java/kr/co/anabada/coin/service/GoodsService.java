@@ -44,4 +44,12 @@ public class GoodsService {
 		goods.setGoodsCash(insertAmount);
 		return goodsRepo.save(goods);
 	}
+	
+	// 사용자 보유 코인 업데이트
+	public Goods updateGoodsCoin(Integer userNo, BigDecimal insertAmount) {
+		User user = getUserById(userNo);
+		Goods goods = goodsRepo.findByUser(user);
+		goods.setGoodsCoin(insertAmount);
+		return goodsRepo.save(goods);
+	}
 }

@@ -149,4 +149,42 @@ public class CoinRestController {
     	
     	return ResponseEntity.ok(Map.of("coinList", coinList));
     }
+    
+    // 현금 전환 신청 내역
+    @GetMapping("/conversionToCashList")
+    public ResponseEntity<?> getConversionToCashList(HttpServletRequest req) {
+    	UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
+    	if (user == null) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "로그인이 필요합니다."));
+        }
+    	
+    	List<Conversion> conversion = conversionService.toCashfindByUserNo(user.getUserNo());
+    	System.out.println(conversion);
+    	
+    	return ResponseEntity.ok(Map.of("conList", conversion));
+    }
+    
+    // 현금 전환 신청 내역 삭제
+    @DeleteMapping("/cancelConversionToCash/{conversionNo}")
+    public ResponseEntity<?> deleteConversionToCashList(HttpServletRequest req, @PathVariable Integer conversionNo) {
+    	UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
+    	if (user == null) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "로그인이 필요합니다."));
+        }
+    	
+    	Optional<Conversion> history = conversionService.findByConversionNo(conversionNo);
+    	BigDecimal conversionAmount = history.map(Conversion::getConversionAmount).orElse(BigDecimal.ZERO);
+
+    	Goods goods = goodsService.checkCurrentCashCoin(user.getUserNo());
+    	conversionAmount = conversionAmount.add(goods.getGoodsCoin());
+    	
+    	goodsService.updateGoodsCoin(user.getUserNo(), conversionAmount);
+    	conversionService.deleteConversion(conversionNo);
+    	
+    	return ResponseEntity.ok(Map.of("message", "신청 취소 되었습니다."));
+    }
 }
