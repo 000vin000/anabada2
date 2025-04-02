@@ -1,13 +1,17 @@
 package kr.co.anabada.item.controller;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +32,32 @@ public class ItemController {
     @Autowired
     private ImageService imageService;
     
+
+    @ModelAttribute("itemupCommand")
+    public Item defaultCommand() {
+        return new Item();
+    }
+
+    
+    // 정빈 추가 (상품문의 시 아이템 정보)
+    @GetMapping("/{itemNo}")
+    public ResponseEntity<?> getItem(@PathVariable Integer itemNo) {
+        Item item = itemService.findById(itemNo);
+        if (item == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 아이템을 찾을 수 없습니다.");
+        }
+
+        Map<String, Object> response = Map.of(
+            "itemNo", item.getItemNo(),
+            "itemTitle", item.getItemTitle(),
+            "sellerNo", item.getSeller().getUser().getUserNo()
+        );
+
+        return ResponseEntity.ok(response);
+    }
+    
+    
+
     // 아이템 등록 폼
     @GetMapping("/mypage/itemup")
     public String form(Model model) {
