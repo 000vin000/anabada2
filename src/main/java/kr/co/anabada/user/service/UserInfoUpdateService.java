@@ -5,18 +5,18 @@ import org.springframework.stereotype.Service;
 
 import kr.co.anabada.user.dto.UserInfoUpdateRequestDto;
 import kr.co.anabada.user.entity.User;
-import kr.co.anabada.user.repository.UserLoginRepository;
+import kr.co.anabada.user.repository.UserUpdateRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserUpdateService {
+public class UserInfoUpdateService {
 
-    private final UserLoginRepository userLoginRepository;
+    private final UserUpdateRepository userUpdateRepository;
     private final PasswordEncoder passwordEncoder;
 
     public void createUserPin(Integer userNo, String rawPin) {
-        User user = userLoginRepository.findById(userNo)
+        User user = userUpdateRepository.findById(userNo)
                 .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
 
         if (user.getUserPin() != null) {
@@ -25,26 +25,27 @@ public class UserUpdateService {
 
         String encodedPin = passwordEncoder.encode(rawPin);
         user.setUserPin(encodedPin);
-        userLoginRepository.save(user);
+        userUpdateRepository.save(user);
     }
 
     public boolean checkUserPin(Integer userNo, String inputPin) {
-        User user = userLoginRepository.findById(userNo)
+        User user = userUpdateRepository.findById(userNo)
                 .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
 
         return passwordEncoder.matches(inputPin, user.getUserPin());
     }
-    
+
     public void updateUserInfo(Integer userNo, UserInfoUpdateRequestDto dto) {
-        User user = userLoginRepository.findById(userNo)
+        User user = userUpdateRepository.findById(userNo)
                 .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
 
-        user.setUserName(dto.getUserName());
+
+        String fullAddress = dto.getBaseAddress() + "::" + dto.getDetailAddress();
+
         user.setUserNick(dto.getUserNick());
         user.setUserPhone(dto.getUserPhone());
-        user.setUserAddress(dto.getUserAddress());
+        user.setUserAddress(fullAddress);
 
-        userLoginRepository.save(user);
+        userUpdateRepository.save(user);
     }
-
-} 
+}
