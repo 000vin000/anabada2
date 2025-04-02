@@ -5,17 +5,24 @@
 document.addEventListener("DOMContentLoaded", function () {
     console.log("liveValidation.js 로드됨");
 
-    // 실시간
-    document.getElementById("userId").addEventListener("input", validateUserId);
-    document.getElementById("userPw").addEventListener("input", validatePassword);
-    document.getElementById("userPw2").addEventListener("input", validatePasswordMatch);
-    document.getElementById("phone3").addEventListener("input", validatePhoneNumber);
-    document.getElementById("userEmail").addEventListener("input", validateEmail);
+    const userIdInput = document.getElementById("userId");
+    const userPwInput = document.getElementById("userPw");
+    const userPw2Input = document.getElementById("userPw2");
+    const phone3Input = document.getElementById("phone3");
+    const userEmailInput = document.getElementById("userEmail");
+    const checkUserIdBtn = document.getElementById("checkUserIdBtn");
+    const checkUserNickBtn = document.getElementById("checkUserNickBtn");
 
-    // 중복 체크 버튼
-    document.getElementById("checkUserIdBtn").addEventListener("click", checkUserId);
-    document.getElementById("checkUserNickBtn").addEventListener("click", checkUserNick);
+    if (userIdInput) userIdInput.addEventListener("input", validateUserId);
+    if (userPwInput) userPwInput.addEventListener("input", validatePassword);
+    if (userPw2Input) userPw2Input.addEventListener("input", validatePasswordMatch);
+    if (phone3Input) phone3Input.addEventListener("input", validatePhoneNumber);
+    if (userEmailInput) userEmailInput.addEventListener("input", validateEmail);
+
+    if (checkUserIdBtn) checkUserIdBtn.addEventListener("click", checkUserId);
+    if (checkUserNickBtn) checkUserNickBtn.addEventListener("click", checkUserNick);
 });
+
 
 // 아이디 중복 체크
 function checkUserId() {

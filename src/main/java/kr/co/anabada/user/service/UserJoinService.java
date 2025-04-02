@@ -18,13 +18,13 @@ public class UserJoinService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
-    
-    //아이디 중복 체크
+
+    // 아이디 중복 체크
     public boolean isUserIdAvailable(String userId) {
         return userJoinRepository.findByUserId(userId).isEmpty();
     }
 
-    //닉네임 중복 체크
+    // 닉네임 중복 체크
     public boolean isUserNickAvailable(String userNick) {
         return userJoinRepository.findByUserNick(userNick).isEmpty();
     }
@@ -33,7 +33,7 @@ public class UserJoinService {
         if (userJoinRepository.findByUserId(userJoinDTO.getUserId()).isPresent()) {
             throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
         }
-        
+
         if (userJoinRepository.findByUserNick(userJoinDTO.getUserNick()).isPresent()) {
             throw new IllegalArgumentException("이미 사용 중인 닉네임입니다.");
         }
@@ -44,11 +44,11 @@ public class UserJoinService {
 
         String encryptedPassword = passwordEncoder.encode(userJoinDTO.getUserPw());
 
-        // 주소 합치기
-        String fullAddress = userJoinDTO.getBaseAddress() + " " + userJoinDTO.getDetailAddress();
+        // ✅ [전화번호] 구분자 추가해서 저장
+        String fullPhone = userJoinDTO.getUserPhone();
 
-        // 현재 시간 설정
-        LocalDateTime now = LocalDateTime.now();
+        // ✅ [주소] 구분자(::) 추가해서 저장
+        String fullAddress = userJoinDTO.getBaseAddress() + "::" + userJoinDTO.getDetailAddress();
 
         // 회원 생성
         User user = User.builder()
@@ -57,7 +57,7 @@ public class UserJoinService {
                 .userName(userJoinDTO.getUserName())
                 .userNick(userJoinDTO.getUserNick())
                 .userEmail(userJoinDTO.getUserEmail())
-                .userPhone(userJoinDTO.getUserPhone())
+                .userPhone(fullPhone)
                 .userAddress(fullAddress)
                 .userType(userJoinDTO.getUserType())
                 .userStatus(User.UserStatus.ACTIVE)
@@ -66,7 +66,6 @@ public class UserJoinService {
                 .userWarnCnt((byte) 0)
                 .build();
 
-        // 로그 출력
         log.info("회원가입 요청: {}", user);
 
         userJoinRepository.save(user);
