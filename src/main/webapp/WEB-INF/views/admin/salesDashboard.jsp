@@ -62,8 +62,8 @@
     <nav>
         <ul>
             <!-- '재무관리' 탭을 대시보드로 연결 -->
-            <li><a href="/dashboard">재무관리</a></li> <!-- 대시보드 페이지로 연결 -->
-            <li><a href="/management">고객관리</a></li>
+            <li><a href="/admin/dashboard">재무관리</a></li> <!-- 대시보드 페이지로 연결 -->
+            <li><a href="/admin/management">고객관리</a></li>
         </ul>
     </nav>
 
@@ -72,19 +72,19 @@
     <div class="dashboard-box">
         <h3>일매출</h3>
         <p><strong>₩${todaySalesAmount}</strong></p>
-        <a href="/daily-details">상세보기</a>
+        <a href="/admin/daily-details">상세보기</a>
     </div>
 
     <div class="dashboard-box">
         <h3>주매출</h3>
         <p><strong>₩${weeklySalesAmount}</strong></p>
-        <a href="/weekly-details">상세보기</a>
+        <a href="/admin/weekly-details">상세보기</a>
     </div>
 
     <div class="dashboard-box">
         <h3>월매출</h3>
         <p><strong>₩${monthlySalesTotal}</strong></p>
-        <a href="/monthly-details">상세보기</a>
+        <a href="/admin/monthly-details">상세보기</a>
     </div>
 
     <!-- 일매출 그래프 -->
