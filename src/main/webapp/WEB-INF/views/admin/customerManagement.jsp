@@ -36,8 +36,8 @@
  <nav>
         <ul>
             <!-- '재무관리' 탭을 대시보드로 연결 -->
-            <li><a href="/dashboard">재무관리</a></li> <!-- 대시보드 페이지로 연결 -->
-            <li><a href="/management">고객관리</a></li>
+            <li><a href="/admin/dashboard">재무관리</a></li> <!-- 대시보드 페이지로 연결 -->
+            <li><a href="/admin/management">고객관리</a></li>
         </ul>
     </nav>
     <h1>고객센터</h1>
@@ -75,14 +75,14 @@
                         <td>${warn.warnProcessedDate != null ? warn.warnProcessedDate : '처리 안됨'}</td>
                         <td>
                             <c:if test="${warn.warnStatus == 'REQUESTED'}">
-                                <form action="/management/approve/${warn.warnNo}" method="post" style="display:inline;">
+                                <form action="/admin/management/approve/${warn.warnNo}" method="post" style="display:inline;">
                                     <button type="submit" onclick="return confirm('정말 승인하시겠습니까?')">승인하기</button>
                                 </form>
                             </c:if>
                         </td>
                         <td>
                             <c:if test="${warn.warnStatus == 'REQUESTED'}">
-                                <form action="/management/reject/${warn.warnNo}" method="post" style="display:inline;">
+                                <form action="/admin/management/reject/${warn.warnNo}" method="post" style="display:inline;">
                                     <button type="submit" onclick="return confirm('정말 거부하시겠습니까?')">거부하기</button>
                                 </form>
                             </c:if>
@@ -146,7 +146,7 @@
     <!-- 공지사항 목록 -->
     <div class="container mt-5">
         <h2>공지사항 목록</h2>
-        <a href="/notice/create" style="display: inline-block; margin-bottom: 15px;">공지사항 등록하기</a>
+        <a href="/admin/notice/create" style="display: inline-block; margin-bottom: 15px;">공지사항 등록하기</a>
         <table border="1" cellpadding="10">
             <thead>
                 <tr>
@@ -164,10 +164,10 @@
                         <td>${notices.noticeTitle}</td>
                         <td>${notices.noticeContent}</td>
                         <td>
-                            <a href="/notice/edit/${notices.noticeNo}">수정하기</a>
+                            <a href="/admin/notice/edit/${notices.noticeNo}">수정하기</a>
                         </td>
                         <td>
-                            <form action="/notice/delete/${notices.noticeNo}" method="post" style="display:inline;">
+                            <form action="/admin/notice/delete/${notices.noticeNo}" method="post" style="display:inline;">
                                 <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
                             </form>
                         </td>

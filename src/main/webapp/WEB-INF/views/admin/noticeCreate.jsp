@@ -11,7 +11,7 @@
 
     <h1>공지사항 등록</h1>
 
-    <form action="/notice/save" method="post">
+    <form action="/admin/notice/save" method="post">
         <div>
             <label for="noticeTitle">제목</label>
             <input type="text" id="noticeTitle" name="noticeTitle" placeholder="공지사항 제목을 입력하세요" required>
@@ -24,7 +24,7 @@
 
         <div>
             <button type="submit">등록</button>
-            <a href="/management"><button type="button">취소</button></a>
+            <a href="/admin/management"><button type="button">취소</button></a>
         </div>
     </form>
 

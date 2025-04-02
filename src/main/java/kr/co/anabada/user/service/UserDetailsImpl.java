@@ -24,14 +24,14 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     @Override
-    public List<SimpleGrantedAuthority> getAuthorities() {
-        // UserType에 따라 권한을 설정
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        
-        // UserType에 맞는 권한을 추가
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getUserType().name()));
-        
-        return authorities;
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+    	 Collection<? extends GrantedAuthority> authorities = 
+    		        Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getUserType().name()));
+    		    
+    		    // 권한 리스트 로그 출력
+    		    System.out.println("Authorities: " + authorities);
+    		    
+    		    return authorities;
     }
     
     public User getUser() {
