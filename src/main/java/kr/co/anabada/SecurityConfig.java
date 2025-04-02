@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -44,7 +45,7 @@ public class SecurityConfig {
                     "/auth/**", "/userjoin/**", "/userlogin/**",
                     "/item/detail/**"
                 ).permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .requestMatchers(
                     "/user/mypage", "/user/update"
                 ).authenticated()
@@ -56,7 +57,8 @@ public class SecurityConfig {
             )*/
 
             //JwtAuthenticationFilter를 빈으로 주입받아 등록
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        	.addFilterBefore(new SecurityContextPersistenceFilter(), JwtAuthenticationFilter.class);
 
         return http.build();
     }

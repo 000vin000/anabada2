@@ -31,7 +31,7 @@
     </tbody>
 </table>
 
-<a href="/dashboard">대시보드로 돌아가기</a>
+<a href="/admin/dashboard">대시보드로 돌아가기</a>
 
 </body>
 </html>

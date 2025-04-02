@@ -44,7 +44,7 @@ public class ManagementController {
     @Autowired
     private WithdrawalRepository withdrawalRepository;
 
-    @GetMapping("/management")
+    @GetMapping("admin/management")
     public String getManagement(Model model) {
         List<Question> questions = questionRepository.findAll();
         
@@ -72,7 +72,7 @@ public class ManagementController {
         return "admin/customerManagement";  // 모든 질문을 보여주는 페이지로 이동
     }
     
-    @PostMapping("/management/approve/{warnNo}")
+    @PostMapping("admin/management/approve/{warnNo}")
     public String approveWarn(@PathVariable Integer warnNo, Model model) {
         boolean success = warnService.approveWarn(warnNo);  // 신고 승인
 
@@ -82,11 +82,11 @@ public class ManagementController {
             model.addAttribute("message", "신고 승인에 실패했습니다.");
         }
 
-        return "redirect:/management";  // 처리 후 관리 페이지로 리다이렉트
+        return "redirect:/admin/management";  // 처리 후 관리 페이지로 리다이렉트
     }
 
     // 신고 거부 처리 기능
-    @PostMapping("/management/reject/{warnNo}")
+    @PostMapping("admin/management/reject/{warnNo}")
     public String rejectWarn(@PathVariable Integer warnNo, Model model) {
         boolean success = warnService.rejectWarn(warnNo);  // 신고 거부
 
@@ -96,7 +96,7 @@ public class ManagementController {
             model.addAttribute("message", "신고 거부에 실패했습니다.");
         }
 
-        return "redirect:/management";  // 처리 후 관리 페이지로 리다이렉트
+        return "redirect:/admin/management";  // 처리 후 관리 페이지로 리다이렉트
     }
     
  
