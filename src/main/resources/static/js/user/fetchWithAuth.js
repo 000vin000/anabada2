@@ -1,7 +1,6 @@
 /**
- 요청할 때 Access Token을 자동으로 헤더에 붙이고,
- 401이면 /auth/reissue로 재발급 시도,
- 재시도까지 자동
+ 요청할 때 Access Token을 자동으로 헤더에 붙이고
+ 401이면 /auth/reissue로 재발급 시도
  */
 
 import { getAccessToken, setAccessToken, removeAccessToken } from "./tokenUtil.js";

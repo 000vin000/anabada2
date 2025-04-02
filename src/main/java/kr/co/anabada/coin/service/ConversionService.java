@@ -31,7 +31,6 @@ public class ConversionService {
 	// 유저 현금 -> 코인 전환 신청 기록
 	public Conversion insertConversion(Integer userNo, ConversionType type, BigDecimal conversionAmount) {
 		User user = getUserById(userNo);
-		System.out.println(user.getUserNick());
 		Conversion conversion = new Conversion().builder().userNo(user)
 														  .conversionType(type)
 														  .conversionAmount(conversionAmount)
@@ -58,5 +57,10 @@ public class ConversionService {
 	public int acceptConversion(Integer conversionNo, Admin admin) {
 		LocalDateTime now = LocalDateTime.now();
 		return conversionRepo.updateConversion(conversionNo, admin, now);
+	}
+
+	// 코인 -> 현금 신청 내역
+	public List<Conversion> toCashfindByUserNo(Integer userNo) {
+		return conversionRepo.toCashfindByUserNo(getUserById(userNo));
 	}
 }

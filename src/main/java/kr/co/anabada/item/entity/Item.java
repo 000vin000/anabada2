@@ -37,9 +37,9 @@ public class Item {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer itemNo;
 
-	@ManyToOne
-	@JoinColumn(name = "sellerNo", nullable = false)
-	private Seller seller;
+    @ManyToOne
+    @JoinColumn(name = "seller_no", nullable = false)
+    private Seller seller;
 
 	@ManyToOne
 	@JoinColumn(name = "categoryNo", nullable = false)

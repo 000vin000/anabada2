@@ -130,14 +130,14 @@
                                 <a href="/question/answer/${question.questionNo}">답변하기</a>
                             </c:if>
                         </td>
-                        <td>
-                             <c:if test="${empty answers}">
-                                <form action="/question/delete/${question.questionNo}?from=answerList" method="post" style="display:inline;">
-                                    <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
-                                </form>
-                            </c:if>
-                        </td>
-                    </tr>
+						<td>
+    						<c:if test="${not empty answers}">
+        						<form method="post" action="/question/answer/delete/${question.questionNo}" onsubmit="return confirm('정말 삭제하시겠습니까?')">
+            						<button type="submit" class="delete-btn">삭제</button>
+       							 </form>
+    						</c:if>
+    					</td>					
+    				</tr>
                 </c:forEach>
             </tbody>
         </table>

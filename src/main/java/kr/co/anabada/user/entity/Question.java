@@ -1,6 +1,7 @@
 package kr.co.anabada.user.entity;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -54,4 +55,9 @@ public class Question {
         ANSWERED,
         CLOSED
     }
+
+	public List<Answer> getAnswers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
