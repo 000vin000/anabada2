@@ -33,53 +33,6 @@
 
  </head>
 <body>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll(".delete-btn").forEach(button => {
-        button.addEventListener("click", async function() {
-            if (!confirm("정말 삭제하시겠습니까?")) return;
-
-            const answerNo = this.dataset.answerNo; // `data-answer-no`에서 값 가져오기
-            const row = this.closest("tr"); // 삭제할 행 가져오기
-
-            if (!answerNo) {
-                alert("삭제할 답변 정보를 찾을 수 없습니다.");
-                return;
-            }
-
-            try {
-                const response = await fetch(`/api/question/answer/${answerNo}`, {
-                    method: "DELETE",
-                    headers: {
-                        "Authorization": "Bearer " + localStorage.getItem("token"), // 필요하면 JWT 토큰 추가
-                        "Content-Type": "application/json"
-                    }
-                });
-
-                const responseData = await response.json(); // 응답 JSON 변환
-
-                if (!response.ok) {
-                    alert(responseData.error || "삭제 실패. 다시 시도해 주세요.");
-                    return;
-                }
-
-                alert(responseData.message || "삭제되었습니다.");
-                
-                // 삭제 후 화면 업데이트
-                const answerContent = row.querySelector(".answer-content"); // 답변 내용이 있는 요소 찾기
-                if (answerContent) {
-                    answerContent.textContent = ""; // 답변 내용만 삭제
-                }
-                
-            } catch (error) {
-                console.error("삭제 중 오류 발생:", error);
-                alert("삭제 중 오류가 발생했습니다.");
-            }
-        });
-    });
-});
-</script>
-
  <nav>
         <ul>
             <!-- '재무관리' 탭을 대시보드로 연결 -->
@@ -177,11 +130,14 @@ document.addEventListener("DOMContentLoaded", function() {
                                 <a href="/question/answer/${question.questionNo}">답변하기</a>
                             </c:if>
                         </td>
-                        <td>
-  						 <c:if test="${not empty answers}">
-    						<button type="button" class="delete-btn" data-answer-no="${answer.answerNo}">삭제</button>
-						</c:if>
-					</tr>
+						<td>
+    						<c:if test="${not empty answers}">
+        						<form method="post" action="/question/answer/delete/${question.questionNo}" onsubmit="return confirm('정말 삭제하시겠습니까?')">
+            						<button type="submit" class="delete-btn">삭제</button>
+       							 </form>
+    						</c:if>
+    					</td>					
+    				</tr>
                 </c:forEach>
             </tbody>
         </table>

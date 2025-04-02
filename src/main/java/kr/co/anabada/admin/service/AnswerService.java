@@ -30,5 +30,15 @@ public class AnswerService {
 	    public void deleteAnswerById(Integer answerNo) {
 	        answerRepository.deleteById(answerNo);
 	    }
+	    
+	    public List<Answer> deleteAnswersByQuestionNo(Integer questionNo) {
+	        List<Answer> answers = answerRepository.findByQuestion_questionNo(questionNo);
+
+	        if (!answers.isEmpty()) {
+	            answerRepository.deleteAll(answers); // 삭제 수행
+	        }
+
+	        return answers; // 삭제된 답변 리스트 반환
+	    }
 
 }
