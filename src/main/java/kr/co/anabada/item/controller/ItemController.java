@@ -40,6 +40,7 @@ public class ItemController {
     @PostMapping("/mypage/itemup")
     public String submit(@Valid @ModelAttribute("itemupCommand") Item item,
     						@RequestParam String categoryNo,
+    						@RequestParam String userToken,
     						@RequestParam String position,
 							BindingResult errors,
 							@RequestParam("imageFiles[]") MultipartFile[] imageFiles,
@@ -67,7 +68,7 @@ public class ItemController {
 
         // 아이템 저장
         try {
-            itemService.saveItem(item);  // 아이템 저장
+            itemService.saveItem(item, categoryNo, userToken);  // 아이템 저장
         } catch (Exception e) {
             e.printStackTrace();
             return "mypage/itemup";  // 아이템 저장 실패 시 폼 다시 반환
@@ -86,7 +87,7 @@ public class ItemController {
             }
         }
 
-        // 아이템 등록 완료 후, 판매 목록 페이지로 리디렉션
-        return "redirect:/mypage/itemsell"; 
+        // 아이템 등록 완료 후, 판매 목록 페이지로 리디렉션 할 예정임(임시로 마이페이지로 이동)
+        return "redirect:/mypage";
     }
 }

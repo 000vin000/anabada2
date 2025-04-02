@@ -37,6 +37,7 @@
             </select>
         </div>
 		<input type="hidden" id="categoryNo" name="categoryNo">
+		<input type="hidden" id="userToken" name="userToken">
         <!-- 나머지 상품 등록 필드들 -->
         <div>
             <label for="itemTitle">제목</label>
@@ -98,6 +99,16 @@
 </div>
 <jsp:include page="../footer.jsp"/>
 </body>
+<script>
+	window.addEventListener("DOMContentLoaded", function() {
+	    const userTokenInput = document.getElementById("userToken");
+	    const auth = localStorage.getItem("Token");
+	
+	    if (userTokenInput && auth) {
+	    	userTokenInput.value = auth;
+	    }
+	});
+</script>
 <script>
 	// 페이지 로드 시 오늘 날짜를 yyyy-MM-dd 형식으로 설정
 	window.onload = function() {
