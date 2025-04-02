@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,8 @@ public class DashboardController {
     @Autowired
     private PaymentRepository paymentRepository;
 
-    @GetMapping("/dashboard")
+    @GetMapping("/admin/dashboard")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String getDashboard(Model model) {
         // 서버 시간대에 맞춰서 날짜를 구합니다
         ZoneId zoneId = ZoneId.of("Asia/Seoul");  // 시간대를 서울로 설정
@@ -139,7 +141,8 @@ public class DashboardController {
         return "admin/salesDashboard";  // 대시보드 JSP 페이지로 이동
     }
     
-    @GetMapping("/daily-details")
+
+    @GetMapping("/admin/daily-details")
     public String getDailySales(Model model) {
         // 서버 시간대에 맞춰서 날짜를 구합니다
         ZoneId zoneId = ZoneId.of("Asia/Seoul");  // 시간대를 서울로 설정
@@ -164,7 +167,7 @@ public class DashboardController {
         return "admin/dailySalesDetails";  // 일매출 상세보기 JSP 페이지로 이동
     }
     
-    @GetMapping("/weekly-details")
+    @GetMapping("/admin/weekly-details")
     public String getWeeklySales(Model model) {
         // 서버 시간대에 맞춰서 날짜를 구합니다
         ZoneId zoneId = ZoneId.of("Asia/Seoul");  // 시간대를 서울로 설정
@@ -183,7 +186,7 @@ public class DashboardController {
 
         return "admin/weeklySalesDetail";  // 주 매출 상세보기 페이지로 이동
     }
-    @GetMapping("/monthly-details")
+    @GetMapping("/admin/monthly-details")
     public String getMonthlySales(Model model) {
         // 서버 시간대에 맞춰서 날짜를 구합니다
         ZoneId zoneId = ZoneId.of("Asia/Seoul");  // 시간대를 서울로 설정

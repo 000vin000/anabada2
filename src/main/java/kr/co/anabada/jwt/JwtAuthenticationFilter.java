@@ -1,8 +1,13 @@
 package kr.co.anabada.jwt;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -36,35 +41,39 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (token != null && jwtUtil.validateToken(token)) {
             String userId = jwtUtil.extractUserId(token);
+            List<String> roles = jwtUtil.extractRoles(token);
+
+            log.info("Extracted userId: " + userId + ", roles: " + roles);
 
             User user = userJoinRepository.findByUserId(userId)
                     .orElse(null);
 
             if (user != null) {
+                List<GrantedAuthority> authorities = roles.stream()
+                        .map(role -> new SimpleGrantedAuthority(role))
+                        .collect(Collectors.toList());
+
+                // UserDetails 생성
                 UserDetailsImpl userDetails = new UserDetailsImpl(user);
 
+                // 인증 객체 생성
                 UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
 
+                // 인증 객체에 추가적인 정보 설정
                 authentication.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
 
+                // SecurityContext에 인증 정보 설정
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                log.debug("JWT 인증 완료 - userId: {}", userId);
             }
         }
 
+        // 필터 체인을 계속 진행
         filterChain.doFilter(request, response);
     }
-
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String path = request.getRequestURI();
-        return path.startsWith("/auth/")
-                || path.equals("/")
-                || path.equals("/login")
-                || path.equals("/join")
-                || path.startsWith("/item/detail/");
-    }
 }
+
+
+

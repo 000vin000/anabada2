@@ -39,6 +39,6 @@ public class Admin {
     
     @ManyToOne
     @JoinColumn(name = "userNo", nullable = false) 
-    private User user; 
+    private User userNo; 
 
 }

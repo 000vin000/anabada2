@@ -97,7 +97,7 @@
             setTimeout(function() {
                 document.getElementById("chargeForm").submit();
                 window.close();
-            }, 1000);
+            }, 500);
         })
         .catch(error => {
             alert("충전 실패: " + error);

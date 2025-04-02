@@ -30,21 +30,21 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "bidNo", nullable = false)  
-    private Bid bidNo; 
+    private Bid bid; 
 
     @ManyToOne
     @JoinColumn(name = "sellerNo", nullable = false) 
-    private Seller sellerNo; 
+    private Seller seller; 
 
     @ManyToOne
     @JoinColumn(name = "buyerNo", nullable = false) 
-    private Buyer buyerNo;  
+    private Buyer buyer;  
 
     @Column(name = "reviewContent", nullable = false, columnDefinition = "TEXT")
-    private String reviewContent;  
+    private String reviewContent;
 
     @Column(name = "reviewRating", nullable = false)
-    private Double reviewRating; 
+    private Double reviewRating;
 
     @CreationTimestamp
     @Column(name = "reviewCreatedDate", nullable = false, updatable = false)

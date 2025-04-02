@@ -154,19 +154,23 @@ public class Item {
 	public boolean isExpired() {
 		return this.itemStatus == ItemStatus.EXPIRED && LocalDateTime.now().isAfter(this.itemSaleEndDate);
 	}
+	
+	public boolean isWaiting() {
+		return this.itemStatus == ItemStatus.WAITING && LocalDateTime.now().isBefore(itemSaleStartDate);
+	}
 
 	public boolean isActive() {
 		return this.itemStatus == ItemStatus.ACTIVE && !isExpired() && LocalDateTime.now().isAfter(itemSaleStartDate);
 	}
 
 	public Duration getTimeLeft() {
-		if (isExpired()) {
-			return Duration.ZERO;
-		}
-		if (isActive()) {
+		if (isWaiting()) {
 			return Duration.between(LocalDateTime.now(), this.itemSaleStartDate);
 		}
-		return Duration.between(LocalDateTime.now(), this.itemSaleEndDate);
+		if (isActive()) {
+			return Duration.between(LocalDateTime.now(), this.itemSaleEndDate);
+		}
+		return Duration.ZERO;
 	}
 
 	public boolean canBid(BigDecimal bidAmount) {

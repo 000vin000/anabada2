@@ -3,10 +3,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>ANABADA</title>
+<meta charset="UTF-8">
+<title>출금 신청</title>
 </head>
 <body>
-
+	<p>출금 신청</p>
 </body>
 </html>

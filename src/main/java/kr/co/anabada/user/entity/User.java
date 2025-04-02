@@ -26,6 +26,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "userType", nullable = false, length = 20)
     private UserType userType = UserType.INDIVIDUAL;
+    
+    public String getRole() {
+        return userType.getRole();  // Enum에서 가져오기
+    }
 
     // 사업자 등록번호 (브랜드만 해당)
     @Column(name = "businessRegNo", length = 20, unique = true)
@@ -55,17 +59,17 @@ public class User {
     // 이메일
     @NotBlank(message = "필수 입력값입니다.")
     @Email(message = "올바른 이메일 형식이 아닙니다.")
-    @Column(name = "userEmail", nullable = false, length = 100, unique = true) // 길이 100 유지
+    @Column(name = "userEmail", length = 100, unique = true) // 길이 100 유지
     private String userEmail;
 
     // 전화번호
     @NotBlank(message = "전화번호는 필수 입력값입니다.")
-    @Column(name = "userPhone", nullable = false, length = 20, unique = true)
+    @Column(name = "userPhone", length = 20, unique = true)
     private String userPhone;
 
     // 주소 (기본 주소 + 상세 주소 포함) 복구됨
     @NotBlank(message = "주소는 필수 입력값입니다.")
-    @Column(name = "userAddress", nullable = false, length = 255)
+    @Column(name = "userAddress", length = 255)
     private String userAddress;
 
     // 사용자 상태 (active, inactive)
@@ -97,7 +101,14 @@ public class User {
     // 사용자 타입 ENUM
     public enum UserType {
         INDIVIDUAL, // 개인 회원 (오타 수정)
-        BRAND       // 사업자 회원
+        BRAND,   // 사업자 회원
+        ADMIN; // 관리자
+    	
+    	public String getRole() {
+            return "ROLE_" + this.name();  // 예: "ROLE_ADMIN"
+        }
+        
+        
     }
 
     // 사용자 상태 ENUM

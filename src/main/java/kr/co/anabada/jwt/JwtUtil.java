@@ -3,7 +3,10 @@ package kr.co.anabada.jwt;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -54,7 +57,7 @@ public class JwtUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + expiration));
 
         if (userNo != null) builder.claim("userNo", userNo);
-        if (userType != null) builder.claim("userType", userType);
+        if (userType != null) builder.claim("roles", Collections.singletonList(userType));
         if (nickname != null) builder.claim("nickname", nickname);
 
         return builder
@@ -110,6 +113,15 @@ public class JwtUtil {
                 .getBody()
                 .get(claimName);
     }
+    
+    public List<String> extractRoles(String token) {
+        Object roles = extractClaim(token, "roles");
+        if (roles instanceof List) {
+            return ((List<?>) roles).stream().map(Object::toString).collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+    
 
     public String extractTokenFromCookie(HttpServletRequest request, String tokenName) {
         if (request.getCookies() != null) {
@@ -121,4 +133,5 @@ public class JwtUtil {
         }
         return null;
     }
+    
 }

@@ -33,11 +33,58 @@
 
  </head>
 <body>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".delete-btn").forEach(button => {
+        button.addEventListener("click", async function() {
+            if (!confirm("정말 삭제하시겠습니까?")) return;
+
+            const answerNo = this.dataset.answerNo; // `data-answer-no`에서 값 가져오기
+            const row = this.closest("tr"); // 삭제할 행 가져오기
+
+            if (!answerNo) {
+                alert("삭제할 답변 정보를 찾을 수 없습니다.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/question/answer/${answerNo}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("token"), // 필요하면 JWT 토큰 추가
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                const responseData = await response.json(); // 응답 JSON 변환
+
+                if (!response.ok) {
+                    alert(responseData.error || "삭제 실패. 다시 시도해 주세요.");
+                    return;
+                }
+
+                alert(responseData.message || "삭제되었습니다.");
+                
+                // 삭제 후 화면 업데이트
+                const answerContent = row.querySelector(".answer-content"); // 답변 내용이 있는 요소 찾기
+                if (answerContent) {
+                    answerContent.textContent = ""; // 답변 내용만 삭제
+                }
+                
+            } catch (error) {
+                console.error("삭제 중 오류 발생:", error);
+                alert("삭제 중 오류가 발생했습니다.");
+            }
+        });
+    });
+});
+</script>
+
  <nav>
         <ul>
             <!-- '재무관리' 탭을 대시보드로 연결 -->
-            <li><a href="/dashboard">재무관리</a></li> <!-- 대시보드 페이지로 연결 -->
-            <li><a href="/management">고객관리</a></li>
+            <li><a href="/admin/dashboard">재무관리</a></li> <!-- 대시보드 페이지로 연결 -->
+            <li><a href="/admin/management">고객관리</a></li>
         </ul>
     </nav>
     <h1>고객센터</h1>
@@ -75,14 +122,14 @@
                         <td>${warn.warnProcessedDate != null ? warn.warnProcessedDate : '처리 안됨'}</td>
                         <td>
                             <c:if test="${warn.warnStatus == 'REQUESTED'}">
-                                <form action="/management/approve/${warn.warnNo}" method="post" style="display:inline;">
+                                <form action="/admin/management/approve/${warn.warnNo}" method="post" style="display:inline;">
                                     <button type="submit" onclick="return confirm('정말 승인하시겠습니까?')">승인하기</button>
                                 </form>
                             </c:if>
                         </td>
                         <td>
                             <c:if test="${warn.warnStatus == 'REQUESTED'}">
-                                <form action="/management/reject/${warn.warnNo}" method="post" style="display:inline;">
+                                <form action="/admin/management/reject/${warn.warnNo}" method="post" style="display:inline;">
                                     <button type="submit" onclick="return confirm('정말 거부하시겠습니까?')">거부하기</button>
                                 </form>
                             </c:if>
@@ -131,13 +178,10 @@
                             </c:if>
                         </td>
                         <td>
-                             <c:if test="${empty answers}">
-                                <form action="/question/delete/${question.questionNo}?from=answerList" method="post" style="display:inline;">
-                                    <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
-                                </form>
-                            </c:if>
-                        </td>
-                    </tr>
+  						 <c:if test="${not empty answers}">
+    						<button type="button" class="delete-btn" data-answer-no="${answer.answerNo}">삭제</button>
+						</c:if>
+					</tr>
                 </c:forEach>
             </tbody>
         </table>
@@ -146,7 +190,7 @@
     <!-- 공지사항 목록 -->
     <div class="container mt-5">
         <h2>공지사항 목록</h2>
-        <a href="/notice/create" style="display: inline-block; margin-bottom: 15px;">공지사항 등록하기</a>
+        <a href="/admin/notice/create" style="display: inline-block; margin-bottom: 15px;">공지사항 등록하기</a>
         <table border="1" cellpadding="10">
             <thead>
                 <tr>
@@ -164,10 +208,10 @@
                         <td>${notices.noticeTitle}</td>
                         <td>${notices.noticeContent}</td>
                         <td>
-                            <a href="/notice/edit/${notices.noticeNo}">수정하기</a>
+                            <a href="/admin/notice/edit/${notices.noticeNo}">수정하기</a>
                         </td>
                         <td>
-                            <form action="/notice/delete/${notices.noticeNo}" method="post" style="display:inline;">
+                            <form action="/admin/notice/delete/${notices.noticeNo}" method="post" style="display:inline;">
                                 <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
                             </form>
                         </td>

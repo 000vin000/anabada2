@@ -9,12 +9,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
@@ -42,18 +45,20 @@ public class SecurityConfig {
                     "/auth/**", "/userjoin/**", "/userlogin/**",
                     "/item/detail/**"
                 ).permitAll()
+                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .requestMatchers(
                     "/user/mypage", "/user/update"
                 ).authenticated()
                 .anyRequest().permitAll()
             )
 
-            .formLogin(form -> form
+           /* .formLogin(form -> form
                 .loginPage("/auth/login.html").permitAll()
-            )
+            )*/
 
             //JwtAuthenticationFilter를 빈으로 주입받아 등록
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        	.addFilterBefore(new SecurityContextPersistenceFilter(), JwtAuthenticationFilter.class);
 
         return http.build();
     }
