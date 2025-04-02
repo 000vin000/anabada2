@@ -1,6 +1,7 @@
 package kr.co.anabada.admin.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +22,13 @@ public class AnswerService {
 	    public List<Answer> getAnswersByQuestionNo(Integer questionNo) {
 	        return answerRepository.findByQuestion_questionNo(questionNo); // questionNo로 답변 목록을 조회
 	    }
+	
+	    public Optional<Answer> getAnswerById(Integer answerNo) {
+	        return answerRepository.findById(answerNo);
+	    }
 	    
-	    public void deleteAnswer(Answer answer) {
-	        answerRepository.delete(answer);
+	    public void deleteAnswerById(Integer answerNo) {
+	        answerRepository.deleteById(answerNo);
 	    }
 
 }

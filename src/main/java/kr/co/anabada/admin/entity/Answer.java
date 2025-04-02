@@ -40,7 +40,7 @@ public class Answer {
     
     @ManyToOne
     @JoinColumn(name = "responderNo", nullable = false)  
-    private Admin responder;
+    private User responder;
 
 
 }
