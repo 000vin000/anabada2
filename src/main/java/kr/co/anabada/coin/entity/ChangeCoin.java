@@ -48,7 +48,7 @@ public class ChangeCoin { // 유저 코인 변동 내역
 	
 	@CreationTimestamp
 	@Column(nullable = false, updatable = false)
-	private LocalDateTime changecoinAt;
+	private LocalDateTime changecoinAt = LocalDateTime.now();
 	
 	public enum ChangeCoinType {
 		CHARGE("코인 충전"),
