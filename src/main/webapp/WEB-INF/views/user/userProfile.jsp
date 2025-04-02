@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="isLoggedIn" value="${userNo ne 0}" />
+<c:set var="isOwner" value="${userNo eq profile.userNo}" />
 <%@ include file="../header.jsp"%>
 <!DOCTYPE html>
 <html>
@@ -13,7 +14,7 @@
 <body>
 	<div class="profile-container">
 		<div class="profile-header">
-			<h1>${profile.userNick}(${profile.userId})의 프로필</h1>
+			<h1>${profile.userNick}(${profile.userId})의프로필</h1>
 			<button id="favor-btn" data-seller-no="${profile.userNo}">☆</button>
 		</div>
 
@@ -39,60 +40,299 @@
 		</div>
 
 		<div class="profile-tabs">
-			<button class="tab-button active" onclick="openTab('sellingTab')">판매 아이템</button>
-			<button class="tab-button" onclick="openTab('boughtTab')">구매 아이템</button>
+			<button class="tab-button active" onclick="openTab('sell-tab')">판매 아이템</button>
+			<button class="tab-button" onclick="openTab('buy-tab')">구매 아이템</button>
 		</div>
 
-		<div id="sellingTab" class="tab-content active">
+		<div id="sell-tab" class="tab-content active">
 			<div class="items-header">
 				<h2>판매 아이템</h2>
-				<a href="#" class="view-all">전체보기</a>
+				<div class="sort-dropdown">
+					<select id="sell-sort-options" onchange="changeSorting('sell', this.value)">
+						<option value="recent" selected>최신순</option>
+						<option value="priceAsc">가격 낮은순</option>
+						<option value="priceDesc">가격 높은순</option>
+						<option value="titleAsc">제목순</option>
+					</select>
+				</div>
 			</div>
-
-			<div class="items-grid">
-				<c:forEach items="${profile.sellSummaryDTOs}" var="item">
-					<a href="${pageContext.request.contextPath}/item/detail/${item.itemNo}" class="item-card-link">
-						<div class="item-card">
-							<img src="/image/${item.itemNo}" alt="${item.itemTitle}" class="item-image">
-							<div class="item-details">
-								<div class="item-title">${item.itemTitle}</div>
-								<div class="item-price">${item.getFormattedPrice()}원</div>
-							</div>
-						</div>
-					</a>
-				</c:forEach>
+			<div id="sell-items-container">
+				<!-- 아이템 목록은 JavaScript로 렌더링 -->
+			</div>
+			<div id="sell-pagination" class="pagination-container">
+				<!-- 페이지네이션은 JavaScript로 렌더링 -->
 			</div>
 		</div>
 
-		<div id="boughtTab" class="tab-content">
+		<div id="buy-tab" class="tab-content">
 			<div class="items-header">
 				<h2>구매 아이템</h2>
+				<div class="sort-dropdown">
+					<select id="buy-sort-options" onchange="changeSorting('buy', this.value)">
+						<option value="recent" selected>최신순</option>
+						<option value="priceAsc">가격 낮은순</option>
+						<option value="priceDesc">가격 높은순</option>
+						<option value="titleAsc">제목순</option>
+					</select>
+				</div>
 			</div>
-			<div class="items-grid">
-			
+			<div id="buy-items-container">
+				<!-- 아이템 목록은 JavaScript로 렌더링 -->
+			</div>
+			<div id="buy-pagination" class="pagination-container">
+				<!-- 페이지네이션은 JavaScript로 렌더링 -->
 			</div>
 		</div>
 	</div>
 
+	<script>
+		const contextPath = '${pageContext.request.contextPath}';
+		const userNo = ${profile.userNo};
+		let sellPage = 0;
+		let buyPage = 0;
+		let size = 10;
+		let sellSort = 'recent';
+		let buySort = 'recent';
+		
+		document.addEventListener('DOMContentLoaded', function() {
+		    loadSellItems();
+		});
+		
+		function openTab(tabId) {
+	        document.querySelectorAll('.tab-content').forEach(tab => {
+	            tab.classList.remove('active');
+	        });
+	        
+	        document.querySelectorAll('.tab-button').forEach(button => {
+	            button.classList.remove('active');
+	        });
+	        
+	        document.getElementById(tabId).classList.add('active');
+	        document.querySelector('.tab-button[onclick="openTab(\'' + tabId + '\')"]').classList.add('active');
+	        
+	        if (tabId === 'sell-tab') {
+	            loadSellItems();
+	        } else if (tabId === 'buy-tab') {
+	            loadBuyItems();
+	        }
+	    }
+		
+		function changeSorting(type, newSort) {
+		    if (type === 'sell') {
+		        sellSort = newSort;
+		        sellPage = 0;
+		        loadSellItems();
+		    } else if (type === 'buy') {
+		        buySort = newSort;
+		        buyPage = 0;
+		        loadBuyItems();
+		    }
+		}
+		
+		function changePage(type, newPage) {
+		    if (type === 'sell') {
+		        sellPage = newPage;
+		        loadSellItems();
+		    } else if (type === 'buy') {
+		        buyPage = newPage;
+		        loadBuyItems();
+		    }
+		    window.scrollTo({ top: 0, behavior: 'smooth' });
+		}
+		
+		function loadSellItems() {
+		    document.getElementById('sell-items-container').innerHTML = '<div class="loading-message">판매 아이템 로딩 중</div>';
+		    
+		    const url = '/user/profile/' + userNo + '/sells?page=' + sellPage + '&size=' + size + '&sort=' + sellSort;
+		    fetch(url)
+		        .then(response => response.json())
+			    .then(data => {
+			        displayItems(data, 'sell-items-container');
+			        displayPagination(data, 'sell-pagination', 'sell');
+			    })
+		        .catch(error => {
+		            console.error('오류 발생:', error);
+		            document.getElementById('items-container').innerHTML = '<div class="empty-message">데이터 로드 실패</div>';
+		        });
+		}
+		
+		function loadBuyItems() {
+		    document.getElementById('buy-items-container').innerHTML = '<div class="loading-message">구매 아이템 로딩 중</div>';
+		    
+		    const url = '/user/profile/' + userNo + '/buys?page=' + buyPage + '&size=' + size + '&sort=' + buySort;
+		    fetch(url)
+		        .then(response => response.json())
+		        .then(data => {
+		            displayItems(data, 'buy-items-container');
+		            displayPagination(data, 'buy-pagination', 'buy');
+		        })
+		        .catch(error => {
+		            console.error('오류 발생:', error);
+		            document.getElementById('items-container').innerHTML = '<div class="empty-message">데이터 로드 실패</div>';
+		        });
+		}
+		
+		function displayPagination(data, containerId, type) {
+		    const container = document.getElementById(containerId);
+		    container.innerHTML = '';
+		    
+		    if (!data || !data.totalPages) {
+		        return;
+		    }
+		    
+		    const totalPages = data.totalPages;
+		    const currentPage = data.number;
+		    
+		    const ul = document.createElement('ul');
+		    ul.className = 'pagination';
+		    
+		    const prevLi = document.createElement('li');
+		    const prevLink = document.createElement('a');
+		    prevLink.href = '#';
+		    prevLink.innerHTML = '&laquo;';
+		    
+		    if (currentPage === 0) {
+		        prevLink.className = 'disabled';
+		    } else {
+		        prevLink.onclick = function(e) {
+		            e.preventDefault();
+		            changePage(type, currentPage - 1);
+		        };
+		    }
+		    
+		    prevLi.appendChild(prevLink);
+		    ul.appendChild(prevLi);
+		    
+		    const startPage = Math.max(0, currentPage - 2);
+		    const endPage = Math.min(totalPages - 1, currentPage + 2);
+		    
+		    for (let i = startPage; i <= endPage; i++) {
+		        const pageLi = document.createElement('li');
+		        const pageLink = document.createElement('a');
+		        pageLink.href = '#';
+		        pageLink.textContent = i + 1;
+		        
+		        if (i === currentPage) {
+		            pageLink.className = 'active';
+		        } else {
+		            pageLink.onclick = function(e) {
+		                e.preventDefault();
+		                changePage(type, i);
+		            };
+		        }
+		        
+		        pageLi.appendChild(pageLink);
+		        ul.appendChild(pageLi);
+		    }
+		    
+		    // 다음 버튼
+		    const nextLi = document.createElement('li');
+		    const nextLink = document.createElement('a');
+		    nextLink.href = '#';
+		    nextLink.innerHTML = '&raquo;';
+		    
+		    if (currentPage === totalPages - 1) {
+		        nextLink.className = 'disabled';
+		    } else {
+		        nextLink.onclick = function(e) {
+		            e.preventDefault();
+		            changePage(type, currentPage + 1);
+		        };
+		    }
+		    
+		    nextLi.appendChild(nextLink);
+		    ul.appendChild(nextLi);
+		    
+		    container.appendChild(ul);
+		}
+		
+		function displayItems(data, containerId) {
+			const container = document.getElementById(containerId);
+		    container.innerHTML = '';
+
+		    if (!data || !data.content || data.content.length === 0) {
+		        container.innerHTML = '<div class="empty-message">아이템이 없습니다.</div>';
+		        return;
+		    }
+
+		    const grid = document.createElement('div');
+		    grid.className = 'items-grid';
+
+		    data.content.forEach(item => {
+		        const imageUrl = contextPath + '/image/' + item.itemNo;
+		        const detailUrl = contextPath + '/item/detail/' + item.itemNo;
+
+		        const link = document.createElement('a');
+		        link.href = detailUrl;
+		        link.className = 'item-card-link';
+
+		        const itemCardDiv = document.createElement('div');
+		        itemCardDiv.className = 'item-card';
+
+		        const img = document.createElement('img');
+		        img.src = imageUrl;
+		        img.alt = item.itemTitle;
+		        img.className = 'item-image';
+		        img.onerror = () => {
+		            img.alt = '이미지가 없습니다';
+		        };
+
+		        const infoDiv = document.createElement('div');
+		        infoDiv.className = 'item-details';
+		        
+		        const statusDiv = document.createElement('div');
+                statusDiv.className = 'item-status '
+                	+ (item.itemStatus !== '대기중' && item.itemStatus === '판매중' ? 'status-selling' : 'status-sold');
+                statusDiv.textContent = item.itemStatus;
+
+		        const titleDiv = document.createElement('div');
+		        titleDiv.className = 'item-title';
+		        titleDiv.textContent = item.itemTitle;
+
+		        const priceDiv = document.createElement('div');
+		        priceDiv.className = 'item-price';
+		        priceDiv.textContent = item.formattedPrice + '원';
+		        
+		        const metaDiv = document.createElement('div');
+                metaDiv.className = 'item-meta';
+                
+                const viewsDiv = document.createElement('div');
+                viewsDiv.className = 'item-meta-item';
+                viewsDiv.innerHTML = '조회 ' + item.viewCount;
+                
+                const bidsDiv = document.createElement('div');
+                bidsDiv.className = 'item-meta-item';
+                bidsDiv.innerHTML = '입찰 ' + item.bidCount;
+
+                metaDiv.appendChild(viewsDiv);
+                metaDiv.appendChild(bidsDiv);
+                
+                if (item.itemSoldDate != null) {
+                    const dateDiv = document.createElement('div');
+                    dateDiv.className = 'item-meta-item';
+                    dateDiv.innerHTML = '낙찰 ' + item.formattedDate;
+                    metaDiv.appendChild(dateDiv);
+                }
+                
+                infoDiv.appendChild(statusDiv);
+                infoDiv.appendChild(metaDiv);
+		        infoDiv.appendChild(titleDiv);
+		        infoDiv.appendChild(priceDiv);
+		        itemCardDiv.appendChild(img);
+		        itemCardDiv.appendChild(infoDiv);
+		        link.appendChild(itemCardDiv);
+		        grid.appendChild(link);
+		    });
+
+		    container.appendChild(grid);
+		}
+	</script>
+
+	<script src="/js/recent/config.js"></script>
+	<script src="/js/recent/getRecent_sidebar.js"></script>
+	<script src="/js/favor/favorSeller.js"></script>
+
 	<jsp:include page="../sidebar.jsp" />
 	<jsp:include page="../footer.jsp" />
 </body>
-<script>
-    function openTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(tab => {
-            tab.classList.remove('active');
-        });
-        
-        document.querySelectorAll('.tab-button').forEach(button => {
-            button.classList.remove('active');
-        });
-        
-        document.getElementById(tabId).classList.add('active');
-        
-        document.querySelector('.tab-button[onclick="openTab(\'' + tabId + '\')"]').classList.add('active');
-    }
-</script>
-<script src="/js/recent/config.js"></script>
-<script src="/js/recent/getRecent_sidebar.js"></script>
-<script src="/js/favor/favorSeller.js"></script>
 </html>

@@ -7,5 +7,7 @@ import kr.co.anabada.item.entity.Bid;
 
 @Repository
 public interface BidRepository extends JpaRepository<Bid, Integer> {
+
+	int countByItemItemNo(Integer itemNo); //userProfile
 	
 }
