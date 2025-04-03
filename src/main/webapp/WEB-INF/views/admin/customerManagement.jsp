@@ -78,6 +78,41 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 
+<script type="module">
+import { fetchWithAuth } from '/js/user/fetchWithAuth.js';
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".delete-notice-btn").forEach(button => {
+        button.addEventListener("click", async function () {
+            const noticeNo = this.getAttribute("data-notice-no");
+
+            if (!confirm("정말 삭제하시겠습니까?")) return;
+
+            try {
+				const url = `/api/notice/delete/` + noticeNo;
+                const response = await fetchWithAuth(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    alert("공지사항 삭제 실패! 다시 시도해 주세요.");
+                    return;
+                }
+
+                alert("공지사항이 삭제되었습니다.");
+                this.closest("tr").remove(); // 삭제된 행을 즉시 테이블에서 제거
+            } catch (error) {
+                console.error("공지사항 삭제 중 오류 발생:", error);
+                alert("삭제 중 오류가 발생했습니다.");
+            }
+        });
+    });
+});
+</script>
+
  <nav>
         <ul>
             <!-- '재무관리' 탭을 대시보드로 연결 -->
@@ -210,9 +245,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             <a href="/admin/notice/edit/${notices.noticeNo}">수정하기</a>
                         </td>
                         <td>
-                            <form action="/admin/notice/delete/${notices.noticeNo}" method="post" style="display:inline;">
-                                <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
-                            </form>
+                            <button type="button" class="delete-notice-btn" data-notice-no="${notices.noticeNo}">삭제하기</button>
                         </td>
                     </tr>
                 </c:forEach>
