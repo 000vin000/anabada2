@@ -73,7 +73,7 @@ function populateConversionToCashHistory(data) {
 					<td>${conversion.conversionAmount}</td>
 					<td>${status}</td>
 					<td>${formattedConversionAt}</td>
-					${!conversion.conversionAt ? `<td><button class="toCashCancel" data-conversion-no="${conversion.conversionNo}">신청 취소</button></td>` : '<td></td>'}
+					${!conversion.conversionAt ? `<td><button class="toCashCancel" data-conversion-no="${conversion.conversionNo}">신청 취소</button></td>` : '<td>-</td>'}
 				`;
 				tbody.appendChild(row);
 			});
@@ -82,7 +82,7 @@ function populateConversionToCashHistory(data) {
 					const conversionNo = button.getAttribute('data-conversion-no');
 					// 사용자 확인
 					if (confirm("신청 내역이 삭제됩니다. 정말로 삭제하시겠습니까?")) {
-						cancelConversion(conversionNo, button);
+						cancelCoinConversion(conversionNo, button);
 					}
 				});
 			});
@@ -92,7 +92,7 @@ function populateConversionToCashHistory(data) {
 }
 
 // 신청 취소 처리
-function cancelConversion(conversionNo, button) {
+function cancelCoinConversion(conversionNo, button) {
 	const token = localStorage.getItem('Token');
 
 	fetch(`/api/coin/cancelConversionToCash/${conversionNo}`, {

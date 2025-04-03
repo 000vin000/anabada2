@@ -1,9 +1,9 @@
-document.getElementById("toCoinList").addEventListener("click", function () {
-	openConversionModal();
+document.getElementById("withdrawalList").addEventListener("click", function () {
+	openWithdrawalListModal();
 });
 
-// 신청 내역 열기
-function openConversionModal() {
+// 출금 내역 열기
+function openWithdrawalListModal() {
 	const token = localStorage.getItem('Token');
 	
 	if (!token) {
@@ -12,17 +12,17 @@ function openConversionModal() {
 		return;
 	}
 
-	fetchData();
+	getWithdrawalList();
 
 	// 모달 열기
-	document.getElementById("conversionModal").style.display = "block";
+	document.getElementById("withdrawalModal").style.display = "block";
 }
 
-// 서버에서 데이터 받아오기
-function fetchData() {
+// 데이터 받아오기
+function getWithdrawalList() {
 	const token = localStorage.getItem('Token');
-
-	fetch('/api/coin/conversionList', {
+	
+	fetch('/api/coin/withdrawalList', {
 		method: 'GET',
 		headers: {
 			'Authorization': `Bearer ` + token,  
@@ -35,7 +35,7 @@ function fetchData() {
 		return response.json();
 	})
 	.then(data => {
-		populateConversionHistory(data); 
+		withdrawHistory(data); 
 	})
 	.catch(error => {
 		console.error('Fetch error: ', error);
@@ -55,48 +55,49 @@ function formatDate(dateString) {
 }
 
 // 데이터 보여주기
-function populateConversionHistory(data) {
-	const tbody = document.querySelector("#conversionModal tbody");
-
+function withdrawHistory(data) {
+	const tbody = document.querySelector("#withdrawalModal tbody");
+	
 	tbody.innerHTML = '';
 	console.log(data);
 	
-	if (Array.isArray(data.conList)) {
-		data.conList.forEach(conversion => {
+	if (Array.isArray(data.withdrawalList)) {
+		data.withdrawalList.forEach(data => {
 			const row = document.createElement("tr");
-			const status = conversion.conversionAt ? '전환 완료' : '대기중';
+			const status = data.accountAt ? '출금 완료' : '대기중';
 			
-			const formattedConversionReqAt = formatDate(conversion.conversionReqAt);
-			const formattedConversionAt = conversion.conversionAt ? formatDate(conversion.conversionAt) : '-';
-
+			const formattedAccountReqAt = formatDate(data.accountReqAt);
+			const formattedAccountAt = data.accountAt ? formatDate(data.accountAt) : '-';
+			
 			row.innerHTML = `
-				<td>${formattedConversionReqAt}</td>
-				<td>${conversion.conversionAmount}</td>
+				<td>${formattedAccountReqAt}</td>
+				<td>${data.accountAmount}</td>
 				<td>${status}</td>
-				<td>${formattedConversionAt}</td>
-				${!conversion.conversionAt ? `<td><button class="toCoinCancel" data-conversion-no="${conversion.conversionNo}">신청 취소</button></td>` : '<td>-</td>'}
+				<td>${data.accountBankForWithdraw} ${data.accountNumberForWithdraw}</td>
+				<td>${formattedAccountAt}</td>
+				${!data.accountAt ? `<td><button class="withdrawalCancel" data-account-no="${data.accountNo}">신청 취소</button></td>` : '<td>-</td>'}
 			`;
 			tbody.appendChild(row);
 		});
-		document.querySelectorAll('.toCoinCancel').forEach(button => {
+		document.querySelectorAll('.withdrawalCancel').forEach(button => {
 			button.addEventListener('click', function() {
-				const conversionNo = button.getAttribute('data-conversion-no');
+				const accountNo = button.getAttribute('data-account-no');
 				// 사용자 확인
 				if (confirm("신청 내역이 삭제됩니다. 정말로 취소하시겠습니까?")) {
-					cancelConversion(conversionNo);
+					cancelAccount(accountNo);
 				}
 			});
 		});
 	} else {
-		console.error("data.conList is not an array", data);
+		console.error("data.withdrawalList is not an array", data);
 	}
 }
 
-// 신청 취소 처리
-function cancelConversion(conversionNo) {
+// 출금 취소 처리
+function cancelAccount(accountNo) {
 	const token = localStorage.getItem('Token');
-
-	fetch(`/api/coin/cancelConversion/${conversionNo}`, {
+	
+	fetch(`/api/coin/cancelWithdrawal/${accountNo}`, {
 		method: 'DELETE',
 		headers: {
 			'Authorization': `Bearer ` + token,
@@ -110,7 +111,7 @@ function cancelConversion(conversionNo) {
 	})
 	.then(data => {
 		alert(data.message || "취소 성공");
-		closeConversionModal();
+		closeWithdrawalModal();
 	})
 	.catch(error => {
 		console.error('Cancel request error:', error);
@@ -119,12 +120,12 @@ function cancelConversion(conversionNo) {
 
 // 모달 닫기
 window.onclick = function(event) {
-	if (event.target == document.getElementById("conversionModal")) {
-		closeConversionModal();
+	if (event.target == document.getElementById("withdrawalModal")) {
+		closeWithdrawalModal();
 	}
 }
 
 // 신청 내역 닫기
-function closeConversionModal() {
-	document.getElementById("conversionModal").style.display = "none";
+function closeWithdrawalModal() {
+	document.getElementById("withdrawalModal").style.display = "none";
 }
