@@ -1388,7 +1388,7 @@ input[type="radio"] + label {
 	margin: 0;
 }
 
-.sort-dropdown select {
+.dropdown select {
 	padding: 8px 12px;
 	border: 1px solid #ddd;
 	border-radius: 4px;
@@ -1399,7 +1399,7 @@ input[type="radio"] + label {
 	outline: none;
 }
 
-.sort-dropdown select:focus {
+.dropdown select:focus {
 	border-color: #43BFC7;
 }
 

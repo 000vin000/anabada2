@@ -47,7 +47,7 @@
 		<div id="sell-tab" class="tab-content active">
 			<div class="items-header">
 				<h2>판매 아이템</h2>
-				<div class="sort-dropdown">
+				<div class="dropdown">
 					<select id="sell-status-filter-options" onchange="changeStatusFilter('sell', this.value)">
 						<option value="all" selected>전체 상태</option>
 						<c:forEach var="status" items="${itemStatuses}">
@@ -73,7 +73,7 @@
 		<div id="buy-tab" class="tab-content">
 			<div class="items-header">
 				<h2>구매 아이템</h2>
-				<div class="sort-dropdown">
+				<div class="dropdown">
 					<select id="buy-status-filter-options" onchange="changeStatusFilter('buy', this.value)">
 						<option value="all" selected>전체 상태</option>
 						<c:forEach var="status" items="${itemStatuses}">
