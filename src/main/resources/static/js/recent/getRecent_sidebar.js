@@ -10,12 +10,11 @@ function displayRecentViews() {
 		return;
 	}
 
-    container.innerHTML = ""; // 기존 목록 초기화
-
     let recentItems = Object.values(getRecentItems()).flat();
 	const item = recentItems[0]; // 첫 번째 아이템만 가져오기
 
     if (recentItems.length > 0) {
+	    container.innerHTML = ""; // 기존 목록 초기화
         // 배열이 비어있지 않은 경우 실행
         const itemElement = document.createElement("div");
         itemElement.classList.add("recent_item");
