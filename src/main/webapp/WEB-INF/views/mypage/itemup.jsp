@@ -37,6 +37,7 @@
             </select>
         </div>
 		<input type="hidden" id="categoryNo" name="categoryNo">
+		<input type="hidden" id="userToken" name="userToken">
         <!-- 나머지 상품 등록 필드들 -->
         <div>
             <label for="itemTitle">제목</label>
@@ -58,7 +59,7 @@
         <div>
             <label for="itemSaleType">판매타입</label><br>
             <label for="itemSaleType0"><input type="radio" id="itemSaleType0" name="itemSaleType" value="AUCTION" required>경매</label>
-            <label for="itemSaleType1"><input type="radio" id="itemSaleType1" name="itemSaleType" value="SHOP" required>쇼핑</label>
+            <!-- <label for="itemSaleType1"><input type="radio" id="itemSaleType1" name="itemSaleType" value="SHOP" required>쇼핑</label> 개인은 판매타입을 쇼핑으로 설정할 수 없음 -->
             <label for="itemSaleType2"><input type="radio" id="itemSaleType2" name="itemSaleType" value="EXCHANGE" required>교환</label>
             <label for="itemSaleType3"><input type="radio" id="itemSaleType3" name="itemSaleType" value="DONATION" required>기부</label>
         </div>
@@ -98,6 +99,16 @@
 </div>
 <jsp:include page="../footer.jsp"/>
 </body>
+<script>
+	window.addEventListener("DOMContentLoaded", function() {
+	    const userTokenInput = document.getElementById("userToken");
+	    const auth = localStorage.getItem("Token");
+	
+	    if (userTokenInput && auth) {
+	    	userTokenInput.value = auth;
+	    }
+	});
+</script>
 <script>
 	// 페이지 로드 시 오늘 날짜를 yyyy-MM-dd 형식으로 설정
 	window.onload = function() {
@@ -278,7 +289,7 @@
 	        return false;
 	    }
 	
-	    // 가장 하위에서 선택된 값으로 설정
+	    // 개인경매 + 대분류 + 중분류 + 소분류
 	    let categoryNo = "10" + level1 + level2 + level3;
 	    
 	    // hidden input에 categoryNo 값 설정

@@ -44,9 +44,12 @@ public class UserProfileDTO {
         private BigDecimal itemPrice;
         private String itemStatus;
         private LocalDateTime itemSoldDate;
+        private int viewCount;
+        private int bidCount;
         
         public String getFormattedDate() {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+        	if (itemSoldDate == null) return null;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
             return itemSoldDate.format(formatter);
         }
     	
