@@ -10,7 +10,7 @@
 		<button id="toCoinList">신청 내역</button>
 		<br>
 		<button onclick="openWithdrawal('출금 신청', '/withdrawal')">출금 신청</button>
-		<button>출금 신청 내역</button>
+		<button id="withdrawalList">출금 신청 내역</button>
 	</div>
 	<div class="coinSection" style="background-color: #E6F4F1">
 		<div id="currentCoin"><!-- 보유코인 --></div>
@@ -99,6 +99,7 @@
 						<th>충전 일자</th>
 						<th>금액</th>
 						<th>충전 방식</th>
+						<th>상태</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -108,7 +109,7 @@
     	</div>
     </div>
     
-	<!-- 신청 내역 모달 -->
+	<!-- 전환 신청 내역 모달 -->
 	<div id="conversionModal" class="modal" style="display: none;">
 		<div class="modal-content">
 			<span class="close" onclick="closeConversionModal()">&times;</span>
@@ -120,6 +121,29 @@
 						<th>금액</th>
 						<th>상태</th>
 						<th>전환 일자</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- 내역 -->
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	<!-- 현금 출금 내역 모달 -->
+	<div id="withdrawalModal" class="modal" style="display: none;">
+		<div class="modal-content">
+			<span class="close" onclick="closeWithdrawalModal()">&times;</span>
+			<h2>출금 신청 내역</h2>
+			<table border="1">
+				<thead>
+					<tr>
+						<th>신청 일자</th>
+						<th>금액</th>
+						<th>상태</th>
+						<th>계좌 정보</th>
+						<th>출금 일자</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -173,3 +197,4 @@ function openWithdrawal(name, url) {
 <script src="/js/conversionModal.js"></script>
 <script src="/js/useCoinModal.js"></script>
 <script src="/js/conversionCoinModal.js"></script>
+<script src="/js/withdrawalModal.js"></script>
