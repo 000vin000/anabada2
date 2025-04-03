@@ -13,4 +13,3 @@ public interface AcceptConversionRepository extends JpaRepository<Conversion, In
     @Query("SELECT c FROM Conversion c WHERE c.adminNo IS NULL AND c.conversionAt IS NULL")
     List<Conversion> getConList();
 }
-

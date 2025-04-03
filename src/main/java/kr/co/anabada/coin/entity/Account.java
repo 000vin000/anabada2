@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import kr.co.anabada.admin.entity.Admin;
 import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -51,13 +52,21 @@ public class Account { // 현금 입출금 내역
 	
 	@CreationTimestamp
 	@Column(nullable = false, updatable = false)
-	private LocalDateTime accountAt;
+	private LocalDateTime accountReqAt;
 	
 	// 출금 시 - 은행
 	private String accountBankForWithdraw;
 	
 	// 출금 시 - 계좌번호
 	private String accountNumberForWithdraw;
+	
+	// 관리자 확인
+	@ManyToOne
+	@JoinColumn(name = "adminNo")
+	private Admin adminNo;
+	
+	// 관리자 확인 일자
+	private LocalDateTime accountAt;
 	
 	public enum PayType {
 		NOPASSBOOK("무통장입금"),

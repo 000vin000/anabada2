@@ -54,7 +54,7 @@ function showToCoinConversionList(data) {
             row.innerHTML = `
                 <td>${conversion.conversionNo}</td>
                 <td>${formatDate(conversion.conversionReqAt)}</td>
-                <td>${conversion.userNo?.userId || "알 수 없음"}</td> <!-- ✅ 안전한 접근 -->
+                <td>${conversion.userNo?.userId || "알 수 없음"}</td> 
                 <td>${conversion.conversionAmount}</td>
                 <td><button onclick="acceptConversion(${conversion.conversionNo})">수락</button></td>
             `;
@@ -76,7 +76,7 @@ function showToCashConversionList(data) {
             row.innerHTML = `
                 <td>${conversion.conversionNo}</td>
                 <td>${formatDate(conversion.conversionReqAt)}</td>
-                <td>${conversion.userNo?.userId || "알 수 없음"}</td> <!-- ✅ 안전한 접근 -->
+                <td>${conversion.userNo?.userId || "알 수 없음"}</td> 
                 <td>${conversion.conversionAmount}</td>
                 <td><button onclick="acceptConversion(${conversion.conversionNo})">수락</button></td>
             `;
@@ -103,8 +103,8 @@ function acceptConversion(conversionNo) {
         return response.json();
     })
     .then(data => {
-        alert(data.message || "전환 승인");
-        checkAdminAndGetList(); 
+        alert(data.message);
+        location.reload();
     })
     .catch(error => {
         console.error("전환 승인 에러:", error);
