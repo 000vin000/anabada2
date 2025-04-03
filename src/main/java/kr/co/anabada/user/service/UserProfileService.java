@@ -1,5 +1,6 @@
 package kr.co.anabada.user.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
 import kr.co.anabada.item.entity.Item;
+import kr.co.anabada.item.entity.Item.ItemStatus;
 import kr.co.anabada.item.repository.BidRepository;
 import kr.co.anabada.item.repository.ItemDetailRepository;
 import kr.co.anabada.user.dto.UserProfileDTO;
@@ -39,8 +41,10 @@ public class UserProfileService {
 		Seller seller = sellerService.findById(userNo);
 		Buyer buyer = buyerService.getBuyer(userNo);
 
-		List<ItemSummaryDTO> recentSellItems = getSellSummaryDTOs(userNo, 0, 10, "recent").getContent();
-		List<ItemSummaryDTO> recentBuyItems = getBuySummaryDTOs(userNo, 0, 10, "recent").getContent();
+		List<ItemSummaryDTO> recentSellItems = getItems(
+				UserRole.SELLER, userNo, 0, 8, "all", "recent").getContent();
+		List<ItemSummaryDTO> recentBuyItems = getItems(
+				UserRole.BUYER, userNo, 0, 8, "all", "recent").getContent();
 
 		UserProfileDTO dto = UserProfileDTO.builder()
 				.userNo(user.getUserNo())
@@ -58,19 +62,44 @@ public class UserProfileService {
 		return dto;
 	}
 
-	public Page<UserProfileDTO.ItemSummaryDTO> getSellSummaryDTOs(Integer targetUserNo, int page, int size, String sort) {
-		Pageable pageable = mapToItemSort(page, size, sort);
-		Page<Item> items = itemDetailRepository.findBySellerUserUserNo(targetUserNo, pageable);
+	public Page<UserProfileDTO.ItemSummaryDTO> getSellItems(
+			Integer targetUserNo, int page, int size, String status, String sort) {
+		return getItems(UserRole.SELLER, targetUserNo, page, size, status, sort);
+	}
+
+	public Page<UserProfileDTO.ItemSummaryDTO> getBuyItems(
+			Integer targetUserNo, int page, int size, String status, String sort) {
+		return getItems(UserRole.BUYER, targetUserNo, page, size, status, sort);
+	}
+
+	private Page<UserProfileDTO.ItemSummaryDTO> getItems(
+			UserRole role, Integer targetUserNo, int page, int size, String status, String sort) {
+		Pageable pageable = getPageableBySort(page, size, sort);
+		Page<Item> items;
+
+		if (Arrays.stream(ItemStatus.values()).anyMatch(s -> s.name().equalsIgnoreCase(status))) {
+			items = getItemsByRoleAndStatus(role, targetUserNo, status, pageable);
+		} else {
+			items = getItemsByRole(role, targetUserNo, pageable);
+		}
+
 		return items.map(this::convertToItemSummaryDTO);
 	}
 
-	public Page<UserProfileDTO.ItemSummaryDTO> getBuySummaryDTOs(Integer targetUserNo, int page, int size, String sort) {
-		Pageable pageable = mapToItemSort(page, size, sort);
-		Page<Item> items = itemDetailRepository.findBuysByUserNo(targetUserNo, pageable);
-		return items.map(this::convertToItemSummaryDTO);
+	private Page<Item> getItemsByRole(UserRole role, Integer userNo, Pageable pageable) {
+		return role == UserRole.SELLER
+				? itemDetailRepository.findBySellerUserUserNo(userNo, pageable)
+				: itemDetailRepository.findByBuyerNo(userNo, pageable);
 	}
 
-	private Pageable mapToItemSort(int page, int size, String sort) {
+	private Page<Item> getItemsByRoleAndStatus(UserRole role, Integer userNo, String status, Pageable pageable) {
+		ItemStatus statusEnum = ItemStatus.valueOf(status.toUpperCase());
+		return role == UserRole.SELLER
+				? itemDetailRepository.findBySellerUserUserNoAndItemStatus(userNo, statusEnum, pageable)
+				: itemDetailRepository.findByBuyerNoAndItemStatus(userNo, statusEnum, pageable);
+	}
+
+	private Pageable getPageableBySort(int page, int size, String sort) {
 		Pageable pageable;
 
 		switch (sort) {
@@ -102,5 +131,9 @@ public class UserProfileService {
 				.viewCount(item.getItemViewCnt())
 				.bidCount(bidRepository.countByItemItemNo(item.getItemNo()))
 				.build();
+	}
+
+	private enum UserRole {
+		SELLER, BUYER
 	}
 }
