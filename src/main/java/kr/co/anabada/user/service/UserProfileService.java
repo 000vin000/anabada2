@@ -89,14 +89,14 @@ public class UserProfileService {
 	private Page<Item> getItemsByRole(UserRole role, Integer userNo, Pageable pageable) {
 		return role == UserRole.SELLER
 				? itemDetailRepository.findBySellerUserUserNo(userNo, pageable)
-				: itemDetailRepository.findByBuyerNo(userNo, pageable);
+				: itemDetailRepository.findByBuyerNoAndOptionalItemStatus(userNo, null, pageable);
 	}
 
 	private Page<Item> getItemsByRoleAndStatus(UserRole role, Integer userNo, String status, Pageable pageable) {
 		ItemStatus statusEnum = ItemStatus.valueOf(status.toUpperCase());
 		return role == UserRole.SELLER
 				? itemDetailRepository.findBySellerUserUserNoAndItemStatus(userNo, statusEnum, pageable)
-				: itemDetailRepository.findByBuyerNoAndItemStatus(userNo, statusEnum, pageable);
+				: itemDetailRepository.findByBuyerNoAndOptionalItemStatus(userNo, statusEnum, pageable);
 	}
 
 	private Pageable getPageableBySort(int page, int size, String sort) {
