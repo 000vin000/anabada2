@@ -49,7 +49,7 @@ public class UserProfileDTO {
         
         public String getFormattedDate() {
         	if (itemSoldDate == null) return null;
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
             return itemSoldDate.format(formatter);
         }
     	

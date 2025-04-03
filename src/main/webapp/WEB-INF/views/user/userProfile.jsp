@@ -48,6 +48,12 @@
 			<div class="items-header">
 				<h2>판매 아이템</h2>
 				<div class="sort-dropdown">
+					<select id="sell-status-filter-options" onchange="changeStatusFilter('sell', this.value)">
+						<option value="all" selected>전체 상태</option>
+						<c:forEach var="status" items="${itemStatuses}">
+							<option value="${status.name().toLowerCase()}">${status.korean}</option>
+						</c:forEach>
+					</select>
 					<select id="sell-sort-options" onchange="changeSorting('sell', this.value)">
 						<option value="recent" selected>최신순</option>
 						<option value="priceAsc">가격 낮은순</option>
@@ -68,6 +74,12 @@
 			<div class="items-header">
 				<h2>구매 아이템</h2>
 				<div class="sort-dropdown">
+					<select id="buy-status-filter-options" onchange="changeStatusFilter('buy', this.value)">
+						<option value="all" selected>전체 상태</option>
+						<c:forEach var="status" items="${itemStatuses}">
+							<option value="${status.name().toLowerCase()}">${status.korean}</option>
+						</c:forEach>
+					</select>
 					<select id="buy-sort-options" onchange="changeSorting('buy', this.value)">
 						<option value="recent" selected>최신순</option>
 						<option value="priceAsc">가격 낮은순</option>
@@ -90,7 +102,9 @@
 		const userNo = ${profile.userNo};
 		let sellPage = 0;
 		let buyPage = 0;
-		let size = 4;
+		let size = 8;
+		let sellStatusFilter = 'all';
+		let buyStatusFilter = 'all';
 		let sellSort = 'recent';
 		let buySort = 'recent';
 		
@@ -116,6 +130,18 @@
 	            loadBuyItems();
 	        }
 	    }
+		
+		function changeStatusFilter(type, newStatusFilter) {
+		    if (type === 'sell') {
+		        sellStatusFilter = newStatusFilter;
+		        sellPage = 0;
+		        loadSellItems();
+		    } else if (type === 'buy') {
+		        buyStatusFilter = newStatusFilter;
+		        buyPage = 0;
+		        loadBuyItems();
+		    }
+		}
 		
 		function changeSorting(type, newSort) {
 		    if (type === 'sell') {
@@ -143,7 +169,8 @@
 		function loadSellItems() {
 		    document.getElementById('sell-items-container').innerHTML = '<div class="loading-message">판매 아이템 로딩 중</div>';
 		    
-		    const url = '/user/profile/' + userNo + '/sells?page=' + sellPage + '&size=' + size + '&sort=' + sellSort;
+		    const url = '/user/profile/' + userNo + '/sells?page=' + sellPage + '&size=' + size
+		    		+ '&status=' + sellStatusFilter + '&sort=' + sellSort;
 		    fetch(url)
 		        .then(response => response.json())
 			    .then(data => {
@@ -159,7 +186,8 @@
 		function loadBuyItems() {
 		    document.getElementById('buy-items-container').innerHTML = '<div class="loading-message">구매 아이템 로딩 중</div>';
 		    
-		    const url = '/user/profile/' + userNo + '/buys?page=' + buyPage + '&size=' + size + '&sort=' + buySort;
+		    const url = '/user/profile/' + userNo + '/buys?page=' + buyPage + '&size=' + size
+		    		+ '&status=' + buyStatusFilter + '&sort=' + buySort;
 		    fetch(url)
 		        .then(response => response.json())
 		        .then(data => {

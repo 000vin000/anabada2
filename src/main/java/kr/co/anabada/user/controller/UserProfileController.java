@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletRequest;
+import kr.co.anabada.item.entity.Item.ItemStatus;
 import kr.co.anabada.jwt.JwtAuthHelper;
 import kr.co.anabada.jwt.UserTokenInfo;
 import kr.co.anabada.user.dto.UserProfileDTO;
@@ -36,6 +37,7 @@ public class UserProfileController {
 //		model.addAttribute("userNo", (user != null ? user.getUserNo() : 0));
 		model.addAttribute("userNo", userNo);
 		model.addAttribute("profile", profile);
+		model.addAttribute("itemStatuses", ItemStatus.values());
 
 		return "user/userProfile";
 	}
@@ -45,10 +47,11 @@ public class UserProfileController {
 	public Page<UserProfileDTO.ItemSummaryDTO> getSellItems(
 			@PathVariable Integer targetUserNo,
 			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "4") int size,
+			@RequestParam(defaultValue = "8") int size,
+			@RequestParam(defaultValue = "all") String status,
 			@RequestParam(defaultValue = "recent") String sort) {
 
-		return userProfileService.getSellSummaryDTOs(targetUserNo, page, size, sort);
+		return userProfileService.getSellItems(targetUserNo, page, size, status, sort); // seller 파라미터 추가
 	}
 
 	@GetMapping("/buys")
@@ -56,9 +59,10 @@ public class UserProfileController {
 	public Page<UserProfileDTO.ItemSummaryDTO> getBuyItems(
 			@PathVariable Integer targetUserNo,
 			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "4") int size,
+			@RequestParam(defaultValue = "8") int size,
+			@RequestParam(defaultValue = "all") String status,
 			@RequestParam(defaultValue = "recent") String sort) {
 
-		return userProfileService.getBuySummaryDTOs(targetUserNo, page, size, sort);
+		return userProfileService.getBuyItems(targetUserNo, page, size, status, sort); // buyer 파라미터 추가
 	}
 }
