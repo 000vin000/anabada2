@@ -115,9 +115,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
  <nav>
         <ul>
-            <!-- '재무관리' 탭을 대시보드로 연결 -->
-            <li><a href="/admin/dashboard">재무관리</a></li> <!-- 대시보드 페이지로 연결 -->
+            <li><a href="/admin/dashboard">재무관리</a></li>
             <li><a href="/admin/management">고객관리</a></li>
+            <li><a href="/admin/fees">수수료관리</a></li>
         </ul>
     </nav>
     <h1>고객센터</h1>
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         </td>
 						<td>
     						<c:if test="${empty answers}">
-    							<button type="button" class="delete-btn" data-question-no="${question.questionNo}">삭제</button>
+    							<button type="button" class="delete-btn" data-question-no="${question.questionNo}">삭제하기</button>
 							</c:if>
     					</td>					
     				</tr>
