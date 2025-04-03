@@ -38,6 +38,12 @@ public interface ItemDetailRepository extends JpaRepository<Item, Integer> {
 			+ "WHERE itemNo = :itemNo AND (:userNo IS NULL OR seller.sellerNo != :userNo)")
 	void incrementItemViewCount(@Param("itemNo") Integer itemNo, @Param("userNo") Integer userNo);
 
-	@Query("SELECT i FROM Item i WHERE i.seller.sellerNo = :sellerNo ORDER BY i.itemNo DESC")
-	Page<Item> findRecentBySellerNo(@Param("sellerNo") Integer sellerNo, Pageable pageable);
+	Page<Item> findBySellerUserUserNo(@Param("userNo") Integer userNo, Pageable pageable);
+
+	@Query("SELECT i FROM Item i "
+			+ "JOIN Bid b ON b.item = i "
+			+ "JOIN User u ON b.user = u "
+			+ "JOIN Buyer by ON by.user = u "
+			+ "WHERE by.user.userNo = :userNo ")
+	Page<Item> findBuysByUserNo(@Param("userNo") Integer userNo, Pageable pageable);
 }
