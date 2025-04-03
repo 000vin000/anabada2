@@ -35,10 +35,11 @@
 <body>
 <script type="module">
 import { fetchWithAuth } from '/js/user/fetchWithAuth.js';
+
 document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll(".delete-btn").forEach(button => {
         button.addEventListener("click", async function() {
-            const questionNo = this.getAttribute("data-question-no"); // 올바르게 questionNo 가져오기
+            const questionNo = this.getAttribute("data-question-no");
 
             if (!questionNo) {
                 alert("질문 번호가 올바르지 않습니다.");
@@ -48,17 +49,16 @@ document.addEventListener("DOMContentLoaded", function() {
             if (!confirm("정말 삭제하시겠습니까?")) return;
 
             try {
-                const url = `/api/question/delete/' + questionNo; // ✅ URL에 questionNo 추가 확인
-                console.log("DELETE 요청 URL:", url); // 🔍 URL 로그 찍어서 확인
+                const url = `/api/question/delete/` + questionNo;
+                console.log("DELETE 요청 URL:", url);
 
-                const response = await fetch(url, {
-                    method: "DELETE",
+                const response = await fetchWithAuth(url, {
+                    method: 'DELETE',
                     headers: {
-                        "Authorization": "Bearer " + localStorage.getItem("token"), // JWT 인증 필요 시
-                        "Content-Type": "application/json"
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                        'Content-Type': 'application/json',
                     }
                 });
-
 
                 const responseData = await response.json();
 
@@ -68,8 +68,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
 
                 alert(responseData.message || "삭제되었습니다.");
-                location.reload(); // ✅ 삭제 후 페이지 새로고침하여 목록에서 제거
-
+                location.reload();
             } catch (error) {
                 console.error("삭제 중 오류 발생:", error);
                 alert("삭제 중 오류가 발생했습니다.");
@@ -78,6 +77,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 </script>
+
  <nav>
         <ul>
             <!-- '재무관리' 탭을 대시보드로 연결 -->
@@ -177,11 +177,9 @@ document.addEventListener("DOMContentLoaded", function() {
                         </td>
 						<td>
     						<c:if test="${empty answers}">
-        						<td>
-    <button type="button" class="delete-btn" data-question-no="${question.questionNo}">삭제</button>
-</td>
-    						</c:if>
-    						</td>					
+    							<button type="button" class="delete-btn" data-question-no="${question.questionNo}">삭제</button>
+							</c:if>
+    					</td>					
     				</tr>
                 </c:forEach>
             </tbody>
