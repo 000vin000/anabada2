@@ -15,7 +15,7 @@
 <div class="body-container">
 	<div class="recent-header">
 	    <h2>최근 본</h2>
-	    <button id="delete-recent"><img src="/images/icon/xicon.png" alt="삭제 아이콘" class="xicon"></button>
+	    <button id="delete-recent"><img src="/images/icon/xicon.png" alt="삭제" class="xicon"></button>
 	</div>
     <div class="recent-items-container" id="recent-items" >
         <!-- 최근 본 아이템 목록이 여기에 추가됨 -->

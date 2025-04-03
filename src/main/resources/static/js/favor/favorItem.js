@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const itemNo = favBtn.dataset.itemNo;
     const favImg = document.createElement("img");
     favImg.alt = "☆";
+	favImg.classList.add("favor-icon");
    	favBtn.innerHTML = "";
     favBtn.appendChild(favImg);
     
