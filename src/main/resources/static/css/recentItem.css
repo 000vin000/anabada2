@@ -1,0 +1,125 @@
+/* 날짜 구분 헤더 */
+#recent-items h3 {
+    margin-top: 24px;
+    font-size: 18px;
+    color: #43BFC7;
+    border-bottom: 1px solid #43BFC7;
+    padding-bottom: 4px;
+}
+
+/* 전체 recent 리스트 */
+ul.recent-items-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0;
+}
+
+/* 리스트 아이템 */
+ul.recent-items-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px 12px;
+    transition: background 0.2s ease;
+}
+
+ul.recent-items-list li:hover {
+    background-color: #f0fcfd;
+}
+
+/* 항목 링크 전체 */
+.recent-item {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    width: 100%;
+}
+
+/* 이미지 */
+.recent-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 12px;
+}
+
+/* 제목 */
+.recent-item span {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* h2 + 버튼을 한 줄로 정렬 */
+.recent-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+/* h2 여백 조정 */
+.recent-header h2 {
+    margin: 0;
+}
+
+/* 삭제 모드 버튼 (작고 컴팩트하게) */
+#delete-recent {
+    background-color: #43BFC7;
+    color: white;
+    border: none;
+    padding: 4px 10px;
+    font-size: 13px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#delete-recent:hover {
+    background-color: #37aab1;
+}
+
+#delete-recent .xicon {
+    width: 16px;
+    height: 16px;
+    object-fit: cover;
+    vertical-align: middle;
+}
+
+/* 삭제 체크박스 */
+.delete-checkbox {
+    margin-right: 10px;
+    transform: scale(1.2);
+    accent-color: #43BFC7;
+}
+
+/* 삭제 모드 컨트롤 영역 */
+#delete-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+#delete-controls label {
+    font-size: 14px;
+    color: #333;
+}
+
+#delete-controls button {
+    background-color: #43BFC7;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#delete-controls button:hover {
+    background-color: #37aab1;
+}

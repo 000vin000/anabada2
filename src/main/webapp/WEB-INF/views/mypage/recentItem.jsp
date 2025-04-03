@@ -9,11 +9,14 @@
     <title>ANABADA</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/recentItem.css">
 </head>
 <body>
 <div class="body-container">
-    <h2>최근 본</h2>
-    <button id="delete-recent"><img src="/images/icon/xicon.png" width="32"></button>
+	<div class="recent-header">
+	    <h2>최근 본</h2>
+	    <button id="delete-recent"><img src="/images/icon/xicon.png" alt="삭제 아이콘" class="xicon"></button>
+	</div>
     <div class="recent-items-container" id="recent-items" >
         <!-- 최근 본 아이템 목록이 여기에 추가됨 -->
     </div>
