@@ -469,12 +469,17 @@ nav ul li a:hover {
     all: unset; /* 기본 스타일 제거 */
     display: inline-block; /* 버튼 크기를 이미지 크기에 맞춤 */
     cursor: pointer; /* 마우스 오버 시 클릭 가능하게 */
+    display: flex;
+    align-items: center;
+    padding: 0;
+    line-height: 1;
 }
 
 #favor-btn img {
     width: 24px; /* 이미지 크기 조절 */
     height: 24px;
     vertical-align: middle; /* 정렬 이슈 방지 */
+    object-fit: contain;
 }
 
 /*로그인 페이지 */
@@ -1290,7 +1295,7 @@ input[type="radio"] + label {
 .profile-header {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: flex-start;
 	border-bottom: 2px solid #43BFC7;
 	padding-bottom: 15px;
 	margin-bottom: 30px;
@@ -1300,6 +1305,7 @@ input[type="radio"] + label {
 	font-size: 24px;
 	color: #222;
 	margin: 0;
+	margin-right: 15px;
 }
 
 .profile-info {
@@ -1580,7 +1586,6 @@ input[type="radio"] + label {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    padding-bottom: 15px;
     border-bottom: 1px solid #eee;
 }
 
@@ -1595,7 +1600,6 @@ input[type="radio"] + label {
     font-weight: 700;
     color: #222;
     margin-right: 15px;
-    margin-bottom: 0;
 }
 
 .item-action-buttons {

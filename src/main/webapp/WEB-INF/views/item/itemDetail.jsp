@@ -12,7 +12,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 </head>
 <body>
-<body>
 	<div class="item-detail-container">
 		<div class="item-header">
 			<div class="item-title-section">
