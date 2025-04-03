@@ -8,6 +8,7 @@
 	<meta charset="UTF-8">
 	<title>ANABADA</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/favorpageStyle.css">
 	<style type="text/css">
 		.tabs {
 		    display: flex;
@@ -49,11 +50,11 @@
 	</div>
 	
 	<div id="items" class="content active">
-	    <ul id="itemList"> </ul>
+	    <ul id="itemList" class="favor-list"> </ul>
 	</div>
 	
 	<div id="sellers" class="content">
-	    <ul id="sellerList"> </ul>
+	    <ul id="sellerList" class="favor-list"> </ul>
 	</div>
 </div>
 	<jsp:include page="../sidebar.jsp" />
