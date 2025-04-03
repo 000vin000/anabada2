@@ -14,7 +14,7 @@
 <body>
 	<div class="profile-container">
 		<div class="profile-header">
-			<h1>${profile.userNick}(${profile.userId})의프로필</h1>
+			<h1>${profile.userNick}(${profile.userId})의 프로필</h1>
 			<button id="favor-btn" data-seller-no="${profile.userNo}">☆</button>
 		</div>
 
@@ -22,7 +22,7 @@
 			<div class="info-grid">
 				<div class="info-item">
 					<span class="info-label">가입일</span>
-					<span class="info-value">${profile.getFormattedDate()}</span>
+					<span class="info-value">${profile.formattedDate}</span>
 				</div>
 				<div class="info-item">
 					<span class="info-label">판매수</span>
@@ -90,7 +90,7 @@
 		const userNo = ${profile.userNo};
 		let sellPage = 0;
 		let buyPage = 0;
-		let size = 10;
+		let size = 4;
 		let sellSort = 'recent';
 		let buySort = 'recent';
 		
@@ -225,7 +225,6 @@
 		        ul.appendChild(pageLi);
 		    }
 		    
-		    // 다음 버튼
 		    const nextLi = document.createElement('li');
 		    const nextLink = document.createElement('a');
 		    nextLink.href = '#';
