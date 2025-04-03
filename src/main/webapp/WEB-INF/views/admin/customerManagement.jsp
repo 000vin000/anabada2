@@ -33,6 +33,51 @@
 
  </head>
 <body>
+<script type="module">
+import { fetchWithAuth } from '/js/user/fetchWithAuth.js';
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".delete-btn").forEach(button => {
+        button.addEventListener("click", async function() {
+            const questionNo = this.getAttribute("data-question-no"); // 올바르게 questionNo 가져오기
+
+            if (!questionNo) {
+                alert("질문 번호가 올바르지 않습니다.");
+                return;
+            }
+
+            if (!confirm("정말 삭제하시겠습니까?")) return;
+
+            try {
+                const url = `/api/question/delete/' + questionNo; // ✅ URL에 questionNo 추가 확인
+                console.log("DELETE 요청 URL:", url); // 🔍 URL 로그 찍어서 확인
+
+                const response = await fetch(url, {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("token"), // JWT 인증 필요 시
+                        "Content-Type": "application/json"
+                    }
+                });
+
+
+                const responseData = await response.json();
+
+                if (!response.ok) {
+                    alert(responseData.error || "삭제 실패. 다시 시도해주세요.");
+                    return;
+                }
+
+                alert(responseData.message || "삭제되었습니다.");
+                location.reload(); // ✅ 삭제 후 페이지 새로고침하여 목록에서 제거
+
+            } catch (error) {
+                console.error("삭제 중 오류 발생:", error);
+                alert("삭제 중 오류가 발생했습니다.");
+            }
+        });
+    });
+});
+</script>
  <nav>
         <ul>
             <!-- '재무관리' 탭을 대시보드로 연결 -->
@@ -131,12 +176,12 @@
                             </c:if>
                         </td>
 						<td>
-    						<c:if test="${not empty answers}">
-        						<form method="post" action="/question/answer/delete/${question.questionNo}" onsubmit="return confirm('정말 삭제하시겠습니까?')">
-            						<button type="submit" class="delete-btn">삭제</button>
-       							 </form>
+    						<c:if test="${empty answers}">
+        						<td>
+    <button type="button" class="delete-btn" data-question-no="${question.questionNo}">삭제</button>
+</td>
     						</c:if>
-    					</td>					
+    						</td>					
     				</tr>
                 </c:forEach>
             </tbody>

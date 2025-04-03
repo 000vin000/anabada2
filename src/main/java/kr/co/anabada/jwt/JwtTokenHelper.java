@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import kr.co.anabada.user.entity.User;
 import kr.co.anabada.user.repository.UserJoinRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -62,6 +63,21 @@ public class JwtTokenHelper {
         return value != null ? value.toString() : null;
     }
     
+    public List<String> getRolesFromRequest(HttpServletRequest request) {
+        String token = jwtUtil.extractAccessToken(request);
+        if (!jwtUtil.validateToken(token)) {
+            return List.of(); // 토큰이 유효하지 않으면 빈 리스트 반환
+        }
+
+        Object rolesObj = jwtUtil.extractClaim(token, "roles"); 
+        if (rolesObj instanceof List<?>) {
+            return (List<String>) rolesObj;
+        } else if (rolesObj instanceof String) {
+            return List.of(rolesObj.toString());
+        } else {
+            return List.of();
+        }
+    }
     // userNo 추출 ( 정빈 추가 )
     public UserTokenInfo getUserNoFromRequest(HttpServletRequest req) {
         // 요청에서 토큰 추출
