@@ -289,7 +289,7 @@
 	        return false;
 	    }
 	
-	    // 가장 하위에서 선택된 값으로 설정
+	    // 개인경매 + 대분류 + 중분류 + 소분류
 	    let categoryNo = "10" + level1 + level2 + level3;
 	    
 	    // hidden input에 categoryNo 값 설정
