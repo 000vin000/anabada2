@@ -225,7 +225,6 @@
 		        ul.appendChild(pageLi);
 		    }
 		    
-		    // 다음 버튼
 		    const nextLi = document.createElement('li');
 		    const nextLink = document.createElement('a');
 		    nextLink.href = '#';
