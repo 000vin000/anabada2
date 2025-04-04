@@ -29,9 +29,10 @@ public class ItemService {
 	@Autowired
 	private JwtTokenHelper jwtTokenHelper;
 	
-	public Item findById(Integer itemNo) {
-        Optional<Item> optionalItem = itemRepository.findById(itemNo);
-        return optionalItem.orElse(null);  // 아이템이 없으면 null 반환
+    // ✅ 아이템 조회 (존재하지 않을 경우 예외 발생)
+    public Item findById(Integer itemNo) {
+        return itemRepository.findById(itemNo)
+            .orElseThrow(() -> new IllegalArgumentException("아이템을 찾을 수 없습니다: itemNo=" + itemNo));
     }
 
 

@@ -20,4 +20,9 @@ public class ChatMessageDTO {
     private String formattedMsgDate;
     private Integer senderNo; 
     private Integer roomNo;
+    
+    // msgContent 반환
+    public String getMessage() {
+        return this.msgContent;
+    }
 }

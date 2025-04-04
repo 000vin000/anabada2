@@ -35,15 +35,18 @@ public class ChatHandler extends TextWebSocketHandler {
                 return;
             }
 
+            // 세션을 roomSessions에 추가
             roomSessions.computeIfAbsent(roomNo, k -> new ConcurrentHashMap<>()).put(userNo, session);
-
             System.out.println("User No: " + userNo + " joined Room No: " + roomNo);
 
             // 기존 채팅 메시지 불러오기
             List<ChatMessageDTO> chatMessages = chatMessageService.getMessagesByRoomNo(Integer.parseInt(roomNo));
-
-            for (ChatMessageDTO message : chatMessages) {
-                session.sendMessage(new TextMessage(message.getMsgContent()));
+            if (chatMessages != null) {
+                for (ChatMessageDTO message : chatMessages) {
+                    session.sendMessage(new TextMessage(message.getMsgContent()));
+                }
+            } else {
+                System.out.println("채팅 메시지 불러오기 실패: " + roomNo);
             }
 
         } catch (Exception e) {
@@ -62,23 +65,34 @@ public class ChatHandler extends TextWebSocketHandler {
         }
 
         // ✅ WebSocket 메시지 처리
-        ChatMessageDTO chatMessageDTO = chatMessageService.sendMessage(
-            Integer.parseInt(roomNo),  
-            message.getPayload(),      
-            userNo                     
-        );
+        try {
+            ChatMessageDTO chatMessageDTO = chatMessageService.sendMessage(
+                Integer.parseInt(roomNo),  
+                message.getPayload(),      
+                userNo                     
+            );
 
-        Map<Integer, WebSocketSession> roomSessionMap = roomSessions.get(roomNo);
+            Map<Integer, WebSocketSession> roomSessionMap = roomSessions.get(roomNo);
 
-        if (roomSessionMap != null) {
-            for (Map.Entry<Integer, WebSocketSession> entry : roomSessionMap.entrySet()) {
-                WebSocketSession receiverSession = entry.getValue();
-                Integer receiverUserNo = entry.getKey();
+            if (roomSessionMap != null) {
+                for (Map.Entry<Integer, WebSocketSession> entry : roomSessionMap.entrySet()) {
+                    WebSocketSession receiverSession = entry.getValue();
+                    Integer receiverUserNo = entry.getKey();
 
-                if (!receiverUserNo.equals(userNo) && receiverSession.isOpen()) {
-                    receiverSession.sendMessage(new TextMessage(chatMessageDTO.getMsgContent()));
+                    if (!receiverUserNo.equals(userNo) && receiverSession.isOpen()) {
+                        try {
+                            receiverSession.sendMessage(new TextMessage(chatMessageDTO.getMsgContent()));
+                        } catch (IOException e) {
+                            System.out.println("메시지 전송 실패: " + receiverUserNo);
+                            e.printStackTrace();
+                        }
+                    }
                 }
+            } else {
+                System.out.println("채팅방 세션 없음: " + roomNo);
             }
+        } catch (Exception e) {
+            System.out.println("메시지 처리 실패: " + e.getMessage());
         }
     }
 
