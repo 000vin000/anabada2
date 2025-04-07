@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
         logoutBtn.addEventListener("click", function () {
             console.log("로그아웃 시도");
             localStorage.removeItem("Token");
+			localStorage.removeItem("refreshToken");
             window.location.href = "/";
         });
     }
