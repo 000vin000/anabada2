@@ -7,6 +7,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,12 +35,19 @@ public class Bid {
 	@ManyToOne
 	@JoinColumn(name = "userNo", nullable = false)
 	private User user;
-	@Column(nullable = false, precision = 12, scale = 2, columnDefinition = "ENUM('active','winning','lost','cancelled') default 'active'")
-	private String bidStatus;
 	@Column(nullable = false)
 	private BigDecimal bidPrice;
 	@Column(nullable = false)
 	@UpdateTimestamp
 	private LocalDateTime bidTime;
+
+	@Builder.Default
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private BidStatus bidStatus = BidStatus.ACTIVE; //java enum 으로 수정했습니다
+	
+	public enum BidStatus {
+		ACTIVE, WINNING, LOST, CANCELLED;
+	}
 }
 // jhu
