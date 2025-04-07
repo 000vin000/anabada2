@@ -95,7 +95,9 @@
         <tbody>
             <c:forEach var="month" items="${monthLabels}" varStatus="loop">
                 <tr>
-                    <td>${month}</td>
+                    <td>
+    				<a href="/admin/fees/monthlyDetail?month=${month}" style="text-decoration: none; color: blue;">${month}</a>
+					</td>
                     <td>₩${monthAmounts[loop.index]}</td>
                 </tr>
             </c:forEach>
