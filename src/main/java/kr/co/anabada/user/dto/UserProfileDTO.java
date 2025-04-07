@@ -6,10 +6,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import kr.co.anabada.user.dto.UserProfileDetailDTO.BuyerDetailDTO;
+import kr.co.anabada.user.dto.UserProfileDetailDTO.SellerDetailDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @Data
@@ -27,17 +31,18 @@ public class UserProfileDTO {
 	private int sellerItemCnt;
 	private double sellerAvgRating;
 	private String sellerGrade;
-	private List<ItemSummaryDTO> sellSummaryDTOs;
 
 	private int buyerBidCnt;
-	private List<ItemSummaryDTO> buySummaryDTOs;
-
-//	private List<ReviewSummaryDTO> recentReviews;
+    
+    public String getFormattedDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        return userCreatedDate.format(formatter);
+    }
 	
 	@Data
     @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
+    @SuperBuilder
     public static class ItemSummaryDTO {
         private Integer itemNo;
         private String itemTitle;
@@ -58,9 +63,4 @@ public class UserProfileDTO {
             return NumberFormat.getInstance().format(itemPrice);
         }
 	}
-    
-    public String getFormattedDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        return userCreatedDate.format(formatter);
-    }
 }
