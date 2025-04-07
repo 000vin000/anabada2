@@ -51,7 +51,7 @@ public class UserProfileController {
 			@RequestParam(defaultValue = "all") String status,
 			@RequestParam(defaultValue = "recent") String sort) {
 
-		return userProfileService.getSellItems(targetUserNo, page, size, status, sort); // seller 파라미터 추가
+		return userProfileService.getSellItems(targetUserNo, page, size, status, sort);
 	}
 
 	@GetMapping("/buys")
@@ -63,6 +63,6 @@ public class UserProfileController {
 			@RequestParam(defaultValue = "all") String status,
 			@RequestParam(defaultValue = "recent") String sort) {
 
-		return userProfileService.getBuyItems(targetUserNo, page, size, status, sort); // buyer 파라미터 추가
+		return userProfileService.getBuyItems(targetUserNo, page, size, status, sort);
 	}
 }
