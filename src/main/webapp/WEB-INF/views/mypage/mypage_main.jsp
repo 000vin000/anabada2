@@ -15,7 +15,7 @@
 	<!-- 사용자 정보 -->
 	<section class="user-info">
 		<h3>사용자 정보</h3>
-		<a href="#" onclick="goToUpdateInfo()">회원정보 수정</a>
+		<a id="updateInfoBtn" href="#">회원정보 수정</a>
 		<div id="user-info"></div>
 	</section>
 	
@@ -53,7 +53,7 @@
 </div>
 <!-- J회원정보 수정 -->
 <script type="module">
-  import { goToUpdateInfo } from '/js/user/goToUpdateInfo.js';  // ✅ 리팩토링된 파일명 반영
+  import { goToUpdateInfo } from '/js/user/goToUpdateInfo.js';  
   window.goToUpdateInfo = goToUpdateInfo;
 </script>
 <script type="module">
@@ -80,5 +80,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 </script>
 <jsp:include page="../footer.jsp" />
 <jsp:include page="../main/bottom_nav.jsp" />
+<script type="module" src="/js/user/pin/goToUpdateInfo.js"></script>
+
 </body>
 </html>

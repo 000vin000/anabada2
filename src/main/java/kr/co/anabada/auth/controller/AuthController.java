@@ -17,7 +17,7 @@ import kr.co.anabada.jwt.JwtUtil;
 import kr.co.anabada.jwt.RefreshToken;
 import kr.co.anabada.jwt.RefreshTokenRepository;
 import kr.co.anabada.user.entity.User;
-import kr.co.anabada.user.service.UserLoginService;
+import kr.co.anabada.user.service.IndividualUserLoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,7 +29,7 @@ public class AuthController {
 
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
-    private final UserLoginService userLoginService;
+    private final IndividualUserLoginService userLoginService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
 

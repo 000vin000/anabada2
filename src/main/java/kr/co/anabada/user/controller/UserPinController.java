@@ -16,8 +16,8 @@ import kr.co.anabada.jwt.JwtTokenHelper;
 import kr.co.anabada.jwt.UserTokenInfo;
 import kr.co.anabada.user.dto.UserPinRequestDto;
 import kr.co.anabada.user.entity.User;
-import kr.co.anabada.user.repository.UserLoginRepository;
-import kr.co.anabada.user.service.UserInfoUpdateService;
+import kr.co.anabada.user.repository.IndividualUserLoginRepository;
+import kr.co.anabada.user.service.IndividualUserInfoUpdateService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -25,9 +25,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserPinController {
 
-    private final UserInfoUpdateService userUpdateService;
+    private final IndividualUserInfoUpdateService userUpdateService;
     private final JwtTokenHelper jwtTokenHelper;
-    private final UserLoginRepository userLoginRepository;
+    private final IndividualUserLoginRepository userLoginRepository;
 
     // 2차 비밀번호 등록 여부 확인
     @GetMapping("/status")
