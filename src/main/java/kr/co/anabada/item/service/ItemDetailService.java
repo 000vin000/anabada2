@@ -11,6 +11,7 @@ import jakarta.persistence.EntityNotFoundException;
 import kr.co.anabada.item.dto.ItemDetailDTO;
 import kr.co.anabada.item.entity.Bid;
 import kr.co.anabada.item.entity.Item;
+import kr.co.anabada.item.entity.Bid.BidStatus;
 import kr.co.anabada.item.entity.Item.ItemStatus;
 import kr.co.anabada.item.repository.BidRepository;
 import kr.co.anabada.item.repository.ImageRepository;
@@ -95,7 +96,7 @@ public class ItemDetailService {
 					return false;
 				}
 
-				Bid bid = Bid.builder().user(user).item(item).bidStatus("active").bidPrice(newPrice)
+				Bid bid = Bid.builder().user(user).item(item).bidStatus(BidStatus.ACTIVE).bidPrice(newPrice)
 						.bidTime(LocalDateTime.now()).build();
 				bidRepository.save(bid);
 				// TODO update point_account
