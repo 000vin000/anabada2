@@ -1,6 +1,5 @@
 package kr.co.anabada.chat.service;
 
-import kr.co.anabada.chat.dto.ChatMessageDTO;
 import kr.co.anabada.chat.entity.Chat_Message;
 import kr.co.anabada.chat.entity.Chat_Room;
 import kr.co.anabada.chat.repository.ChatMessageRepository;
@@ -13,26 +12,26 @@ import kr.co.anabada.user.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ChatRoomService {
 
-    @Autowired
-    private ChatRoomRepository chatRoomRepository;
+    private final ChatRoomRepository chatRoomRepository;
+    private final ChatMessageRepository chatMessageRepository;
+    private final UserRepository userRepository;
+    private final SellerRepository sellerRepository;
 
-    @Autowired
-    private ChatMessageRepository chatMessageRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private SellerRepository sellerRepository;
+    public ChatRoomService(ChatRoomRepository chatRoomRepository,
+                           ChatMessageRepository chatMessageRepository,
+                           UserRepository userRepository,
+                           SellerRepository sellerRepository) {
+        this.chatRoomRepository = chatRoomRepository;
+        this.chatMessageRepository = chatMessageRepository;
+        this.userRepository = userRepository;
+        this.sellerRepository = sellerRepository;
+    }
 
 
 
@@ -86,6 +85,11 @@ public class ChatRoomService {
                         .itemTitle(itemTitle)
                         .createdAt(LocalDateTime.now())
                         .build()));
+    }
+    
+    // 기존 채팅방 조회
+    public Optional<Chat_Room> findExistingRoom(Integer sellerUserNo, Integer buyerUserNo, Integer itemNo) {
+        return chatRoomRepository.findBySeller_User_UserNoAndBuyer_UserNoAndItemNo(sellerUserNo, buyerUserNo, itemNo);
     }
 
     // 채팅방 생성 (중복 방지)

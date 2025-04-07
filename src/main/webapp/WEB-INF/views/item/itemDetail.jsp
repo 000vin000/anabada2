@@ -21,7 +21,9 @@
 			<div class="item-action-buttons">
 				<button id="edit-btn" class="action-btn" hidden>수정</button>
 				<button id="delete-btn" class="action-btn" hidden>삭제</button>
-				<button id="inquiryBtn">문의하기</button>
+				<button class="inquiry-button" data-room-no="${roomNo}">문의하기</button>
+				
+
 			</div>
 		</div>
 
@@ -260,7 +262,7 @@
 	                document.getElementById("price").innerText = addCommas(data) + " 원";
 	            })
 	    }
-	
+	<%--
 	    async function updateStatus(itemNo) {
 	    	try {
 		        let response = await fetch(`/item/detail/${itemNo}/status`);
@@ -279,6 +281,34 @@
 	            console.error("updateStatus(itemNo): ", error);
 	        }
 	    }
+	    --%>
+	    
+	    async function updateRemainTime(itemNo) {
+	        response = await getRemainTime(itemNo);
+	        let { remainTime } = response;
+	        const { type } = response;
+	        
+	        let inner = async function() {
+	            if (remainTime <= 0) {
+	                if (type === "종료") {
+	                    stopAllIntervals(); // 경매 종료 시 타이머 멈추기
+	                    return;
+	                } else if (await waitForStatus(itemNo, "판매중")) {
+	                    remainTime = (await getRemainTime(itemNo)).remainTime;
+	                    priceInputSection.hidden = false;
+	                } else {
+	                    stopAllIntervals(); // 실패하면 모든 Interval 정지
+	                    return;
+	                }
+	            }
+
+	            document.getElementById("remain-time").innerText = formatTimeText(remainTime);
+	            remainTime--;
+	        };
+	        
+	        return inner;
+	    }
+
 		
 		async function getRemainTime(itemNo) {
 			const response = await fetch(`/item/detail/${itemNo}/remainTime`);
