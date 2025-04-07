@@ -14,7 +14,7 @@
                	<th>수수료 번호</th>
                	<th>아이템 번호</th>
                 <th>금액</th>
-                <th>생성 시간</th>
+                <th>시간</th>
             </tr>
         </thead>
         <tbody>
