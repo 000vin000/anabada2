@@ -12,7 +12,7 @@
     <script src="/js/weather.js"></script> 
 </head>
 <body>
-	<jsp:include page="categoryMenu.jsp" />
+	<!-- <jsp:include page="categoryMenu.jsp" /> -->
 	<div style="background-color: #FFF0F0;">
 	    <div class="weather-container"></div>
 	    <strong>추천 거래 (3km 이내)</strong>
