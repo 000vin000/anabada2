@@ -11,9 +11,10 @@
     <table border="1">
         <thead>
             <tr>
-                <th>수수료 ID</th>
+                <th>수수료 번호</th>
+                <th>아이템 번호</th>
                 <th>금액</th>
-                <th>생성 시간</th>
+                <th>시간</th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +23,7 @@
             <c:forEach var="fee" items="${feeDetails}">
                 <tr>
                     <td>${fee.admincoinNo}</td>
+                    <td>${fee.itemNo.itemNo}</td>
                     <td>₩${fee.admincoinAmount}</td>
                     <td>${fee.admincoinAt}</td>
                 </tr>
@@ -35,5 +37,6 @@
     </c:choose>
 </tbody>
     </table>
+    <a href="/admin/fees">뒤로 나가기</a>
 </body>
 </html>

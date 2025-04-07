@@ -14,28 +14,17 @@
 /* 모달 콘텐츠 */
 .modal-content {
     background-color: #fff;
-    margin: 15% auto; /* 화면의 중간에 위치하도록 설정 */
+    margin: 8% auto; /* 화면의 중간에 위치하도록 설정 */
 	padding: 20px;
 	border: 1px solid #888;
-	width: 80%; /* 화면 너비의 80% */
+	width: 500px; 
 	max-width: 500px; /* 최대 너비 설정 */
 	border-radius: 10px; /* 모서리 둥글게 */
 	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
-}
-
-/* 모달 닫기 버튼 */
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+	height: 550px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
 /* categoryModalLevel1 */
@@ -47,4 +36,97 @@
 
 #categoryModalLevel1 p {
 	cursor: pointer;
+}
+
+/* level1 */
+.genderOption {
+  padding: 8px 16px;
+  border-radius: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.genderOption:hover,
+.genderOption.active {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+/* 본문 영역 */
+#categoryModalBody {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  height: 100%;
+}
+
+/* 좌측 - level2 (세로 정렬) */
+#categoryModalLevel2 {
+  width: 18%;
+  border-right: 1px solid #eee;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#categoryModalLevel2 .hct {
+  all: unset;
+  padding: 5px;
+  background-color: #f7f7f7;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 14px;
+  text-align: center;
+}
+
+#categoryModalLevel2 .hct:hover,
+#categoryModalLevel2 .hct.active {
+  background-color: #000;
+  color: #fff;
+}
+
+/* 우측 - level3 (한 줄에 3개) */
+#categoryModalLevel3 {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개 */
+    gap: 10px;
+}
+
+#categoryModalLevel3 .hcd {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  transition: all 0.2s ease;
+  word-break: keep-all; /* 줄바꿈 방지 */
+  min-height: 38px;
+}
+
+#categoryModalLevel3 .hcd:hover,
+#categoryModalLevel3 .hcd.active {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.hActive {
+  background-color: #000;
+  color: #fff;
 }
