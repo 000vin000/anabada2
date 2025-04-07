@@ -55,11 +55,13 @@
     			<p class="genderOption" id="genderMale" data-value="10">남성</p>
     			<p class="genderOption" id="genderFemale" data-value="20">여성</p>
     		</div>
-			<div id="categoryModalLevel2">
-    			<!-- 내용 -->
-    		</div>
-			<div id="categoryModalLevel3">
-    			<!-- 내용 -->
+    		<div id="categoryModalBody">
+				<div id="categoryModalLevel2">
+	    			<!-- 내용 -->
+	    		</div>
+				<div id="categoryModalLevel3">
+	    			<!-- 내용 -->
+	    		</div>
     		</div>
     	</div>
     </div>
@@ -122,8 +124,12 @@ function openCategoryModal() {
 	});
 	
 	// categoryModalLevel2에 이벤트 위임 추가
-	document.getElementById("categoryModalLevel2").addEventListener("click", function (event) {
+	document.getElementById("categoryModalLevel2").addEventListener("click", function (event) {		
+		const target = event.target.closest(".hct");
 		if (event.target.classList.contains("hct")) {
+			document.querySelectorAll(".hct").forEach(btn => btn.classList.remove("hActive"));
+			event.target.classList.add("hActive");
+			
 			const level2 = event.target.getAttribute("data-value");
 			let level3msg = "";
 			
