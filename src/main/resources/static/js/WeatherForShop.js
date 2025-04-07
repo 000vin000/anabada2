@@ -228,18 +228,19 @@ function showPosition(position) {
 }
 
 function showError(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            document.getElementById("error").innerHTML = "사용자가 위치 정보 제공을 거부했습니다.";
-            break;
-        case error.POSITION_UNAVAILABLE:
-            document.getElementById("error").innerHTML = "위치 정보를 사용할 수 없습니다.";
-            break;
-        case error.TIMEOUT:
-            document.getElementById("error").innerHTML = "위치 정보 요청이 시간 초과되었습니다.";
-            break;
-        case error.UNKNOWN_ERROR:
-            document.getElementById("error").innerHTML = "알 수 없는 오류가 발생했습니다.";
-            break;
-    }
+    let defaultLat = 37.5665; // 서울 위도
+    let defaultLon = 126.9780; // 서울 경도
+    const apikey = "ed52d15758a57710850f5e242dd33b30";
+
+    const weatherUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${defaultLat}&lon=${defaultLon}&appid=${apikey}&units=metric&lang=kr`;
+
+    fetch(weatherUrl)
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("error").innerHTML = "위치 정보 사용이 불가능하여 서울 기준으로 날씨를 표시합니다.";
+            showWeatherData(data); // 서울 날씨로 날씨 정보 표시 함수 실행
+        })
+        .catch(() => {
+            document.getElementById("error").innerHTML = "서울 날씨 정보를 불러오는 데 실패했습니다.";
+        });
 }

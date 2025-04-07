@@ -174,17 +174,16 @@ function showPosition(position) {
 			
             let weatherHTML = `
 				<div class="main-weather">
-	                <div class="weather-item" style="display: flex">
-	                    <p class="city">현재 위치 : ${cityKorean}</p>
-	                    <p class="today">${formattedNow}</p>
-						
-	                    <p class="current-weather">
-							<strong>오늘</strong>    
-							<img src="../images/weather/${weatherIconMapping[closestTimeData.weather[0].description] || 'cloudy.png'}" alt="weather icon">
-	                        ${closestTimeData.main.temp} °C <br>
-	                    </p>
-	                </div>
-                </div>
+				    <div class="weather-header">
+				        <div class="city">${cityKorean}</div>
+				        <div class="today">${formattedNow}</div>
+				    </div>
+				    <div class="current-weather">
+				        <img src="../images/weather/${weatherIconMapping[closestTimeData.weather[0].description] || 'cloudy.png'}" alt="weather icon">
+				        <div>${closestTimeData.main.temp} °C</div>
+				    </div>
+				</div>
+				<div class="weather-table-container">
                 <table class="weather-table">
                     <thead>
                         <tr>
@@ -211,7 +210,7 @@ function showPosition(position) {
                 `;
             }
 
-            weatherHTML += `</tbody></table>`;
+            weatherHTML += `</tbody></table></div>`;
             document.querySelector('.weather-container').innerHTML = weatherHTML;
         })
         .catch(error => {
@@ -220,18 +219,8 @@ function showPosition(position) {
 }
 
 function showError(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            document.getElementById("error").innerHTML = "사용자가 위치 정보 제공을 거부했습니다.";
-            break;
-        case error.POSITION_UNAVAILABLE:
-            document.getElementById("error").innerHTML = "위치 정보를 사용할 수 없습니다.";
-            break;
-        case error.TIMEOUT:
-            document.getElementById("error").innerHTML = "위치 정보 요청이 시간 초과되었습니다.";
-            break;
-        case error.UNKNOWN_ERROR:
-            document.getElementById("error").innerHTML = "알 수 없는 오류가 발생했습니다.";
-            break;
-    }
+	document.getElementById("weatherError").style.display = "flex";
+    document.getElementById("weatherError").innerHTML = "위치 정보 사용이 불가능하여 서울 기준으로 날씨를 표시합니다.";
+    showPosition({ coords: { latitude: 37.5665, longitude: 126.9780 } }); // 강제로 좌표 전달
 }
+
