@@ -14,9 +14,10 @@
 	<jsp:include page="categoryMenu.jsp" />
 	<div>
         <p> 
-            <span id="gender">${gender}</span> > 
-            <span id="clothesType">${ct}</span> > 
-            <span id="clothesTypeDetail">${cd}</span>
+        	<span id="searchPath">${searchPath }</span>
+            <span id="gender" style="display: none;">${gender}</span> 
+            <span id="clothesType" style="display: none;">${ct}</span>
+            <span id="clothesTypeDetail" style="display: none;">${cd}</span>
         </p>
     </div>
 	<div class="body-container">
@@ -30,8 +31,8 @@
 <script>	
 function sortItems() {
 	let gender = document.getElementById("gender").textContent;
-	let clothesType = document.getElementById("clothesType").textContent;  // cd 값
-	let clothesTypeDetail = document.getElementById("clothesTypeDetail").textContent;  // ct 값
+	let clothesType = document.getElementById("clothesType").textContent;  
+	let clothesTypeDetail = document.getElementById("clothesTypeDetail").textContent;  
 	
 	let sortOrder = document.getElementById("sortOrder");
 	let selectedValue = sortOrder.value;
