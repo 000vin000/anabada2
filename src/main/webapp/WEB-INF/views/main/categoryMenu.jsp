@@ -3,7 +3,7 @@
 <body>
 <div id="categorySearchOption">
       <%-- 메인 카테고리 선택 --%>
-		<div id="level1Selection" class="level1=container">
+		<div id="level1Selection" class="level1-container">
 		    <button class="gender-option" id="gender-all" data-value="00">전체</button>
 		    <button class="gender-option" id="gender-male" data-value="10">남성</button>
 		    <button class="gender-option" id="gender-female" data-value="20">여성</button>
@@ -59,13 +59,12 @@ document.querySelectorAll(".gender-option").forEach(button => {
         }
         document.getElementById("level2Selection").innerHTML = level2message;
 
-        // 활성화된 gender-option에 active 클래스 추가
         document.querySelectorAll(".gender-option").forEach(btn => btn.classList.remove("active"));
         this.classList.add("active");
     });
 });
 
-// 🔥 level2Selection에 이벤트 위임 추가 (동적 요소 클릭 가능)
+// level2Selection에 이벤트 위임 추가 (동적 요소 클릭 가능)
 document.getElementById("level2Selection").addEventListener("click", function (event) {
     if (event.target.classList.contains("ct")) {
         const level2Value = event.target.getAttribute("data-value");
