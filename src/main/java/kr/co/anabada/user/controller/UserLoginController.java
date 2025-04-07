@@ -47,10 +47,15 @@ public class UserLoginController {
             return ResponseEntity.status(401).body(Map.of("message", "비밀번호가 일치하지 않습니다."));
         }
         
-        String role = "ROLE_USER"; // 기본적으로 'ROLE_USER'
+        String role = "ROLE_USER";
+        String redirectUrl = "/";
+
+        // ADMIN일 경우 설정 변경
         if ("ADMIN".equals(user.getUserType().toString())) {
-            role = "ROLE_ADMIN"; // 'ADMIN'일 경우 'ROLE_ADMIN' 부여
+            role = "ROLE_ADMIN";
+            redirectUrl = "/admin/dashboard";
         }
+
 
         String accessToken = jwtUtil.generateAccessToken(
             user.getUserId(),
@@ -67,7 +72,7 @@ public class UserLoginController {
             "message", "로그인 성공!",
             "accessToken", accessToken,
             "refreshToken", refreshToken,
-            "redirectUrl", "/"
+            "redirectUrl", redirectUrl
         ));
     }
 
