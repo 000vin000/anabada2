@@ -35,15 +35,20 @@
 
 <script>
     window.onload = function() {
-        var token = localStorage.getItem("Token");  // 로컬 스토리지에서 JWT 토큰을 가져옵니다.
+        var token = localStorage.getItem("Token");  
 
+        if (!token) {
+        	alert("로그인이 필요합니다.");
+        	window.close();
+        	return;
+        }
+        
         if (token) {
-            // 페이지 로딩 시 서버에 토큰을 보내는 요청을 할 수 있습니다.
             fetch('/chargeCash', {
-                method: 'GET',  // 또는 POST 등 필요한 메소드로 변경
+                method: 'GET', 
                 headers: {
-                    'Authorization': 'Bearer ' + token,  // 토큰을 'Bearer' 타입으로 헤더에 추가
-                    'Content-Type': 'application/json'  // 필요한 경우 Content-Type도 추가
+                    'Authorization': 'Bearer ' + token, 
+                    'Content-Type': 'application/json'  
                 }
             })
             .then(response => response.json())
@@ -77,23 +82,20 @@
             return false; // 폼 제출 방지
         }
 
-        // 로컬 스토리지에서 JWT 토큰 가져오기
         var token = localStorage.getItem("Token");
 
-        // Ajax 요청을 통해 서버에 폼 데이터 전송
         var formData = new FormData(document.getElementById("chargeForm"));
 
         fetch('/submitCharge', {
             method: 'POST',
             body: formData,
             headers: {
-                'Authorization': 'Bearer ' + token,  // JWT 토큰을 헤더에 포함
+                'Authorization': 'Bearer ' + token,
             }
         })
-        .then(response => response.json())  // 서버 응답을 JSON으로 받음
+        .then(response => response.json()) 
         .then(data => {
-            // data가 객체일 경우, 그 안에 메시지를 정확히 꺼내서 alert로 표시
-            alert(data.message || "충전 실패");  // 응답에 'message' 키를 포함시켜 메시지를 전달
+            alert(data.message || "충전 실패"); 
             setTimeout(function() {
                 document.getElementById("chargeForm").submit();
                 window.close();

@@ -27,7 +27,7 @@ public interface ItemDetailRepository extends JpaRepository<Item, Integer> {
 	Optional<LocalDateTime> findItemSaleStartDateByItemNo(@Param("itemNo") Integer itemNo);
 
 	@Query("SELECT itemSaleEndDate FROM Item WHERE itemNo = :itemNo")
-	Optional<LocalDateTime> findItemSaleEndDateByItemNo(Integer itemNo);
+	Optional<LocalDateTime> findItemSaleEndDateByItemNo(@Param("itemNo") Integer itemNo);
 
 	@Modifying
 	@Query("UPDATE Item SET itemPrice = :newPrice WHERE itemNo = :itemNo")
@@ -38,6 +38,17 @@ public interface ItemDetailRepository extends JpaRepository<Item, Integer> {
 			+ "WHERE itemNo = :itemNo AND (:userNo IS NULL OR seller.sellerNo != :userNo)")
 	void incrementItemViewCount(@Param("itemNo") Integer itemNo, @Param("userNo") Integer userNo);
 
-	@Query("SELECT i FROM Item i WHERE i.seller.sellerNo = :sellerNo ORDER BY i.itemNo DESC")
-	Page<Item> findRecentBySellerNo(@Param("sellerNo") Integer sellerNo, Pageable pageable);
+	Page<Item> findBySellerUserUserNo(@Param("userNo") Integer userNo, Pageable pageable);
+
+	Page<Item> findBySellerUserUserNoAndItemStatus(
+			@Param("userNo") Integer userNo, @Param("status") ItemStatus status, Pageable pageable);
+	
+	@Query("SELECT i FROM Item i "
+			+ "JOIN Bid b ON b.item = i "
+			+ "JOIN User u ON b.user = u "
+			+ "JOIN Buyer by ON by.user = u "
+			+ "WHERE by.user.userNo = :userNo "
+			+ "AND (:status IS NULL OR i.itemStatus = :status)")
+	Page<Item> findByBuyerNoAndOptionalItemStatus(
+			@Param("userNo") Integer userNo, @Param("status") ItemStatus status, Pageable pageable);
 }

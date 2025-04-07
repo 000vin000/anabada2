@@ -25,9 +25,10 @@ document.addEventListener("DOMContentLoaded", function () {
 	const token = localStorage.getItem("Token");
 	
 	if (!token) {
-		document.getElementById("currentCoin").innerText = "로그인 필요";
-		return;
-	}
+    	alert("로그인이 필요합니다.");
+    	window.close();
+    	return;
+    }
 	
 	loadCurrentCoin();
 });

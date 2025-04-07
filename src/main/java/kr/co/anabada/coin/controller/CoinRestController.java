@@ -110,9 +110,11 @@ public class CoinRestController {
     	BigDecimal conversionAmount = history.map(Conversion::getConversionAmount).orElse(BigDecimal.ZERO);
 
     	Goods goods = goodsService.checkCurrentCashCoin(user.getUserNo());
-    	conversionAmount = conversionAmount.add(goods.getGoodsCash());
+    	BigDecimal insert = conversionAmount.add(goods.getGoodsCash());
     	
-    	goodsService.updateGoodsCash(user.getUserNo(), conversionAmount);
+    	// Goods 테이블 cash에 다시 +
+    	goodsService.updateGoodsCash(user.getUserNo(), insert);
+    	
     	conversionService.deleteConversion(conversionNo);
     	
     	return ResponseEntity.ok(Map.of("message", "신청 취소 되었습니다."));
@@ -186,5 +188,43 @@ public class CoinRestController {
     	conversionService.deleteConversion(conversionNo);
     	
     	return ResponseEntity.ok(Map.of("message", "신청 취소 되었습니다."));
+    }
+    
+    // 출금 신청 내역
+    @GetMapping("/withdrawalList")
+    public ResponseEntity<?> withdrawalList(HttpServletRequest req) {
+    	UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
+    	if (user == null) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "로그인이 필요합니다."));
+        }
+    	
+    	List<Account> withdrawalList = accountService.getWithdrawList(user.getUserNo());
+    	System.out.println(withdrawalList);
+    	
+    	return ResponseEntity.ok(Map.of("withdrawalList", withdrawalList));
+    }
+    
+    // 출금 신청 취소
+    @DeleteMapping("/cancelWithdrawal/{accountNo}")
+    public ResponseEntity<?> cancelWithdrawal(HttpServletRequest req, @PathVariable Integer accountNo) {
+    	UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
+    	if (user == null) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "로그인이 필요합니다."));
+        }
+    	
+    	Optional<Account> history = accountService.findByAccountNo(accountNo);
+    	BigDecimal accountAmount = history.map(Account::getAccountAmount).orElse(BigDecimal.ZERO);
+    	
+    	Goods goods = goodsService.checkCurrentCashCoin(user.getUserNo());
+    	accountAmount = accountAmount.add(goods.getGoodsCash());
+    	
+    	goodsService.updateGoodsCash(user.getUserNo(), accountAmount);
+    	accountService.deleteAccount(accountNo);
+    	
+    	return ResponseEntity.ok(Map.of("message", "출금 신청 취소 되었습니다."));
     }
 }

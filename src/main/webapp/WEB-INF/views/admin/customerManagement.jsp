@@ -33,11 +33,93 @@
 
  </head>
 <body>
+<script type="module">
+import { fetchWithAuth } from '/js/user/fetchWithAuth.js';
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".delete-btn").forEach(button => {
+        button.addEventListener("click", async function() {
+            const questionNo = this.getAttribute("data-question-no");
+
+            if (!questionNo) {
+                alert("질문 번호가 올바르지 않습니다.");
+                return;
+            }
+
+            if (!confirm("정말 삭제하시겠습니까?")) return;
+
+            try {
+                const url = `/api/question/delete/` + questionNo;
+                console.log("DELETE 요청 URL:", url);
+
+                const response = await fetchWithAuth(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const responseData = await response.json();
+
+                if (!response.ok) {
+                    alert(responseData.error || "삭제 실패. 다시 시도해주세요.");
+                    return;
+                }
+
+                alert(responseData.message || "삭제되었습니다.");
+                location.reload();
+            } catch (error) {
+                console.error("삭제 중 오류 발생:", error);
+                alert("삭제 중 오류가 발생했습니다.");
+            }
+        });
+    });
+});
+</script>
+
+<script type="module">
+import { fetchWithAuth } from '/js/user/fetchWithAuth.js';
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".delete-notice-btn").forEach(button => {
+        button.addEventListener("click", async function () {
+            const noticeNo = this.getAttribute("data-notice-no");
+
+            if (!confirm("정말 삭제하시겠습니까?")) return;
+
+            try {
+				const url = `/api/notice/delete/` + noticeNo;
+                const response = await fetchWithAuth(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    alert("공지사항 삭제 실패! 다시 시도해 주세요.");
+                    return;
+                }
+
+                alert("공지사항이 삭제되었습니다.");
+                this.closest("tr").remove(); // 삭제된 행을 즉시 테이블에서 제거
+            } catch (error) {
+                console.error("공지사항 삭제 중 오류 발생:", error);
+                alert("삭제 중 오류가 발생했습니다.");
+            }
+        });
+    });
+});
+</script>
+
  <nav>
         <ul>
-            <!-- '재무관리' 탭을 대시보드로 연결 -->
-            <li><a href="/admin/dashboard">재무관리</a></li> <!-- 대시보드 페이지로 연결 -->
+            <li><a href="/admin/dashboard">재무관리</a></li>
             <li><a href="/admin/management">고객관리</a></li>
+            <li><a href="/admin/fees">수수료관리</a></li>
+            <li><a href="/management/acceptConversion">코인 전환 신청</a></li>
+            <li><a href="/management/depositWithdrawal">입/출금 관리</a></li>
         </ul>
     </nav>
     <h1>고객센터</h1>
@@ -131,11 +213,9 @@
                             </c:if>
                         </td>
 						<td>
-    						<c:if test="${not empty answers}">
-        						<form method="post" action="/question/answer/delete/${question.questionNo}" onsubmit="return confirm('정말 삭제하시겠습니까?')">
-            						<button type="submit" class="delete-btn">삭제</button>
-       							 </form>
-    						</c:if>
+    						<c:if test="${empty answers}">
+    							<button type="button" class="delete-btn" data-question-no="${question.questionNo}">삭제하기</button>
+							</c:if>
     					</td>					
     				</tr>
                 </c:forEach>
@@ -167,9 +247,7 @@
                             <a href="/admin/notice/edit/${notices.noticeNo}">수정하기</a>
                         </td>
                         <td>
-                            <form action="/admin/notice/delete/${notices.noticeNo}" method="post" style="display:inline;">
-                                <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
-                            </form>
+                            <button type="button" class="delete-notice-btn" data-notice-no="${notices.noticeNo}">삭제하기</button>
                         </td>
                     </tr>
                 </c:forEach>

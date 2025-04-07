@@ -51,15 +51,10 @@ public class CashChargeController {
 	    else insertAmount = BigDecimal.valueOf(cardAmount);
 
 	    // DB에 기록
-	    Account account = accountService.insertAccount(user.getUserNo(), payType, insertAmount);
-
-	    // goods 테이블 업데이트
-	    Goods current = goodsService.checkCurrentCashCoin(user.getUserNo());
-	    BigDecimal chargeCash = current.getGoodsCash().add(insertAmount);
-	    Goods goods = goodsService.updateGoodsCash(user.getUserNo(), chargeCash);
+	    Account account = accountService.insertAccountDeposit(user.getUserNo(), payType, insertAmount);
 
 	    // 충전 완료 메시지를 객체 형태로 리턴
-	    String successMessage = insertAmount + "원 충전되었습니다.";
+	    String successMessage = insertAmount + "원 입금 요청";
 	    return ResponseEntity.ok().body(new HashMap<String, String>() {{
 	        put("message", successMessage);
 	    }});

@@ -12,17 +12,18 @@
 </head>
 <body>
 <div class="body-container">
-	
-	<div>
-		<jsp:include page="../mypage/coinView.jsp" />
-	</div>
-	
 	<!-- 사용자 정보 -->
 	<section class="user-info">
 		<h3>사용자 정보</h3>
 		<a id="updateInfoBtn" href="#">회원정보 수정</a>
 		<div id="user-info"></div>
 	</section>
+	
+	<!-- 보유 재화 정보 -->
+	<section>
+		<jsp:include page="../mypage/coinView.jsp" />
+	</section>
+	
 	<div>
 		주문내역
 		취소 반품 교환 내역

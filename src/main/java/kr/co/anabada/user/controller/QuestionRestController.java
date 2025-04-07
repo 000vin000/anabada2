@@ -4,6 +4,7 @@ import kr.co.anabada.user.entity.Question;
 import kr.co.anabada.user.entity.User;
 import kr.co.anabada.user.service.QuestionService;
 import kr.co.anabada.jwt.JwtTokenHelper;
+import kr.co.anabada.jwt.UserTokenInfo;
 import kr.co.anabada.user.repository.QuestionRepository;
 import kr.co.anabada.user.repository.UserRepository;
 
@@ -78,24 +79,30 @@ public class QuestionRestController {
     // 문의 삭제 처리
     @DeleteMapping("/delete/{questionNo}")
     public ResponseEntity<?> deleteQuestion(@PathVariable Integer questionNo, HttpServletRequest request) {
-        // 로그인한 사용자 가져오기
-        User loggedInUser = getLoggedInUser(request);
+
+        // 로그인한 사용자 정보 가져오기
+        UserTokenInfo loggedInUser = jwtTokenHelper.getUserFromRequest(request);
+        List<String> roles = jwtTokenHelper.getRolesFromRequest(request); // 🔥 역할 가져오기
 
         if (loggedInUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "로그인이 필요한 기능입니다"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "로그인이 필요합니다"));
         }
 
-        // questionNo에 해당하는 문의사항을 조회
+        // 삭제할 질문 가져오기
         Question question = questionRepository.findById(questionNo).orElse(null);
         if (question == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "문의가 존재하지 않습니다"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "해당 질문이 존재하지 않습니다"));
         }
 
-        // 삭제 작업 수행
-        questionRepository.delete(question);
-        return ResponseEntity.ok(Map.of("message", "삭제되었습니다."));
-    }
+        // 질문 작성자이거나 관리자(ROLE_ADMIN)일 경우에만 삭제 가능
+        if (!question.getSender().getUserId().equals(loggedInUser.getUserId()) && !roles.contains("ROLE_ADMIN")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "삭제 권한이 없습니다"));
+        }
 
+        // 삭제 수행
+        questionRepository.delete(question);
+        return ResponseEntity.ok(Map.of("message", "질문이 삭제되었습니다"));
+    }
 
     // 문의 수정 처리 (PUT 방식)
     @PutMapping("/edit/{questionNo}")

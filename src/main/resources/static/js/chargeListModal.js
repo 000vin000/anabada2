@@ -64,14 +64,16 @@ function populateChargeHistory(data) {
 	if (Array.isArray(data.chargeList)) {
 		data.chargeList.forEach(account => {
 			const row = document.createElement("tr");
+			const status = account.accountAt ? '충전 완료' : '확인중';
 			
-			const formattedAccountAt = formatDate(account.accountAt);
+			const formattedAccountAt = formatDate(account.accountReqAt);
 			const accountTypeKor = account.accountPayType == "NOPASSBOOK" ? "무통장 입금" : "카드결제";
 			
 			row.innerHTML = `
 				<td>${formattedAccountAt}</td>
 				<td>${account.accountAmount}</td>
 				<td>${accountTypeKor}</td>
+				<td>${status}</td>
 			`;
 			tbody.appendChild(row);
 		});

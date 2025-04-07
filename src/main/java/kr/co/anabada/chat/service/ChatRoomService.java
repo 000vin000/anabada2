@@ -9,27 +9,32 @@ import kr.co.anabada.user.entity.User;
 import kr.co.anabada.user.repository.SellerRepository;
 import kr.co.anabada.user.repository.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ChatRoomService {
 
-    @Autowired
-    private ChatRoomRepository chatRoomRepository;
+    private final ChatRoomRepository chatRoomRepository;
+    private final ChatMessageRepository chatMessageRepository;
+    private final UserRepository userRepository;
+    private final SellerRepository sellerRepository;
 
-    @Autowired
-    private ChatMessageRepository chatMessageRepository;
+    public ChatRoomService(ChatRoomRepository chatRoomRepository,
+                           ChatMessageRepository chatMessageRepository,
+                           UserRepository userRepository,
+                           SellerRepository sellerRepository) {
+        this.chatRoomRepository = chatRoomRepository;
+        this.chatMessageRepository = chatMessageRepository;
+        this.userRepository = userRepository;
+        this.sellerRepository = sellerRepository;
+    }
 
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private SellerRepository sellerRepository;
+
 
     // 특정 구매자가 특정 상품에 대해 이미 채팅방이 있는지 확인
     public boolean existsByRoomNo(Integer roomNo) {
@@ -41,10 +46,51 @@ public class ChatRoomService {
         return chatRoomRepository.existsByBuyer_UserNoAndItemNo(buyerId, itemNo);
     }
     
+    // 채팅방 조회 (buyerId와 itemNo 기준으로)
     public Optional<Chat_Room> getChatRoomByBuyerAndItem(Integer buyerUserNo, Integer itemNo) {
         return chatRoomRepository.findByBuyer_UserNoAndItemNo(buyerUserNo, itemNo);
     }
+    public List<Chat_Room> getChatRoomsByItem(Integer itemNo, Integer userNo) {
+        return chatRoomRepository.findByItemNoAndSeller_User_UserNoOrBuyer_UserNo(itemNo, userNo, userNo);
+    }
+    
+    // 상품 상세페이지에서 문의하기 눌렀을 때
+    public Chat_Room getChatRoomByItemAndUsers(Integer sellerUserNo, Integer buyerUserNo, Integer itemNo) {
+        return chatRoomRepository.findBySeller_User_UserNoAndBuyer_UserNoAndItemNo(sellerUserNo, buyerUserNo, itemNo)
+                .orElse(null); // 없으면 null 반환
+    }
 
+    // 채팅방 정보 조회 API 추가
+    public Chat_Room findChatRoomById(Integer roomNo) {
+        Chat_Room chatRoom = chatRoomRepository.findById(roomNo).orElse(null);
+        if (chatRoom == null) {
+            System.out.println("채팅방을 찾을 수 없습니다. roomNo: " + roomNo);
+        } else {
+            System.out.println("채팅방 조회 성공: " + chatRoom);
+        }
+        return chatRoom;
+    }
+    
+    public Chat_Room findOrCreateChatRoom(Integer sellerId, Integer buyerId, Integer itemNo, String itemTitle) {
+        User buyer = userRepository.findById(buyerId)
+                .orElseThrow(() -> new RuntimeException("구매자 정보를 찾을 수 없습니다."));
+        Seller seller = sellerRepository.findById(sellerId)
+                .orElseThrow(() -> new RuntimeException("판매자 정보를 찾을 수 없습니다."));
+
+        return chatRoomRepository.findBySellerAndBuyerAndItemNo(seller, buyer, itemNo)
+                .orElseGet(() -> chatRoomRepository.save(Chat_Room.builder()
+                        .seller(seller)
+                        .buyer(buyer)
+                        .itemNo(itemNo)
+                        .itemTitle(itemTitle)
+                        .createdAt(LocalDateTime.now())
+                        .build()));
+    }
+    
+    // 기존 채팅방 조회
+    public Optional<Chat_Room> findExistingRoom(Integer sellerUserNo, Integer buyerUserNo, Integer itemNo) {
+        return chatRoomRepository.findBySeller_User_UserNoAndBuyer_UserNoAndItemNo(sellerUserNo, buyerUserNo, itemNo);
+    }
 
     // 채팅방 생성 (중복 방지)
     @Transactional
@@ -77,7 +123,7 @@ public class ChatRoomService {
 
     // 채팅방 조회 (roomNo 기준)
     public Optional<Chat_Room> getChatRoomByRoomNo(Integer roomNo) {
-        return chatRoomRepository.findById(roomNo);
+        return chatRoomRepository.findByRoomNo(roomNo);
     }
 
     // 특정 사용자의 채팅방 목록 조회

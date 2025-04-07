@@ -62,8 +62,11 @@
     <nav>
         <ul>
             <!-- '재무관리' 탭을 대시보드로 연결 -->
-            <li><a href="/admin/dashboard">재무관리</a></li> <!-- 대시보드 페이지로 연결 -->
+            <li><a href="/admin/dashboard">재무관리</a></li> 
             <li><a href="/admin/management">고객관리</a></li>
+            <li><a href="/admin/fees">수수료관리</a></li>
+            <li><a href="/management/acceptConversion">코인 전환 신청</a></li>
+            <li><a href="/management/depositWithdrawal">입/출금 관리</a></li>
         </ul>
     </nav>
 

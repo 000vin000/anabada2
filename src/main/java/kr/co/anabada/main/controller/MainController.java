@@ -59,18 +59,20 @@ public class MainController {
 		List<ItemInclude1Image> itemList = service.findByCategory(gender, ct, cd);
 		service.encodeImageFile(itemList);
 		
+		model.addAttribute("cd", cd);
+		
 		if (!cd.substring(0, 3).equals("sel") || !(cd.length() == 5)) {
 			return null;
 		}
 		cd = cd.substring(cd.length()-2, cd.length());
 		
-		gender = cateService.getGenderName(gender);
-		cd = cateService.getClothesTypeDetailName(ct, cd);
-		ct = cateService.getClothesTypeName(ct);
-		
 		model.addAttribute("gender", gender);
 		model.addAttribute("ct", ct);
-		model.addAttribute("cd", cd);
+		
+		gender = cateService.getGenderName(gender);
+		cd = cateService.getClothesTypeDetailName(ct, cd);
+		ct = cateService.getClothesTypeName(ct);		
+		model.addAttribute("searchPath", gender + " > " + ct + " > " + cd);
 		
 		if (itemList != null && !itemList.isEmpty()) {
 			// sortOrder가 있을 경우 정렬을 수행
