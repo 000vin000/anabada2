@@ -48,7 +48,6 @@
     <!-- 카테고리 모달 -->
     <div id="categoryModal" class="modal" style="display: none;">
     	<div class="modal-content">
-    		<span class="close" onclick="closeCategoryModal()">&times;</span>
     		<h2>카테고리 선택</h2>
     		<div id="categoryModalLevel1">
     			<p class="genderOption" id="genderAll" data-value="00">전체</p>
@@ -65,17 +64,28 @@
     		</div>
     	</div>
     </div>
-
     <script type="module" src="/js/user/authCheck.js"></script>
     <script type="module" src="/js/user/logout.js"></script>
 </body>
 <script>
-//모달 열기
-function openCategoryModal() {
-	document.getElementById("categoryModal").style.display = "block";
-	
-	document.querySelectorAll(".genderOption").forEach(p => {
-		p.addEventListener("click", function() {
+document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("categoryModal");
+    const genderOptions = document.querySelectorAll(".genderOption");
+    const level2Container = document.getElementById("categoryModalLevel2");
+    const level3Container = document.getElementById("categoryModalLevel3");
+
+    document.getElementById("imgCategoryModal").addEventListener("click", openCategoryModal);
+
+    function openCategoryModal() {
+        modal.style.display = "block";
+    }
+
+    function closeCategoryModal() {
+        modal.style.display = "none";
+    }
+
+    genderOptions.forEach(p => {
+        p.addEventListener("click", function () {
 			// 선택된 genderOption 추출
 			const level1 = this.getAttribute("data-value");
 			let level2msg = "";
@@ -84,13 +94,13 @@ function openCategoryModal() {
 				case "00": 
 					level2msg = `
 						<button class="hct" data-value="01">아우터</button>
-	                    <button class="hct" data-value="02">상의</button>
-	                    <button class="hct" data-value="03">하의</button>
-	                    <button class="hct" data-value="04">원피스</button>
-	                    <button class="hct" data-value="05">스커트</button>
-	                    <button class="hct" data-value="06">가방</button>
-	                    <button class="hct" data-value="07">패션소품</button>
-	                    <button class="hct" data-value="08">신발</button>
+						<button class="hct" data-value="02">상의</button>
+            			<button class="hct" data-value="03">하의</button>
+            			<button class="hct" data-value="04">원피스</button>
+            			<button class="hct" data-value="05">스커트</button>
+            			<button class="hct" data-value="06">가방</button>
+            			<button class="hct" data-value="07">패션소품</button>
+            			<button class="hct" data-value="08">신발</button>
 					`;
 					break;
 				case "10":
@@ -120,14 +130,12 @@ function openCategoryModal() {
 			
 			document.querySelectorAll(".genderOption").forEach(btn => btn.classList.remove("hActive"));
 			this.classList.add("hActive");
-		});
-	});
-	
-	// categoryModalLevel2에 이벤트 위임 추가
-	document.getElementById("categoryModalLevel2").addEventListener("click", function (event) {		
-		const target = event.target.closest(".hct");
-		if (event.target.classList.contains("hct")) {
-			document.querySelectorAll(".hct").forEach(btn => btn.classList.remove("hActive"));
+        });
+    });
+
+    level2Container.addEventListener("click", function (event) {
+        if (event.target.classList.contains("hct")) {
+        	document.querySelectorAll(".hct").forEach(btn => btn.classList.remove("hActive"));
 			event.target.classList.add("hActive");
 			
 			const level2 = event.target.getAttribute("data-value");
@@ -249,25 +257,26 @@ function openCategoryModal() {
 			
 			document.querySelectorAll(".hcd").forEach(btn => btn.classList.remove("hActive"));
 			event.target.classList.add("hActive");
-		}
-	});
-	
-	// categoryModalLevel3 클릭 시
-	document.getElementById("categoryModalLevel3").addEventListener("click", function (event) {
-		if (event.target.classList.contains("hcd")) {
-			const hGender = document.querySelector(".genderOption.hActive")?.getAttribute("data-value") || "";
+        }
+    });
+
+    level3Container.addEventListener("click", function (event) {
+        if (event.target.classList.contains("hcd")) {
+        	const hGender = document.querySelector(".genderOption.hActive")?.getAttribute("data-value") || "";
 			const hClothesType = document.querySelector(".hct.hActive")?.getAttribute("data-value") || "";
 			const hClothesTypeDetail = event.target.getAttribute("data-value");
 			
 			updateItem(hGender, hClothesType, hClothesTypeDetail);
-		}
-	})
-}
+        }
+    });
 
-// 모달 닫기
-function closeCategoryModal() {
-	document.getElementById("categoryModal").style.display = "none";
-}
+    // 모달 외부 클릭 시 닫기
+    window.addEventListener("click", function (event) {
+        if (event.target === modal) {
+            closeCategoryModal();
+        }
+    });
+});
 
 </script>
 </html>
