@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import kr.co.anabada.user.entity.User;
-import kr.co.anabada.user.repository.UserJoinRepository;
+import kr.co.anabada.user.repository.IndividualUserJoinRepository;
 
 import java.util.Optional;
 
@@ -14,7 +14,7 @@ public class JwtTokenHelper {
 
     private final JwtUtil jwtUtil;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final UserJoinRepository userJoinRepository;
+    private final IndividualUserJoinRepository userJoinRepository;
 
     //AccessToken에서 유저 정보 추출
     public UserTokenInfo extractUserInfoFromAccessToken(String token) {

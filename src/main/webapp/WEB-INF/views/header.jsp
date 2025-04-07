@@ -13,7 +13,6 @@
     <header>
         <a href="/"><img src="/images/logo.png" alt="로고" /></a>
 
-        <!--검색-->
         <div id="findOption">
             <select id="findType" name="findType">
                 <option value="" selected disabled>검색유형</option>
@@ -26,20 +25,16 @@
 
         <nav>
             <ul>
-                <li><a id="loginBtn" href="/auth/login.html">로그인</a></li>
-                <li><a id="joinBtn" href="/auth/join.html">회원가입</a></li>
-                <li><a id="mypageBtn" href="/mypage" style="display: none;">마이페이지</a></li>
-                <li><a id="logoutBtn" href="#" style="display: none;">로그아웃</a></li>
+                <li><a id="loginBtn" href="/auth/login/individual/IndividualLogin.html">로그인</a></li>
+                <li><a id="joinBtn" href="/auth/join/individual/IndividualJoin.html">회원가입</a></li>
+                <li><a id="mypageBtn" href="/mypage">마이페이지</a></li>
+                <li><a id="logoutBtn" href="#" onclick="logout()">로그아웃</a></li>
+                <li><a id="itemUpload" href="/item/mypage/itemup" style="display: none;">상품 등록</a></li>
             </ul>
-        </nav>   
-
-        <!-- 로그인된 사용자 -->
-        <div id="itemUpload" style="display: none;">
-            <a href="/item/mypage/itemup">상품등록</a>
-        </div>
+        </nav>
     </header>
 
-    <script type="module" src="/js/user/authCheck.js"></script>
-    <script type="module" src="/js/user/logout.js"></script>
+    <script type="module" src="/js/user/common/authCheck.js"></script>
+    <script type="module" src="/js/user/common/logout.js"></script>
 </body>
 </html>

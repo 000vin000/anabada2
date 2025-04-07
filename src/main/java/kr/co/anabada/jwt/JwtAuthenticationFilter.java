@@ -18,7 +18,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.anabada.user.entity.User;
-import kr.co.anabada.user.repository.UserJoinRepository;
+import kr.co.anabada.user.repository.IndividualUserJoinRepository;
 import kr.co.anabada.user.service.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-    private final UserJoinRepository userJoinRepository;
+    private final IndividualUserJoinRepository userJoinRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,

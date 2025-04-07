@@ -14,14 +14,14 @@ import java.util.Date;
 import java.util.Optional;
 
 import kr.co.anabada.user.entity.User;
-import kr.co.anabada.user.repository.UserJoinRepository;
+import kr.co.anabada.user.repository.IndividualUserJoinRepository;
 
 @Service
 @RequiredArgsConstructor
 public class JwtService {
 
     private final RefreshTokenRepository refreshTokenRepository;
-    private final UserJoinRepository userJoinRepository;
+    private final IndividualUserJoinRepository userJoinRepository;
 
     @Value("${jwt.secret}")
     private String secretKey;

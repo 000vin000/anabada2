@@ -1,7 +1,7 @@
 package kr.co.anabada.user.service;
 
 import kr.co.anabada.user.entity.User;
-import kr.co.anabada.user.repository.UserLoginRepository;
+import kr.co.anabada.user.repository.IndividualUserLoginRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserLoginRepository userLoginRepository;
+    private final IndividualUserLoginRepository userLoginRepository;
 
-    public UserDetailsServiceImpl(UserLoginRepository userLoginRepository) {
+    public UserDetailsServiceImpl(IndividualUserLoginRepository userLoginRepository) {
         this.userLoginRepository = userLoginRepository;
     }
 
