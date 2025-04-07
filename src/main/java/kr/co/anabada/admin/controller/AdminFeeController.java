@@ -85,18 +85,42 @@ public class AdminFeeController {
             LocalDateTime startOfDay = localDate.atStartOfDay(); 
             LocalDateTime endOfDay = localDate.atTime(LocalTime.MAX); 
 
-            // 변경된 메서드 사용 (LocalDateTime 범위로 조회)
             List<AdminFee> feeDetails = adminFeeRepository.findByDate(startOfDay, endOfDay);
 
             model.addAttribute("date", date);
             model.addAttribute("feeDetails", feeDetails);
             
-            return "admin/feesDetail"; // JSP 파일명
+            return "admin/feesDetail"; 
         } catch (Exception e) {
-            e.printStackTrace(); // 에러 로그 출력
+            e.printStackTrace(); 
             return "redirect:/admin/fees"; // 오류 발생 시 수수료 목록으로 리디렉션
         }
     }
+    
+    @GetMapping("/admin/fees/monthlyDetail")
+    public String showMonthlyFeeDetails(@RequestParam("month") String month, Model model) {
+        try {
+            Year currentYear = Year.now(); 
+            YearMonth yearMonth = YearMonth.of(currentYear.getValue(), Integer.parseInt(month));
+            LocalDate startOfMonth = yearMonth.atDay(1);
+            LocalDate endOfMonth = yearMonth.atEndOfMonth();
+
+            LocalDateTime startDateTime = startOfMonth.atStartOfDay();
+            LocalDateTime endDateTime = endOfMonth.atTime(LocalTime.MAX);
+
+            // 해당 월의 수수료 데이터 조회
+            List<AdminFee> monthlyFeeDetails = adminFeeRepository.findByDate(startDateTime, endDateTime);
+
+            model.addAttribute("month", month);
+            model.addAttribute("feeDetails", monthlyFeeDetails);
+
+            return "admin/feesMonthlyDetail";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/admin/fees";
+        }
+    }
+
 
 
 }
