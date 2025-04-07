@@ -1,8 +1,8 @@
 package kr.co.anabada.user.service;
 
 import java.util.Arrays;
-import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,12 +11,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
+import kr.co.anabada.buy.repository.ReviewRepository;
 import kr.co.anabada.item.entity.Item;
+import kr.co.anabada.item.entity.Bid.BidStatus;
 import kr.co.anabada.item.entity.Item.ItemStatus;
 import kr.co.anabada.item.repository.BidRepository;
 import kr.co.anabada.item.repository.ItemDetailRepository;
+import kr.co.anabada.jwt.JwtAuthHelper;
+import kr.co.anabada.jwt.UserTokenInfo;
 import kr.co.anabada.user.dto.UserProfileDTO;
 import kr.co.anabada.user.dto.UserProfileDTO.ItemSummaryDTO;
+import kr.co.anabada.user.dto.UserProfileDetailDTO.AuthenticatedItemSummaryDTO;
 import kr.co.anabada.user.entity.Buyer;
 import kr.co.anabada.user.entity.Seller;
 import kr.co.anabada.user.entity.User;
@@ -25,26 +31,25 @@ import kr.co.anabada.user.repository.UserRepository;
 @Service
 public class UserProfileService {
 	@Autowired
+	private JwtAuthHelper jwtAuthHelper;
+	@Autowired
 	private UserRepository userRepository;
-	@Autowired
-	private SellerService sellerService;
-	@Autowired
-	private BuyerService buyerService;
 	@Autowired
 	private ItemDetailRepository itemDetailRepository;
 	@Autowired
 	private BidRepository bidRepository;
+	@Autowired
+	private ReviewRepository reviewRepository;
+	@Autowired
+	private SellerService sellerService;
+	@Autowired
+	private BuyerService buyerService;
 
-	public UserProfileDTO getUserProfileDTO(Integer userNo) {
-		User user = userRepository.findById(userNo)
+	public UserProfileDTO getUserProfileDTO(Integer targetUserNo) {
+		User user = userRepository.findById(targetUserNo)
 				.orElseThrow(() -> new EntityNotFoundException("유저 정보가 존재하지 않습니다."));
-		Seller seller = sellerService.findById(userNo);
-		Buyer buyer = buyerService.getBuyer(userNo);
-
-		List<ItemSummaryDTO> recentSellItems = getItems(
-				UserRole.SELLER, userNo, 0, 8, "all", "recent").getContent();
-		List<ItemSummaryDTO> recentBuyItems = getItems(
-				UserRole.BUYER, userNo, 0, 8, "all", "recent").getContent();
+		Seller seller = sellerService.findById(targetUserNo);
+		Buyer buyer = buyerService.getBuyer(targetUserNo);
 
 		UserProfileDTO dto = UserProfileDTO.builder()
 				.userNo(user.getUserNo())
@@ -55,35 +60,39 @@ public class UserProfileService {
 				.sellerAvgRating(seller.getSellerAvgRating())
 				.sellerGrade(seller.getSellerGrade().getKorean())
 				.buyerBidCnt(buyer.getBuyerBidCnt())
-				.sellSummaryDTOs(recentSellItems)
-				.buySummaryDTOs(recentBuyItems)
 				.build();
 
 		return dto;
 	}
 
+	public Integer getCurrentUser(HttpServletRequest req) {
+		UserTokenInfo loggedInUser = jwtAuthHelper.getUserFromRequest(req);
+		Integer loggedInUserNo = (loggedInUser != null) ? loggedInUser.getUserNo() : 0;
+		return loggedInUserNo;
+	}
+
 	public Page<UserProfileDTO.ItemSummaryDTO> getSellItems(
-			Integer targetUserNo, int page, int size, String status, String sort) {
-		return getItems(UserRole.SELLER, targetUserNo, page, size, status, sort);
+			Integer targetUserNo, boolean isOwnProfile, int page, int size, String status, String sort) {
+		return getItems(UserRole.SELLER, targetUserNo, isOwnProfile, page, size, status, sort);
 	}
 
 	public Page<UserProfileDTO.ItemSummaryDTO> getBuyItems(
-			Integer targetUserNo, int page, int size, String status, String sort) {
-		return getItems(UserRole.BUYER, targetUserNo, page, size, status, sort);
+			Integer targetUserNo, boolean isOwnProfile, int page, int size, String status, String sort) {
+		return getItems(UserRole.BUYER, targetUserNo, isOwnProfile, page, size, status, sort);
 	}
 
 	private Page<UserProfileDTO.ItemSummaryDTO> getItems(
-			UserRole role, Integer targetUserNo, int page, int size, String status, String sort) {
+			UserRole role, Integer targetUserNo, boolean isOwnProfile, int page, int size, String status, String sort) {
 		Pageable pageable = getPageableBySort(page, size, sort);
 		Page<Item> items;
+		
+		items = Arrays.stream(ItemStatus.values()).anyMatch(s -> s.name().equalsIgnoreCase(status))
+				? getItemsByRoleAndStatus(role, targetUserNo, status, pageable)
+				: getItemsByRole(role, targetUserNo, pageable);
 
-		if (Arrays.stream(ItemStatus.values()).anyMatch(s -> s.name().equalsIgnoreCase(status))) {
-			items = getItemsByRoleAndStatus(role, targetUserNo, status, pageable);
-		} else {
-			items = getItemsByRole(role, targetUserNo, pageable);
-		}
-
-		return items.map(this::convertToItemSummaryDTO);
+		return isOwnProfile
+				? items.map(item -> convertToAuthenticatedItemSummaryDTO(item, targetUserNo))
+				: items.map(item -> convertToItemSummaryDTO(item));
 	}
 
 	private Page<Item> getItemsByRole(UserRole role, Integer userNo, Pageable pageable) {
@@ -122,7 +131,7 @@ public class UserProfileService {
 	}
 
 	private ItemSummaryDTO convertToItemSummaryDTO(Item item) {
-		return ItemSummaryDTO.builder()
+		ItemSummaryDTO dto = ItemSummaryDTO.builder()
 				.itemNo(item.getItemNo())
 				.itemTitle(item.getItemTitle())
 				.itemPrice(item.getItemPrice())
@@ -131,6 +140,17 @@ public class UserProfileService {
 				.viewCount(item.getItemViewCnt())
 				.bidCount(bidRepository.countByItemItemNo(item.getItemNo()))
 				.build();
+
+		return dto;
+	}
+
+	private AuthenticatedItemSummaryDTO convertToAuthenticatedItemSummaryDTO(Item item, Integer targetUserNo) {
+		AuthenticatedItemSummaryDTO dto = new AuthenticatedItemSummaryDTO();
+		BeanUtils.copyProperties(convertToItemSummaryDTO(item), dto);
+		dto.setReviewed(reviewRepository.existsByBidItemItemNoAndBidUserUserNoAndBidBidStatus(
+				item.getItemNo(), targetUserNo, BidStatus.WINNING));
+
+		return dto;
 	}
 
 	private enum UserRole {

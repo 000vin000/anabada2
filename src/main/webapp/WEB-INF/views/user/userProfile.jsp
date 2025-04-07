@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="isLoggedIn" value="${userNo ne 0}" />
-<c:set var="isOwner" value="${userNo eq profile.userNo}" />
+<c:set var="isOwner" value="${loggedInUserNo eq profile.userNo}" />
 <%@ include file="../header.jsp"%>
 <!DOCTYPE html>
 <html>
@@ -42,6 +41,7 @@
 		<div class="profile-tabs">
 			<button class="tab-button active" onclick="openTab('sell-tab')">판매 아이템</button>
 			<button class="tab-button" onclick="openTab('buy-tab')">구매 아이템</button>
+			<button class="tab-button logged-in-only" onclick="openTab('etc-tab')" hidden>추가 정보</button>
 		</div>
 
 		<div id="sell-tab" class="tab-content active">
@@ -95,11 +95,25 @@
 				<!-- 페이지네이션은 JavaScript로 렌더링 -->
 			</div>
 		</div>
+		<div id="etc-tab" class="tab-content">
+			<div class="items-header">
+				<h2>추가 정보</h2>
+			</div>
+			<div id="etc-container">
+				<p>UserProfileDetailDTO 조회</p>
+				<p>- 추가 정보</p>
+				<p>- 대시보드 등</p>
+			</div>
+		</div>
 	</div>
 
-	<script>
+	<script type="module">
+		import { fetchWithAuth } from '/js/user/fetchWithAuth.js';
+
 		const contextPath = '${pageContext.request.contextPath}';
 		const userNo = ${profile.userNo};
+		let loggedInUserNo = 0;
+		let isOwnProfile = false;
 		let sellPage = 0;
 		let buyPage = 0;
 		let size = 8;
@@ -107,10 +121,6 @@
 		let buyStatusFilter = 'all';
 		let sellSort = 'recent';
 		let buySort = 'recent';
-		
-		document.addEventListener('DOMContentLoaded', function() {
-		    loadSellItems();
-		});
 		
 		function openTab(tabId) {
 	        document.querySelectorAll('.tab-content').forEach(tab => {
@@ -165,13 +175,35 @@
 		    }
 		    window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
+
+		window.openTab = openTab;
+		window.changeStatusFilter = changeStatusFilter;
+		window.changeSorting = changeSorting;
+		window.changePage = changePage;
+		
+		document.addEventListener('DOMContentLoaded', async function() {
+            const response = await fetchWithAuth('/api/user/profile', { method:"GET" });
+			loggedInUserNo = response.ok ? parseInt(await response.text()) : 0;
+			isOwnProfile = loggedInUserNo === userNo;
+
+			console.log('로그인 uid: ' + loggedInUserNo);
+			console.log('본인프로필 여부: ' + isOwnProfile);
+
+			if (isOwnProfile) {
+                document.querySelectorAll('.logged-in-only').forEach(elem => {
+                    elem.hidden = false;
+                });
+            }
+
+		    loadSellItems();
+		});
 		
 		function loadSellItems() {
 		    document.getElementById('sell-items-container').innerHTML = '<div class="loading-message">판매 아이템 로딩 중</div>';
 		    
-		    const url = '/user/profile/' + userNo + '/sells?page=' + sellPage + '&size=' + size
+		    const url = '/api/user/profile/' + userNo + '/sells?page=' + sellPage + '&size=' + size
 		    		+ '&status=' + sellStatusFilter + '&sort=' + sellSort;
-		    fetch(url)
+		    fetchWithAuth(url, { method: "GET" })
 		        .then(response => response.json())
 			    .then(data => {
 			        displayItems(data, 'sell-items-container');
@@ -186,9 +218,9 @@
 		function loadBuyItems() {
 		    document.getElementById('buy-items-container').innerHTML = '<div class="loading-message">구매 아이템 로딩 중</div>';
 		    
-		    const url = '/user/profile/' + userNo + '/buys?page=' + buyPage + '&size=' + size
+		    const url = '/api/user/profile/' + userNo + '/buys?page=' + buyPage + '&size=' + size
 		    		+ '&status=' + buyStatusFilter + '&sort=' + buySort;
-		    fetch(url)
+		    fetchWithAuth(url, { method: "GET" })
 		        .then(response => response.json())
 		        .then(data => {
 		            displayItems(data, 'buy-items-container');
@@ -345,6 +377,14 @@
                 infoDiv.appendChild(metaDiv);
 		        infoDiv.appendChild(titleDiv);
 		        infoDiv.appendChild(priceDiv);
+
+				if (isOwnProfile && item.reviewed) {
+					const reviewDiv = document.createElement('review');
+					reviewDiv.className = 'item-review logged-in-only';
+					reviewDiv.innerHTML = '<button>리뷰</button>';
+					infoDiv.appendChild(reviewDiv);
+				}
+
 		        itemCardDiv.appendChild(img);
 		        itemCardDiv.appendChild(infoDiv);
 		        link.appendChild(itemCardDiv);

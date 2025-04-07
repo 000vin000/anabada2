@@ -47,4 +47,14 @@ public class UserProfileDetailDTO extends UserProfileDTO {
 		private double bidSuccessRate;
 		// 구매자 관련 통계
 	}
+	
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@SuperBuilder
+	@EqualsAndHashCode(callSuper = true)
+	@ToString(callSuper = true)
+	public static class AuthenticatedItemSummaryDTO extends ItemSummaryDTO {
+		private boolean isReviewed;
+	}
 }
