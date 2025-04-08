@@ -3,14 +3,18 @@ package kr.co.anabada.jwt;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.crypto.SecretKey;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -135,10 +139,7 @@ public class JwtUtil {
     }
     
     // userNo 추출 ( 정빈 추가 )
-    public UserTokenInfo getUserNoFromRequest(HttpServletRequest req) {
-        // 요청에서 토큰 추출
-        String token = extractToken(req);
-        
+    public UserTokenInfo parseToken(String token) {
         // 토큰이 없거나 유효하지 않으면 null 반환
         if (token == null || !validateToken(token)) {
             return null;
@@ -146,12 +147,20 @@ public class JwtUtil {
 
         // 토큰에서 사용자 정보 추출
         String userId = extractUserId(token);
-        Integer userNo = (Integer) extractClaim(token, "userNo");
-        String userType = (String) extractClaim(token, "userType");
+        
+        Object userNoObj = extractClaim(token, "userNo");
+        Integer userNo = null;
+        if (userNoObj instanceof Number) {
+            userNo = ((Number) userNoObj).intValue();
+        }
+
         String nickname = (String) extractClaim(token, "nickname");
 
-        // 사용자 정보를 담은 UserTokenInfo 객체 반환
+        // "roles"로부터 사용자 타입 추출 (단일 role로 가정)
+        List<String> roles = extractRoles(token);
+        String userType = roles.isEmpty() ? null : roles.get(0);
+
         return new UserTokenInfo(userId, userNo, userType, nickname);
-    }
+    }   
     
 }

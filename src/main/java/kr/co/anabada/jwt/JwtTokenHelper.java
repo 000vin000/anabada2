@@ -18,16 +18,16 @@ public class JwtTokenHelper {
     private final IndividualUserJoinRepository userJoinRepository;
 
     //AccessToken에서 유저 정보 추출
-    public UserTokenInfo extractUserInfoFromAccessToken(String token) {
-        if (!jwtUtil.validateToken(token)) return null;
+//    public UserTokenInfo extractUserInfoFromAccessToken(String token) {
+//        if (!jwtUtil.validateToken(token)) return null;
 
-        String userId = jwtUtil.extractUserId(token);
-        Integer userNo = toInteger(jwtUtil.extractClaim(token, "userNo"));
-        String userType = toString(jwtUtil.extractClaim(token, "userType"));
-        String nickname = toString(jwtUtil.extractClaim(token, "nickname"));
+//        String userId = jwtUtil.extractUserId(token);
+//        Integer userNo = toInteger(jwtUtil.extractClaim(token, "userNo"));
+//        String userType = toString(jwtUtil.extractClaim(token, "userType"));
+//        String nickname = toString(jwtUtil.extractClaim(token, "nickname"));
 
-        return new UserTokenInfo(userId, userNo, userType, nickname);
-    }
+//        return new UserTokenInfo(userId, userNo, userType, nickname);
+//    }
 
     // RefreshToken으로 유저 조회
     public Optional<User> findUserByRefreshToken(String refreshToken) {
@@ -79,22 +79,39 @@ public class JwtTokenHelper {
         }
     }
     // userNo 추출 ( 정빈 추가 )
+    public UserTokenInfo extractUserInfoFromAccessToken(String token) {
+        if (!jwtUtil.validateToken(token)) return null;
+
+        String userId = jwtUtil.extractUserId(token);
+        Integer userNo = toInteger(jwtUtil.extractClaim(token, "userNo"));
+        String nickname = toString(jwtUtil.extractClaim(token, "nickname"));
+
+        // 'roles' claim에서 첫 번째 role 가져오기
+        List<String> roles = jwtUtil.extractRoles(token);
+        String userType = roles.isEmpty() ? null : roles.get(0);
+
+        return new UserTokenInfo(userId, userNo, userType, nickname);
+    }
+    
     public UserTokenInfo getUserNoFromRequest(HttpServletRequest req) {
-        // 요청에서 토큰 추출
         String token = jwtUtil.extractToken(req);
-        
-        // 토큰이 없거나 유효하지 않으면 null 반환
         if (token == null || !jwtUtil.validateToken(token)) {
             return null;
         }
 
-        // 토큰에서 사용자 정보 추출
+        // 수정된 부분: roles -> userType
         String userId = jwtUtil.extractUserId(token);
         Integer userNo = (Integer) jwtUtil.extractClaim(token, "userNo");
-        String userType = (String) jwtUtil.extractClaim(token, "userType");
         String nickname = (String) jwtUtil.extractClaim(token, "nickname");
 
-        // 사용자 정보를 담은 UserTokenInfo 객체 반환
+        // roles 클레임에서 userType 추출
+        List<String> roles = jwtUtil.extractRoles(token);
+        String userType = roles.isEmpty() ? null : roles.get(0);
+
         return new UserTokenInfo(userId, userNo, userType, nickname);
     }
+    
+
+
+
 }

@@ -55,14 +55,14 @@ public class ChatRestController {
     @Autowired
     private ItemService itemService;
 
-    // ✅ 기존 채팅 메시지 조회 API
+    // 기존 채팅 메시지 조회 API
     @GetMapping("/messages/{roomNo}")
     public ResponseEntity<List<ChatMessageDTO>> getChatMessages(@PathVariable Integer roomNo) { 
         List<ChatMessageDTO> chatMessages = chatMessageService.getMessagesByRoomNo(roomNo);
         return ResponseEntity.ok(chatMessages);
     }
 
-    // ✅ 메시지 전송 및 저장 (POST /api/chat/messages)
+    // 메시지 전송 및 저장 API
     @PostMapping("/messages")
     public ResponseEntity<Map<String, String>> sendMessage(
             @RequestParam Integer roomNo,
@@ -84,7 +84,7 @@ public class ChatRestController {
         return ResponseEntity.ok(Map.of("message", "메시지 전송 성공"));
     }
 
-    // ✅ 채팅방 정보 조회 API
+    // 채팅방 정보 조회 API
     @GetMapping("/{roomNo}")
     public ResponseEntity<?> getChatRoom(@PathVariable Integer roomNo) {
         Chat_Room chatRoom = chatRoomService.findChatRoomById(roomNo);
@@ -92,7 +92,7 @@ public class ChatRestController {
                ResponseEntity.status(HttpStatus.NOT_FOUND).body("채팅방을 찾을 수 없습니다.");
     }
     
-    // ✅ 기존 채팅방 조회 API
+    // 기존 채팅방 조회 API
     @PostMapping("/room")
     public ResponseEntity<?> findExistingChatRoom(@RequestBody ChatRoomRequestDto request) {
         // itemNo를 이용해 item 객체를 가져온 후 sellerNo를 추출
@@ -102,7 +102,7 @@ public class ChatRestController {
         }
 
         Integer sellerNo = item.getSeller().getSellerNo();
-        logger.info("✅ 채팅방 조회 요청 - sellerUserNo: {}, buyerUserNo: {}, itemNo: {}", sellerNo, request.getBuyerUserNo(), request.getItemNo());
+        logger.info("채팅방 조회 요청 - sellerUserNo: {}, buyerUserNo: {}, itemNo: {}", sellerNo, request.getBuyerUserNo(), request.getItemNo());
 
         // 기존 채팅방 조회
         Optional<Chat_Room> existingRoom = chatRoomService.findExistingRoom(sellerNo, request.getBuyerUserNo(), request.getItemNo());
@@ -117,22 +117,22 @@ public class ChatRestController {
     }
 
     private ResponseEntity<?> createNewChatRoom(Integer sellerNo, Integer buyerNo, Integer itemNo) {
-        // 채팅방 생성 로직
+        // 채팅방 생성
         Item item = itemService.findById(itemNo);
-        String itemTitle = item.getItemTitle(); // 예시로 상품 제목을 채팅방에 포함시킴
+        String itemTitle = item.getItemTitle(); // 상품 제목
 
         Chat_Room chatRoom = chatRoomService.createChatRoom(sellerNo, buyerNo, itemTitle, itemNo);
         return ResponseEntity.ok(Collections.singletonMap("roomNo", chatRoom.getRoomNo()));
     }
 
 
-    // ✅ 채팅방 생성 API
+    // 채팅방 생성 API
     @PostMapping("/rooms")
     public ResponseEntity<?> createChatRoom(@RequestBody Map<String, Object> requestData) {
         try {
             Integer itemNo = Integer.parseInt(requestData.get("itemNo").toString());
 
-            // ✅ itemNo로 Item 객체를 가져와 sellerNo를 추출
+            // itemNo로 Item 객체를 가져와 sellerNo를 추출
             Item item = itemService.findById(itemNo);
             if (item == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("상품을 찾을 수 없습니다.");
@@ -142,7 +142,7 @@ public class ChatRestController {
             Integer buyerNo = Integer.parseInt(requestData.get("buyerNo").toString());
             String itemTitle = requestData.get("itemTitle").toString();
 
-            logger.info("✅ 채팅방 생성 요청 - sellerNo: {}, buyerNo: {}, itemNo: {}", sellerNo, buyerNo, itemNo);
+            logger.info("채팅방 생성 요청 - sellerNo: {}, buyerNo: {}, itemNo: {}", sellerNo, buyerNo, itemNo);
 
             // 채팅방 생성
             Chat_Room chatRoom = chatRoomService.createChatRoom(sellerNo, buyerNo, itemTitle, itemNo);
@@ -153,4 +153,30 @@ public class ChatRestController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류: " + e.getMessage());
         }
     }
+    
+    // 특정 아이템에 대한 전체 채팅방 조회 API (판매자용)
+    @GetMapping("/rooms/item/{itemNo}")
+    public ResponseEntity<?> getChatRoomsForItem(@PathVariable Integer itemNo, HttpServletRequest req) {
+        UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+
+        // 아이템 조회
+        Item item = itemService.findById(itemNo);
+        if (item == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("상품을 찾을 수 없습니다.");
+        }
+
+        // 로그인한 유저가 판매자인지 확인
+        if (!item.getSeller().getSellerNo().equals(user.getUserNo())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("접근 권한이 없습니다.");
+        }
+
+        // 채팅방 목록 조회
+        List<ChatRoomDTO> chatRooms = chatRoomService.findChatRoomsByItemNo(itemNo);
+        return ResponseEntity.ok(chatRooms);  // 여기서 ResponseEntity.ok()로 반환
+    }
+
+
 }
