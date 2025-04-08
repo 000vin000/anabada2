@@ -4,8 +4,12 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function loginUser() {
-    let userId = document.getElementById("userId").value;
-    let userPw = document.getElementById("userPw").value;
+    // 기존 토큰 제거
+    localStorage.removeItem("Token");
+    localStorage.removeItem("refreshToken");
+
+    const userId = document.getElementById("userId").value;
+    const userPw = document.getElementById("userPw").value;
 
     const loginData = {
         userId: userId,
@@ -14,7 +18,7 @@ function loginUser() {
 
     console.log("로그인 요청 데이터:", JSON.stringify(loginData));
 
-	fetch("/login/individual/login", {
+    fetch("/login/individual/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loginData)
@@ -25,19 +29,29 @@ function loginUser() {
 
         if (data.message) alert(data.message);
 
-        // accessToken이 있으면 저장
         if (data.accessToken) {
-            console.log("토큰 저장됨:", data.accessToken);
             localStorage.setItem("Token", data.accessToken);
+            localStorage.setItem("refreshToken", data.refreshToken);
+            console.log("토큰 저장 완료");
+
+            // 관리자 권한 확인 후 페이지 이동
+            fetch("/admin/dashboard", {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + data.accessToken
+                }
+            })
+            .then(res => {
+                if (res.ok) {
+                    console.log("관리자 권한 확인 완료, 이동 중...");
+                    window.location.href = "/admin/dashboard";
+                } else {
+                    console.warn("권한 없음 또는 일반 유저, 홈으로 이동");
+                    window.location.href = "/";
+                }
+            });
         } else {
             console.warn("accessToken 없음. 로그인 실패");
-        }
-
-        // 메인 또는 리디렉션
-        if (data.redirectUrl) {
-            window.location.href = data.redirectUrl;
-        } else {
-            window.location.href = "/";
         }
     })
     .catch(error => {

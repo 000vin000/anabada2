@@ -48,8 +48,11 @@ public class IndividualUserLoginController {
         }
         
         String role = "ROLE_USER"; // 기본적으로 'ROLE_USER'
+        String redirectUrl = "/";
+        
         if ("ADMIN".equals(user.getUserType().toString())) {
             role = "ROLE_ADMIN"; // 'ADMIN'일 경우 'ROLE_ADMIN' 부여
+            redirectUrl = "/admin/dashboard";
         }
 
         String accessToken = jwtUtil.generateAccessToken(
@@ -67,7 +70,7 @@ public class IndividualUserLoginController {
             "message", "로그인 성공!",
             "accessToken", accessToken,
             "refreshToken", refreshToken,
-            "redirectUrl", "/"
+            "redirectUrl", redirectUrl
         ));
     }
 
