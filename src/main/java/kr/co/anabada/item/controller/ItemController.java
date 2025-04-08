@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.item.service.ImageService;
@@ -41,7 +42,7 @@ public class ItemController {
     
     // 정빈 추가 (상품문의 시 아이템 정보)
     @GetMapping("/{itemNo}")
-    public ResponseEntity<?> getItem(@PathVariable Integer itemNo) {
+    public ResponseEntity<?> getItem(@PathVariable Integer itemNo, HttpServletRequest req) {
         Item item = itemService.findById(itemNo);
         if (item == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 아이템을 찾을 수 없습니다.");

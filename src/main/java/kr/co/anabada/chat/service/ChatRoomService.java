@@ -1,5 +1,6 @@
 package kr.co.anabada.chat.service;
 
+import kr.co.anabada.chat.dto.ChatRoomDTO;
 import kr.co.anabada.chat.entity.Chat_Message;
 import kr.co.anabada.chat.entity.Chat_Room;
 import kr.co.anabada.chat.repository.ChatMessageRepository;
@@ -12,6 +13,8 @@ import kr.co.anabada.user.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +35,30 @@ public class ChatRoomService {
         this.userRepository = userRepository;
         this.sellerRepository = sellerRepository;
     }
+    
+    // 채팅방 목록 (판매자)
+    public List<ChatRoomDTO> findChatRoomsByItemNo(Integer itemNo) {
+        // itemNo로 채팅방 목록 조회
+        List<Chat_Room> chatRooms = chatRoomRepository.findAllByItemNo(itemNo);
 
+        // Chat_Room 엔티티를 ChatRoomDTO로 변환하여 반환
+        return chatRooms.stream()
+                        .map(ChatRoomDTO::fromEntity)
+                        .collect(Collectors.toList());
+    }
+    
+    // 채팅방 목록을 ChatRoomDTO로 반환
+    public List<ChatRoomDTO> getChatRoomsByUser(Integer userId) {
+        List<Chat_Room> chatRooms = chatRoomRepository.findBySeller_User_UserNoOrBuyer_UserNo(userId, userId);
+        return chatRooms.stream()
+                        .map(ChatRoomDTO::fromEntity)
+                        .collect(Collectors.toList());
+    }
+
+    // 채팅방 목록을 Chat_Room 엔티티로 반환
+    public List<Chat_Room> getChatRoomsByUserEntity(Integer userId) {
+        return chatRoomRepository.findBySeller_User_UserNoOrBuyer_UserNo(userId, userId);
+    }
 
 
 
@@ -126,8 +152,4 @@ public class ChatRoomService {
         return chatRoomRepository.findByRoomNo(roomNo);
     }
 
-    // 특정 사용자의 채팅방 목록 조회
-    public List<Chat_Room> getChatRoomsByUser(Integer userId) {
-        return chatRoomRepository.findBySeller_User_UserNoOrBuyer_UserNo(userId, userId);
-    }
 }

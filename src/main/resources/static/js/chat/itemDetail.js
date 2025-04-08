@@ -1,16 +1,31 @@
-document.addEventListener("DOMContentLoaded", async function () {
-    const token = localStorage.getItem("Token");
+document.addEventListener("DOMContentLoaded", function () {
     const inquiryBtn = document.getElementById("inquiryBtn") || document.querySelector(".inquiryBtn");
-
     if (!inquiryBtn) return;
 
-    if (!token) {
-        alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
-        window.location.href = "/login";
-        return;
-    }
-
     inquiryBtn.addEventListener("click", async function () {
+        const token = localStorage.getItem("Token");
+
+		if (!token) {
+		    Swal.fire({
+		        title: '로그인이 필요합니다',
+		        text: '로그인 후 사용하실 수 있습니다.',
+		        icon: 'warning',
+		        showCancelButton: true,
+		        confirmButtonText: '로그인',
+		        cancelButtonText: '취소',
+		        reverseButtons: true,
+		        customClass: {
+		            confirmButton: 'swal2-confirm-btn',
+		            cancelButton: 'swal2-cancel-btn'
+		        }
+		    }).then((result) => {
+		        if (result.isConfirmed) {
+		            window.location.href = "/auth/login/individual/IndividualLogin.html";
+		        }
+		    });
+		    return;
+		}
+
         inquiryBtn.textContent = "문의 중...";
         inquiryBtn.disabled = true;
 

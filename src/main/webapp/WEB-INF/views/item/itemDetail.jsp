@@ -13,7 +13,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 </head>
 <body>
-	<div class="item-detail-container">
+	<div class="item-detail-container" >
 		<div class="item-header">
 			<div class="item-title-section">
 				<h1 class="item-name">${item.itemTitle}</h1>
@@ -22,7 +22,36 @@
 			<div class="item-action-buttons">
 				<button id="edit-btn" class="action-btn" hidden>수정</button>
 				<button id="delete-btn" class="action-btn" hidden>삭제</button>
-				<button id="inquiryBtn" class="inquiryBtn" data-room-no="${roomNo}">문의하기</button>
+				<script>
+			        const loggedInUserNo = "${userNo}"; =
+			    </script>
+				<!-- 디버깅: 로그인된 사용자 번호와 판매자 번호 출력 -->
+				<!-- 로그인된 사용자 번호 출력 -->
+				<p>로그인된 사용자 번호: ${userNo != null ? userNo : '로그인 필요'}</p> <!-- null 처리 추가 -->
+				
+				<!-- 상품 상세 정보 출력 -->
+				<p>판매자 번호: ${item.sellerNo}</p>
+
+				
+				<!-- 버튼 표시 조건 -->
+				<c:choose>
+				    <c:when test="${loggedInUserNo != null && loggedInUserNo == item.sellerNo}">
+				        <button class="viewChatRoomsBtn" data-item-no="${item.itemNo}">
+				            채팅방 목록 보기
+				        </button>
+				    </c:when>
+				    <c:otherwise>
+				        <button id="inquiryBtn" class="inquiryBtn" 
+				            data-room-no="${roomNo}"
+				             data-user-no="${loggedInUserNo}"
+				            <c:if test="${empty loggedInUserNo}">data-login-required="true"</c:if>>
+				            문의하기
+				        </button>
+				    </c:otherwise>
+				</c:choose>
+
+
+
 				
 
 			</div>
@@ -120,6 +149,7 @@
 	<script src="/js/favor/favorItem.js"></script>
 	<script src="/js/chat/itemDetail.js"></script>
 	<script src="/js/chat/chatRoom.js"></script>
+	<script src="/js/chat/chatRoomList.js"></script>
 	
 	<script>
 		function addCommas(num) {

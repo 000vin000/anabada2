@@ -46,7 +46,7 @@ public class ItemDetailController {
 		Integer userNo = (userTokenInfo != null) ? userTokenInfo.getUserNo() : null;
 		ItemDetailDTO item = itemDetailService.getItemDetailDTO(itemNo, userNo);
 		model.addAttribute("item", item);
-		model.addAttribute("user", userTokenInfo);
+		model.addAttribute("userNo", userTokenInfo);
 		return "item/itemDetail";
 	}
 	

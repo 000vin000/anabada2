@@ -153,4 +153,30 @@ public class ChatRestController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류: " + e.getMessage());
         }
     }
+    
+    // 특정 아이템에 대한 전체 채팅방 조회 API (판매자용)
+    @GetMapping("/rooms/item/{itemNo}")
+    public ResponseEntity<?> getChatRoomsForItem(@PathVariable Integer itemNo, HttpServletRequest req) {
+        UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+
+        // 아이템 조회
+        Item item = itemService.findById(itemNo);
+        if (item == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("상품을 찾을 수 없습니다.");
+        }
+
+        // 로그인한 유저가 판매자인지 확인
+        if (!item.getSeller().getSellerNo().equals(user.getUserNo())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("접근 권한이 없습니다.");
+        }
+
+        // 채팅방 목록 조회
+        List<ChatRoomDTO> chatRooms = chatRoomService.findChatRoomsByItemNo(itemNo);
+        return ResponseEntity.ok(chatRooms);  // 여기서 ResponseEntity.ok()로 반환
+    }
+
+
 }

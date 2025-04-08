@@ -23,8 +23,9 @@ public interface ChatRoomRepository extends JpaRepository<Chat_Room, Integer> {
 
     // 특정 구매자가 특정 상품에 대해 이미 채팅방이 있는지 확인
     boolean existsByBuyer_UserNoAndItemNo(Integer buyerUserNo, Integer itemNo);
-
-
+    
+    // 채팅방 목록 (판매자)
+    List<Chat_Room> findAllByItemNo(Integer itemNo);
 
     Optional<Chat_Room> findByBuyer_UserNoAndItemNo(Integer buyerUserNo, Integer itemNo);
 
