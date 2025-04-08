@@ -8,6 +8,7 @@
 <title>${item.itemTitle}</title>
 <link rel="stylesheet" type="text/css" href="/css/itemDetail.css">
 <link rel="stylesheet" type="text/css" href="/css/style.css">
+<link rel="stylesheet" type="text/css" href="/css/chatRoom.css">
 <link rel="stylesheet" type="text/css" href="/css/itemDetail.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 </head>
@@ -137,6 +138,9 @@
 	<script src="/js/recent/getRecent_sidebar.js"></script>
 	<script src="/js/favor/favorItem.js"></script>
 	<script src="/js/chat/chatRoom.js"></script>
+	<script src="/js/chat/chatRoomList.js"></script>
+	<script src="/js/chat/itemDetail.js"></script>
+	
 
 	<script>
         const itemNo = ${item.itemNo};
