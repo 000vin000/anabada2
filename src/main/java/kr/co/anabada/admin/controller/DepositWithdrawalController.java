@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class DepositWithdrawalController {
-	@GetMapping("/management/depositWithdrawal")
+	@GetMapping("/admin/depositWithdrawal")
 	public String depositWithdrawal() {
 		return "admin/depositWithdrawal";
 	}
