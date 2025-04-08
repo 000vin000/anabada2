@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<body>
+<body class="body-container">
 <div id="categorySearchOption">
       <%-- 메인 카테고리 선택 --%>
 		<div id="level1Selection" class="level1-container">
@@ -70,6 +70,9 @@ document.getElementById("level2Selection").addEventListener("click", function (e
         const level2Value = event.target.getAttribute("data-value");
         let level3message = "";
 
+        document.querySelectorAll("#level2Selection .ct").forEach(btn => btn.classList.remove("active"));
+        event.target.classList.add("active");
+        
         // level3 버튼 업데이트
         switch (level2Value) {
             case "01":

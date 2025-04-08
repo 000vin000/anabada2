@@ -66,7 +66,7 @@ body {
 
 
 /* 아이템 리스트 */
-#itemOption {
+.itemOption {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center; /* 카드 중앙 정렬 */
@@ -74,7 +74,7 @@ body {
 	max-width: 1200px; /* 최대 너비 설정 (필요에 따라 조정) */
 }
 
-#itemOption ul {
+.itemOption ul {
 	list-style: none;
 	padding: 0;
 	margin: 0;
@@ -83,7 +83,7 @@ body {
 	justify-content: center; /* 카드 중앙 정렬 */
 }
 
-#itemOption li {
+.itemOption li {
 	background-color: #fff; /* 카드 배경색 */
 	border-radius: 8px; /* 카드 모서리 둥글게 */
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
@@ -95,25 +95,25 @@ body {
 	box-sizing: border-box; /* 패딩과 테두리가 너비에 포함되도록 설정 */
 }
 
-#itemOption img {
+.itemOption img {
 	max-width: 100%; /* 이미지가 카드 너비에 맞게 조정 */
 	height: auto; /* 비율 유지 */
 	border-radius: 4px; /* 이미지 모서리 둥글게 */
 }
 
-#itemOption p {
+.itemOption p {
 	margin: 1px 0; /* 위아래 간격을 8px로 설정 */
 }
 
 /* 아이템 1개 */
-#itemOption ul {
+.itemOption ul {
     list-style-type: none; /* 기본 리스트 스타일 제거 */
     padding: 0; /* 패딩 제거 */
     display: flex; /* 플렉스박스 사용 */
     flex-wrap: wrap; /* 줄 바꿈 허용 */
 }
 
-#itemOption li {
+.itemOption li {
     background-color: #fff; /* 카드 배경색 */
     border: 1px solid #ddd; /* 카드 테두리 */
     border-radius: 8px; /* 둥근 모서리 */
@@ -122,42 +122,43 @@ body {
     transition: transform 0.2s; /* 애니메이션 효과 */
 }
 
-#itemOption li:hover {
+.itemOption li:hover {
     transform: scale(1.05); /* 마우스 오버 시 확대 */
 }
 
-#itemOption img {
-    width: 100%; /* 이미지 너비 100% */
-    height: auto; /* 비율 유지 */
+.itemOption img {
+    width: auto; /* 이미지 너비 100% */
+    height: 100%; /* 비율 유지 */
+    max-height: 170px;
 }
 
-#line {
+.line {
 	border: none; /* 기본 테두리 제거 */
     height: 2.5px; /* 두께 설정 */
     background-color: #ccc; /* 회색 배경 */
     margin: 1px 0; /* 위아래 여백 설정 */
 }
 
-#itemName {
+.itemName {
     font-weight: bold; /* 제목 두껍게 */
     color: #000000;
     font-size: 18px;
 }
 
-#itemPrice {
+.itemPrice {
     color: #e74c3c; /* 가격 색상 */
 }
 
-#itemUserNick {
+.itemUserNick {
     color: #7f8c8d; /* 유저 닉네임 색상 */
 }
 
-#itemAuction {
+.itemAuction {
     font-style: italic; /* 경매 정보 이탤릭체 */
     color: #5a5a5a;
 }
 
-#card {
+.card {
 	text-decoration: none; /* 링크 밑줄 제거 */
 }
 
