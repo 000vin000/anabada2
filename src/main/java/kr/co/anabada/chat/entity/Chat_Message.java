@@ -36,6 +36,9 @@ public class Chat_Message {
     @JoinColumn(name = "sender_no", referencedColumnName = "userNo", nullable = false)
     private User sender; // 발신자 설정
     
+    @Column(name = "msg_is_read", nullable = false)
+    private Boolean msgIsRead;
+    
     @Transient
     private String formattedMsgDate;
 

@@ -9,6 +9,7 @@
 <meta charset="UTF-8">
 <title>${item.itemTitle}</title>
 <link rel="stylesheet" type="text/css" href="/css/style.css">
+<link rel="stylesheet" type="text/css" href="/css/chatRoom.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 </head>
 <body>
@@ -21,7 +22,7 @@
 			<div class="item-action-buttons">
 				<button id="edit-btn" class="action-btn" hidden>수정</button>
 				<button id="delete-btn" class="action-btn" hidden>삭제</button>
-				<button class="inquiry-button" data-room-no="${roomNo}">문의하기</button>
+				<button id="inquiryBtn" class="inquiryBtn" data-room-no="${roomNo}">문의하기</button>
 				
 
 			</div>
@@ -117,7 +118,9 @@
 	<script src="/js/recent/addRecent.js"></script>
 	<script src="/js/recent/getRecent_sidebar.js"></script>
 	<script src="/js/favor/favorItem.js"></script>
+	<script src="/js/chat/itemDetail.js"></script>
 	<script src="/js/chat/chatRoom.js"></script>
+	
 	<script>
 		function addCommas(num) {
 		    if (isNaN(num)) {
