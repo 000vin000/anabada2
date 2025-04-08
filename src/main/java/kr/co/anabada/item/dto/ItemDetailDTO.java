@@ -42,9 +42,8 @@ public class ItemDetailDTO {
 	private Integer sellerNo; //seller
 	private String sellerNick;
 	private String categoryName; //category
-	private BigDecimal pointBalance; //point_account
+//	private BigDecimal pointBalance; //point_account
 	private int imageCount; //image
-//	private List<Review> reviews;
 	
 	
 	
