@@ -18,7 +18,6 @@ import kr.co.anabada.main.service.MainService;
 import kr.co.anabada.main.service.WeatherService;
 
 @Controller
-@SessionAttributes("temp") // 세션에 "temp" 저장
 public class WeatherController {
 	@Autowired
 	private WeatherService service;
@@ -31,7 +30,7 @@ public class WeatherController {
         return "main/weather";
     }
 
-    // 클라이언트에서 온도 값을 전달받고 처리 (폼 방식)
+    // 클라이언트에서 온도 값을 전달받고 처리
     @PostMapping("/weather")
     public ResponseEntity<List<ItemInclude1Image>> updateTemp(@RequestBody TempRequest tempRequest, Model model) throws IOException {
         String temp = tempRequest.getTemp();
@@ -41,7 +40,6 @@ public class WeatherController {
         String lat = tempRequest.getLat(); // 위도
         String lon = tempRequest.getLon(); // 경도
         
-        // 아이템 리스트를 가져오는 부분
         List<ItemInclude1Image> itemList = service.getTempList(temp, lat, lon);
         mainService.encodeImageFile(itemList);
 
