@@ -1,7 +1,13 @@
 package kr.co.anabada.admin.entity;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -20,6 +26,7 @@ public class Admin {
 
     @Id
     @Column(name = "adminNo", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Integer adminNo;
 
     @Column(name = "canManageIndivisual", nullable = false)
@@ -39,6 +46,16 @@ public class Admin {
     
     @ManyToOne
     @JoinColumn(name = "userNo", nullable = false) 
-    private User userNo; 
+    private User user; 
+    
+    @Column(name = "admin_created_date", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime adminCreatedDate;
+    
+    @Column(name = "admin_id", nullable = false)
+    private String adminId;
+    
+    @Column(name = "admin_pw", updatable = false)
+    private String adminPw;
 
 }

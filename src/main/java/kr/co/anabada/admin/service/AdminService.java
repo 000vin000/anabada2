@@ -49,7 +49,7 @@ public class AdminService {
 	// 관리자 찾기
 	public Admin findByUserNo(Integer userNo) {
 		User user = getUserById(userNo);
-		return adminRepo.findByUserNo(user);
+		return adminRepo.findByUser(user);
 	}
 	
 	// conversionNo의 userNo로 goods 정보를 가져와 goodsCoin update

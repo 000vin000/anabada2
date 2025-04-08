@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class AcceptConversionController {
-	@GetMapping("/management/acceptConversion")
+	@GetMapping("/admin/acceptConversion")
 	public String acceptConversion() {
 		return "admin/acceptConversion";
 	}
