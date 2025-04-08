@@ -9,29 +9,8 @@
     <title>대시보드</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js 라이브러리 추가 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/styleAdmin.css" />
     <style>
-        nav {
-            margin-bottom: 20px;
-        }
-        nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            margin: 0;
-            padding: 0;
-        }
-        nav ul li {
-            margin: 0 15px;
-        }
-        nav ul li a {
-            color: #007bff;
-            text-decoration: none;
-            font-size: 18px;
-        }
-        nav ul li a:hover {
-            text-decoration: underline;
-        }
-
         .dashboard-box {
             margin: 20px;
             padding: 20px;
@@ -60,6 +39,7 @@
 
     <nav>
         <ul>
+        	<li><a href="/">홈</a></li> 
             <li><a href="/admin/dashboard">재무관리</a></li> 
             <li><a href="/admin/management">고객관리</a></li>
             <li><a href="/admin/fees">수수료관리</a></li>
