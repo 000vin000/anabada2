@@ -97,7 +97,15 @@
     transition: background-color 0.3s ease;
 }
 
-/* 에러 */
+/* 아이템 리스트 */
+#weatherItem {
+	background-color: #eaf1ff;
+	padding: 5px;
+	margin: 8px;
+}
+
+/* 날씨 업데이트 시간, 에러 */
+#weatherUpdateTime,
 #weatherError {
 	color: #828282;
 	align-items: center;

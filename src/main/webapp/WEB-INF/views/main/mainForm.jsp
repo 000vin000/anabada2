@@ -13,11 +13,14 @@
     <script src="/js/weather.js"></script> 
 </head>
 <body class="body-container">
-	<div> <!-- style="background-color: #EBF5FF;" -->
+	<div> 
 	    <div class="weather-container"></div>
+	    <div id="weatherUpdateTime"></div>
 	    <div id="weatherError"></div>
-	    <strong>추천 거래 (3km 이내)</strong>
-		<div id="item-list" style="min-height: 100px; justify-content: center;"><!-- 아이템 리스트 --></div>
+	    <div id="weatherItem">
+		    <strong>추천 거래 (3km 이내)</strong>
+			<div id="item-list" style="min-height: 100px; justify-content: center;"><!-- 아이템 리스트 --></div>
+		</div>
 	</div>
     <div class="body-container">
         <jsp:include page="item.jsp" />
