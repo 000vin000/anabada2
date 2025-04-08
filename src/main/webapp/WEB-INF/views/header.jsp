@@ -14,15 +14,12 @@
     <header>
         <a href="/"><img src="/images/logo.png" alt="로고" /></a>
 
-<<<<<<< HEAD
-=======
 		<!-- 카테고리 모달 열기 버튼 -->
 		<div id="imgCategoryModal">
 			<button style="border: none;"><img alt="category" src="/images/icon/category.png" style="width: 35px; height: 35px; cursor: pointer;" onclick="openCategoryModal()"></button>
 		</div>
 
         <!-- 검색 -->
->>>>>>> branch 'main' of https://github.com/000vin000/anabada2.git
         <div id="findOption">
             <select id="findType" name="findType">
                 <option value="" selected disabled>검색유형</option>
@@ -41,14 +38,14 @@
                 <li><a id="logoutBtn" href="#" onclick="logout()">로그아웃</a></li>
                 <li><a id="itemUpload" href="/item/mypage/itemup" style="display: none;">상품 등록</a></li>
             </ul>
-        </nav>
-    </header>
-<<<<<<< HEAD
+        </nav>   
 
-    <script type="module" src="/js/user/common/authCheck.js"></script>
-    <script type="module" src="/js/user/common/logout.js"></script>
-=======
-    
+        <!-- 로그인된 사용자 -->
+        <div id="itemUpload" style="display: none;">
+            <a href="/item/mypage/itemup">상품등록</a>
+        </div>
+    </header>
+
     <!-- 카테고리 모달 -->
     <div id="categoryModal" class="modal" style="display: none;">
     	<div class="modal-content">
@@ -68,9 +65,8 @@
     		</div>
     	</div>
     </div>
-    <script type="module" src="/js/user/authCheck.js"></script>
-    <script type="module" src="/js/user/logout.js"></script>
->>>>>>> branch 'main' of https://github.com/000vin000/anabada2.git
+    <script type="module" src="/js/user/common/authCheck.js"></script>
+    <script type="module" src="/js/user/common/logout.js"></script>
 </body>
 <script>
 document.addEventListener("DOMContentLoaded", function () {

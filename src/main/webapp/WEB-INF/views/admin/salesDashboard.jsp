@@ -58,15 +58,14 @@
 </head>
 <body>
 
-    <!-- 네비게이션 메뉴 -->
     <nav>
         <ul>
-            <!-- '재무관리' 탭을 대시보드로 연결 -->
             <li><a href="/admin/dashboard">재무관리</a></li> 
             <li><a href="/admin/management">고객관리</a></li>
             <li><a href="/admin/fees">수수료관리</a></li>
-            <li><a href="/management/acceptConversion">코인 전환 신청</a></li>
-            <li><a href="/management/depositWithdrawal">입/출금 관리</a></li>
+           	<li><a href="/admin/acceptConversion">코인 전환 신청</a></li>
+            <li><a href="/admin/depositWithdrawal">입/출금 관리</a></li>
+            <li><a href="/admin/adminRole">관리자 권한 설정</a></li>
         </ul>
     </nav>
 
