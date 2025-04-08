@@ -9,6 +9,7 @@
 <meta charset="UTF-8">
 <title>${item.itemTitle}</title>
 <link rel="stylesheet" type="text/css" href="/css/style.css">
+<link rel="stylesheet" type="text/css" href="/css/itemDetail.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 </head>
 <body>
