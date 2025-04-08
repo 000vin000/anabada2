@@ -1,0 +1,282 @@
+.item-detail-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 20px;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+.item-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+	border-bottom: 1px solid #eee;
+}
+
+.item-title-section {
+	display: flex;
+	align-items: center;
+	flex: 1;
+}
+
+.item-name {
+	font-size: 28px;
+	font-weight: 700;
+	color: #222;
+	margin-right: 15px;
+}
+
+.item-action-buttons {
+	display: flex;
+	gap: 10px;
+}
+
+.action-btn {
+	background: none;
+	border: 1px solid #43BFC7;
+	color: #43BFC7;
+	padding: 8px 12px;
+	border-radius: 5px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+	background: #43BFC7;
+	color: white;
+}
+
+.qna-btn {
+	background: #333;
+	color: white;
+	border: none;
+	padding: 8px 16px;
+	border-radius: 5px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: background 0.2s ease;
+}
+
+.qna-btn:hover {
+	background: #111;
+}
+
+.item-content {
+	display: grid;
+	grid-template-columns: 60% 40%;
+	gap: 30px;
+}
+
+@media ( max-width : 768px) {
+	.item-content {
+		grid-template-columns: 1fr;
+	}
+}
+
+.item-gallery {
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+	background: white;
+}
+
+.gallery-main-image {
+	width: 100%;
+	height: 400px;
+	object-fit: contain;
+	background: #f9f9f9;
+}
+
+.gallery-thumbnails {
+	display: flex;
+	padding: 10px;
+	gap: 10px;
+	overflow-x: auto;
+}
+
+.gallery-thumbnail {
+	width: 80px;
+	height: 60px;
+	object-fit: cover;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: opacity 0.2s;
+}
+
+.gallery-thumbnail:hover {
+	opacity: 0.8;
+}
+
+.item-info-section {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.time-section {
+	background: #333;
+	color: white;
+	padding: 15px;
+	border-radius: 8px;
+	text-align: center;
+}
+
+#remain-time {
+	font-size: 24px;
+	font-weight: 700;
+	display: block;
+	margin-top: 5px;
+	color: #43BFC7;
+}
+
+.bid-section {
+	background: white;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+#price-heading {
+	margin-top: 0;
+	font-size: 16px;
+	color: #666;
+}
+
+#price {
+	display: block;
+	font-size: 28px;
+	font-weight: 700;
+	color: #43BFC7;
+	margin: 10px 0;
+}
+
+.bid-input-group {
+	display: flex;
+	margin: 15px 0;
+	gap: 10px;
+}
+
+#price-text {
+	flex: 1;
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	font-size: 16px;
+}
+
+#bid-btn {
+	background: #43BFC7;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 5px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: background 0.2s;
+}
+
+#bid-btn:hover {
+	background: #389BA2;
+}
+
+#bid-list {
+	width: 100%;
+	padding: 10px;
+	background: #f5f5f5;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	color: #333;
+	transition: background 0.2s;
+}
+
+#bid-list:hover {
+	background: #e0e0e0;
+}
+
+.details-section {
+	background: white;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+	margin-top: 30px;
+}
+
+.details-section h3 {
+	margin-top: 0;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #eee;
+	font-size: 18px;
+	color: #333;
+}
+
+.details-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	gap: 15px;
+	margin-top: 15px;
+}
+
+.detail-item {
+	display: flex;
+	flex-direction: column;
+}
+
+.detail-label {
+	font-size: 14px;
+	color: #666;
+	margin-bottom: 5px;
+}
+
+.detail-value {
+	font-size: 16px;
+	color: #222;
+	font-weight: 500;
+}
+
+.detail-value a {
+	color: #43BFC7;
+	text-decoration: none;
+}
+
+.detail-value a:hover {
+	text-decoration: underline;
+}
+
+.detail-content {
+	grid-column: 1/-1;
+	padding: 15px;
+	background: #f9f9f9;
+	border-radius: 5px;
+	margin-top: 10px;
+	line-height: 1.6;
+}
+
+.back-button {
+	display: inline-block;
+	margin-top: 30px;
+	padding: 12px 25px;
+	background: #333;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	font-weight: 500;
+	cursor: pointer;
+	text-decoration: none;
+	transition: background 0.2s;
+}
+
+.back-button:hover {
+	background: #111;
+}
+
+#status {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 4px;
+	background: #43BFC7;
+	color: white;
+	font-size: 12px;
+	font-weight: 700;
+}
