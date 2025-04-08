@@ -63,7 +63,7 @@
 							<input type="button" id="bid-btn" value="입찰">
 						</div>
 					</div>
-					<button onclick="openWindow('BidlistWindow', '/')" id="bid-list">입찰 기록 보기</button>
+					<button onclick="openWindow('BidlistWindow', '/bidList/${item.itemNo}')" id="bid-list">입찰 기록 보기</button>
 				</div>
 			</div>
 		</div>
