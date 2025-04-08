@@ -32,8 +32,8 @@
 
         <nav>
             <ul>
-                <li><a id="loginBtn" href="/auth/login.html">로그인</a></li>
-                <li><a id="joinBtn" href="/auth/join.html">회원가입</a></li>
+                <li><a id="loginBtn" href="/auth/login/individual/IndividualLogin.html">로그인</a></li>
+                <li><a id="joinBtn" href="/auth/join/individual/IndividualJoin.html">회원가입</a></li>
                 <li><a id="mypageBtn" href="/mypage" style="display: none;">마이페이지</a></li>
                 <li><a id="logoutBtn" href="#" style="display: none;">로그아웃</a></li>
             </ul>
@@ -64,8 +64,8 @@
     		</div>
     	</div>
     </div>
-    <script type="module" src="/js/user/authCheck.js"></script>
-    <script type="module" src="/js/user/logout.js"></script>
+    <script type="module" src="/js/user/common/authCheck.js"></script>
+    <script type="module" src="/js/user/common/logout.js"></script>
 </body>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
