@@ -1,9 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
     console.log("login.js 로드됨");
-    document.getElementById("loginBtn").addEventListener("click", loginUser);
+    document.getElementById("loginForm").addEventListener("submit", loginUser);
 });
 
-function loginUser() {
+function loginUser(event) {
+	event.preventDefault(); // 폼의 기본 제출 동작을 막음
+	
     // 기존 토큰 제거
     localStorage.removeItem("Token");
     localStorage.removeItem("refreshToken");
