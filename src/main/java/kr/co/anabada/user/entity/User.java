@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "user") // 테이블 이름을 소문자로 변경
+@Table(name = "user") 
 public class User {
 
     @Id
@@ -61,6 +61,9 @@ public class User {
     @Email(message = "올바른 이메일 형식이 아닙니다.")
     @Column(name = "userEmail", length = 100, unique = true) // 길이 100 유지
     private String userEmail;
+    //검증
+    @Column(name = "emailVerified", nullable = false)
+    private boolean emailVerified = false;
 
     // 전화번호
     @NotBlank(message = "전화번호는 필수 입력값입니다.")

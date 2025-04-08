@@ -33,9 +33,10 @@
         <nav>
             <ul>
                 <li><a id="loginBtn" href="/auth/login/individual/IndividualLogin.html">로그인</a></li>
-                <li><a id="joinBtn" href="/auth/join/individual/IndividualJoin.html">회원가입</a></li>
-                <li><a id="mypageBtn" href="/mypage" style="display: none;">마이페이지</a></li>
-                <li><a id="logoutBtn" href="#" style="display: none;">로그아웃</a></li>
+                <li><a id="joinBtn" href="/auth/join/join.html">회원가입</a></li>
+                <li><a id="mypageBtn" href="/mypage">마이페이지</a></li>
+                <li><a id="logoutBtn" href="#" onclick="logout()">로그아웃</a></li>
+                <li><a id="itemUpload" href="/item/mypage/itemup" style="display: none;">상품 등록</a></li>
             </ul>
         </nav>   
 
