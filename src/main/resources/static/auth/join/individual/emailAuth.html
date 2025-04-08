@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>이메일 인증</title>
+  <script defer src="/js/user/individual/emailAuth.js"></script>
+</head>
+<body>
+
+  <h2>이메일 인증</h2>
+
+  <label for="userEmail">이메일 주소</label>
+  <input type="email" id="userEmail" name="userEmail" placeholder="example@email.com" required>
+
+  <button id="sendCodeButton">인증번호 받기</button>
+
+  <label for="authCode">인증번호 입력</label>
+  <input type="text" id="authCode" name="authCode" maxlength="6" placeholder="6자리 숫자 입력" required>
+
+  <button id="verifyCodeButton">인증번호 확인</button>
+
+  <div id="authResult"></div>
+
+</body>
+</html>

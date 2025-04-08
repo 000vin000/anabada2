@@ -1,9 +1,14 @@
 package kr.co.anabada.user.service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
+
+import kr.co.anabada.auth.entity.EmailAuthToken;
+import kr.co.anabada.auth.repository.EmailAuthTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import kr.co.anabada.user.dto.IndividualUserJoinDTO;
 import kr.co.anabada.user.entity.User;
 import kr.co.anabada.user.repository.IndividualUserJoinRepository;
@@ -19,6 +24,9 @@ public class IndividualUserJoinService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Autowired
+    private EmailAuthTokenRepository emailAuthTokenRepository;
+
     // 아이디 중복 체크
     public boolean isUserIdAvailable(String userId) {
         return userJoinRepository.findByUserId(userId).isEmpty();
@@ -30,6 +38,7 @@ public class IndividualUserJoinService {
     }
 
     public void joinUser(IndividualUserJoinDTO userJoinDTO) {
+
         if (userJoinRepository.findByUserId(userJoinDTO.getUserId()).isPresent()) {
             throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
         }
@@ -42,12 +51,20 @@ public class IndividualUserJoinService {
             throw new IllegalArgumentException("이미 등록된 이메일입니다.");
         }
 
+        //이메일 인증 여부 확인
+        Optional<EmailAuthToken> authTokenOpt = emailAuthTokenRepository
+                .findTopByEmailAndIsUsedTrueOrderByExpiresAtDesc(userJoinDTO.getUserEmail());
+
+        if (authTokenOpt.isEmpty() || authTokenOpt.get().getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("이메일 인증이 완료되지 않았습니다.");
+        }
+
         String encryptedPassword = passwordEncoder.encode(userJoinDTO.getUserPw());
 
-        // ✅ [전화번호] 구분자 추가해서 저장
+        // 전화번호 조합
         String fullPhone = userJoinDTO.getUserPhone();
 
-        // ✅ [주소] 구분자(::) 추가해서 저장
+        // 주소 조합
         String fullAddress = userJoinDTO.getBaseAddress() + "::" + userJoinDTO.getDetailAddress();
 
         // 회원 생성
@@ -64,6 +81,7 @@ public class IndividualUserJoinService {
                 .userCreatedDate(LocalDateTime.now())
                 .userUpdatedDate(LocalDateTime.now())
                 .userWarnCnt((byte) 0)
+                .emailVerified(true) //인증된 사용자로 저장
                 .build();
 
         log.info("회원가입 요청: {}", user);
