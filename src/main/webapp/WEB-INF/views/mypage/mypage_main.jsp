@@ -7,6 +7,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>ANABADA</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
 	<link rel="stylesheet" type="text/css" href="/css/styleTemp.css">
 	<script type="module" src="/js/user/fetchWithAuth.js"></script> 
 </head>
@@ -33,22 +34,10 @@
 		나의 맞춤 정보
 	</div>
 	<div>
-		참여 혜택
-		리서치 참여
-		체험단 신청/응모 내역
-		래플 응모 내역
-		크리에이터 마켓플레이스
-		무신사 큐레이터 서비스
-	</div>
-	<div>
-		무신사 페이 관리
-		무신사 현대카드 할인정보
-	</div>
-	<div>
-		고객센터
-		1:1 문의 내역
-		상품 문의 내역
-		공지 사항
+		고객센터<br>
+		1:1 문의 내역<br>
+		상품 문의 내역<br>
+		공지 사항<br>
 	</div>
 </div>
 <!-- J회원정보 수정 -->
