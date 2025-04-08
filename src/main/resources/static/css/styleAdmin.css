@@ -1,0 +1,152 @@
+/* 전체 기본 스타일 */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+h1, h2 {
+    text-align: center;
+    margin: 30px 0 20px;
+    color: #222;
+}
+
+/* 네비게이션 바 */
+nav {
+    background-color: #343a40;
+    padding: 10px 0;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    color: #17a2b8;
+}
+
+/* 중앙 정렬 컨테이너 */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+}
+
+table th, table td {
+    border: 1px solid #dee2e6;
+    padding: 10px 15px;
+    text-align: center;
+}
+
+table thead {
+    background-color: #e9ecef;
+}
+
+table tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+/* 버튼 스타일 */
+button,
+a.button {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover,
+a.button:hover {
+    background-color: #0056b3;
+}
+
+/* 삭제 버튼 (빨간색) */
+.delete-btn,
+.delete-notice-btn {
+    background-color: #dc3545;
+}
+
+.delete-btn:hover,
+.delete-notice-btn:hover {
+    background-color: #c82333;
+}
+
+/* 메시지 알림 */
+.alert {
+    text-align: center;
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #c3e6cb;
+}
+
+/* 반응형 개선 */
+@media screen and (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    table thead {
+        display: none;
+    }
+
+    table td {
+        position: relative;
+        padding-left: 50%;
+        text-align: left;
+        border: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table td::before {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: bold;
+        color: #555;
+        content: attr(data-label);
+    }
+
+    h1, h2 {
+        font-size: 20px;
+    }
+}

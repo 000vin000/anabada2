@@ -5,33 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <title>입/출금 확인 페이지</title>
- <style>
-         nav {
-            margin-bottom: 20px;
-        }
-        nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            margin: 0;
-            padding: 0;
-        }
-        nav ul li {
-            margin: 0 15px;
-        }
-        nav ul li a {
-            color: #007bff;
-            text-decoration: none;
-            font-size: 18px;
-        }
-        nav ul li a:hover {
-            text-decoration: underline;
-        }
-        </style>
+<link rel="stylesheet" href="/css/styleAdmin.css" />
 </head>
 <body>
 	<nav>
         <ul>
+        	<li><a href="/">홈</a></li> 
             <li><a href="/admin/dashboard">재무관리</a></li>
             <li><a href="/admin/management">고객관리</a></li>
             <li><a href="/admin/fees">수수료관리</a></li>

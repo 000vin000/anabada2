@@ -7,29 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>관리자 수수료 내역</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/css/styleAdmin.css" />
     <style>
-        nav {
-            margin-bottom: 20px;
-        }
-        nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            margin: 0;
-            padding: 0;
-        }
-        nav ul li {
-            margin: 0 15px;
-        }
-        nav ul li a {
-            color: #007bff;
-            text-decoration: none;
-            font-size: 18px;
-        }
-        nav ul li a:hover {
-            text-decoration: underline;
-        }
-        table {
+    	table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
@@ -55,6 +35,7 @@
 <body>
     <nav>
         <ul>
+        	<li><a href="/">홈</a></li> 
             <li><a href="/admin/dashboard">재무관리</a></li>
             <li><a href="/admin/management">고객관리</a></li>
             <li><a href="/admin/fees">수수료관리</a></li>
