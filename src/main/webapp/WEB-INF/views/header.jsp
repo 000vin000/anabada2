@@ -16,7 +16,7 @@
 
 		<!-- 카테고리 모달 열기 버튼 -->
 		<div id="imgCategoryModal">
-			<button style="border: none;"><img alt="category" src="/images/icon/category.png" style="width: 35px; height: 35px; cursor: pointer;" onclick="openCategoryModal()"></button>
+			<button id="imgCategoryModalBtn"><img alt="category" src="/images/icon/category.png" style="width: 35px; height: 35px; cursor: pointer;" onclick="openCategoryModal()"></button>
 		</div>
 
         <!-- 검색 -->

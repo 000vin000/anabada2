@@ -1,3 +1,14 @@
+/* 카테고리 모달 */
+#imgCategoryModalBtn {
+	border: none;
+	background-color: #ffffff;
+	transition: all 0.2s linear;
+}
+
+#imgCategoryModalBtn:hover {
+	transform: scale(1.1);
+}
+
 /* 모달 배경 */
 .modal {
 	display: none; /* 기본적으로 보이지 않도록 설정 */

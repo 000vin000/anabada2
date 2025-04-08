@@ -1,7 +1,9 @@
 package kr.co.anabada.item.entity;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -48,6 +50,17 @@ public class Bid {
 	
 	public enum BidStatus {
 		ACTIVE, WINNING, LOST, CANCELLED;
+	}
+	
+	public String formatToKoreanDate(LocalDateTime dateTime) {
+        if (dateTime == null) return "";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분");
+        return dateTime.format(formatter);
+    }
+	
+	public String formatBigDecimal(BigDecimal price) {
+	    DecimalFormat formatter = new DecimalFormat("#,###");
+	    return formatter.format(price);
 	}
 }
 // jhu

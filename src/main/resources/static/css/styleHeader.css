@@ -97,4 +97,3 @@ nav ul li a:hover {
     transform: scale(1.05); /* 약간 확대 */
     transition: background-color 0.3s, transform 0.2s; /* 전환 효과 */
 }
-

@@ -178,12 +178,17 @@ function renderWeather(data) {
                         const aElement = document.createElement('a');
                         aElement.className = "card";
                         aElement.href = '/item/detail/' + item.item_no;
+						
+						const remainingTimeStr = formatRemainingTime(item.item_sale_end_date);
+						
                         aElement.innerHTML = `
                             <img src="data:image/png;base64,${item.base64Image}" width="100px" height="100px"/>
+							<hr class="line">
                             <p class="itemName">${item.item_title}</p>
-                            <p class="itemprice">${item.item_price}원</p>
-                            <p class="itemUserNick">${item.user_nick}</p>
-                            <p class="remainTime">${item.item_sale_end_date}</p>
+							<hr class="line">
+                            <p class="itemPrice">${item.item_price}원</p>
+                            <p class="seller">${item.user_nick}</p>
+                            <p class="remainingTime">${remainingTimeStr}</p>
                         `;
                         liElement.appendChild(aElement);
                         ulElement.appendChild(liElement);
@@ -202,3 +207,23 @@ function showError(error) {
     document.getElementById("weatherError").innerHTML = "위치 정보 사용이 불가능하여 서울 기준으로 날씨를 표시합니다.";
     showPosition({ coords: { latitude: 37.5665, longitude: 126.9780 } });
 }
+
+function formatRemainingTime(endDateStr) {
+    const now = new Date();
+    const endDate = new Date(endDateStr);
+    const diff = endDate - now;
+
+    if (diff <= 0) return "마감됨";
+
+    const minutes = Math.floor(diff / (1000 * 60)) % 60;
+    const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+    let result = "";
+    if (days > 0) result += `${days}일 `;
+    if (hours > 0 || days > 0) result += `${hours}시간 `;
+    result += `${minutes}분`;
+
+    return result.trim();
+}
+
