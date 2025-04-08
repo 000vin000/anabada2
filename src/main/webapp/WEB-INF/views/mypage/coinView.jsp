@@ -38,7 +38,7 @@
         /* 모달 콘텐츠 */
         .modal-content {
             background-color: #fff;
-            margin: 15% auto; /* 화면의 중간에 위치하도록 설정 */
+            margin: 5% auto; /* 화면의 중간에 위치하도록 설정 */
             padding: 20px;
             border: 1px solid #888;
             width: 80%; /* 화면 너비의 80% */
@@ -158,11 +158,11 @@
 	<div id="useCoinModal" class=modal style="display: none;">
 		<div class="modal-content">
 			<span class="close" onclick="closeUseCoinModal()">&times;</span>
-			<h2>코인 변동 내역</h2>
-			<p>
+			<h2 style="margin-top: 5px; margin-bottom: 5px;">코인 변동 내역</h2>
+			<p style="margin-top: 5px; margin-bottom: 5px;">
 				<label style="color: blue">획득</label> / <label style="color: red">사용</label>
 			</p>
-			<table border="1">
+			<table border="1" style="margin-top: 5px;">
 				<thead>
 					<tr>
 						<th>일자</th>
