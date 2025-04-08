@@ -13,6 +13,7 @@ import kr.co.anabada.jwt.JwtTokenHelper;
 import kr.co.anabada.jwt.UserTokenInfo;
 import kr.co.anabada.user.entity.Seller;
 import kr.co.anabada.user.entity.User;
+import kr.co.anabada.user.entity.Seller.SellerType;
 import kr.co.anabada.user.repository.SellerRepository;
 import kr.co.anabada.user.repository.UserRepository;
 
@@ -41,6 +42,11 @@ public class ItemService {
 		 Optional<Item_Category> category = categoryRepo.findById(categoryNo);
 		 Optional<User> user = userRepo.findById(userInfo.getUserNo());
 		 Seller byUser = sellerRepo.findByUser(user.get());
+		 if (byUser == null) {
+			 byUser = Seller.builder().user(user.get()).sellerDesc("").sellerType(SellerType.INDIVIDUAL).build();
+			 sellerRepo.save(byUser);
+		 }
+		 
 		 item.setCategory(category.get());
 		 item.setSeller(byUser);
 		 
