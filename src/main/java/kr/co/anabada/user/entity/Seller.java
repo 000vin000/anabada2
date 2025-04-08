@@ -20,12 +20,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "Seller")
 public class Seller {
@@ -46,19 +48,24 @@ public class Seller {
     private String sellerDesc;
 
     @Column(name = "sellerItemCnt", nullable = false)
+    @Builder.Default
     private int sellerItemCnt = 0;
 
     @Column(name = "sellerTransCnt", nullable = false)
+    @Builder.Default
     private int sellerTransCnt = 0;
 
 	@Column(nullable = false, precision = 12, scale = 2)
+	@Builder.Default
     private BigDecimal sellerTotalSales = BigDecimal.ZERO;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
+	@Builder.Default
 	private SellerGrade sellerGrade = SellerGrade.HANGER;
     
     @Column(name="sellerAvgRating", nullable = false)
+    @Builder.Default
     private double sellerAvgRating = 0;
 
     @CreationTimestamp
@@ -68,8 +75,6 @@ public class Seller {
     @UpdateTimestamp
     @Column(nullable = false)
     private LocalDateTime sellerUpdatedDate;
-
-
 
 	public enum SellerType {
 	    INDIVIDUAL,
