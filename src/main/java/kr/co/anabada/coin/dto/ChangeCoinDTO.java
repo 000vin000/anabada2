@@ -15,7 +15,6 @@ public class ChangeCoinDTO {
     private LocalDateTime changecoinAt;
     private Item itemNo;
     
-    // 생성자, getter, setter
     public ChangeCoinDTO(ChangeCoin changeCoin) {
         this.changecoinNo = changeCoin.getChangecoinNo();
         this.changecoinTypeKorean = changeCoin.getChangecoinType().getKorean(); 
