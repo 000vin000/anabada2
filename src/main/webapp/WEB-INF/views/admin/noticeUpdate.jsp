@@ -33,7 +33,7 @@
     </div>
 
     <script type="module">
-        import { fetchWithAuth } from '/js/user/fetchWithAuth.js';  // JWT 포함 요청 함수
+        import { fetchWithAuth } from '/js/user/common/fetchWithAuth.js';  // JWT 포함 요청 함수
 
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('editNoticeForm');

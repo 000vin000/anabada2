@@ -22,7 +22,7 @@
 
     <!-- 스크립트는 HTML이 모두 로드된 후 실행되도록 body 끝에 배치 -->
     <script type="module">
-        import { fetchWithAuth } from '/js/user/fetchWithAuth.js'; // 실제 경로 확인 필요
+        import { fetchWithAuth } from '/js/user/common/fetchWithAuth.js'; // 실제 경로 확인 필요
 
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('noticeForm');
