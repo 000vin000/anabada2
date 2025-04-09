@@ -12,6 +12,20 @@
    font-size: 14px;
 }
 
+#viewChatRoomsBtn {
+   text-decoration: none; /* 밑줄 없애기 */
+   width: 90px;
+   padding: 5px;
+   background-color: #ffffff; /* 배경색 */
+   color: #21afbf; /* 글자색 */
+   border-radius: 10px; /* 모서리 둥글게 */
+   text-align: center;
+   cursor: pointer; /* 마우스 커서 변경 */
+   border: 2.5px solid #21afbf; /* 테두리 색상 */
+   font-weight: 700;
+   font-size: 14px;
+}
+
 
 /* 채팅 박스 스타일 */
 #chat-box {
@@ -74,3 +88,63 @@
     padding: 8px;
     border-radius: 8px;
 }
+/* 채팅 목록 모달창 */
+
+#chat-room-list-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* 카드 간격 */
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.chat-room-item {
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  transition: background-color 0.2s ease;
+}
+
+.chat-room-item:hover {
+  background-color: #f1f1f1;
+}
+
+.chat-room-item a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 30px;
+    width: 500px;
+    max-height: 80%;
+    overflow-y: auto;
+    border-radius: 8px;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
