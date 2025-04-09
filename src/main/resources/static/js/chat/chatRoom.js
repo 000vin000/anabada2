@@ -34,16 +34,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 displayedMessageIds.add(chatMessage.msgNo);
                 displayMessage(chatMessage, userNo);
             } catch (e) {
-                console.error("❌ 메시지 파싱 실패:", e);
+                console.error("메시지 파싱 실패:", e);
             }
         };
 
         socket.onerror = (error) => {
-            console.error("❌ 웹소켓 오류:", error);
+            console.error("웹소켓 오류:", error);
         };
 
         socket.onclose = () => {
-            console.warn("⚠️ 웹소켓 연결 종료됨");
+            console.warn("웹소켓 연결 종료됨");
             if (reconnectAttempts < maxReconnectAttempts) {
                 reconnectAttempts++;
                 setTimeout(connectWebSocket, 3000); // 재시도

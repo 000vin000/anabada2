@@ -15,6 +15,11 @@ public class ChatRoomDTO {
     private String itemTitle;
     private Integer itemNo;
     private LocalDateTime createdAt;
+    private String buyerNickname;
+    
+    private Integer sellerUserNo;
+    private Integer buyerUserNo;
+
     
     // Chat_Room 엔티티를 ChatRoomDTO로 변환
     public static ChatRoomDTO fromEntity(Chat_Room chatRoom) {
@@ -22,7 +27,11 @@ public class ChatRoomDTO {
             chatRoom.getRoomNo(),
             chatRoom.getItemTitle(),
             chatRoom.getItemNo(),
-            chatRoom.getCreatedAt()
+            chatRoom.getCreatedAt(),
+            chatRoom.getBuyer().getUserNick(),
+            chatRoom.getSeller().getUser().getUserNo(),
+            chatRoom.getBuyer().getUserNo()
+
         );
     }
 }

@@ -46,12 +46,13 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
 
 export async function verifyLoggedInAndInit() {
-	const loggedInUserNo = await getVerifiedLoggedInUserNo();
-	const isOwnItem = loggedInUserNo !== 0 && loggedInUserNo === sellerNo;
+	
+	loggedInUserNo = await getVerifiedLoggedInUserNo();
+	isOwnItem = loggedInUserNo !== 0 && loggedInUserNo === sellerNo;
 
-	console.log('✅ 로그인된 userNo:', loggedInUserNo);
-	console.log('🛒 sellerNo:', sellerNo);
-	console.log('👤 본인 아이템 여부:', isOwnItem);
+	console.log('로그인된 userNo:', loggedInUserNo);
+	console.log('sellerNo:', sellerNo);
+	console.log('본인 아이템 여부:', isOwnItem);
 
 	// 버튼 노출 제어
 	const chatBtn = document.querySelector(".viewChatRoomsBtn");
@@ -69,6 +70,7 @@ export async function verifyLoggedInAndInit() {
 		initInquiryButton();
 	}
 }
+
 
 
 function startInterval(f, s) {

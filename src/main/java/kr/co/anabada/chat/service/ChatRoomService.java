@@ -46,44 +46,15 @@ public class ChatRoomService {
                         .map(ChatRoomDTO::fromEntity)
                         .collect(Collectors.toList());
     }
-    
-    // 채팅방 목록을 ChatRoomDTO로 반환
-    public List<ChatRoomDTO> getChatRoomsByUser(Integer userId) {
-        List<Chat_Room> chatRooms = chatRoomRepository.findBySeller_User_UserNoOrBuyer_UserNo(userId, userId);
-        return chatRooms.stream()
-                        .map(ChatRoomDTO::fromEntity)
-                        .collect(Collectors.toList());
-    }
-
-    // 채팅방 목록을 Chat_Room 엔티티로 반환
-    public List<Chat_Room> getChatRoomsByUserEntity(Integer userId) {
-        return chatRoomRepository.findBySeller_User_UserNoOrBuyer_UserNo(userId, userId);
-    }
-
-
 
     // 특정 구매자가 특정 상품에 대해 이미 채팅방이 있는지 확인
     public boolean existsByRoomNo(Integer roomNo) {
         return chatRoomRepository.findByRoomNo(roomNo).isPresent();  
     }
-
-    // 채팅방 조회 (buyerId와 itemNo 기준으로)
-    public boolean existsByBuyerAndItem(Integer buyerId, Integer itemNo) {
-        return chatRoomRepository.existsByBuyer_UserNoAndItemNo(buyerId, itemNo);
-    }
     
-    // 채팅방 조회 (buyerId와 itemNo 기준으로)
+    // 채팅방 생성 시 기존에 있는지 조회 
     public Optional<Chat_Room> getChatRoomByBuyerAndItem(Integer buyerUserNo, Integer itemNo) {
         return chatRoomRepository.findByBuyer_UserNoAndItemNo(buyerUserNo, itemNo);
-    }
-    public List<Chat_Room> getChatRoomsByItem(Integer itemNo, Integer userNo) {
-        return chatRoomRepository.findByItemNoAndSeller_User_UserNoOrBuyer_UserNo(itemNo, userNo, userNo);
-    }
-    
-    // 상품 상세페이지에서 문의하기 눌렀을 때
-    public Chat_Room getChatRoomByItemAndUsers(Integer sellerUserNo, Integer buyerUserNo, Integer itemNo) {
-        return chatRoomRepository.findBySeller_User_UserNoAndBuyer_UserNoAndItemNo(sellerUserNo, buyerUserNo, itemNo)
-                .orElse(null); // 없으면 null 반환
     }
 
     // 채팅방 정보 조회 API 추가
@@ -95,22 +66,6 @@ public class ChatRoomService {
             System.out.println("채팅방 조회 성공: " + chatRoom);
         }
         return chatRoom;
-    }
-    
-    public Chat_Room findOrCreateChatRoom(Integer sellerId, Integer buyerId, Integer itemNo, String itemTitle) {
-        User buyer = userRepository.findById(buyerId)
-                .orElseThrow(() -> new RuntimeException("구매자 정보를 찾을 수 없습니다."));
-        Seller seller = sellerRepository.findById(sellerId)
-                .orElseThrow(() -> new RuntimeException("판매자 정보를 찾을 수 없습니다."));
-
-        return chatRoomRepository.findBySellerAndBuyerAndItemNo(seller, buyer, itemNo)
-                .orElseGet(() -> chatRoomRepository.save(Chat_Room.builder()
-                        .seller(seller)
-                        .buyer(buyer)
-                        .itemNo(itemNo)
-                        .itemTitle(itemTitle)
-                        .createdAt(LocalDateTime.now())
-                        .build()));
     }
     
     // 기존 채팅방 조회
@@ -139,17 +94,6 @@ public class ChatRoomService {
             .build();
 
         return chatRoomRepository.save(chatRoom);
-    }
-
-    // 메시지 저장
-    @Transactional
-    public void saveMessage(Chat_Message message) {
-        chatMessageRepository.save(message);
-    }
-
-    // 채팅방 조회 (roomNo 기준)
-    public Optional<Chat_Room> getChatRoomByRoomNo(Integer roomNo) {
-        return chatRoomRepository.findByRoomNo(roomNo);
     }
 
 }
