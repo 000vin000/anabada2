@@ -41,15 +41,15 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const data = {
-      userEmail,
-      userName,
-      userNick,
-      userPhone,
-      baseAddress,
-      detailAddress,
+	const userAddress = `${baseAddress}::${detailAddress}`;
+	const data = {
+	  userEmail,
+	  userName,
+	  userNick,
+	  userPhone,
+	  userAddress,
 	  userType: "INDIVIDUAL"
-    };
+	};
 
     try {
       const res = await fetchWithAuth("/user/social/join", {
