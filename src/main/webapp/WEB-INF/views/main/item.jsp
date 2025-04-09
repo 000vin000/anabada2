@@ -32,7 +32,7 @@
             </c:forEach>
          </c:if>
          <c:if test="${empty itemList}">
-            <div>${error}</div>
+            <div style="min-height: 780px">${error}</div>
          </c:if>
       </ul>
    </div>
