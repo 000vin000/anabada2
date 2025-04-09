@@ -89,14 +89,14 @@
 				    </tr>
 				</thead>
 				<tbody>
-					<tr>
-						<c:forEach var="bid" items="${bidList}">
+					<c:forEach var="bid" items="${bidList}" varStatus="status">
+						<tr>
 							<td>${status.index + 1}</td>
-				            <td>${bid.formatToKoreanDate(bid.bidTime)}</td>
-				            <td>${bid.user.userNick}</td>
-				            <td>${bid.formatBigDecimal(bid.bidPrice)}</td>
-				        </c:forEach>
-					</tr>
+							<td>${bid.formatToKoreanDate(bid.bidTime)}</td>
+							<td>${bid.user.userNick}</td>
+							<td>${bid.formatBigDecimal(bid.bidPrice)}</td>
+						</tr>
+					</c:forEach>
 				</tbody>
 			</table>
 		</c:if>
