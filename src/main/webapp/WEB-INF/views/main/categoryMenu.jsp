@@ -181,7 +181,8 @@ document.getElementById("level2Selection").addEventListener("click", function (e
                     <button class="cd" data-value="sel04">구두</button>
                     <button class="cd" data-value="sel05">로퍼</button>
                     <button class="cd" data-value="sel06">운동화</button>
-                    <button class="cd" data-value="sel07">기타 신발</button>
+                    <button class="cd" data-value="sel07">스포츠화</button>
+                    <button class="cd" data-value="sel08">기타 신발</button>
                 `;
                 break;
         }

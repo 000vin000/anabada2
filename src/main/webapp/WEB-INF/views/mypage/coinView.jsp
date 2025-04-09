@@ -1,24 +1,34 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <body>
-	<div class="cashSection" style="background-color: #FFF0F0">
-		<div id="currentCash"><!-- 보유금액 --></div>
-		<button onclick="openChargeCash('금액 충전', '/chargeCash')">금액충전</button>
-		<button id="chargeList">충전 내역</button>
-		<br>
-		<button onclick="openCashToCoin('코인으로 전환', '/toCoin')">코인으로 전환</button>
-		<button id="toCoinList">신청 내역</button>
-		<br>
-		<button onclick="openWithdrawal('출금 신청', '/withdrawal')">출금 신청</button>
-		<button id="withdrawalList">출금 신청 내역</button>
-	</div>
-	<div class="coinSection" style="background-color: #E6F4F1">
-		<div id="currentCoin"><!-- 보유코인 --></div>
-		<button id="useCoin">변동 내역</button>
-		<br>
-		<button onclick="openCoinToCash('현금으로 전환', '/toCash')">현금으로 전환</button>
-		<button id="toCashList">신청 내역</button>
-	</div>
+<div class="coin-container">
+  <div class="cashSection section">
+    <div id="currentCash" class="section-title">
+    	<img src="/images/myPage/money.png"> 
+    	<!-- 보유금액 -->
+    </div>
+    <div class="button-group btnForCash">
+      <button class="openWindow" onclick="openChargeCash('금액 충전', '/chargeCash')">금액충전</button>
+      <button class="openWindow" onclick="openCashToCoin('코인으로 전환', '/toCoin')">코인으로 전환</button>
+	  <button class="openWindow" onclick="openWithdrawal('출금 신청', '/withdrawal')">출금 신청</button>
+      <button class="openList" id="chargeList">충전 내역</button>
+      <button class="openList" id="toCoinList">전환 신청 내역</button>
+      <button class="openList" id="withdrawalList">출금 신청 내역</button>
+    </div>
+  </div>
+
+  <div class="coinSection section">
+    <div id="currentCoin" class="section-title"> 
+    	<img src="/images/myPage/coin.png"> 
+    	<!-- 보유코인 -->
+    </div>
+    <div class="button-group btnForCoin">
+      <button class="openWindow" onclick="openCoinToCash('현금으로 전환', '/toCash')">현금으로 전환</button>
+      <button class="openList" id="toCashList">신청 내역</button>
+	  <button class="openList" id="useCoin">코인 변동 내역</button>
+    </div>
+  </div>
+</div>
 
     <!-- 모달 스타일 -->
     <style>

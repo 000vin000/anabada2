@@ -67,6 +67,7 @@
     </div>
     <script type="module" src="/js/user/common/authCheck.js"></script>
     <script type="module" src="/js/user/common/logout.js"></script>
+    <script src="/js/common.js"></script>
 </body>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -250,7 +251,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     <button class="hcd" data-value="sel04">구두</button>
                     <button class="hcd" data-value="sel05">로퍼</button>
                     <button class="hcd" data-value="sel06">운동화</button>
-                    <button class="hcd" data-value="sel07">기타 신발</button>
+                    <button class="hcd" data-value="sel07">스포츠화</button>
+                    <button class="hcd" data-value="sel08">기타 신발</button>
 				`;
 				break;
 			}
