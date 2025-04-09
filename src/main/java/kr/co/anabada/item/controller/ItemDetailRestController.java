@@ -3,7 +3,6 @@ package kr.co.anabada.item.controller;
 import java.math.BigDecimal;
 import java.util.Map;
 
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.anabada.item.entity.Item;
+import kr.co.anabada.item.exception.AuthenticationRequiredException;
 import kr.co.anabada.item.service.ItemDetailService;
 
 @RestController
@@ -22,36 +22,51 @@ import kr.co.anabada.item.service.ItemDetailService;
 public class ItemDetailRestController {
 	@Autowired
 	private ItemDetailService itemDetailService;
-	
+
 	@GetMapping
-	public Integer getCurrentUser(HttpServletRequest req) {
-		return itemDetailService.getCurrentUser(req);
+	public ResponseEntity<Integer> getCurrentUser(HttpServletRequest req) {
+		return ResponseEntity.ok(itemDetailService.getCurrentUser(req));
 	}
-	
+
 	@GetMapping("{itemNo}/remainTime")
-	public Map<String, Object> getRemainTime(@PathVariable Integer itemNo) {
+	public ResponseEntity<Map<String, Object>> getRemainTime(@PathVariable Integer itemNo) {
 		Item item = itemDetailService.getItem(itemNo);
-		return Map.of(
+		return ResponseEntity.ok(Map.of(
 				"remainTime", item.getTimeLeft().getSeconds(),
-				"type", item.isWaiting() ? "시작": "종료");
+				"type", item.isWaiting() ? "시작" : "종료"));
 	}
-	
+
 	@GetMapping("{itemNo}/price")
-    public BigDecimal getPrice(@PathVariable Integer itemNo) {
-        return itemDetailService.getPrice(itemNo);
-    }
-	
-	@GetMapping("{itemNo}/status")
-	public String getStatus(@PathVariable Integer itemNo) {
-		return itemDetailService.getStatus(itemNo);
+	public ResponseEntity<BigDecimal> getPrice(@PathVariable Integer itemNo) {
+		return ResponseEntity.ok(itemDetailService.getPrice(itemNo));
 	}
-	
+
+	@GetMapping("{itemNo}/status")
+	public ResponseEntity<String> getStatus(@PathVariable Integer itemNo) {
+		return ResponseEntity.ok(itemDetailService.getStatus(itemNo));
+	}
+
+	@GetMapping("user/balance")
+	public ResponseEntity<BigDecimal> getCoinBalance(HttpServletRequest req) {
+		Integer loggedInUserNo = itemDetailService.getCurrentUser(req);
+		if (loggedInUserNo == 0) {
+			throw new AuthenticationRequiredException("로그인이 필요한 서비스 입니다.");
+		}
+
+		BigDecimal coinBalance = itemDetailService.getCoinBalance(loggedInUserNo);
+		return ResponseEntity.ok(coinBalance);
+	}
+
 	@PatchMapping("{itemNo}/bid")
 	public ResponseEntity<String> updatePrice(
 			@PathVariable Integer itemNo,
 			@RequestBody Map<String, Long> request,
-			HttpServletRequest req) throws NotFoundException {
-		
-		return ResponseEntity.badRequest().body("입찰 기능 리팩토링 중");
+			HttpServletRequest req) {
+
+		Integer loggedInUserNo = itemDetailService.getCurrentUser(req);
+		BigDecimal newPrice = BigDecimal.valueOf(request.get("newPrice"));
+
+		itemDetailService.updatePrice(itemNo, newPrice, loggedInUserNo);
+		return ResponseEntity.ok().body("입찰 완료되었습니다.");
 	}
 }

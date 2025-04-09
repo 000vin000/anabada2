@@ -177,7 +177,7 @@ public class Item {
 	}
 
 	public boolean canBid(BigDecimal bidAmount) {
-		return isAuction() && isActive() && bidAmount.compareTo(this.itemPrice) > 0;
+		return isAuction() && isActive() && bidAmount.compareTo(this.itemPrice.add(new BigDecimal(999))) > 0;
 	}
 
 	public boolean isFullyConfirmed() {

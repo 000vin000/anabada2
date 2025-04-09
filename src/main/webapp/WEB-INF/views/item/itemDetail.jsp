@@ -83,7 +83,8 @@
 						<br>
 						<h2 id="price-heading">희망 입찰가</h2>
 						<div class="bid-input-group">
-							<input type="number" id="price-text" min="0" step="1000" placeholder="입찰 금액을 입력하세요">
+							<input type="number" value="${item.itemPrice.toBigInteger() + 1000}"
+							id="price-text" min="0" step="1000" placeholder="입찰 금액을 입력하세요">
 							<input type="button" id="bid-btn" value="입찰">
 						</div>
 					</div>

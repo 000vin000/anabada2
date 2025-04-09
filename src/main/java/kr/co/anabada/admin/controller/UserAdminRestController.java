@@ -47,7 +47,7 @@ public class UserAdminRestController {
         }
 
         Admin admin = adminService.findByUserNo(user.getUserNo());
-        if (admin == null || Boolean.TRUE.equals(admin.getCanManageFinances()) == false) {
+        if (admin == null || Boolean.TRUE.equals(admin.getCanManageFinances()) == false || admin.getAdminLevel() != 2) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "접근 권한 없음"));
         }
 
