@@ -1,5 +1,7 @@
 import { fetchWithAuth } from '/js/user/common/fetchWithAuth.js';
 import { getVerifiedLoggedInUserNo, addCommas, formatTimeText } from '/js/item/itemDetailUtil.js';
+import { initChatRoomList } from '/js/chat/chatRoomList.js';
+import { initInquiryButton } from '/js/chat/ItemDetail.js';
 
 const priceInputSection = document.getElementById('price-input-section');
 const timeSection = document.getElementById('time-section');
@@ -43,18 +45,31 @@ document.addEventListener('DOMContentLoaded', async function() {
 	await verifyLoggedInAndInit();
 });
 
-async function verifyLoggedInAndInit() {
-	loggedInUserNo = await getVerifiedLoggedInUserNo();
-	isOwnItem = loggedInUserNo !== 0 && loggedInUserNo === sellerNo;
-	console.log('로그인 uid: ' + loggedInUserNo);
-	console.log('본인아이템 여부: ' + isOwnItem);
+export async function verifyLoggedInAndInit() {
+	const loggedInUserNo = await getVerifiedLoggedInUserNo();
+	const isOwnItem = loggedInUserNo !== 0 && loggedInUserNo === sellerNo;
+
+	console.log('✅ 로그인된 userNo:', loggedInUserNo);
+	console.log('🛒 sellerNo:', sellerNo);
+	console.log('👤 본인 아이템 여부:', isOwnItem);
+
+	// 버튼 노출 제어
+	const chatBtn = document.querySelector(".viewChatRoomsBtn");
+	const inquiryBtn = document.getElementById("inquiryBtn");
 
 	if (isOwnItem) {
+		if (chatBtn) chatBtn.style.display = "inline-block";
+		initChatRoomList();
+
 		document.querySelectorAll('.logged-in-only').forEach(elem => {
 			elem.hidden = false;
 		});
+	} else {
+		if (inquiryBtn) inquiryBtn.style.display = "inline-block";
+		initInquiryButton();
 	}
 }
+
 
 function startInterval(f, s) {
 	let interval = setInterval(f, s);
