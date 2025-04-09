@@ -13,7 +13,7 @@
 	<link rel="stylesheet" type="text/css" href="/css/styleMainPage.css">
     <script src="/js/weather.js"></script> 
 </head>
-<body class="body-container">
+<body>
 	<div> 
 	    <div class="weather-container"></div>
 	    <div id="weatherUpdateTime"></div>
@@ -26,8 +26,8 @@
     <div class="body-container">
         <jsp:include page="item.jsp" />
     </div>
+	<jsp:include page="../footer.jsp" />
     <jsp:include page="../sidebar.jsp" />
-    <jsp:include page="../footer.jsp" />
     <jsp:include page="../main/bottom_nav.jsp" />
 </body>
 <script src="/js/common.js"></script>

@@ -59,6 +59,7 @@ button.gender-option.active,
     margin-left: auto; /* 왼쪽 여백 자동으로 설정하여 오른쪽으로 이동 */
     font-size: 16px; /* 글자 크기 */
     color: #333; /* 글자 색상 */
+    margin-top: 20px;
 }
 
 #sortOrder {
@@ -267,8 +268,7 @@ nav ul li a:hover {
   max-width: 1200px; /* 최대 너비 설정 (원하는 크기로 조정 가능) */
   margin: 0 auto; /* 좌우 중앙 정렬 */
   padding: 0 20px; /* 내부 여백 추가 (필요에 따라 조정) */
-  margin-bottom: 50px;
-  min-height: 820px; /* 최소 높이를 100vh로 설정 */
+  min-height: 820px; /* 최소 높이 설정 */
 }
 
 /* 마이페이지 브레드크럼 */
