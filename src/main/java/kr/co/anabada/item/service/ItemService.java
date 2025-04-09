@@ -43,7 +43,7 @@ public class ItemService {
 		 Optional<User> user = userRepo.findById(userInfo.getUserNo());
 		 Seller byUser = sellerRepo.findByUser(user.get());
 		 if (byUser == null) {
-			 byUser = Seller.builder().user(user.get()).sellerDesc("").sellerType(SellerType.INDIVIDUAL).build();
+			 byUser = Seller.builder().user(user.get()).sellerDesc(user.get().getUserNick() + "의 옷장").sellerType(SellerType.INDIVIDUAL).build();
 			 sellerRepo.save(byUser);
 		 }
 		 
