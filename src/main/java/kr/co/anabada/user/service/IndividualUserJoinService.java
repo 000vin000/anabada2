@@ -10,8 +10,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kr.co.anabada.user.dto.IndividualUserJoinDTO;
+import kr.co.anabada.user.entity.Buyer;
+import kr.co.anabada.user.entity.Seller;
 import kr.co.anabada.user.entity.User;
+import kr.co.anabada.user.entity.Seller.SellerType;
+import kr.co.anabada.user.repository.BuyerRepository;
 import kr.co.anabada.user.repository.IndividualUserJoinRepository;
+import kr.co.anabada.user.repository.SellerRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -26,6 +31,11 @@ public class IndividualUserJoinService {
 
     @Autowired
     private EmailAuthTokenRepository emailAuthTokenRepository;
+    
+    @Autowired
+    private BuyerRepository buyerRepo;
+    @Autowired
+    private SellerRepository sellerRepo; // jhu
 
     // 아이디 중복 체크
     public boolean isUserIdAvailable(String userId) {
@@ -84,9 +94,13 @@ public class IndividualUserJoinService {
                 .emailVerified(true) //인증된 사용자로 저장
                 .build();
 
+        Seller newSeller = Seller.builder().user(user).sellerDesc(userJoinDTO.getUserNick() + "의 옷장").sellerType(SellerType.INDIVIDUAL).build();
+        Buyer newBuyer = Buyer.builder().user(user).build();
         log.info("회원가입 요청: {}", user);
 
         userJoinRepository.save(user);
+        sellerRepo.save(newSeller);
+        buyerRepo.save(newBuyer);
         log.info("회원가입 완료! userUpdatedDate={}", user.getUserUpdatedDate());
     }
 }

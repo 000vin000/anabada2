@@ -14,12 +14,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "Buyer")
 public class Buyer {
@@ -33,18 +35,23 @@ public class Buyer {
     private User user; 
 
     @Column(name = "buyerBidCnt", nullable = false)
+    @Builder.Default
     private Integer buyerBidCnt = 0;
 
     @Column(name = "buyerSuccessBidCnt", nullable = false)
+    @Builder.Default
     private Integer buyerSuccessBidCnt = 0;
 
     @Column(name = "buyerPayCnt", nullable = false)
+    @Builder.Default
     private Integer buyerPayCnt = 0;
 
     @Column(name = "buyerBidSuccessRate", nullable = false)
+    @Builder.Default
     private Double buyerBidSuccessRate = 0.0;
 
     @Column(name = "buyerPaySuccessRate", nullable = false)
+    @Builder.Default
     private Double buyerPaySuccessRate = 0.0;
 
     @CreationTimestamp
