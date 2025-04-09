@@ -230,17 +230,18 @@ nav ul {
     padding: 0; /* 기본 패딩 제거 */
     margin: 0; /* 기본 마진 제거 */
     display: flex; /* Flexbox 사용 */
+    align-items: center;
+    gap: 15px;
 }
 
 nav ul li {
-    margin-left: 15px; /* 리스트 항목 간 간격 */
+    margin: 8px; /* 리스트 항목 간 간격 */
 }
 
 nav ul li a {
     text-decoration: none; /* 링크 밑줄 제거 */
     color: #333; /* 글자 색상 */
     transition: color 0.3s; /* 색상 전환 효과 */
-    margin-left: 15px;
 }
 
 nav ul li a:hover {
@@ -248,11 +249,7 @@ nav ul li a:hover {
 }
 
 #itemUpload {
-    margin-left: 20px; /* 다른 요소와의 간격 */
-}
-
-#itemUpload a {
-    display: inline-block; /* 블록 요소로 표시 */
+	display: inline-block; /* 블록 요소로 표시 */
     padding: 10px 15px; /* 패딩 추가 */
     background-color: #21afbf; /* 배경 색상 */
     color: white; /* 글자 색상 */
@@ -261,8 +258,7 @@ nav ul li a:hover {
     transition: background-color 0.3s, transform 0.2s; /* 전환 효과 */
 }
 
-#itemUpload a:hover {
-    transform: scale(1.05); /* 약간 확대 */
+#itemUpload:hover {
     transition: background-color 0.3s, transform 0.2s; /* 전환 효과 */
     background-color: #2adbe0;
 }
@@ -529,22 +525,6 @@ nav ul li a:hover {
         .form-group input:focus {
             border-color: #21afbf;
             outline: none;
-        }
-
-        #loginBtn {
-            width: 100%;
-            padding: 12px;
-            font-size: 18px;
-            background-color: #21afbf;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        #loginBtn:hover {
-           background-color: #2adbe0;
         }
 
         .error-message {
