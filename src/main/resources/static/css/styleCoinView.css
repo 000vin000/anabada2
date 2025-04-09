@@ -1,0 +1,91 @@
+.coin-container {
+	display: flex;
+	gap: 20px;
+	justify-content: center;
+	flex-wrap: wrap; 
+	margin-bottom: 30px;
+}
+
+.section {
+	flex: 1 1 300px;
+	padding: 20px;
+	border-radius: 10px;
+	min-width: 300px;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.cashSection {
+	background-color: #fff0f0;
+}
+
+.coinSection {
+	background-color: #e6f4f1;
+}
+
+.section-title {
+	font-size: 16px;
+	font-weight: bold;
+	margin-bottom: 15px;
+}
+
+#currentCash,
+#currentCoin {
+    display: flex;
+    align-items: center; /* 수직 가운데 정렬 */
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+#currentCash img,
+#currentCoin img {
+	width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+#currentCash span,
+#currentCoin span {
+	margin-left: 10px;
+	font-size: 20px;
+}
+
+.button-group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.btnForCash button {
+	flex: 1 1 calc(33.3% - 6.66px); /* 한 줄에 3개씩 */
+}
+
+.btnForCoin button {
+	flex: 1 1 calc(50% - 5px);
+}
+
+.openWindow {
+	padding: 8px 12px;
+	border: 1px solid #aaa;
+	border-radius: 6px;
+	background-color: white;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.openWindow:hover {
+	background-color: #f0f0f0;
+}
+
+.openList {
+	padding: 8px 12px;
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	color: #828282;
+}
+
+.openList:hover {
+	text-decoration: underline; 
+}

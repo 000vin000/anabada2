@@ -9,6 +9,7 @@
 	<title>ANABADA</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
 	<link rel="stylesheet" type="text/css" href="/css/styleTemp.css">
+	<link rel="stylesheet" type="text/css" href="/css/styleCoinView.css">
 	<script type="module" src="/js/user/fetchWithAuth.js"></script> 
 </head>
 <body>
