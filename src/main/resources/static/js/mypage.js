@@ -13,11 +13,11 @@ function loadCurrentCashCoin() {
 	.then(data => {
 		const currentCash = document.getElementById("currentCash");
 		const currentCoin = document.getElementById("currentCoin");
-		currentCash.innerHTML = "";
 		if (data.length != 0) {
-			console.log(data);
-			currentCash.innerHTML = "<p>보유 금액 : " + `${data.goods.goodsCash}` + " 원</p>";
-			currentCoin.innerHTML = "<p>보유 코인 : " + `${data.goods.goodsCoin}` + " 코인</p>";
+			const formattedCash = Number(data.goods.goodsCash).toLocaleString(); 
+			const formattedCoin = Number(data.goods.goodsCoin).toLocaleString();
+			currentCash.innerHTML += `<span>${formattedCash}` + " 원</span>";
+			currentCoin.innerHTML += `<span>${formattedCoin}` + " 코인</span>";
 			return;
 		}
 	}).catch(error => console.error("사용자 받아오기 실패:", error)); 

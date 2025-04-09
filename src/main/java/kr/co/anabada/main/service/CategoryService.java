@@ -27,6 +27,12 @@ public class CategoryService {
 	// level 4
 	public String getClothesTypeDetailName(String ct, String cd) {
 		String cateDetail = ct + cd;
+		String value = mapper.findCateDetail(cateDetail);
+		
+		if (value == null || value.isEmpty()) {
+			throw new GenderNotFoundException("ClothesTypeDetail not found for: " + cd);
+		}
+		
 		return mapper.findCateDetail(cateDetail);
 	}
 	
@@ -40,6 +46,6 @@ public class CategoryService {
 		else if (ct.equals("06")) return "가방";
 		else if (ct.equals("07")) return "패션소품";
 		else if (ct.equals("08")) return "신발";
-		else return "-";
+		else throw new GenderNotFoundException("ClothesType not found for: " + ct);
 	}
 }

@@ -9,7 +9,6 @@
 <link rel="stylesheet" type="text/css" href="/css/itemDetail.css">
 <link rel="stylesheet" type="text/css" href="/css/style.css">
 <link rel="stylesheet" type="text/css" href="/css/chatRoom.css">
-<link rel="stylesheet" type="text/css" href="/css/itemDetail.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 </head>
 <body>
@@ -20,65 +19,53 @@
 				<button id="favor-btn" data-item-no="${item.itemNo}">☆</button>
 			</div>
 			<div class="item-action-buttons">
-				<button id="edit-btn logged-in-only" class="action-btn" hidden>수정</button>
-				<button id="delete-btn logged-in-only" class="action-btn" hidden>삭제</button>
-				<script>
-			        const loggedInUserNo = "${userNo}";
-			    </script>
-				<!-- 디버깅: 로그인된 사용자 번호와 판매자 번호 출력 -->
-				<!-- 로그인된 사용자 번호 출력 -->
-				<p>로그인된 사용자 번호: ${userNo != null ? userNo : '로그인 필요'}</p> <!-- null 처리 추가 -->
-				
-				<!-- 상품 상세 정보 출력 -->
-				<p>판매자 번호: ${item.sellerNo}</p>
+				<!-- 숨김 버튼 (JS에서 조건 분기) -->
+				<button id="edit-btn" class="action-btn logged-in-only" hidden>수정</button>
+				<button id="delete-btn" class="action-btn logged-in-only" hidden>삭제</button>
 
-				
-				<!-- 버튼 표시 조건 -->
-				<c:choose>
-				    <c:when test="${loggedInUserNo != null && loggedInUserNo == item.sellerNo}">
-				        <button class="viewChatRoomsBtn" data-item-no="${item.itemNo}">
-				            채팅방 목록 보기
-				        </button>
-				    </c:when>
-				    <c:otherwise>
-				        <button id="inquiryBtn" class="inquiryBtn" 
-				            data-room-no="${roomNo}"
-				             data-user-no="${loggedInUserNo}"
-				            <c:if test="${empty loggedInUserNo}">data-login-required="true"</c:if>>
-				            문의하기
-				        </button>
-				    </c:otherwise>
-				</c:choose>
+				<!-- 판매자 번호를 JS에서 사용할 수 있도록 숨겨둠 -->
+				<p id="sellerNo" style="display: none;">${item.sellerNo}</p>
 
+				<!-- 버튼은 모두 숨겨두고 JS에서 분기 제어 -->
+				<button id="inquiryBtn" class="viewChatRoomsBtn" data-item-no="${item.itemNo}" style="display: none;">
+				    문의목록
+				</button>
+
+				<button id="inquiryBtn" class="inquiryBtn" data-item-no="${item.itemNo}" style="display: none;">
+				    문의하기
+				</button>
 			</div>
 		</div>
+
 		<div class="item-content">
 			<div class="item-gallery">
 				<c:choose>
 					<c:when test="${item.imageCount > 0}">
 						<img id="main-image" class="gallery-main-image"
-							src="/image/${item.itemNo}/0" alt="메인 이미지">
+							 src="/image/${item.itemNo}/0" alt="메인 이미지">
 						<div class="gallery-thumbnails">
 							<c:forEach begin="0" end="${item.imageCount-1}" var="index">
 								<img src="/image/${item.itemNo}/${index}" alt="메인 이미지"
-									class="gallery-thumbnail" onclick="changeMainImage(this.src)">
+									 class="gallery-thumbnail" onclick="changeMainImage(this.src)">
 							</c:forEach>
 						</div>
 					</c:when>
 					<c:otherwise>
 						<div class="gallery-main-image no-image"
-							style="display: flex; align-items: center; justify-content: center; color: #999">
+							 style="display: flex; align-items: center; justify-content: center; color: #999">
 							이미지가 없습니다
 						</div>
 					</c:otherwise>
 				</c:choose>
 			</div>
+
 			<div class="item-info-section">
 				<div id="time-section" class="time-section"
-					${(item.itemStatus ne '대기중' and item.itemStatus ne '판매중') or empty item.itemSaleEndDate ? 'hidden' : ''}>
+					 ${item.itemStatus ne '대기중' and item.itemStatus ne '판매중' or empty item.itemSaleEndDate ? 'hidden' : ''}>
 					<span id="remain-time-heading">경매 시간</span>
 					<span id="remain-time">계산 중</span>
 				</div>
+
 				<div class="bid-section">
 					<h2 id="price-heading">${item.itemStatus}</h2>
 					<span id="price">${item.getFormattedPrice(item.itemPrice)} 원</span>
@@ -92,10 +79,13 @@
 							<input type="button" id="bid-btn" value="입찰">
 						</div>
 					</div>
-					<button onclick="openWindow('BidlistWindow', '/bidList/${item.itemNo}')" id="bid-list">입찰 기록 보기</button>
+					<button onclick="openWindow('BidlistWindow', '/bidList/${item.itemNo}')" id="bid-list">
+						입찰 기록 보기
+					</button>
 				</div>
 			</div>
 		</div>
+
 		<div class="details-section">
 			<h3>상품 상세 정보</h3>
 			<div class="details-grid">
@@ -113,7 +103,14 @@
 					<span class="detail-label">경매 기간</span>
 					<span class="detail-value">
 						${item.getFormattedDate(item.itemSaleStartDate)} ~
-						${(item.itemSaleEndDate ne null) ? item.getFormattedDate(item.itemSaleEndDate) : "무기한"}
+						<c:choose>
+							<c:when test="${item.itemSaleEndDate ne null}">
+								${item.getFormattedDate(item.itemSaleEndDate)}
+							</c:when>
+							<c:otherwise>
+								무기한
+							</c:otherwise>
+						</c:choose>
 						<span id="status">${item.itemStatus}</span>
 					</span>
 				</div>
@@ -128,34 +125,36 @@
 				</div>
 			</div>
 		</div>
+
 		<button onclick="window.history.back()" class="back-button">뒤로가기</button>
 	</div>
 
+	<!-- 공통 모듈 -->
 	<jsp:include page="../sidebar.jsp" />
 	<jsp:include page="../footer.jsp" />
 
+	<!-- JS 설정 -->
 	<script src="/js/recent/config.js"></script>
 	<script src="/js/recent/addRecent.js"></script>
 	<script src="/js/recent/getRecent_sidebar.js"></script>
 	<script src="/js/favor/favorItem.js"></script>
 	<script src="/js/chat/chatRoom.js"></script>
-	<script src="/js/chat/chatRoomList.js"></script>
-	<script src="/js/chat/itemDetail.js"></script>
-	
+	<script type="module" src="/js/chat/chatRoomList.js"></script>
+	<script type="module" src="/js/chat/itemDetail.js"></script>
 
+	<!-- JS에서 사용할 변수 정의 -->
 	<script>
-        const itemNo = ${item.itemNo};
-        const sellerNo = ${item.sellerNo};
-        const initialItemStatus = "${item.itemStatus}";
-        const initialItemSaleEndDate =
-        	${not empty item.itemSaleEndDate ? '"' += item.itemSaleEndDate.toString() += '"' : 'null'};
-    </script>
+		const itemNo = ${item.itemNo};
+		const sellerNo = ${item.sellerNo};
+		const initialItemStatus = "${item.itemStatus}";
+		const initialItemSaleEndDate = ${not empty item.itemSaleEndDate ? '"' += item.itemSaleEndDate.toString() += '"' : 'null'};
+	</script>
 
+	<!-- 메인 스크립트 -->
 	<script type="module" src="/js/item/itemDetail.js"></script>
 	<script type="module">
 		import { openWindow } from '/js/item/itemDetailUtil.js';
 		window.openWindow = openWindow;
 	</script>
-
 </body>
 </html>

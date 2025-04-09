@@ -1,4 +1,3 @@
-// 공통 유틸 import
 import { fetchWithAuth } from '/js/user/common/fetchWithAuth.js';
 
 document.addEventListener("DOMContentLoaded", () => {
