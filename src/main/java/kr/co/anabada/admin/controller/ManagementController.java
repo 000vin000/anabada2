@@ -11,7 +11,6 @@ import kr.co.anabada.admin.repository.WithdrawalRepository;
 import kr.co.anabada.admin.service.WarnService;
 import kr.co.anabada.user.entity.Question;
 import kr.co.anabada.user.repository.QuestionRepository;
-import kr.co.anabada.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +45,7 @@ public class ManagementController {
 
     @GetMapping("admin/management")
     public String getManagement(Model model) {
+    
         List<Question> questions = questionRepository.findAll();
         
         Map<Integer, List<Answer>> answersByQuestionNo = new HashMap<>();
