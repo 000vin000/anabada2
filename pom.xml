@@ -102,7 +102,17 @@
    			 <version>0.11.5</version>
    			 <scope>runtime</scope>
 		</dependency>
-		
+	<!-- 소셜 인증 -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-oauth2-client</artifactId>
+		</dependency>
+	 <!--OAuth2 로그인용 의존성 추가 -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-oauth2-client</artifactId>
+		</dependency>
+
 		
 		
       <dependency>
