@@ -79,83 +79,129 @@ if (priceText) {
 		this.value = this.value.replace(/[^\d]/g, '');
 	});
 
-	// TODO 입찰기능
-}
-
-if (bidBtn) {
-	bidBtn.addEventListener('click', async function() {
-		const priceValue = priceText.value.trim();
-
-		if (!priceValue || isNaN(Number(priceValue))) {
-			Swal.fire('입력 오류', '유효한 입찰 금액을 입력하세요.', 'warning');
-			return;
-		}
-
-		const newPrice = Number(priceValue);
-
-		const currentPriceText = priceElement.innerText.replace(/[^0-9]/g, '');
-		const currentPrice = Number(currentPriceText);
-		if (newPrice < currentPrice + 1000) {
-			Swal.fire('입찰 오류', '입찰가는 현재가보다 1,000원 이상 높아야 합니다.', 'warning');
-			return;
-		}
-
-		if (isOwnItem) {
-			Swal.fire('입찰 불가', '자신의 물품에는 입찰할 수 없습니다.', 'error');
-			return;
-		}
-
-		if (loggedInUserNo === 0) {
-			Swal.fire({
-				title: '로그인 필요',
-				html: '로그인이 필요한 서비스입니다.<br>로그인 페이지로 이동하시겠습니까?',
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: '로그인',
-				cancelButtonText: '취소'
-			}).then((result) => {
-				if (result.isConfirmed) {
-					window.location.href = '/'; // login url
+	if (bidBtn) {
+		bidBtn.addEventListener('click', async function() {
+			try {
+				if (loggedInUserNo === 0 || loggedInUserNo === null) {
+					Swal.fire({
+						title: '로그인 필요',
+						html: '로그인이 필요한 서비스입니다.<br>로그인 페이지로 이동하시겠습니까?',
+						icon: 'warning',
+						showCancelButton: true,
+						confirmButtonText: '로그인',
+						cancelButtonText: '취소'
+					}).then((result) => {
+						if (result.isConfirmed) {
+							window.location.href = '/'; // login url로 교체
+						}
+					});
+					throw new Error('로그인 인증 오류');
 				}
-			});
-			return;
-		}
 
-		try {
-			const response = await fetchWithAuth(`/api/item/detail/${itemNo}/bid`, {
-				method: 'PATCH',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ newPrice: newPrice })
-			});
+				const newPriceValue = priceText.value.trim();
+				if (!newPriceValue || isNaN(Number(newPriceValue))) {
+					Swal.fire('입력 오류', '유효한 입찰 금액을 입력하세요.', 'warning');
+					throw new Error('입찰가 입력 변환 오류');
+				}
+				const newPrice = Number(newPriceValue);
+				
+				const currentPriceText = priceElement.innerText.replace(/[^0-9]/g, '');
+				const currentPrice = Number(currentPriceText);
 
-			const responseBody = await response.text();
+				if (newPrice < currentPrice + 1000) {
+					Swal.fire('입찰 실패', '입찰가는 현재가보다 1,000원 이상 높아야 합니다.', 'error');
+					throw new Error('입찰가 1000+ 오류');
+				}
+				if (isOwnItem) {
+					Swal.fire('입찰 실패', '자신의 물품에는 입찰할 수 없습니다.', 'error');
+					throw new Error('자신 물품 입찰 오류');
+				}
 
-			if (response.ok) {
-				Swal.fire('입찰 성공', responseBody, 'success');
-				updatePrice(itemNo);
-				priceText.value = '';
-			} else {
-				Swal.fire('입찰 실패', responseBody, 'error');
+				//fetchWithAuth() then으로도 이어지는지 확인 필요
+				const balanceData = await fetchWithAuth(`/api/item/detail/user/balance`, { method: 'GET' })
+					.then(response => {
+						if (!response.ok) {
+							return response.json()
+								.then(errorObj => {
+									throw new Error(errorObj?.message || `잔액 조회 실패: ${response.status}`);
+								});
+						}
+						return response.text();
+					});
+					const fetchedBalance = parseFloat(balanceData);
+
+					if (isNaN(fetchedBalance)) {
+						throw new Error('유효하지 않은 잔액 정보');
+					}
+
+					const userBalance = fetchedBalance;
+					console.log(`${loggedInUserNo} 유저의 보유 코인: ${userBalance}`);
+
+					if (userBalance < newPrice) {
+						Swal.fire('입찰 실패', '코인이 부족합니다.', 'error');
+						throw new Error('코인 부족');
+					}
+					
+					await Swal.fire({
+						title: '입찰 확인',
+						html: '<p>현재 포인트 잔액은 <b>' + addCommas(userBalance) + '원</b>입니다.</p>'
+							+ '<p><b>' + addCommas(newPrice) + '원</b>으로 입찰하시겠습니까?</p>',
+						icon: 'question',
+						showCancelButton: true,
+						confirmButtonText: '입찰',
+						cancelButtonText: '취소'
+					})
+					.then((result) => {
+						if (result.isConfirmed) {
+							fetchWithAuth(`/api/item/detail/${itemNo}/bid`, {
+								method: 'PATCH',
+								body: JSON.stringify({ newPrice: newPrice })
+							})
+							.then(response => {
+								if (!response.ok) {
+									return response.json()
+										.then(errorObj => {
+											throw new Error(errorObj?.message || `입찰 요청 실패: ${response.status}`);
+										});
+								}
+								return response.text();
+							})
+							.then(data => {
+								Swal.fire('입찰 완료', data, 'success');
+							})
+						}
+					});
+			} catch (error) {
+				console.error('입찰 프로세스 중 오류 발생:', error);
 			}
-		} catch (error) {
-			Swal.fire('오류 발생', '입찰 처리 중 오류가 발생했습니다.', 'error');
-		}
-	});
+		});
+	}
 }
-
 
 function updatePrice(itemNo) {
+	if (!priceElement) {
+		return;
+	}
+	
 	fetch(`/api/item/detail/${itemNo}/price`)
-		.then(response => response.text())
-		.then(data => {
-			if (priceElement) {
-				priceElement.innerText = addCommas(data) + ' 원';
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`현재가 갱신 실패: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(newPriceText => {
+			const currentDisplayedText = priceElement.innerText;
+			const currentDisplayedPrice = currentDisplayedText.replace(/[^0-9]/g, '');
+			const newPrice = newPriceText.trim().replace(/\.\d*$/, '');;
+
+			if (newPrice !== currentDisplayedPrice) {
+				priceElement.innerText = addCommas(newPrice) + ' 원';
+				priceText.value = parseInt(newPrice, 10) + 1000;
 			}
 		})
 		.catch(error => {
-			console.error('updatePrice(itemNo) error: ', error);
+			console.error('updatePrice() error: ', error.message);
 		});
 }
 
@@ -174,18 +220,18 @@ async function updateStatus(itemNo) {
 				stopAllIntervals();
 				if (priceInputSection) priceInputSection.hidden = true;
 				if (timeSection) timeSection.hidden = true;
-				
+
 			} else if (status === '판매중') {
 				if (priceInputSection) priceInputSection.hidden = false;
 				if (priceText) priceText.disabled = isOwnItem || loggedInUserNo === 0;
 				if (bidBtn) bidBtn.disabled = isOwnItem || loggedInUserNo === 0;
-				
+
 			} else {
 				if (priceInputSection) priceInputSection.hidden = true;
 			}
 		}
 	} catch (error) {
-		console.error('updateStatus(itemNo) error: ', error);
+		console.error('updateStatus() error: ', error.message);
 	}
 }
 
@@ -194,14 +240,14 @@ async function getRemainTime(itemNo) {
 		const response = await fetch(`/api/item/detail/${itemNo}/remainTime`);
 		const data = await response.json();
 		const { remainTime, type } = data;
-		
+
 		if (remainTimeHeading) {
 			remainTimeHeading.innerText = '경매 ' + type + '까지 남은 시간';
 		}
 		return { remainTime, type };
-		
+
 	} catch (error) {
-		console.error('getRemainTime(itemNo) error: ', error);
+		console.error('getRemainTime() error: ', error.message);
 		if (remainTimeHeading) remainTimeHeading.innerText = '시간 로딩 실패';
 		return { remainTime: 0, type: '오류' };
 	}
@@ -216,13 +262,13 @@ async function updateRemainTime(itemNo) {
 		if (remainTime <= 0) {
 			if (type === '종료') {
 				return;
-				
+
 			} else if (type === '시작') {
 				if (await waitForStatus(itemNo, '판매중')) {
 					let newTimeData = await getRemainTime(itemNo);
 					remainTime = newTimeData.remainTime;
 					if (priceInputSection) priceInputSection.hidden = false;
-					
+
 				} else {
 					stopAllIntervals();
 					if (remainTimeElement) remainTimeElement.innerText = '상태 변경 실패';

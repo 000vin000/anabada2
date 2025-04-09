@@ -23,7 +23,7 @@
 				<button id="edit-btn logged-in-only" class="action-btn" hidden>수정</button>
 				<button id="delete-btn logged-in-only" class="action-btn" hidden>삭제</button>
 				<script>
-			        const loggedInUserNo = "${userNo}"; =
+			        const loggedInUserNo = "${userNo}";
 			    </script>
 				<!-- 디버깅: 로그인된 사용자 번호와 판매자 번호 출력 -->
 				<!-- 로그인된 사용자 번호 출력 -->
@@ -87,7 +87,8 @@
 						<br>
 						<h2 id="price-heading">희망 입찰가</h2>
 						<div class="bid-input-group">
-							<input type="number" id="price-text" min="0" step="1000" placeholder="입찰 금액을 입력하세요">
+							<input type="number" value="${item.itemPrice.toBigInteger() + 1000}"
+							id="price-text" min="0" step="1000" placeholder="입찰 금액을 입력하세요">
 							<input type="button" id="bid-btn" value="입찰">
 						</div>
 					</div>

@@ -19,8 +19,7 @@ public class ItemDetailController {
 	private ItemDetailService itemDetailService;
 	
 	@GetMapping
-	public String getItemDetail(
-			@PathVariable Integer itemNo,Model model, HttpServletRequest req) throws NotFoundException {
+	public String getItemDetail(@PathVariable Integer itemNo, Model model) throws NotFoundException {
 		ItemDetailDTO item = itemDetailService.getItemDetailDTO(itemNo);
 		model.addAttribute("item", item);
 		return "item/itemDetail";
