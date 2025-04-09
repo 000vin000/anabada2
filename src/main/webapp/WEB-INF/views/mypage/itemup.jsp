@@ -51,9 +51,9 @@
 
         <div class="startEnd">
             <label for="itemStartDate">경매 시작시간</label>
-            <input type="datetime-local" id="itemStartDate" name="itemStartDate" required>
+            <input type="datetime-local" id="itemStartDate" name="itemSaleStartDate" required>
             <label for="itemEndDate">경매 마감시간</label>
-            <input type="datetime-local" id="itemEndDate" name="itemEndDate" required>
+            <input type="datetime-local" id="itemEndDate" name="itemSaleEndDate" required>
         </div>
 
         <div>
