@@ -11,7 +11,7 @@ import kr.co.anabada.admin.entity.Notice;
 import kr.co.anabada.admin.service.NoticeService;
 
 @Controller
-@RequestMapping("/admin/notice")
+@RequestMapping("/notice")
 public class NoticeController {
 	
 	@Autowired
@@ -29,5 +29,11 @@ public class NoticeController {
   
         model.addAttribute("notice", notice);
         return "admin/noticeUpdate"; // 공지사항 수정 페이지로 이동
+    }
+    // 공지사항 리스트
+    @GetMapping("/list")
+    public String showNoticeList(Model model) {
+        model.addAttribute("noticeList", noticeService.getAllNotices());
+        return "mypage/noticeList";
     }
 }

@@ -35,10 +35,10 @@
 		나의 맞춤 정보
 	</div>
 	<div>
-		고객센터<br>
-		1:1 문의 내역<br>
+		<a href="/question/write">고객센터</a><br>
+		<a href="/question/mypage/myQuestions">1:1 문의 내역</a><br>
 		상품 문의 내역<br>
-		공지 사항<br>
+		<a href="/notice/list">공지 사항</a><br>
 	</div>
 </div>
 <!-- J회원정보 수정 -->
