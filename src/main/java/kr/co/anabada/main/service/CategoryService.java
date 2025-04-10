@@ -33,7 +33,11 @@ public class CategoryService {
 			throw new GenderNotFoundException("ClothesTypeDetail not found for: " + cd);
 		}
 		
-		return mapper.findCateDetail(cateDetail);
+		System.out.println(ct); // 01
+		System.out.println(value); // 아우터
+		if (ct.equals(value)) value = "전체";
+		
+		return value;
 	}
 	
 	// level 3

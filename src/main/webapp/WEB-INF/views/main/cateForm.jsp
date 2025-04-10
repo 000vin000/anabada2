@@ -15,7 +15,7 @@
 	<jsp:include page="categoryMenu.jsp" />
 	<div>
         <p> 
-        	<span id="searchPath">${searchPath }</span>
+        	<span id="searchPath">${searchPath}</span>
             <span id="gender" style="display: none;">${gender}</span> 
             <span id="clothesType" style="display: none;">${ct}</span>
             <span id="clothesTypeDetail" style="display: none;">${cd}</span>

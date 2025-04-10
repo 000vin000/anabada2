@@ -64,3 +64,69 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #22bfc3;
 }
+
+.login-with-google {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  background-color: white;
+  color: #3c4043;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+  width: 100%;
+  justify-content: center;
+}
+
+.login-with-google:hover {
+  box-shadow: 0 1px 3px rgba(60, 64, 67, 0.3), 0 4px 8px rgba(60, 64, 67, 0.15);
+}
+
+.google-icon {
+  height: 18px;
+  width: 18px;
+  margin-right: 10px;
+}
+
+/* 구분선 스타일 */
+.or-separator {
+  text-align: center;
+  margin: 20px 0 10px;
+  color: #888;
+  font-size: 13px;
+  position: relative;
+}
+
+.or-separator::before,
+.or-separator::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background-color: #ddd;
+}
+
+.or-separator::before {
+  left: 0;
+}
+
+.or-separator::after {
+  right: 0;
+}
+
+.login-cancel {
+	margin-top: 20px;
+    font-size: 16px;
+    text-decoration: none;
+    color: #999;
+    transition: color 0.2s ease;
+}
+
+.login-cancel:hover {
+    color: #333;
+}
