@@ -118,3 +118,15 @@ input[type="submit"]:hover {
 .or-separator::after {
   right: 0;
 }
+
+.login-cancel {
+	margin-top: 20px;
+    font-size: 16px;
+    text-decoration: none;
+    color: #999;
+    transition: color 0.2s ease;
+}
+
+.login-cancel:hover {
+    color: #333;
+}
