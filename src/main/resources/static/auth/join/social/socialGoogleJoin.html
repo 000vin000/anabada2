@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>소셜 회원가입</title>
+  <script type="module" src="/js/auth/socialGoogleJoin.js"></script>
+  <script type="module" src="/js/user/common/liveValidation.js"></script>
+</head>
+<body>
+  <h2>소셜 회원가입</h2>
+
+  <form id="socialJoinForm">
+    <label for="userEmail">이메일</label>
+    <input type="email" id="userEmail" name="userEmail" readonly /><br>
+
+    <label for="userName">이름</label>
+    <input type="text" id="userName" name="userName" readonly /><br>
+
+    <label for="userNick">닉네임</label>
+    <input type="text" id="userNick" name="userNick" />
+    <button type="button" id="checkUserNickBtn">중복 체크</button>
+    <span id="userNickCheckMessage"></span><br>
+
+    <label for="phone1">전화번호</label>
+    <input type="text" id="phone1" name="phone1" maxlength="3" required> -
+    <input type="text" id="phone2" name="phone2" maxlength="4" required> -
+    <input type="text" id="phone3" name="phone3" maxlength="4" required>
+    <span id="phoneWarning"></span><br>
+
+    <label for="baseAddress">기본 주소</label>
+    <input type="text" id="baseAddress" name="baseAddress" required><br>
+
+    <label for="detailAddress">상세 주소</label>
+    <input type="text" id="detailAddress" name="detailAddress" required><br>
+
+    <button type="submit">가입하기</button>
+  </form>
+</body>
+</html>

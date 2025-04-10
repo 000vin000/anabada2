@@ -32,10 +32,10 @@ public class IndividualUserInfoUpdateController {
         UserTokenInfo userInfo = jwtTokenHelper.getUserFromRequest(request);
         if (userInfo == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증 실패");
 
-        User user = userUpdateRepository.findByUserId(userInfo.getUserId())
+        User user = userUpdateRepository.findById(userInfo.getUserNo())
                 .orElseThrow(() -> new RuntimeException("유저 없음"));
 
-        log.info("회원정보 조회 요청: userId = {}", user.getUserId());
+   //     log.info("회원정보 조회 요청: userId = {}", user.getUserId());
 
         String[] addressParts = user.getUserAddress().split("::");
         String baseAddress = addressParts.length > 0 ? addressParts[0] : "";

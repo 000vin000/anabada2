@@ -35,8 +35,9 @@ public class UserPinController {
         UserTokenInfo userInfo = jwtTokenHelper.getUserFromRequest(request);
         if (userInfo == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증 실패");
 
-        User user = userLoginRepository.findByUserId(userInfo.getUserId())
+        User user = userLoginRepository.findById(userInfo.getUserNo())
                 .orElseThrow(() -> new RuntimeException("유저 없음"));
+
 
         boolean hasPin = user.getUserPin() != null;
         return ResponseEntity.ok(Map.of("hasPin", hasPin));

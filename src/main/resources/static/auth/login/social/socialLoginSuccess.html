@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>소셜 로그인 성공</title>
+  <link rel="stylesheet" href="/css/common/form.css" />
+</head>
+<body>
+  <h2>로그인 성공! 잠시만 기다려주세요...</h2>
+
+  <script>
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+
+    if (token) {
+
+      localStorage.setItem("Token", token);
+
+
+      window.location.href = "/";
+    } else {
+      alert("로그인 토큰이 전달되지 않았습니다.");
+	}
+  </script>
+</body>
+</html>
