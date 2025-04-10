@@ -2,6 +2,8 @@ package kr.co.anabada.admin.entity;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,6 +38,7 @@ public class Answer {
     
     @ManyToOne
     @JoinColumn(name = "questionNo", nullable = false)
+    @JsonBackReference
     private Question question; 
     
     @ManyToOne

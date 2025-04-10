@@ -1,10 +1,11 @@
 package kr.co.anabada.user.service;
 
+import kr.co.anabada.admin.repository.AnswerRepository;
 import kr.co.anabada.user.entity.Question;
 import kr.co.anabada.user.repository.QuestionRepository;
-import kr.co.anabada.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -14,6 +15,9 @@ public class QuestionService {
 
     @Autowired
     private QuestionRepository questionRepository; 
+    
+    @Autowired
+    private AnswerRepository answerRepository;
 
     // 문의 저장
     public void saveQuestion(Question question) {
@@ -30,5 +34,11 @@ public class QuestionService {
     
     public Question getQuestionByNo(Integer questionNo) {
         return questionRepository.findById(questionNo).orElse(null);  // 해당 questionNo에 대한 문의사항 조회
+    }
+    
+    @Transactional
+    public void deleteQuestionWithAnswers(Integer questionNo) {
+        answerRepository.deleteByQuestion_QuestionNo(questionNo);
+        questionRepository.deleteById(questionNo);
     }
 }

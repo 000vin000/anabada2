@@ -16,12 +16,11 @@
             <th>번호</th>
             <th>문의 제목</th>
             <th>문의 내용</th>
-            <th>상태</th>
+            <th>답변 내용</th>
             <th>작업</th>
         </tr>
     </thead>
     <tbody id="questionsTable">
-        <!-- 여기에 JavaScript로 문의 목록을 채울 것 -->
     </tbody>
 </table>
 <script type="module" src="/js/myQuestions.js"></script>
