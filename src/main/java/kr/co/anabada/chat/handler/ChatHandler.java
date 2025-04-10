@@ -13,6 +13,7 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,17 +44,21 @@ public class ChatHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         try {
-            Object roomAttr = session.getAttributes().get("roomNo");
-            Object userAttr = session.getAttributes().get("userNo");
+            String uri = session.getUri().toString();
+            String roomNoParam = UriComponentsBuilder.fromUriString(uri).build().getQueryParams().getFirst("roomNo");
+            String userNoParam = UriComponentsBuilder.fromUriString(uri).build().getQueryParams().getFirst("userNo");
 
-            if (roomAttr == null || userAttr == null) {
+            if (roomNoParam == null || userNoParam == null) {
                 session.close(CloseStatus.BAD_DATA);
                 return;
             }
 
-            Integer roomNo = Integer.parseInt(roomAttr.toString());
+            Integer roomNo = Integer.parseInt(roomNoParam);
+            Integer userNo = Integer.parseInt(userNoParam);
 
-            // 세션 등록
+            session.getAttributes().put("roomNo", roomNo);
+            session.getAttributes().put("userNo", userNo);
+
             ChatRoomManager.addSession(roomNo, session);
 
             // 이전 메시지 전송
@@ -64,17 +69,15 @@ public class ChatHandler extends TextWebSocketHandler {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("afterConnectionEstablished 예외 발생", e);
         }
     }
 
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         String payload = message.getPayload();
-        log.info("payload: {}", payload);
 
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNode = mapper.readTree(payload);
+        JsonNode jsonNode = objectMapper.readTree(payload);
 
         Integer roomNo = jsonNode.get("roomNo").asInt();
         String content = jsonNode.get("msgContent").asText();
@@ -101,7 +104,7 @@ public class ChatHandler extends TextWebSocketHandler {
             .messageType("NEW")
             .build();
 
-        String responseText = mapper.writeValueAsString(response);
+        String responseText = objectMapper.writeValueAsString(response);
 
         // 같은 roomNo를 가진 모든 세션에게 전송
         List<WebSocketSession> sessions = ChatRoomManager.getSessions(roomNo);
@@ -112,15 +115,16 @@ public class ChatHandler extends TextWebSocketHandler {
                 Integer receiverRoomNo = Integer.parseInt(receiverRoomAttr.toString());
 
                 if (receiverRoomNo.equals(roomNo)) {
-                    receiverSession.sendMessage(new TextMessage(responseText));
+                    try {
+                        receiverSession.sendMessage(new TextMessage(responseText));
+                    } catch (IOException e) {
+                        log.warn("메시지 전송 실패 - 세션이 닫혔을 수 있음: {}", e.getMessage());
+                        ChatRoomManager.removeSession(roomNo, receiverSession);
+                    }
                 }
             }
         }
-
-
     }
-
-
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
@@ -131,20 +135,23 @@ public class ChatHandler extends TextWebSocketHandler {
 
             Integer roomNo = Integer.parseInt(roomAttr.toString());
 
-            // 세션 제거
             ChatRoomManager.removeSession(roomNo, session);
 
-            // 남아있는 사람에게 알림
+            // 남은 세션에 퇴장 메시지 전송
             List<WebSocketSession> remainingSessions = ChatRoomManager.getSessions(roomNo);
             TextMessage leaveMessage = new TextMessage("상대방이 채팅방에서 퇴장하였습니다.");
             for (WebSocketSession receiverSession : remainingSessions) {
                 if (receiverSession.isOpen()) {
-                    receiverSession.sendMessage(leaveMessage);
+                    try {
+                        receiverSession.sendMessage(leaveMessage);
+                    } catch (IOException e) {
+                        log.warn("퇴장 메시지 전송 실패: {}", e.getMessage());
+                    }
                 }
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("afterConnectionClosed 예외 발생", e);
         }
     }
 }
