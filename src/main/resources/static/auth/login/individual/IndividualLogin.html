@@ -14,11 +14,16 @@
         <label for="userPw">비밀번호:</label>
         <input type="password" id="userPw" name="userPw" required><br>
 
-        <input type="submit" id="loginBtn" value="로그인"></button>
+        <input type="submit" id="loginBtn" value="로그인">
+        
+        <div class="or-separator">또는</div>
         
         <a href="/oauth2/authorization/google">
-		<button type="button">구글로 로그인</button>
-</a>
+			<button type="button" class="login-with-google">
+				<img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo" class="google-icon" />
+	  			<span>구글로 로그인</span>
+			</button>
+		</a>
     </form>
 </body>
 <script src="/js/user/individual/IndividualLogin.js"></script>
