@@ -22,9 +22,7 @@
     <button id="send-message">전송</button>
     <button id="leave-chat-room">나가기</button>
 
-    <script>
-        const loggedInUserNo = "${loggedInUserNo}"; // 숫자 그대로 넘김
-    </script>
-    <script src="/js/chat/chatRoom.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module" src="/js/chat/chatRoom.js"></script>
 </body>
 </html>

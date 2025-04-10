@@ -10,9 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,10 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import kr.co.anabada.chat.dto.ChatMessageDTO;
 import kr.co.anabada.chat.dto.ChatRoomDTO;
 import kr.co.anabada.chat.dto.ChatRoomRequestDto;
-import kr.co.anabada.chat.entity.Chat_Message;
 import kr.co.anabada.chat.entity.Chat_Room;
-import kr.co.anabada.chat.repository.ChatMessageRepository;
-import kr.co.anabada.chat.repository.ChatRoomRepository;
 import kr.co.anabada.chat.service.ChatMessageService;
 import kr.co.anabada.chat.service.ChatRoomService;
 import kr.co.anabada.item.entity.Item;
@@ -55,14 +49,14 @@ public class ChatRestController {
     @Autowired
     private ItemService itemService;
 
-    // 기존 채팅 메시지 조회 API
+    // 기존 채팅 메시지 조회 
     @GetMapping("/messages/{roomNo}")
     public ResponseEntity<List<ChatMessageDTO>> getChatMessages(@PathVariable Integer roomNo) { 
         List<ChatMessageDTO> chatMessages = chatMessageService.getMessagesByRoomNo(roomNo);
         return ResponseEntity.ok(chatMessages);
     }
 
-    // 메시지 전송 및 저장 API
+    // 메시지 전송 및 저장 
     @PostMapping("/messages")
     public ResponseEntity<Map<String, String>> sendMessage(
             @RequestParam Integer roomNo,
@@ -84,7 +78,7 @@ public class ChatRestController {
         return ResponseEntity.ok(Map.of("message", "메시지 전송 성공"));
     }
 
-    // 채팅방 정보 조회 API
+    // 채팅방 정보 조회 
     @GetMapping("/{roomNo}")
     public ResponseEntity<?> getChatRoom(@PathVariable Integer roomNo) {
         Chat_Room chatRoom = chatRoomService.findChatRoomById(roomNo);
@@ -92,7 +86,7 @@ public class ChatRestController {
                ResponseEntity.status(HttpStatus.NOT_FOUND).body("채팅방을 찾을 수 없습니다.");
     }
     
-    // 기존 채팅방 조회 API
+    // 기존 채팅방 조회 
     @PostMapping("/room")
     public ResponseEntity<?> findExistingChatRoom(@RequestBody ChatRoomRequestDto request) {
         // itemNo를 이용해 item 객체를 가져온 후 sellerNo를 추출
@@ -126,7 +120,7 @@ public class ChatRestController {
     }
 
 
-    // 채팅방 생성 API
+    // 채팅방 생성 
     @PostMapping("/rooms")
     public ResponseEntity<?> createChatRoom(@RequestBody Map<String, Object> requestData) {
         try {
@@ -154,7 +148,7 @@ public class ChatRestController {
         }
     }
     
-    // 특정 아이템에 대한 전체 채팅방 조회 API (판매자용)
+    // 특정 아이템에 대한 전체 채팅방 조회 (판매자용)
     @GetMapping("/rooms/item/{itemNo}")
     public ResponseEntity<?> getChatRoomsForItem(@PathVariable Integer itemNo, HttpServletRequest req) {
         UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
@@ -168,15 +162,16 @@ public class ChatRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("상품을 찾을 수 없습니다.");
         }
 
-        // 로그인한 유저가 판매자인지 확인
-        if (!item.getSeller().getSellerNo().equals(user.getUserNo())) {
+        // 판매자 userNo와 로그인 유저 비교
+        Integer sellerUserNo = item.getSeller().getUser().getUserNo(); // ✔️ 핵심!
+
+        if (!user.getUserNo().equals(sellerUserNo)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("접근 권한이 없습니다.");
         }
 
-        // 채팅방 목록 조회
         List<ChatRoomDTO> chatRooms = chatRoomService.findChatRoomsByItemNo(itemNo);
-        return ResponseEntity.ok(chatRooms);  // 여기서 ResponseEntity.ok()로 반환
+        return ResponseEntity.ok(chatRooms);
     }
-
+    
 
 }

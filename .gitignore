@@ -413,4 +413,4 @@ buildNumber.properties
 .history
 .ionide
 
-# End of https://www.toptal.com/developers/gitignore/api/java,maven,eclipse,obsidian,visualstudiocode
+application-secret.properties

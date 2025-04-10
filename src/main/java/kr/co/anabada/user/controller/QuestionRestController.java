@@ -3,6 +3,7 @@ package kr.co.anabada.user.controller;
 import kr.co.anabada.user.entity.Question;
 import kr.co.anabada.user.entity.User;
 import kr.co.anabada.user.service.QuestionService;
+import kr.co.anabada.admin.repository.AnswerRepository;
 import kr.co.anabada.jwt.JwtTokenHelper;
 import kr.co.anabada.jwt.UserTokenInfo;
 import kr.co.anabada.user.repository.QuestionRepository;
@@ -34,6 +35,9 @@ public class QuestionRestController {
 
     @Autowired
     private JwtTokenHelper jwtTokenHelper;
+    
+    @Autowired
+    private AnswerRepository answerRepository;
 
     // 현재 로그인한 사용자 정보 가져오기
     private User getLoggedInUser(HttpServletRequest request) {
@@ -100,7 +104,8 @@ public class QuestionRestController {
         }
 
         // 삭제 수행
-        questionRepository.delete(question);
+        questionService.deleteQuestionWithAnswers(questionNo);
+
         return ResponseEntity.ok(Map.of("message", "질문이 삭제되었습니다"));
     }
 

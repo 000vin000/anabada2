@@ -27,13 +27,22 @@
 				<p id="sellerNo" style="display: none;">${item.sellerNo}</p>
 
 				<!-- 버튼은 모두 숨겨두고 JS에서 분기 제어 -->
-				<button id="inquiryBtn" class="viewChatRoomsBtn" data-item-no="${item.itemNo}" style="display: none;">
+				<button id="viewChatRoomsBtn" class="viewChatRoomsBtn" data-item-no="${item.itemNo}" style="display: none;">
 				    문의목록
 				</button>
 
 				<button id="inquiryBtn" class="inquiryBtn" data-item-no="${item.itemNo}" style="display: none;">
 				    문의하기
 				</button>
+				
+				<!-- 채팅 목록 모달창 -->
+				<div id="chatRoomModal" class="modal-overlay" style="display: none;">
+				  <div class="modal-content">
+				    <span class="modal-close" id="closeChatModal">&times;</span>
+				    <h2>채팅방 목록</h2>
+				    <div id="chat-room-list-box"></div>
+				  </div>
+				</div>
 			</div>
 		</div>
 
@@ -74,7 +83,8 @@
 						<br>
 						<h2 id="price-heading">희망 입찰가</h2>
 						<div class="bid-input-group">
-							<input type="number" id="price-text" min="0" step="1000" placeholder="입찰 금액을 입력하세요">
+							<input type="number" value="${item.itemPrice.toBigInteger() + 1000}"
+							id="price-text" min="0" step="1000" placeholder="입찰 금액을 입력하세요">
 							<input type="button" id="bid-btn" value="입찰">
 						</div>
 					</div>
@@ -137,7 +147,7 @@
 	<script src="/js/recent/addRecent.js"></script>
 	<script src="/js/recent/getRecent_sidebar.js"></script>
 	<script src="/js/favor/favorItem.js"></script>
-	<script src="/js/chat/chatRoom.js"></script>
+	<script type="module" src="/js/chat/chatRoom.js"></script>
 	<script type="module" src="/js/chat/chatRoomList.js"></script>
 	<script type="module" src="/js/chat/itemDetail.js"></script>
 

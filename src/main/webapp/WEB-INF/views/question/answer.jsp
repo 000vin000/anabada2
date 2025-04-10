@@ -31,51 +31,6 @@
             <input type="hidden" id="questionNo" name="questionNo" value="${question.questionNo}" />
         </form>
     </div>
-
-    <script type="module">
-        import { fetchWithAuth } from '/js/user/fetchWithAuth.js';
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('answerForm');
-            
-            form.addEventListener('submit', function(event) {
-                event.preventDefault(); // 기본 폼 제출 방지
-
-                const questionNo = document.getElementById('questionNo').value;
-                const answerContent = document.getElementById('answerContent').value;
-
-                const answerData = { answerContent: answerContent };
-
-                // POST 요청을 통해 답변 등록
-                fetchWithAuth(`/api/question/answer/${questionNo}`, {
-                    method: 'POST',
-                    body: JSON.stringify(answerData),
-                    headers: { 'Content-Type': 'application/json' }
-                })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else if (response.status === 401) {
-                        alert('로그인이 필요합니다.');
-                        window.location.href = '/login';
-                        throw new Error('Unauthorized');
-                    } else {
-                        alert('답변 등록 실패. 다시 시도해 주세요.');
-                        return response.json();
-                    }
-                })
-                .then(data => {
-                    if (data && data.message) {
-                        alert(data.message); // 서버에서 반환한 메시지 출력
-                        window.location.href = '/admin/management'; // 성공 후 이동
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('답변 등록 중 오류가 발생했습니다.');
-                });
-            });
-        });
-    </script>
+    <script type="module" src="/js/answer.js"></script>
 </body>
 </html>

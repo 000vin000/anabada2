@@ -17,33 +17,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // WebSocket 연결 함수
     function connectWebSocket() {
-        socket = new WebSocket(`ws://${window.location.host}/ws/chat/${roomNo}?token=${encodeURIComponent(token)}`);
+		socket = new WebSocket(`ws://${window.location.host}/ws/chat?roomNo=${roomNo}&userNo=${userNo}&token=${token}`);
 
         socket.onopen = () => {
             console.log("웹소켓 연결 성공");
             reconnectAttempts = 0;
         };
 
-        socket.onmessage = (event) => {
-            try {
-                const chatMessage = JSON.parse(event.data);
+		socket.onmessage = (event) => {
+		    try {
+		        const chatMessage = JSON.parse(event.data);
 
-                // 중복 메시지 방지
-                if (!chatMessage.msgNo || displayedMessageIds.has(chatMessage.msgNo)) return;
+		        if (!chatMessage.msgNo || displayedMessageIds.has(chatMessage.msgNo)) return;
 
-                displayedMessageIds.add(chatMessage.msgNo);
-                displayMessage(chatMessage, userNo);
-            } catch (e) {
-                console.error("❌ 메시지 파싱 실패:", e);
-            }
-        };
+		        displayedMessageIds.add(chatMessage.msgNo);
+		        displayMessage(chatMessage, userNo);
+		    } catch (e) {
+
+		    }
+		};
 
         socket.onerror = (error) => {
-            console.error("❌ 웹소켓 오류:", error);
+            console.error("웹소켓 오류:", error);
         };
 
         socket.onclose = () => {
-            console.warn("⚠️ 웹소켓 연결 종료됨");
+            console.warn("웹소켓 연결 종료됨");
             if (reconnectAttempts < maxReconnectAttempts) {
                 reconnectAttempts++;
                 setTimeout(connectWebSocket, 3000); // 재시도

@@ -11,6 +11,10 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    
+    public User getUser(Integer userNo) {
+    	return userRepository.findById(userNo).orElse(null);
+    }
 
     // 사용자 ID로 조회
     public User findByUserId(String userId) {

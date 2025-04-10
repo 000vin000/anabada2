@@ -128,7 +128,7 @@
         <!-- 공지사항 목록 -->
         <div class="mt-5">
             <h2>공지사항 목록</h2>
-            <a href="/admin/notice/create" style="display: inline-block; margin-bottom: 15px;">공지사항 등록하기</a>
+            <a href="/notice/create" style="display: inline-block; margin-bottom: 15px;">공지사항 등록하기</a>
             <table border="1" cellpadding="10">
                 <thead>
                     <tr>
@@ -145,7 +145,7 @@
                             <td>${notices.noticeNo}</td>
                             <td>${notices.noticeTitle}</td>
                             <td>${notices.noticeContent}</td>
-                            <td><a href="/admin/notice/edit/${notices.noticeNo}">수정하기</a></td>
+                            <td><a href="/notice/edit/${notices.noticeNo}">수정하기</a></td>
                             <td>
                                 <button type="button" class="delete-notice-btn" data-notice-no="${notices.noticeNo}">삭제하기</button>
                             </td>
