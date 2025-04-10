@@ -25,7 +25,7 @@ public class SocialUserJoinService {
             throw new IllegalArgumentException("이미 가입된 이메일입니다.");
         }
 
-        String fullAddress = dto.getBaseAddress() + " " + dto.getDetailAddress();
+        String fullAddress = dto.getBaseAddress() + "::" + dto.getDetailAddress(); 
 
         User user = User.builder()
                 .userEmail(dto.getUserEmail())
