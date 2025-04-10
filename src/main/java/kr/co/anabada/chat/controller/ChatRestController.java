@@ -1,5 +1,6 @@
 package kr.co.anabada.chat.controller;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -15,13 +16,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.anabada.chat.dto.ChatMessageDTO;
 import kr.co.anabada.chat.dto.ChatRoomDTO;
 import kr.co.anabada.chat.dto.ChatRoomRequestDto;
+import kr.co.anabada.chat.entity.Chat_Message;
 import kr.co.anabada.chat.entity.Chat_Room;
 import kr.co.anabada.chat.service.ChatMessageService;
 import kr.co.anabada.chat.service.ChatRoomService;
@@ -29,6 +30,7 @@ import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.item.service.ItemService;
 import kr.co.anabada.jwt.JwtAuthHelper;
 import kr.co.anabada.jwt.UserTokenInfo;
+import kr.co.anabada.user.service.UserService;
 
 @RestController
 @RequestMapping("/api/chat")
@@ -48,6 +50,9 @@ public class ChatRestController {
     
     @Autowired
     private ItemService itemService;
+    
+    @Autowired
+    private UserService userService;
 
     // 기존 채팅 메시지 조회 
     @GetMapping("/messages/{roomNo}")
@@ -58,14 +63,17 @@ public class ChatRestController {
 
     // 메시지 전송 및 저장 
     @PostMapping("/messages")
-    public ResponseEntity<Map<String, String>> sendMessage(
-            @RequestParam Integer roomNo,
-            @RequestParam String message,
+    public ResponseEntity<Map<String, Object>> sendMessage(
+            @RequestBody ChatMessageDTO chatMessageDTO, // ChatMessageDTO 객체 사용
             HttpServletRequest req) {
         UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "로그인이 필요합니다."));
         }
+
+        Integer roomNo = chatMessageDTO.getRoomNo();
+        String message = chatMessageDTO.getMsgContent();
+
         if (message == null || message.trim().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "메시지가 비어 있습니다."));
         }
@@ -74,9 +82,28 @@ public class ChatRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "채팅방을 찾을 수 없습니다."));
         }
 
-        chatMessageService.sendMessage(roomNo, message, user.getUserNo());
-        return ResponseEntity.ok(Map.of("message", "메시지 전송 성공"));
+        // Chat_Message 객체 생성
+        Chat_Message chatMessage = Chat_Message.builder()
+                .msgContent(message)
+                .msgIsRead(false) // 초기 읽음 상태
+                .msgDate(LocalDateTime.now()) // 현재 시간으로 설정
+                .chatRoom(chatRoomService.findChatRoomById(roomNo)) // 채팅방 설정
+                .sender(userService.getUser(user.getUserNo())) // 발신자 설정
+                .build();
+
+        // 메시지를 저장
+        Chat_Message savedMessage = chatMessageService.saveMessage(chatMessage);
+
+        // 메시지 읽음 상태 업데이트 (전송 즉시 읽음 처리)
+        chatMessageService.updateMessageReadStatus(savedMessage.getMsgNo(), true);
+
+        return ResponseEntity.ok(Map.of("message", "메시지 전송 성공", "msgNo", savedMessage.getMsgNo()));
     }
+
+
+
+
+
 
     // 채팅방 정보 조회 
     @GetMapping("/{roomNo}")
@@ -173,5 +200,18 @@ public class ChatRestController {
         return ResponseEntity.ok(chatRooms);
     }
     
+    // 메시지 읽음 처리
+    @PostMapping("/messages/read/{messageId}")
+    public ResponseEntity<Map<String, String>> markMessageAsRead(@PathVariable Integer messageId, HttpServletRequest req) {
+        UserTokenInfo user = jwtAuthHelper.getUserFromRequest(req);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "로그인이 필요합니다."));
+        }
+
+        // 메시지 읽음 상태 업데이트
+        chatMessageService.updateMessageReadStatus(messageId, true);
+        return ResponseEntity.ok(Map.of("message", "메시지가 읽음으로 처리되었습니다."));
+    }
+
 
 }
