@@ -27,7 +27,12 @@
 ---
 
 ## 유스케이스 다이어그램
-![유스케이스](/docs/images/usecase_diagram.png)
+![유스케이스](/docs/images/usecase_temp.png)
+
+---
+
+## ERD
+![ERD](/docs/images/ERD.png)
 
 ---
 
@@ -37,4 +42,4 @@
 - [프로젝트를 설명하는 문서 자료들 첨부해보기](테이블 명세서 등 첨부)
 - [프로젝트를 소개하는 시각적 자료들 첨부해보기](소프트웨어 설계 및 아키텍처에서 유용하게 활용될 수 있는 다양한 다이어그램 첨부)
 다음은 추가로 작성할 수 있는 컨텐츠 예시입니다.
-https://github.com/green424minee/customerqna-
+https://github.com/green424minee/customerqna
