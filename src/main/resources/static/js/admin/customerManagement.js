@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const response = await fetchWithAuth(`/api/question/delete/${questionNo}`, {
                     method: 'DELETE',
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                        'Authorization': `Bearer ${localStorage.getItem('Token')}`,
                         'Content-Type': 'application/json',
                     }
                 });

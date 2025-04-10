@@ -1,8 +1,7 @@
 /**
- * 2차비번 여부 확인 해서 경로 이동해주는거
+ * 2차비번 여부 확인해서 경로 이동 (회원정보 수정/탈퇴 등 공통)
  */
-
-export function goToUpdateInfo() {
+export function goToUpdateInfo(targetUrl) {
   const token = localStorage.getItem("Token");
 
   fetch("/user/pin/status", {
@@ -12,10 +11,11 @@ export function goToUpdateInfo() {
   })
     .then((res) => res.json())
     .then((data) => {
+      const encodedNext = encodeURIComponent(targetUrl);
       if (data.hasPin) {
-        window.location.href = "/user/pin/pinAuth.html";
+        window.location.href = `/user/pin/pinAuth.html?next=${encodedNext}`;
       } else {
-        window.location.href = "/user/pin/createPin.html";
+        window.location.href = `/user/pin/createPin.html?next=${encodedNext}`;
       }
     })
     .catch((error) => {
@@ -24,11 +24,20 @@ export function goToUpdateInfo() {
     });
 }
 
-// 이벤트 바인딩
+// DOM 바인딩 예시 (회원정보 수정 버튼)
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("updateInfoBtn");
   if (btn) {
-    btn.addEventListener("click", goToUpdateInfo);
+    btn.addEventListener("click", () => {
+      goToUpdateInfo("/user/update/individual/IndividualUpdateinfo.html");
+    });
+  }
+
+  const withdrawBtn = document.getElementById("withdrawBtn");
+  if (withdrawBtn) {
+    withdrawBtn.addEventListener("click", () => {
+      goToUpdateInfo("/user/withdraw/withdraw.html");
+    });
   }
 });
 
