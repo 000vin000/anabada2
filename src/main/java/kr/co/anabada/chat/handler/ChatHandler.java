@@ -68,6 +68,14 @@ public class ChatHandler extends TextWebSocketHandler {
                 session.sendMessage(new TextMessage(jsonMessage));
             }
 
+            // 읽음 상태 업데이트 로직 추가
+            for (ChatMessageDTO message : chatMessages) {
+                if (message.getMsgIsRead() == false) {
+                    message.setMsgIsRead(true); // 읽음으로 변경
+                    chatMessageService.updateMessageReadStatus(message.getMsgNo(), true); // DB 업데이트
+                }
+            }
+
         } catch (Exception e) {
             log.error("afterConnectionEstablished 예외 발생", e);
         }
@@ -76,7 +84,6 @@ public class ChatHandler extends TextWebSocketHandler {
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         String payload = message.getPayload();
-
         JsonNode jsonNode = objectMapper.readTree(payload);
 
         Integer roomNo = jsonNode.get("roomNo").asInt();
@@ -101,6 +108,7 @@ public class ChatHandler extends TextWebSocketHandler {
             .senderNo(senderNo)
             .userNick(savedMessage.getSender().getUserNick())
             .formattedMsgDate(savedMessage.getMsgDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+            .msgIsRead(false) // 처음에는 읽지 않은 상태로 전송
             .messageType("NEW")
             .build();
 
@@ -109,22 +117,38 @@ public class ChatHandler extends TextWebSocketHandler {
         // 같은 roomNo를 가진 모든 세션에게 전송
         List<WebSocketSession> sessions = ChatRoomManager.getSessions(roomNo);
         for (WebSocketSession receiverSession : sessions) {
-            Object receiverRoomAttr = receiverSession.getAttributes().get("roomNo");
-
-            if (receiverRoomAttr != null && receiverSession.isOpen()) {
-                Integer receiverRoomNo = Integer.parseInt(receiverRoomAttr.toString());
-
-                if (receiverRoomNo.equals(roomNo)) {
-                    try {
-                        receiverSession.sendMessage(new TextMessage(responseText));
-                    } catch (IOException e) {
-                        log.warn("메시지 전송 실패 - 세션이 닫혔을 수 있음: {}", e.getMessage());
-                        ChatRoomManager.removeSession(roomNo, receiverSession);
-                    }
+            if (receiverSession.isOpen()) {
+                try {
+                    receiverSession.sendMessage(new TextMessage(responseText));
+                } catch (IOException e) {
+                    log.warn("메시지 전송 실패 - 세션이 닫혔을 수 있음: {}", e.getMessage());
+                    ChatRoomManager.removeSession(roomNo, receiverSession);
                 }
             }
         }
+
+        // 메시지 읽음 상태 업데이트
+        updateReadStatusForOthers(roomNo, savedMessage.getMsgNo(), senderNo);
     }
+
+    // 다른 사용자에게 읽음 상태 업데이트 전송
+    private void updateReadStatusForOthers(Integer roomNo, Integer msgNo, Integer senderNo) throws IOException {
+        List<WebSocketSession> sessions = ChatRoomManager.getSessions(roomNo);
+        for (WebSocketSession session : sessions) {
+            Integer userNo = (Integer) session.getAttributes().get("userNo");
+            if (!userNo.equals(senderNo) && session.isOpen()) {
+                // 읽음 상태 업데이트 메시지 전송
+                ChatMessageDTO readUpdateMessage = ChatMessageDTO.builder()
+                    .msgNo(msgNo)
+                    .msgIsRead(true)
+                    .messageType("READ_UPDATE")
+                    .build();
+                String readUpdateText = objectMapper.writeValueAsString(readUpdateMessage);
+                session.sendMessage(new TextMessage(readUpdateText));
+            }
+        }
+    }
+
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
@@ -134,18 +158,16 @@ public class ChatHandler extends TextWebSocketHandler {
             if (roomAttr == null) return;
 
             Integer roomNo = Integer.parseInt(roomAttr.toString());
-
             ChatRoomManager.removeSession(roomNo, session);
 
-            // 남은 세션에 퇴장 메시지 전송
-            List<WebSocketSession> remainingSessions = ChatRoomManager.getSessions(roomNo);
-            TextMessage leaveMessage = new TextMessage("상대방이 채팅방에서 퇴장하였습니다.");
-            for (WebSocketSession receiverSession : remainingSessions) {
-                if (receiverSession.isOpen()) {
-                    try {
-                        receiverSession.sendMessage(leaveMessage);
-                    } catch (IOException e) {
-                        log.warn("퇴장 메시지 전송 실패: {}", e.getMessage());
+            // 나가기 버튼 클릭 시 퇴장 메시지를 전송
+            boolean userLeft = session.getAttributes().containsKey("userLeft");
+            if (userLeft) {
+                List<WebSocketSession> remainingSessions = ChatRoomManager.getSessions(roomNo);
+                for (WebSocketSession receiverSession : remainingSessions) {
+                    if (receiverSession.isOpen()) {
+                        String leaveMessage = "{\"messageType\":\"LEAVE\",\"content\":\"상대방이 채팅방에서 퇴장하였습니다.\"}";
+                        receiverSession.sendMessage(new TextMessage(leaveMessage));
                     }
                 }
             }
@@ -154,4 +176,5 @@ public class ChatHandler extends TextWebSocketHandler {
             log.error("afterConnectionClosed 예외 발생", e);
         }
     }
+
 }
