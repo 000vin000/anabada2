@@ -33,7 +33,11 @@ function renderQuestions(questions) {
             <td>${question.questionNo}</td>
             <td>${question.questionTitle}</td>
             <td>${question.questionContent}</td>
-            <td>${question.questionStatus}</td>
+			<td>
+			  ${question.answers && question.answers.length > 0
+			    ? question.answers[0].answerContent
+			    : '답변 대기 중'}
+			</td>
             <td>
                 <a href="/question/edit/${question.questionNo}">수정</a>
                 <button data-question-no="${question.questionNo}">삭제</button>
