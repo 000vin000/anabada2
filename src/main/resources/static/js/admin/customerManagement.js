@@ -51,4 +51,36 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+	// 신고 처리 by수연
+	document.querySelectorAll(".submitWarnResult").forEach(button => {
+	    button.addEventListener("click", function () {
+	        const warnNo = button.getAttribute("data-warn-no");  // 여기서 warnNo 받아옴
+	        const days = document.getElementById("warnSuspensionDays").value;
+	        const warnResult = document.querySelector("input[name='warnResult']:checked")?.value;
+
+	        fetch(`/warn/submitWarnResult/${warnNo}`, {
+	            method: "POST",
+	            headers: {
+	                "Authorization": `Bearer ${localStorage.getItem('Token')}`,
+	                "Content-Type": "application/json"
+	            },
+	            body: JSON.stringify({
+	                warnResult: warnResult,
+	                warnSuspensionDays: days
+	            })
+	        })
+	        .then(response => {
+	            if (!response.ok) throw new Error("신고 처리 오류");
+	            return response.json();
+	        })
+	        .then(data => {
+	            alert(data.message);
+	            location.reload();
+	        })
+	        .catch(error => {
+	            console.error("신고 처리 오류 발생: ", error);
+	        });
+	    });
+	});
+
 });
