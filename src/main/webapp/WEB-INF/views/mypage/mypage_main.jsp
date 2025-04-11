@@ -48,7 +48,9 @@
 	</div>
 </div>
 <jsp:include page="../footer.jsp" />
-<jsp:include page="../main/bottom_nav.jsp" />
+<jsp:include page="../sidebar.jsp" />
+<script src="/js/recent/config.js"></script>
+<script src="/js/recent/getRecent_sidebar.js"></script>
 <script type="module" src="/js/user/pin/goToUpdateInfo.js"></script>
 </body>
 </html>
