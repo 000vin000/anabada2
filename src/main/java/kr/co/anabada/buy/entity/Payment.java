@@ -7,6 +7,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,8 +34,6 @@ public class Payment {
 	@OneToOne
 	@JoinColumn(name = "orderNo", nullable = false)
 	private Order order;
-	@Column(nullable = false, columnDefinition = "ENUM('pending','paid','rejected') DEFAULT 'pending'")
-	private String payStatus;
 	private LocalDateTime payCompletedDate;
 	private LocalDateTime payCancelledDate;
 	@Builder.Default
@@ -42,5 +42,14 @@ public class Payment {
 	@Column(nullable = false)
 	@UpdateTimestamp
 	private LocalDateTime payDate;
+	
+	@Builder.Default
+ 	@Enumerated(EnumType.STRING)
+ 	@Column(nullable = false)
+ 	private PayStatus payStatus = PayStatus.PENDING; //java enum 으로 수정했습니다
+ 	
+ 	public enum PayStatus {
+ 		PENDING, PAID, REJECTED, CANCELLED;
+ 	}
 }
 // jhu

@@ -1,151 +1,165 @@
 package kr.co.anabada.user.scheduler;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.YearMonth;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityNotFoundException;
+import kr.co.anabada.buy.entity.Payment.PayStatus;
 import kr.co.anabada.buy.repository.PaymentRepository;
-import kr.co.anabada.item.repository.ItemRepository;
-import kr.co.anabada.user.entity.Buyer;
-import kr.co.anabada.user.entity.Seller;
-import kr.co.anabada.user.entity.Seller.SellerGrade;
-import kr.co.anabada.user.repository.BuyerRepository;
-import kr.co.anabada.user.repository.SellerRepository;
+import kr.co.anabada.buy.repository.ReviewRepository;
+import kr.co.anabada.item.entity.Bid.BidStatus;
+import kr.co.anabada.item.entity.Item.ItemStatus;
+import kr.co.anabada.item.repository.BidRepository;
+import kr.co.anabada.item.repository.ItemDetailRepository;
+import kr.co.anabada.user.service.UserProfileSchedulerService;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class UserProfileScheduler {
 	@Autowired
-    private SellerRepository sellerRepository;
-    @Autowired
-    private ItemRepository itemRepository;
-    @Autowired
-    private PaymentRepository paymentRepository;
-//    @Autowired
-//    private ReviewRepository reviewRepository;
+	private ItemDetailRepository itemDetailRepository;
 	@Autowired
-	private BuyerRepository buyerRepository;
-    
+	private UserProfileSchedulerService newUserProfileSchedulerService;
+	@Autowired
+	private PaymentRepository paymentRepository;
+	@Autowired
+	private ReviewRepository reviewRepository;
+	@Autowired
+	private BidRepository bidRepository;
+
 	@Scheduled(cron = "0 0 2 * * *")
-    @Transactional
-    public void updateSellerStatistics() {
-        List<Integer> sellerNos = sellerRepository.findAllSellerNos();
-        
-        for (Integer sellerNo : sellerNos) {
-        	try {
-                processSellerStatistics(sellerNo);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-	
-	private void processSellerStatistics(Integer sellerNo) {
-		Seller seller = sellerRepository.findById(sellerNo)
-		        .orElseThrow(() -> new EntityNotFoundException("판매자 프로필이 존재하지 않습니다: " + sellerNo));
+	public void updateDailyStatistics() {
+		log.info("Starting daily statistics update job...");
 
-    	int itemCount = calculateItemCount(sellerNo);
-    	int transCount = calculateTransCount(sellerNo);
-        BigDecimal totalSales = calculateTotalSales(sellerNo);
-        double averageRating = calculateAverageRating(sellerNo);
-        //TODO Seller 계산 필드 추가 재고
+		// Seller--------------------------
+		Map<Integer, Integer> activeItemCounts = listToMap(
+				itemDetailRepository.countItemsPerSellerByItemStatus(ItemStatus.ACTIVE));
+		Map<Integer, Integer> completedSellItemCounts = listToMap(
+				paymentRepository.countPaysPerSellerByPayStatus(PayStatus.PAID));
+		Map<Integer, Double> avgRatings = listToAvgMap(
+				reviewRepository.averageReviewRatingPerSeller());
+		Map<Integer, BigDecimal> totalSales = listToBigDecimalMap(
+				paymentRepository.sumSalesPerSellerByPayStatus(PayStatus.PAID));
 		
-        seller.setSellerItemCnt(itemCount);
-        seller.setSellerTransCnt(transCount);
-        seller.setSellerTotalSales(totalSales);
-        seller.setSellerAvgRating(averageRating);
-        
-        sellerRepository.save(seller);
-	}
-	
-    @Scheduled(cron = "0 30 2 * * *")
-    @Transactional
-    public void updateBuyerStatistics() {
-        List<Integer> buyerNos = buyerRepository.findAllBuyerNos();
-        
-        for (Integer buyerNo : buyerNos) {
-        	try {
-                processBuyerStatistics(buyerNo);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    private void processBuyerStatistics(Integer buyerNo) {
-		Buyer buyer = buyerRepository.findById(buyerNo)
-		        .orElseThrow(() -> new EntityNotFoundException("구매자 프로필이 존재하지 않습니다: " + buyerNo));
-    	
-    	int bidCount = calculateBidCount(buyer);
-        int successBidCount = calculateSuccessBidCount(buyer);
-        //TODO Buyer 계산 필드 추가 재고
-        
-        buyer.setBuyerBidCnt(bidCount);
-        buyer.setBuyerSuccessBidCnt(successBidCount);
-        
-        buyerRepository.save(buyer);
-	}
-    
+		log.info(activeItemCounts.toString());
+		log.info(completedSellItemCounts.toString());
+		log.info(avgRatings.toString());
+		log.info(totalSales.toString());
 
-	@Scheduled(cron = "0 0 0 1 * *")
-	@Transactional
-	public void updateSellerGrades() {
-	    List<Integer> sellerNos = sellerRepository.findAllSellerNos();
-	    
-        for (Integer sellerNo : sellerNos) {
-        	try {
-        		processSellerGrade(sellerNo);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-	}
-	
-	private void processSellerGrade(Integer sellerNo) {
-		if (!sellerRepository.existsById(sellerNo)) {
-			throw new EntityNotFoundException("판매자 프로필이 존재하지 않습니다: " + sellerNo);
+		Set<Integer> allSellerNos = new HashSet<>();
+		allSellerNos.addAll(activeItemCounts.keySet());
+		allSellerNos.addAll(completedSellItemCounts.keySet());
+		allSellerNos.addAll(avgRatings.keySet());
+		allSellerNos.addAll(totalSales.keySet());
+
+		log.info("Found {} sellers to update.", allSellerNos.size());
+
+		int successSellerCount = 0;
+		int failSellerCount = 0;
+		for (Integer sellerNo : allSellerNos) {
+			try {
+				newUserProfileSchedulerService.updateSingleSellerStatistics(
+						sellerNo, activeItemCounts, completedSellItemCounts, avgRatings, totalSales);
+				successSellerCount++;
+			} catch (Exception e) {
+				log.error("Failed to update statistics for sellerNo {}: {}", sellerNo, e.getMessage(), e);
+			}
+			log.info("Daily statistics update job finished. Success: {}, Fail: {}", successSellerCount, failSellerCount);
 		}
+
+		// Buyer---------------------------
+		Map<Integer, Integer> bidCounts = listToMap(
+				bidRepository.countAllBidsPerBuyer());
+		Map<Integer, Integer> activeBidItemCounts = listToMap(
+				itemDetailRepository.countItemsPerBuyerByItemStatusAndOptionalBidStatus(ItemStatus.ACTIVE, BidStatus.ACTIVE));
+		Map<Integer, Integer> bidItemCounts = listToMap(
+				itemDetailRepository.countItemsPerBuyerByItemStatusAndOptionalBidStatus(ItemStatus.ACTIVE, null));
+		Map<Integer, Integer> bidSuccessCounts = listToMap(
+				bidRepository.countBidsPerBuyerByBidStatus(BidStatus.WINNING));
+		Map<Integer, Integer> paySuccessCounts = listToMap(
+				paymentRepository.countPaysPerBuyerByPayStatus(PayStatus.PAID));
 		
-//	    LocalDateTime startDate = YearMonth.now().minusMonths(1).atDay(1).atStartOfDay();
-//	    LocalDateTime endDate = YearMonth.now().atDay(1).atStartOfDay();
-	    LocalDateTime startDate = YearMonth.now().atDay(1).atStartOfDay(); //테스트 or 하루마다 스케줄링할 경우
-	    LocalDateTime endDate = LocalDateTime.now();
-		int itemCount = paymentRepository.countBySellerNoAndDateRange(sellerNo, startDate, endDate);
-		
-		SellerGrade newSellerGrade = SellerGrade.fromSalesCount(itemCount);
-        sellerRepository.updateSellerGrade(sellerNo, newSellerGrade);
-	}
-	
-	private int calculateBidCount(Buyer buyer) {
-		//TODO processBuyerStatistics()
-		return 0;
-	}
-	
-	private int calculateSuccessBidCount(Buyer buyer) {
-		//TODO processBuyerStatistics()
-		return 0;
+		log.info(bidCounts.toString());
+		log.info(activeBidItemCounts.toString());
+		log.info(bidItemCounts.toString());
+		log.info(bidSuccessCounts.toString());
+		log.info(paySuccessCounts.toString());
+
+		Set<Integer> allBuyerNos = new HashSet<>();
+		allBuyerNos.addAll(bidCounts.keySet());
+		allBuyerNos.addAll(activeBidItemCounts.keySet());
+		allBuyerNos.addAll(bidSuccessCounts.keySet());
+		allBuyerNos.addAll(paySuccessCounts.keySet());
+
+		int successBuyerCount = 0;
+		int failBuyerCount = 0;
+		for (Integer buyerNo : allBuyerNos) {
+		    try {
+		        int bidCount = bidCounts.getOrDefault(buyerNo, 0);
+		        int activeBidItemCount = activeBidItemCounts.getOrDefault(buyerNo, 0);
+		        int bidItemCount = bidItemCounts.getOrDefault(buyerNo, 0);
+		        int bidSuccessCount = bidSuccessCounts.getOrDefault(buyerNo, 0);
+		        int paySuccessCount = paySuccessCounts.getOrDefault(buyerNo, 0);
+
+		        double bidSuccessRate = calculateRate(bidSuccessCount, bidCount);
+		        double paySuccessRate = calculateRate(paySuccessCount, bidSuccessCount);
+
+		        newUserProfileSchedulerService.updateSingleBuyerStatistics(
+		                buyerNo,
+		                bidCount,
+		                activeBidItemCount,
+		                bidItemCount,
+		                bidSuccessCount,
+		                paySuccessCount,
+		                bidSuccessRate,
+		                paySuccessRate
+		        );
+		        successBuyerCount++;
+		    } catch (Exception e) {
+		        failBuyerCount++;
+		        log.error("Failed to update statistics for buyerNo {}: {}", buyerNo, e.getMessage(), e);
+		    }
+		}
+		log.info("Buyer daily statistics update finished. Success: {}, Fail: {}", successBuyerCount, failBuyerCount);
 	}
 
-	private int calculateItemCount(Integer sellerNo) {
-		return itemRepository.countBySeller_SellerNo(sellerNo);
+	private double calculateRate(int numerator, int denominator) {
+		if (denominator == 0) {
+			return 0.0;
+		}
+		return ((double) numerator / denominator) * 100.0;
 	}
 
-	private int calculateTransCount(Integer sellerNo) {
-		return paymentRepository.countBySellerNo(sellerNo);
-    }
-	
-	private BigDecimal calculateTotalSales(Integer sellerNo) {
-		return paymentRepository.sumSalesBySellerNo(sellerNo);
-    }
-	
-	private double calculateAverageRating(Integer sellerNo) {
-		//TODO 리뷰쪽 구조 확정되면 작성
-		return 0;
-    }
+	private Map<Integer, Integer> listToMap(List<Object[]> results) {
+		return results.stream().collect(Collectors.toMap(
+				row -> ((Number) row[0]).intValue(), // ID
+				row -> ((Number) row[1]).intValue() // Count
+		));
+	}
+
+	private Map<Integer, BigDecimal> listToBigDecimalMap(List<Object[]> results) {
+		return results.stream()
+				.filter(row -> row[1] != null)
+				.collect(Collectors.toMap(
+						row -> ((Number) row[0]).intValue(), // ID
+						row -> new BigDecimal(row[1].toString()) // Sum
+				));
+	}
+
+	private Map<Integer, Double> listToAvgMap(List<Object[]> results) {
+		return results.stream()
+				.filter(row -> row[1] != null)
+				.collect(Collectors.toMap(
+						row -> ((Number) row[0]).intValue(), // ID
+						row -> ((Number) row[1]).doubleValue() // Avg
+				));
+	}
 }
