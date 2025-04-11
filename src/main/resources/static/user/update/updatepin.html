@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>2차 비밀번호 변경</title>
+  <script type="module" src="/js/user/update/updatepin.js"></script>
+</head>
+<body>
+  <h2>2차 비밀번호 변경</h2>
+
+  <form id="updatePinForm">
+    <div>
+      <label for="newPin">새 2차 비밀번호</label>
+      <input type="password" id="newPin" name="newPin" required />
+    </div>
+    <div>
+      <label for="confirmPin">새 2차 비밀번호 확인</label>
+      <input type="password" id="confirmPin" name="confirmPin" required />
+    </div>
+    <button type="submit">변경하기</button>
+  </form>
+
+  <p id="resultMessage" style="color: red;"></p>
+</body>
+</html>
