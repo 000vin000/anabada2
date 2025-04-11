@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .requestMatchers("/", "/login", "/join").permitAll()
                 .requestMatchers("/auth/**", "/userjoin/**", "/userlogin/**").permitAll()
                 .requestMatchers("/item/detail/**").permitAll()
-                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/user/mypage", "/user/update").authenticated()
                 .requestMatchers("/auth/join/social/**").hasAnyAuthority("SOCIAL", "ROLE_USER", "INDIVIDUAL")
                 .requestMatchers("/oauth2/**").permitAll()

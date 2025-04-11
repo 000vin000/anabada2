@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>비밀번호 변경</title>
+</head>
+<body>
+  <h2>비밀번호 변경</h2>
+
+  <form id="updatePasswordForm">
+    <label for="currentPassword">현재 비밀번호</label><br>
+    <input type="password" id="currentPassword" required><br><br>
+
+    <label for="newPassword">새 비밀번호</label><br>
+    <input type="password" id="newPassword" required><br>
+    <div id="passwordWarning" style="color: red;"></div><br>
+
+    <label for="newPassword2">새 비밀번호 확인</label><br>
+    <input type="password" id="newPassword2" required><br>
+    <div id="passwordMatchWarning" style="color: red;"></div><br>
+
+    <button type="submit">비밀번호 변경</button>
+  </form>
+
+  <div id="resultMessage" style="margin-top: 20px; color: red;"></div>
+
+  <script type="module" src="/js/user/update/updatepw.js"></script>
+</body>
+</html>

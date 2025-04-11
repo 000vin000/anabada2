@@ -10,7 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
 	<link rel="stylesheet" type="text/css" href="/css/styleTemp.css">
 	<link rel="stylesheet" type="text/css" href="/css/styleCoinView.css">
-	<script type="module" src="/js/user/fetchWithAuth.js"></script> 
+	<script type="module" src="/js/user/common/fetchWithAuth.js"></script> 
 </head>
 <body>
 <div class="body-container">
@@ -18,7 +18,9 @@
 <section class="user-info">
     <h3>사용자 정보</h3>
     <a id="updateInfoBtn" href="#">회원정보 수정</a>
+    <a id="updatePwBtn" href="#">비밀번호 변경</a> 
     <a id="withdrawBtn" href="#">회원 탈퇴</a>
+    
     <div id="user-info"></div>
 
     <!-- 회원탈퇴 버튼 추가 -->
@@ -50,5 +52,7 @@
 <jsp:include page="../footer.jsp" />
 <jsp:include page="../main/bottom_nav.jsp" />
 <script type="module" src="/js/user/pin/goToUpdateInfo.js"></script>
+<script src="/js/user/update/hidePasswordMenuIfSocial.js"></script>
+
 </body>
 </html>

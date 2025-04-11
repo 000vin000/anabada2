@@ -39,6 +39,13 @@ document.addEventListener("DOMContentLoaded", () => {
       goToUpdateInfo("/user/withdraw/withdraw.html");
     });
   }
+  const pwUpdateBtn = document.getElementById("updatePwBtn");
+  if (pwUpdateBtn) {
+    pwUpdateBtn.addEventListener("click", () => {
+      goToUpdateInfo("/user/update/updatepw.html"); 
+    });
+  }
+
 });
 
 
