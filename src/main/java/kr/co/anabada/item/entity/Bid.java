@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import kr.co.anabada.user.entity.Buyer;
 import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +38,9 @@ public class Bid {
 	@ManyToOne
 	@JoinColumn(name = "userNo", nullable = false)
 	private User user;
+	@ManyToOne
+	@JoinColumn(name = "buyerNo", nullable = false)
+	private Buyer buyer;
 	@Column(nullable = false)
 	private BigDecimal bidPrice;
 	@Column(nullable = false)
