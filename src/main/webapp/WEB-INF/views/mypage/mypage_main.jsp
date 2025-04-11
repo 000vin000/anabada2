@@ -18,7 +18,9 @@
 <section class="user-info">
     <h3>사용자 정보</h3>
     <a id="updateInfoBtn" href="#">회원정보 수정</a>
+    <a id="updatePwBtn" href="#">비밀번호 변경</a> 
     <a id="withdrawBtn" href="#">회원 탈퇴</a>
+    
     <div id="user-info"></div>
 
     <!-- 회원탈퇴 버튼 추가 -->
@@ -43,5 +45,7 @@
 <script src="/js/recent/config.js"></script>
 <script src="/js/recent/getRecent_sidebar.js"></script>
 <script type="module" src="/js/user/pin/goToUpdateInfo.js"></script>
+<script src="/js/user/update/hidePasswordMenuIfSocial.js"></script>
+
 </body>
 </html>
