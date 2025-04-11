@@ -35,6 +35,9 @@
 				    문의하기
 				</button>
 				
+				<!-- 신고하기 by수연-->
+				<button id="openReportWindow" onclick="openReportWindow()">신고하기</button>
+				
 				<!-- 채팅 목록 모달창 -->
 				<div id="chatRoomModal" class="modal-overlay" style="display: none;">
 				  <div class="modal-content">
@@ -164,6 +167,31 @@
 	<script type="module">
 		import { openWindow } from '/js/item/itemDetailUtil.js';
 		window.openWindow = openWindow;
+	</script>
+	
+	<!-- 신고하기 창 열림 by수연 -->
+	<script> 
+	function openReportWindow() {
+		const currentUrl = window.location.href;
+
+		const reportWindow = window.open("/report", "ReportWindow", "width=700,height=800");
+
+		const sendData = () => {
+			reportWindow.postMessage({
+				warnWhere: currentUrl,
+				warnDefendantUser: "${item.sellerNo}",
+				warnItem: "${item.itemNo}"
+			}, window.location.origin);
+		};
+
+		window.addEventListener("message", function handleAck(event) {
+			if (event.origin !== window.location.origin) return;
+			if (event.data === "READY_FOR_DATA") {
+				sendData();
+				window.removeEventListener("message", handleAck); // 한 번만 전송
+			}
+		});
+	}
 	</script>
 </body>
 </html>

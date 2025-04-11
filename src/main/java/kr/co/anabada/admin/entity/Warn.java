@@ -73,7 +73,7 @@ public class Warn {
     private LocalDateTime warnSuspensionDate; 
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "adminNo", nullable = false)
+    @JoinColumn(name = "adminNo")
     private Admin adminNo;
     
     public void approve() { // 확인
