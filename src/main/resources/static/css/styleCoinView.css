@@ -1,7 +1,7 @@
 /* --------------------- 유저 정보 --------------------- */
 #user-info {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* 1줄에 4개 */
+  grid-template-columns: 1fr 1fr; /* 1줄에 2개 */
   border: 3px solid #dbdbdb;
   border-radius: 10px;
   padding: 10px;
@@ -29,6 +29,35 @@
 .userInfoValue {
   color: #111827; 
   flex: 1; 
+}
+
+.user-header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin: 0 10px;
+}
+
+#user-name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#updateInfoBtn {
+  padding: 6px 12px;
+  background-color: #21afbf;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none; /* 링크 밑줄 제거 */
+  transition: background-color 0.2s;
+}
+
+#updateInfoBtn:hover {
+  background-color: #1a9ea9;
 }
 
 /* --------------------- 보유 잔액/코인 --------------------- */
@@ -122,6 +151,16 @@
 
 .openList:hover {
 	text-decoration: underline; 
+}
+
+.goToMyWarnPage {
+	text-decoration: none;
+	color: black;
+}
+
+.goToMyWarnPage:hover {
+	text-decoration: underline;
+	color: #828282;
 }
 
 /* --------------------- 모달 --------------------- */
