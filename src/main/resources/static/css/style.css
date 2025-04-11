@@ -395,21 +395,36 @@ nav ul li a:hover {
 /* 사이드바 스타일 */
 /* 사이드바 컨테이너 */
 .sidebar-container {
-   display: flex;
-    flex-direction: column;
-    align-items: center; /* 내부 요소 전체를 중앙 정렬 */
-    position: fixed;
-    right: 75px;
-    top: 100px;
+	display: flex;
+	flex-direction: column;
+	align-items: center; /* 내부 요소 전체를 중앙 정렬 */
+	position: fixed;
+	right: 100px;
+	top: 200px;
+	width: 200px;
+	padding: 15px;
+	border-radius: 10px;
+	z-index: 9999; /* 다른 요소들보다 위에 배치 */
+}
+
+/*
+.sidebar {
+    position: fixed; 
+    right: 10px; 
+    top: 200px; 
     width: 200px;
+    background: #ffffff; 
     padding: 15px;
     border-radius: 10px;
-    z-index: 9999; /* 다른 요소들보다 위에 배치 */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
 }
+
+*/
 
 /* 최근 본 상품 */
 .recently-viewed-box {
-   width: 95px;
+	width: 95px;
     padding: 15px;
     background: #fff;
     border-radius: 12px;
@@ -421,18 +436,6 @@ nav ul li a:hover {
     text-align: center;
     font-size: 16px;
     margin-bottom: 10px;
-}
-
-.sidebar {
-    position: fixed; /* 화면에 고정 */
-    right: 10px; /* 오른쪽 끝에서 10px 떨어짐 */
-    top: 100px; /* 화면 상단에서 100px */
-    width: 200px;
-    background: #ffffff; /* 배경색 */
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
-    z-index: 9999; /* 다른 요소들보다 위에 배치 */
 }
 
 .recently-viewed-box div {
