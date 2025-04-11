@@ -57,7 +57,10 @@ public class JwtUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + expiration));
 
         if (userNo != null) builder.claim("userNo", userNo);
-        if (userType != null) builder.claim("roles", Collections.singletonList("ROLE_" + userType));
+        if (userType != null) {
+            String role = userType.startsWith("ROLE_") ? userType : "ROLE_" + userType;
+            builder.claim("roles", Collections.singletonList(role));
+        }
         if (nickname != null) builder.claim("nickname", nickname);
 
         return builder
