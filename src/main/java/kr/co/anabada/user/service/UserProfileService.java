@@ -56,10 +56,10 @@ public class UserProfileService {
 				.userId(user.getUserId())
 				.userNick(user.getUserNick())
 				.userCreatedDate(user.getUserCreatedDate())
-				.sellerItemCnt(seller.getSellerItemCnt())
+				.sellerItemCnt(seller.getSellerActiveItemCnt())
 				.sellerAvgRating(seller.getSellerAvgRating())
 				.sellerGrade(seller.getSellerGrade().getKorean())
-				.buyerBidCnt(buyer.getBuyerBidCnt())
+				.buyerBidCnt(buyer.getBuyerBidItemCnt())
 				.build();
 
 		return dto;
@@ -90,9 +90,11 @@ public class UserProfileService {
 				? getItemsByRoleAndStatus(role, targetUserNo, status, pageable)
 				: getItemsByRole(role, targetUserNo, pageable);
 
-		return isOwnProfile
-				? items.map(item -> convertToAuthenticatedItemSummaryDTO(item, targetUserNo))
-				: items.map(item -> convertToItemSummaryDTO(item));
+		if (isOwnProfile) {
+			Integer buyerNo = buyerService.getBuyerNo(targetUserNo);
+			items.map(item -> convertToAuthenticatedItemSummaryDTO(item, buyerNo));
+		}
+		return items.map(item -> convertToItemSummaryDTO(item));
 	}
 
 	private Page<Item> getItemsByRole(UserRole role, Integer userNo, Pageable pageable) {
@@ -144,11 +146,11 @@ public class UserProfileService {
 		return dto;
 	}
 
-	private AuthenticatedItemSummaryDTO convertToAuthenticatedItemSummaryDTO(Item item, Integer targetUserNo) {
+	private AuthenticatedItemSummaryDTO convertToAuthenticatedItemSummaryDTO(Item item, Integer buyerNo) {
 		AuthenticatedItemSummaryDTO dto = new AuthenticatedItemSummaryDTO();
 		BeanUtils.copyProperties(convertToItemSummaryDTO(item), dto);
-		dto.setReviewed(reviewRepository.existsByBidItemItemNoAndBidUserUserNoAndBidBidStatus(
-				item.getItemNo(), targetUserNo, BidStatus.WINNING));
+		dto.setReviewed(reviewRepository.existsByBidItemItemNoAndBidBuyerBuyerNoAndBidBidStatus(
+				item.getItemNo(), buyerNo, BidStatus.WINNING));
 
 		return dto;
 	}

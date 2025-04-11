@@ -16,4 +16,9 @@ public class BuyerService {
 		return buyerRepository.findByUser_UserNo(userNo)
 	            .orElseThrow(() -> new EntityNotFoundException("구매자 프로필이 존재하지 않습니다."));
 	}
+	
+	public Integer getBuyerNo(Integer userNo) {
+		return buyerRepository.findBuyerNoByUserUserNo(userNo)
+				.orElseThrow(() -> new EntityNotFoundException("구매자 프로필이 존재하지 않습니다."));
+	}
 }

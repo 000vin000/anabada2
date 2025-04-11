@@ -36,9 +36,6 @@ public class Bid {
 	@JoinColumn(name = "itemNo", nullable = false)
 	private Item item;
 	@ManyToOne
-	@JoinColumn(name = "userNo", nullable = false)
-	private User user;
-	@ManyToOne
 	@JoinColumn(name = "buyerNo", nullable = false)
 	private Buyer buyer;
 	@Column(nullable = false)

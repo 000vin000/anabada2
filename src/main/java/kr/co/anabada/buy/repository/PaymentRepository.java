@@ -10,25 +10,26 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import kr.co.anabada.buy.entity.Payment;
+import kr.co.anabada.buy.entity.Payment.PayStatus;
 
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 
     // 하루 결제 금액 합산 (날짜별)
     @Query("SELECT p.payDate, SUM(p.payPrice) " +
-           "FROM Payment p WHERE p.payStatus = 'paid' AND p.payCompletedDate BETWEEN :startDate AND :endDate " +
+           "FROM Payment p WHERE p.payStatus = 'PAID' AND p.payCompletedDate BETWEEN :startDate AND :endDate " +
            "GROUP BY p.payDate ORDER BY p.payDate")
     List<Object[]> sumTotalSalesByDateRange(@Param("startDate") LocalDateTime startDate, 
                                              @Param("endDate") LocalDateTime endDate);
 
     // 일주일 결제 금액 합산
-    @Query("SELECT SUM(p.payPrice) FROM Payment p WHERE p.payStatus = 'paid' AND p.payCompletedDate BETWEEN :startDate AND :endDate")
+    @Query("SELECT SUM(p.payPrice) FROM Payment p WHERE p.payStatus = 'PAID' AND p.payCompletedDate BETWEEN :startDate AND :endDate")
     Long sumTotalSalesByWeek(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
     // 월매출 데이터 구하기 (월별)
     @Query("SELECT EXTRACT(MONTH FROM p.payCompletedDate) AS month, SUM(p.payPrice) AS totalSales " +
     	       "FROM Payment p " +
-    	       "WHERE p.payStatus = 'paid' AND p.payCompletedDate BETWEEN :startDate AND :endDate " +
+    	       "WHERE p.payStatus = 'PAID' AND p.payCompletedDate BETWEEN :startDate AND :endDate " +
     	       "GROUP BY EXTRACT(MONTH FROM p.payCompletedDate) " +
     	       "ORDER BY month")
     	List<Object[]> sumTotalSalesByMonth(@Param("startDate") LocalDateTime startDate, 
@@ -39,25 +40,46 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
     List<Payment> findPaymentsByDateRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
     
     @Query("SELECT p.payNo, p.payPrice, p.payCompletedDate " +
-    	       "FROM Payment p WHERE p.payStatus = 'paid' AND p.payCompletedDate BETWEEN :startDate AND :endDate " +
+    	       "FROM Payment p WHERE p.payStatus = 'PAID' AND p.payCompletedDate BETWEEN :startDate AND :endDate " +
     	       "ORDER BY p.payCompletedDate")
     	List<Object[]> sumTotalSalesByDateRangeWithPaymentId(@Param("startDate") LocalDateTime startDate, 
     	                                                     @Param("endDate") LocalDateTime endDate);
     
     @Query("SELECT COUNT(*) FROM Payment p JOIN p.order o "
-    	 + "WHERE o.seller.sellerNo = :sellerNo AND p.payStatus = 'paid'")
+    	 + "WHERE o.seller.sellerNo = :sellerNo AND p.payStatus = 'PAID'")
     int countBySellerNo(@Param("sellerNo") Integer sellerNo); //userProfile
 
     @Query("SELECT SUM(p.payPrice) FROM Payment p JOIN p.order o "
-    	 + "WHERE o.seller.sellerNo = :sellerNo AND p.payStatus = 'paid'")
+    	 + "WHERE o.seller.sellerNo = :sellerNo AND p.payStatus = 'PAID'")
     BigDecimal sumSalesBySellerNo(@Param("sellerNo") Integer sellerNo); //userProfile
 
 	@Query("SELECT COUNT(*) FROM Payment p JOIN p.order o "
-		 + "WHERE o.seller.sellerNo = :sellerNo AND p.payStatus = 'paid' "
+		 + "WHERE o.seller.sellerNo = :sellerNo AND p.payStatus = 'PAID' "
 		 + "AND p.payCompletedDate BETWEEN :startDate AND :endDate")
 	int countBySellerNoAndDateRange(
 			@Param("sellerNo") Integer sellerNo, 
 			@Param("startDate") LocalDateTime startDate, 
 			@Param("endDate") LocalDateTime endDate
     ); //userProfile
+
+	// UserProfileScheduler : totalSales (from updateDailyStatistics)
+	@Query("SELECT p.order.item.seller.sellerNo, SUM(p.payPrice) "
+			+ "FROM Payment p "
+			+ "WHERE p.payStatus = :status "
+			+ "GROUP BY p.order.item.seller.sellerNo")
+	List<Object[]> sumSalesPerSellerByPayStatus(@Param("status") PayStatus status);
+
+	// UserProfileScheduler : completedSellItemCounts (from updateDailyStatistics)
+	@Query("SELECT p.order.item.seller.sellerNo, COUNT(p.payNo) "
+			+ "FROM Payment p "
+			+ "WHERE p.payStatus = :status "
+			+ "GROUP BY p.order.item.seller.sellerNo")
+	List<Object[]> countPaysPerSellerByPayStatus(@Param("status") PayStatus status);
+
+	// UserProfileScheduler : completedPayCounts (from updateDailyStatistics)
+	@Query("SELECT p.order.buyer.buyerNo, COUNT(p.payNo) "
+			+ "FROM Payment p "
+			+ "WHERE p.payStatus = :status "
+			+ "GROUP BY p.order.buyer.buyerNo")
+	List<Object[]> countPaysPerBuyerByPayStatus(@Param("status") PayStatus status);
 }
