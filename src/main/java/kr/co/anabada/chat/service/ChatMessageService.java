@@ -78,4 +78,24 @@ public class ChatMessageService {
                 .messageType("HISTORY")
                 .build();
     }
+    
+    // 입장 시 메세지 읽음 상태
+    public void updateMessageReadStatus(Integer msgNo, boolean isRead) {
+        Chat_Message message = chatMessageRepository.findById(msgNo)
+            .orElseThrow(() -> new RuntimeException("메시지 없음"));
+        message.setMsgIsRead(isRead);
+        chatMessageRepository.save(message);
+    }
+    
+    // 퇴장 시 메세지 읽음 상태
+    public void updateMessageReadStatusByUserNo(Integer userNo) {
+        List<Chat_Message> messages = chatMessageRepository.findBySender_UserNo(userNo);
+        messages.forEach(message -> {
+            message.setMsgIsRead(true);
+            chatMessageRepository.save(message);
+        });
+    }
+    
+    
+
 }

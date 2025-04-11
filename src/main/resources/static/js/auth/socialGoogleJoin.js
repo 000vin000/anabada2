@@ -41,19 +41,23 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-	const userAddress = `${baseAddress}::${detailAddress}`;
-	const data = {
-	  userEmail,
-	  userName,
-	  userNick,
-	  userPhone,
-	  userAddress,
-	  userType: "INDIVIDUAL"
-	};
+
+    const data = {
+      userEmail,
+      userName,
+      userNick,
+      userPhone,
+      baseAddress,       
+      detailAddress,     
+      userType: "INDIVIDUAL"
+    };
 
     try {
       const res = await fetchWithAuth("/user/social/join", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify(data)
       });
 

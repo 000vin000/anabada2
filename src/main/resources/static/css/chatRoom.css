@@ -148,3 +148,19 @@
     cursor: pointer;
 }
 
+/* 메세지 읽음 여부 */
+.message {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center; /* 아이콘과 메시지를 세로로 정렬 */
+}
+
+.read-status {
+    margin-right: 10px; /* 메시지와의 간격 조정 */
+    display: inline-flex; /* 아이콘 정렬 */
+    align-items: center; /* 중앙 정렬 */
+}
+
+
+
+
