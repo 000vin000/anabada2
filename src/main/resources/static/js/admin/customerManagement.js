@@ -83,4 +83,32 @@ document.addEventListener("DOMContentLoaded", () => {
 	    });
 	});
 
+	// 신고 삭제 by수연
+	document.querySelectorAll(".deleteWarn").forEach(button => {
+		button.addEventListener("click", function () {
+			const warnNo = button.getAttribute("data-warn-no");
+			
+			const confirmed = confirm("정말로 해당 신고를 삭제하시겠습니까?");
+			if (!confirmed) return;
+			
+			fetch(`/warn/deleteWarn/${warnNo}`, {
+				method: "DELETE",
+				headers: {
+					"Authorization": `Bearer ${localStorage.getItem('Token')}`,
+					"Content-Type": "application/json"
+				}
+			}).then(response => {
+				if (!response.ok) throw new Error("신고 삭제 오류");
+				return response.json();
+			})
+			.then(data => {
+				alert(data.message);
+				location.reload();
+			})
+			.catch(error => {
+				console.error("신고 삭제 오류 발생: " + error);
+			})
+		});
+	});
+	
 });

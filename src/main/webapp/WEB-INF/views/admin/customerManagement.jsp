@@ -77,7 +77,7 @@
 							</td>
 							<th>
 								<button onclick="openWarnSetResultModal('${warn.warnNo}')">승인</button>
-								<button>거부</button>
+								<button class="deleteWarn" data-warn-no="${warn.warnNo}">삭제</button>
 							</th>
                         </tr>
                     </c:forEach>
@@ -268,6 +268,19 @@
         } else {
             suspensionDaysInput.style.display = "none";
         }
+    }
+    
+    function openDeleteWarn(warnNo) {
+    	const confirmed = confirm("정말 삭제하시겠습니까?");
+    	if (confirmed) {
+			fetch(`/warn/deleteWarn/${warnNo}`, {
+				
+			});
+    	    console.log("신고 처리 실행!");
+    	} else {
+    	    // 취소 버튼을 눌렀을 때 실행할 코드
+    	    console.log("신고 취소됨");
+    	}
     }
 </script>
 </html>
