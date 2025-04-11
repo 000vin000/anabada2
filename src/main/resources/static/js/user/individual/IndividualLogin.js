@@ -34,6 +34,8 @@ function loginUser(event) {
         if (data.accessToken) {
             localStorage.setItem("Token", data.accessToken);
             localStorage.setItem("refreshToken", data.refreshToken);
+			// 로그인 성공시 한시간짜리 토큰을 쿠키에 발행 - jhu
+			document.cookie = `Token = ${data.accessToken}; path=/; max-age=3600`;
             console.log("토큰 저장 완료");
 
             // 관리자 권한 확인 후 페이지 이동
