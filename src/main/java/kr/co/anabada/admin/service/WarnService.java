@@ -2,6 +2,7 @@ package kr.co.anabada.admin.service;
 
 import kr.co.anabada.admin.entity.Warn;
 import kr.co.anabada.admin.repository.WarnRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,4 +33,9 @@ public class WarnService {
         }
         return false;
     }
+
+    // 신고 내역 기록
+	public void insertWarn(Warn report) {
+		warnRepository.save(report);
+	}
 }

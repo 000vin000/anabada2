@@ -3,13 +3,11 @@
 <body>
 	<!-- 사용자 정보 -->
 	<div class="user-container">
-		<div id="user-name">
-			<!-- 사용자 닉네임(아이디) -->
+		<div class="user-header">
+			<div id="user-name"><!-- 사용자 닉네임(아이디) --></div>
+			<a id="updateInfoBtn" href="#">회원정보 수정</a>
 		</div>
-		<a id="updateInfoBtn" href="#">회원정보 수정</a>
-		<div id="user-info">
-			<!-- 사용자 정보 : 이름, 전화번호, 가입 일자  -->
-		</div>
+		<div id="user-info"><!-- 사용자 정보 : 이름, 전화번호, 가입 일자  --></div>
 	</div>
 
 	<!-- 보유 현금/코인 -->

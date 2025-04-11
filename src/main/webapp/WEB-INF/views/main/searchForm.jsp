@@ -16,10 +16,11 @@
 	<div class="body-container">
 		<jsp:include page="item.jsp"/>
 	</div>
-	<jsp:include page="../sidebar.jsp" />
-    <jsp:include page="../footer.jsp" /> 
-    <jsp:include page="../main/bottom_nav.jsp" />
 </body>
+<jsp:include page="../sidebar.jsp" />
+<jsp:include page="../footer.jsp" /> 
+<script src="/js/recent/config.js"></script>
+<script src="/js/recent/getRecent_sidebar.js"></script>
 <script src="/js/common.js"></script>
 <script>   	
 	function sortItems() {

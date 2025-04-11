@@ -93,7 +93,7 @@
 						<tr>
 							<td>${status.index + 1}</td>
 							<td>${bid.formatToKoreanDate(bid.bidTime)}</td>
-							<td>${bid.user.userNick}</td>
+							<td>${bid.buyer.user.userNick}</td>
 							<td>${bid.formatBigDecimal(bid.bidPrice)}</td>
 						</tr>
 					</c:forEach>

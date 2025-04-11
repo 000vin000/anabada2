@@ -17,12 +17,14 @@ function loadCurrentCashCoin() {
 		const formattedCash = Number(goodsCash).toLocaleString();
 		const formattedCoin = Number(goodsCoin).toLocaleString();
 		
+		console.log(user);
 		const formattedDate = formatDate(user.userCreatedDate);
 		const userInfoHTML = `
 			<div><span class="userInfoLabel">가입 일자</span><span class="userInfoValue">${formattedDate}</span></div>
 			<div><span class="userInfoLabel">이름</span><span class="userInfoValue">${user.userName}</span></div>
 			<div><span class="userInfoLabel">이메일</span><span class="userInfoValue">${user.userEmail}</span></div>
 			<div><span class="userInfoLabel">전화번호</span><span class="userInfoValue">${user.userPhone}</span></div>
+			<div><span class="userInfoLabel">경고 횟수</span><span class="userInfoValue"><a class="goToMyWarnPage" href="#">${user.userWarnCnt} 회</a></span></div>
 		`;
 		
 		document.getElementById("user-name").innerHTML = `<h2>${user.userNick}(${user.userId})</h2>`;
