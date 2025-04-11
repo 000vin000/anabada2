@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import kr.co.anabada.item.entity.Item;
@@ -34,11 +35,11 @@ public class Warn {
     private Integer warnNo; 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userNo", nullable = false)
+    @JoinColumn(name = "warnPlaintiffUser", nullable = false)
     private User warnPlaintiffUser;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userNo", nullable = false)
+    @JoinColumn(name = "warnDefendantUser", nullable = false)
     private User warnDefendantUser;
     
     @CreationTimestamp
@@ -49,6 +50,7 @@ public class Warn {
     @Column(nullable = false)
     private WarnWhere warnWhere;
     
+    @ManyToOne
     private Item warnItem; // warnWhere = ITEM
     
     @Enumerated(EnumType.STRING)
