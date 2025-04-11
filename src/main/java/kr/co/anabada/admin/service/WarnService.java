@@ -38,10 +38,12 @@ public class WarnService {
     }
 
     // 신고 거부 처리
-    public boolean rejectWarn(Integer warnNo) {
-        Warn warn = warnRepository.findById(warnNo).orElse(null);
+    public boolean rejectWarn(String warnNo, Admin admin) {
+        Warn warn = warnRepository.findById(Integer.valueOf(warnNo)).orElse(null);
         if (warn != null) {
             warn.reject();  // reject 메서드 호출
+            warn.setAdminNo(admin);
+            
             warnRepository.save(warn);  // 상태 업데이트 후 저장
             return true;
         }
