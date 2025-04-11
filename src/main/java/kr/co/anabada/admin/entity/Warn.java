@@ -1,6 +1,7 @@
 package kr.co.anabada.admin.entity;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -34,11 +35,11 @@ public class Warn {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer warnNo; 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "warnPlaintiffUser", nullable = false)
     private User warnPlaintiffUser;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "warnDefendantUser", nullable = false)
     private User warnDefendantUser;
     
@@ -72,7 +73,7 @@ public class Warn {
     
     private LocalDateTime warnSuspensionDate; 
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "adminNo")
     private Admin adminNo;
     
@@ -97,6 +98,11 @@ public class Warn {
         }
     }
 
+    public String formatDateTime(LocalDateTime dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분");
+        return dateTime.format(formatter);
+    }
+    
     public enum WarnWhere { 
     	PROFILE,
     	ITEM,
@@ -104,13 +110,23 @@ public class Warn {
     }
     
     public enum WarnReason {
-    	SPAM,
-    	PORNOGRAPHY,
-    	ILLEGALITY,
-    	HARM,
-    	ABUSE,
-    	PRIVACY,
-    	OTHER
+    	SPAM("스팸홍보/도배글"),
+    	PORNOGRAPHY("음란물"),
+    	ILLEGALITY("불법정보 포함"),
+    	HARM("청소년에게 유해한 내용"),
+    	ABUSE("욕설/비방 표현"),
+    	PRIVACY("개인정보 노출 게시물"),
+    	OTHER("기타");
+    	
+		private final String korean;
+
+    	WarnReason(String korean) {
+			this.korean = korean;
+		}
+
+		public String getKorean() {
+			return korean;
+		}
     }
     
     public enum WarnStatus {
