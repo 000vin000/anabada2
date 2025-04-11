@@ -6,4 +6,6 @@ import java.util.Optional;
 
 public interface IndividualUserLoginRepository extends JpaRepository<User, Integer> {
     Optional<User> findByUserId(String userId); 
+    Optional<User> findByUserNo(Integer userNo);
+
 }

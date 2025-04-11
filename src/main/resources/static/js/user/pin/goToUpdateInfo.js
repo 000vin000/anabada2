@@ -24,7 +24,6 @@ export function goToUpdateInfo(targetUrl) {
     });
 }
 
-// DOM 바인딩 예시 (회원정보 수정 버튼)
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("updateInfoBtn");
   if (btn) {
@@ -39,7 +38,22 @@ document.addEventListener("DOMContentLoaded", () => {
       goToUpdateInfo("/user/withdraw/withdraw.html");
     });
   }
+  const pwUpdateBtn = document.getElementById("updatePwBtn");
+  if (pwUpdateBtn) {
+    pwUpdateBtn.addEventListener("click", () => {
+      goToUpdateInfo("/user/update/updatepw.html"); 
+    });
+  }
+
 });
+
+const pinUpdateBtn = document.getElementById("updatePinBtn");
+if (pinUpdateBtn) {
+  pinUpdateBtn.addEventListener("click", () => {
+    goToUpdateInfo("/user/update/updatepin.html");
+  });
+}
+
 
 
 /*

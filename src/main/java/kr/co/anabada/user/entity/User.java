@@ -105,7 +105,8 @@ public class User {
     public enum UserType {
         INDIVIDUAL, // 개인 회원 (오타 수정)
         BRAND,   // 사업자 회원
-        ADMIN; // 관리자
+        ADMIN, // 관리자
+    	SOCIAL;
     	
     	public String getRole() {
             return "ROLE_" + this.name();  // 예: "ROLE_ADMIN"
