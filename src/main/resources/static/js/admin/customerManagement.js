@@ -88,6 +88,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		button.addEventListener("click", function () {
 			const warnNo = button.getAttribute("data-warn-no");
 			
+			const confirmed = confirm("정말로 해당 신고를 삭제하시겠습니까?");
+			if (!confirmed) return;
+			
 			fetch(`/warn/deleteWarn/${warnNo}`, {
 				method: "DELETE",
 				headers: {
