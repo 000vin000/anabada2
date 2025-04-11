@@ -19,15 +19,8 @@
     <h3>사용자 정보</h3>
     <a id="updateInfoBtn" href="#">회원정보 수정</a>
     <a id="updatePwBtn" href="#">비밀번호 변경</a> 
+    <a id="updatePinBtn" href="#">2차 비밀번호 변경</a>
     <a id="withdrawBtn" href="#">회원 탈퇴</a>
-    
-    <div id="user-info"></div>
-
-    <!-- 회원탈퇴 버튼 추가 -->
-    <div style="margin-top: 20px;">
-        <button id="withdrawPageBtn">회원 탈퇴</button>
-    </div>
-</section>
 	
 	<!-- 보유 재화 정보 -->
 	<section>
