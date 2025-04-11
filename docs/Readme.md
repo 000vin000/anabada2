@@ -27,7 +27,9 @@
 ---
 
 ## 유스케이스 다이어그램
-![유스케이스](/docs/images/usecase_temp.png)
+![유스케이스](/docs/images/usecase1.png)
+![유스케이스](/docs/images/usecase2.png)
+![유스케이스](/docs/images/usecase3.png)
 
 ---
 
