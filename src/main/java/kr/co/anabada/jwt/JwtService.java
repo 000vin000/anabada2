@@ -92,6 +92,11 @@ public class JwtService {
         User user = userJoinRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("유저 정보를 찾을 수 없습니다."));
 
+        //상태 확인 추가
+        if (user.getUserStatus() != User.UserStatus.ACTIVE) {
+            throw new RuntimeException("비활성화된 사용자입니다: " + user.getUserStatus());
+        }
+
         refreshTokenRepository.deleteByToken(refreshToken);
 
         return generateAccessToken(user);
