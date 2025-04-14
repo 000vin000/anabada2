@@ -205,6 +205,9 @@
 	<!-- 신고 처리 모달 -->
 	<div id="warnResultModal" style="display: none;">
 	    <div id="warnResultRadioBtn">
+	    	<label for="warning">
+	    		<input type="radio" id="warning" name="warnResult" value="WARNING" onchange="toggleSuspensionDays()">경고
+	    	</label>
 	        <label for="suspension">
 	            <input type="radio" id="suspension" name="warnResult" value="SUSPENSION" onchange="toggleSuspensionDays()"> 정지
 	        </label>

@@ -50,7 +50,6 @@ public class ManagementRestController {
 		boolean success = warnService.approveWarn(warnNo, result, admin); // 처리한 관리자 등록
 		boolean plusWarnCnt = userService.plusWarnCtn(warnNo);
 		
-		
 		if (success && plusWarnCnt) {
 			return ResponseEntity.ok(Map.of("message", "처리 완료되었습니다."));
 		} else {

@@ -138,7 +138,7 @@ function openNewWindow(name, url) {
 	window.open(url, name, "width=500,height=300,top=200,left=600,resizable=yes,scrollbars=yes,status=no,menubar=no,toolbar=no,location=no");
 }
 function openWarnWindow(name, url) {
-	window.open(url, name, "width=650,height=400,resizable=yes,scrollbars=yes,status=no,menubar=no,toolbar=no,location=no");
+	window.open(url, name, "width=650,height=500,resizable=yes,scrollbars=yes,status=no,menubar=no,toolbar=no,location=no");
 }
 </script>
 <script src="/js/mypage.js"></script>

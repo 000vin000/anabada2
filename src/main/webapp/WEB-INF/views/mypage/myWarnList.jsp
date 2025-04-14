@@ -83,8 +83,8 @@
 </style>
 </head>
 <body>
-	<h2>받은 경고</h2>
-	<p>* 누적 3회 => 영구 정지 및 회원 탈퇴 *</p>
+	<h2>🚨 받은 경고 🚨</h2>
+	<p>* 누적 5회 => 영구 정지 및 회원 탈퇴 *</p>
 	<div class="warnTable">
 		<table>
 			<thead>
