@@ -146,6 +146,29 @@ table tr:hover {
 .btn.back:hover {
     background-color: #5a6268;
 }
+/* delete-btn 스타일 */
+.delete-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: #dcdcdc; 
+    color: #333;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #5a6268; /* hover 시 색상 회색 톤으로 변경 */
+}
+
+/* 삭제 버튼을 포함하는 테이블 셀 넓이 조정 */
+td button.delete-btn {
+    width: 90px; /* 버튼을 조금 넓게 설정 */
+}
+
+
+
 /* 문의사항 상세보기 스타일 */
 .container {
     width: 700px;
