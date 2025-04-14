@@ -27,9 +27,11 @@ public class WarnService {
             warn.approve();  // approve 메서드 호출
             warn.setAdminNo(admin);
             
-            warn.setWarnSuspensionDays(susDays); // 정지 ?일
-            if (result.getWarnResult().equals("SUSPENSION")) {
+            if (result.getWarnResult().equals("WARNING")) {
+            	warn.setWarnResult(WarnResult.WARNING);
+            } else if (result.getWarnResult().equals("SUSPENSION")) {
             	warn.setWarnResult(WarnResult.SUSPENSION);
+                warn.setWarnSuspensionDays(susDays); // 정지 ?일
             	warn.setWarnSuspensionDate((warn.getWarnProcessedDate().plusDays(susDays))); // 정지 언제까지?
             } else if (result.getWarnResult().equals("PERMANENTSTOP")) {
             	warn.setWarnResult(WarnResult.PERMANENTSTOP);

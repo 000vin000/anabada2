@@ -41,17 +41,19 @@ function showWarnList(data) {
 	};
 	
 	const resultMap = {
+		WARNING: "경고",
 		SUSPENSION: "정지",
 		PERMANENTSTOP: "영구 정지"
 	};
 	if (Array.isArray(data.warns)) {
-		data.warns.forEach(warn => {
+		data.warns.forEach((warn, index) => {
 			const row = document.createElement("tr");
 			const formattedProcessedDate = formatDate(warn.warnProcessedDate);
 			
 			const where = whereMap[warn.warnWhere] || warn.warnWhere;
 			const reason = warn.warnReason === 'OTHER' ? warn.warnReasonDetail : (reasonMap[warn.warnReason] || warn.warnReason);
-			const result = resultMap[warn.warnResult] || warn.warnResult;
+			const result = resultMap[warn.warnResult] 
+				+ (warn.warnResult === "SUSPENSION" ? ` ${warn.warnSuspensionDays}일` : '');
 			
 			let link = "#";
 			if (warn.warnWhere === "PROFILE") {
@@ -61,13 +63,13 @@ function showWarnList(data) {
 			} else if (warn.warnWhere === "CHATTING") {
 				link = "#";
 			}
-			
+
 			row.innerHTML = `
-				<td>${warn.warnNo}</td>
+				<td>${index + 1}</td>
 				<td>${formattedProcessedDate}</td>
 				<td>${reason}</td>				
 				<td><a href="${link}" target="_blank">${where}</a></td>
-				<td>${result} ${warn.warnSuspensionDays}일</td>
+				<td>${result}</td>
 			`;
 			tbody.appendChild(row);
 		});

@@ -72,22 +72,75 @@
 }
 
 /* 신고 처리 모달 */
+/* 모달 전체 */
+#warnResultModal {
+    display: none;
+    padding: 30px 30px; 
+    border: 4px solid black;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    width: 350px;
+    margin: auto;
+    text-align: center;
+}
+
 /* 라디오 버튼 영역 */
 #warnResultRadioBtn {
-    margin: 15px;
+    margin: 20px 0;
     display: flex;
-    gap: 20px;
-    font-size: 16px;
+    gap: 30px;
+    justify-content: center;
+    font-size: 18px; 
+}
+
+#warnResultRadioBtn label {
+    cursor: pointer;
+    font-weight: 500;
+}
+
+#warnResultRadioBtn input[type="radio"] {
+    margin-right: 8px;
+    transform: scale(1.3); 
 }
 
 /* 정지 기간 입력 */
 #setWarnResultDays {
-    margin: 20px;
-    font-size: 16px;
+    margin: 25px 0;
+    font-size: 18px;
 }
 
 #setWarnResultDays input[type="number"] {
-    width: 80px;
-    padding: 5px;
+    width: 100px;
+    padding: 8px;
     font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
 }
+
+/* 모달 하단 버튼 */
+#warnResultModalFooter {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+#warnResultModalFooter button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: #007d8a;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#warnResultModalFooter button:hover {
+    background-color: #005f66;
+    transform: scale(1.05);
+}
+
