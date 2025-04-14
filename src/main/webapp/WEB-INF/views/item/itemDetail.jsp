@@ -36,7 +36,7 @@
 				</button>
 				
 				<!-- 신고하기 by수연-->
-				<button id="openReportWindow" onclick="openReportWindow()">신고하기</button>
+				<button class="openReportWindow" onclick="openReportWindow()">신고하기</button>
 				
 				<!-- 채팅 목록 모달창 -->
 				<div id="chatRoomModal" class="modal-overlay" style="display: none;">
@@ -174,7 +174,7 @@
 	function openReportWindow() {
 		const currentUrl = window.location.href;
 
-		const reportWindow = window.open("/report", "ReportWindow", "width=700,height=800");
+		const reportWindow = window.open("/report", "ReportWindow", "width=700,height=600,top=200,left=650");
 
 		const sendData = () => {
 			reportWindow.postMessage({

@@ -1,3 +1,62 @@
+/* 전체 폼 스타일 */
+body {
+    background-color: white;
+    color: #333;
+    margin: 30px;
+    line-height: 1.6;
+}
+
+#warnDefendantUser {
+    display: none;
+}
+
+/* 입력 영역 */
+label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* 신고 사유 섹션 */
+section {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+section strong {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+section label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+section input[type="radio"] {
+    margin-right: 8px;
+}
+
+/* 설명 섹션 */
 .description {
     display: none;
     margin-top: 10px;
@@ -6,3 +65,51 @@
     border: 1px solid #ddd;
     border-radius: 5px;
 }
+
+.description ul {
+    padding-left: 20px;
+}
+
+.description label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.description textarea {
+    margin-top: 5px;
+}
+
+/* 버튼 스타일 */
+button {
+    background-color: white;
+    color: #007d8a;
+    border: 2px solid #007d8a;
+    padding: 10px 20px;
+    margin-top: 20px;
+    margin-right: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #007d8a;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* 반응형 */
+@media (max-width: 600px) {
+    body {
+        margin: 15px;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+
