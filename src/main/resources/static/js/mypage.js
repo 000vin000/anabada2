@@ -24,7 +24,7 @@ function loadCurrentCashCoin() {
 			<div><span class="userInfoLabel">이름</span><span class="userInfoValue">${user.userName}</span></div>
 			<div><span class="userInfoLabel">이메일</span><span class="userInfoValue">${user.userEmail}</span></div>
 			<div><span class="userInfoLabel">전화번호</span><span class="userInfoValue">${user.userPhone}</span></div>
-			<div><span class="userInfoLabel">경고 횟수</span><span class="userInfoValue"><a class="goToMyWarnPage" href="#">${user.userWarnCnt} 회</a></span></div>
+			<div><span class="userInfoLabel">경고 횟수</span><span class="userInfoValue"><a class="goToMyWarnPage" onclick="openWarnWindow('받은 경고', '/myWarnList')">${user.userWarnCnt} 회</a></span></div>
 		`;
 		
 		document.getElementById("user-name").innerHTML = `<h2>${user.userNick}(${user.userId})</h2>`;

@@ -59,7 +59,6 @@ function populateConversionHistory(data) {
 	const tbody = document.querySelector("#conversionModal tbody");
 
 	tbody.innerHTML = '';
-	console.log(data);
 	
 	if (Array.isArray(data.conList)) {
 		data.conList.forEach(conversion => {
