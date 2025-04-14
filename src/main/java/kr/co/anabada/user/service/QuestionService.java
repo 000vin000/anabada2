@@ -33,7 +33,11 @@ public class QuestionService {
     }
     
     public Question getQuestionByNo(Integer questionNo) {
-        return questionRepository.findById(questionNo).orElse(null);  // 해당 questionNo에 대한 문의사항 조회
+    	Question question = questionRepository.findById(questionNo).orElse(null);
+        if (question != null && question.getAnswers() != null) {
+            question.getAnswers().size(); // Lazy 초기화 강제
+        }
+        return question;
     }
     
     @Transactional
