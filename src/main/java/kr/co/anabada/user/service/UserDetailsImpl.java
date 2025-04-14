@@ -44,12 +44,14 @@ public class UserDetailsImpl implements UserDetails {
     public String getUsername() {
         return user.getUserId();
     }
-    
 
     @Override public boolean isAccountNonExpired() { return true; }
     @Override public boolean isAccountNonLocked() { return true; }
     @Override public boolean isCredentialsNonExpired() { return true; }
-    @Override public boolean isEnabled() { return true; }
 
-
-} 
+    // 사용자 상태 기반으로 반환
+    @Override
+    public boolean isEnabled() {
+        return user.getUserStatus() == User.UserStatus.ACTIVE;
+    }
+}

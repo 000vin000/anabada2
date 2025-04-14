@@ -17,18 +17,6 @@ public class JwtTokenHelper {
     private final RefreshTokenRepository refreshTokenRepository;
     private final IndividualUserJoinRepository userJoinRepository;
 
-    //AccessToken에서 유저 정보 추출
-//    public UserTokenInfo extractUserInfoFromAccessToken(String token) {
-//        if (!jwtUtil.validateToken(token)) return null;
-
-//        String userId = jwtUtil.extractUserId(token);
-//        Integer userNo = toInteger(jwtUtil.extractClaim(token, "userNo"));
-//        String userType = toString(jwtUtil.extractClaim(token, "userType"));
-//        String nickname = toString(jwtUtil.extractClaim(token, "nickname"));
-
-//        return new UserTokenInfo(userId, userNo, userType, nickname);
-//    }
-
     // RefreshToken으로 유저 조회
     public Optional<User> findUserByRefreshToken(String refreshToken) {
         if (!jwtUtil.validateToken(refreshToken)) return Optional.empty();
@@ -43,26 +31,12 @@ public class JwtTokenHelper {
         return userJoinRepository.findByUserId(userId);
     }
 
-    //HttpServletRequest에서 AccessToken으로 바로 User 정보 추출
+    // AccessToken 기반 사용자 정보 추출
     public UserTokenInfo getUserFromRequest(HttpServletRequest request) {
         String token = jwtUtil.extractAccessToken(request);
         return extractUserInfoFromAccessToken(token);
     }
 
-    // internal helper methods
-    private Integer toInteger(Object value) {
-        if (value instanceof Number) return ((Number) value).intValue();
-        try {
-            return Integer.parseInt(value.toString());
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    private String toString(Object value) {
-        return value != null ? value.toString() : null;
-    }
-    
     public List<String> getRolesFromRequest(HttpServletRequest request) {
         String token = jwtUtil.extractAccessToken(request);
         if (!jwtUtil.validateToken(token)) {
@@ -78,7 +52,7 @@ public class JwtTokenHelper {
             return List.of();
         }
     }
-    // userNo 추출 ( 정빈 추가 )
+
     public UserTokenInfo extractUserInfoFromAccessToken(String token) {
         if (!jwtUtil.validateToken(token)) return null;
 
@@ -90,9 +64,15 @@ public class JwtTokenHelper {
         List<String> roles = jwtUtil.extractRoles(token);
         String userType = roles.isEmpty() ? null : roles.get(0);
 
+        // 상태 체크: DB에서 조회 후 ACTIVE 여부 확인
+        Optional<User> userOpt = userJoinRepository.findByUserId(userId);
+        if (userOpt.isEmpty() || userOpt.get().getUserStatus() != User.UserStatus.ACTIVE) {
+            return null;
+        }
+
         return new UserTokenInfo(userId, userNo, userType, nickname);
     }
-    
+
     public UserTokenInfo getUserNoFromRequest(HttpServletRequest req) {
         String token = jwtUtil.extractToken(req);
         if (token == null || !jwtUtil.validateToken(token)) {
@@ -108,10 +88,26 @@ public class JwtTokenHelper {
         List<String> roles = jwtUtil.extractRoles(token);
         String userType = roles.isEmpty() ? null : roles.get(0);
 
+        // ✅ 상태 체크 추가
+        Optional<User> userOpt = userJoinRepository.findByUserId(userId);
+        if (userOpt.isEmpty() || userOpt.get().getUserStatus() != User.UserStatus.ACTIVE) {
+            return null;
+        }
+
         return new UserTokenInfo(userId, userNo, userType, nickname);
     }
-    
 
+    // 내부 유틸
+    private Integer toInteger(Object value) {
+        if (value instanceof Number) return ((Number) value).intValue();
+        try {
+            return Integer.parseInt(value.toString());
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
-
+    private String toString(Object value) {
+        return value != null ? value.toString() : null;
+    }
 }
