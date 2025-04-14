@@ -2,6 +2,8 @@ package kr.co.anabada.user.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.anabada.user.dto.UserProfileDTO;
+import kr.co.anabada.user.dto.UserProfileDashboardDTO;
 import kr.co.anabada.user.service.UserProfileService;
 
 @RestController
@@ -47,5 +50,12 @@ public class UserProfileRestController {
 		Integer loggedInUserNo = userProfileService.getCurrentUser(req);
 		boolean isOwnProfile = loggedInUserNo > 0 && loggedInUserNo.equals(targetUserNo);
 		return userProfileService.getBuyItems(targetUserNo, isOwnProfile, page, size, status, sort);
+	}
+	
+	@GetMapping("/{targetUserNo}/dashboard")
+	public ResponseEntity<UserProfileDashboardDTO> getDashboard(
+			@PathVariable Integer targetUserNo, HttpServletRequest req, Model model) {
+		UserProfileDashboardDTO dashboard = userProfileService.getUserProfileDashboardDTO(targetUserNo);
+		return ResponseEntity.ok(dashboard);
 	}
 }

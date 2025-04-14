@@ -281,3 +281,138 @@
 	border-radius: 8px;
 	color: #666;
 }
+
+.dashboard-content {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+	margin-bottom: 40px;
+}
+
+.dashboard-section {
+	background: #fff;
+	border-radius: 8px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	padding: 25px;
+	transition: transform 0.3s ease;
+}
+
+.dashboard-section:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 4px 15px rgba(67, 191, 199, 0.15);
+}
+
+.dashboard-section h3 {
+	color: #333;
+	font-size: 20px;
+	margin: 0 0 20px 0;
+	padding-bottom: 12px;
+	border-bottom: 2px solid #f1f1f1;
+	position: relative;
+}
+
+.dashboard-section h3::after {
+	content: '';
+	position: absolute;
+	bottom: -2px;
+	left: 0;
+	width: 60px;
+	height: 2px;
+	background: #43BFC7;
+}
+
+.dashboard-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+	gap: 20px;
+}
+
+.dashboard-item {
+	display: flex;
+	flex-direction: column;
+	padding: 16px;
+	background: #f9f9f9;
+	border-radius: 6px;
+	transition: all 0.3s ease;
+}
+
+.dashboard-item:hover {
+	background: #f0f9fa;
+}
+
+.dashboard-item-label {
+	font-size: 14px;
+	font-weight: 500;
+	color: #666;
+	margin-bottom: 8px;
+}
+
+.dashboard-item-value {
+	font-size: 20px;
+	font-weight: 600;
+	color: #333;
+}
+
+.chart-container {
+	margin-top: 30px;
+	height: 250px;
+	border-top: 1px solid #eee;
+	padding-top: 20px;
+}
+
+@media ( max-width : 768px) {
+	.dashboard-content {
+		gap: 20px;
+	}
+	.dashboard-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+	.dashboard-item {
+		padding: 12px;
+	}
+	.dashboard-item-value {
+		font-size: 18px;
+	}
+}
+
+@media ( max-width : 480px) {
+	.dashboard-grid {
+		grid-template-columns: 1fr;
+	}
+	.dashboard-section {
+		padding: 20px 15px;
+	}
+}
+
+.last-update-info {
+  background: #f8f9fa;
+  border-left: 3px solid #43BFC7;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.last-update-info .relative-time {
+  margin-left: 8px;
+  font-weight: 500;
+  background: #edf8f9;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: #43BFC7;
+}
+
+.monthly-update-item {
+  border-left: 3px solid #43BFC7;
+  background-color: #f0f9fa;
+}
+
+.monthly-update-item .dashboard-item-label::after {
+  content: ' (월간)';
+  font-size: 12px;
+  color: #43BFC7;
+  font-weight: normal;
+}

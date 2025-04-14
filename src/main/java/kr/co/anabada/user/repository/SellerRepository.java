@@ -2,6 +2,7 @@ package kr.co.anabada.user.repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,6 +20,8 @@ public interface SellerRepository extends JpaRepository<Seller, Integer> {
 	@Query("SELECT SUM(s.sellerTotalSales) FROM Seller s")
 	BigDecimal sumTotalSales();
 
+	Optional<Seller> findByUserUserNo(Integer targetUserNo);
+
 	Seller findByUser(User user);
 
 	@Query("SELECT sellerNo FROM Seller")
@@ -31,16 +34,20 @@ public interface SellerRepository extends JpaRepository<Seller, Integer> {
 	// UserProfileService : updateSingleSellerStatistics
 	@Modifying
 	@Query("UPDATE Seller s SET "
+			+ "s.sellerItemCnt = :itemCount, "
 			+ "s.sellerActiveItemCnt = :activeItemCount, "
 			+ "s.sellerCompletedSellItemCnt = :completedSellItemCount,"
-			+ "s.sellerAvgRating = :avgRating, "
 			+ "s.sellerTotalSales = :totalSales, "
+			+ "s.sellerAvgRating = :avgRating, "
+			+ "s.sellerSalesSuccessRate = :salesSuccessRate, "
 			+ "s.sellerUpdatedDate = CURRENT_TIMESTAMP "
 			+ "WHERE s.sellerNo = :sellerNo")
 	int updateDailySellerStats(
 			@Param("sellerNo") Integer sellerNo,
+			@Param("itemCount") int itemCount,
 			@Param("activeItemCount") int activeItemCount,
 			@Param("completedSellItemCount") int completedSellItemCount,
+			@Param("totalSales") BigDecimal totalSales,
 			@Param("avgRating") double avgRating,
-			@Param("totalSales") BigDecimal totalSales);
+			@Param("salesSuccessRate") double salesSuccessRate);
 }
