@@ -65,7 +65,7 @@ public class AdminService {
 			goodsRepo.save(goods);
 			
 			// 코인 변동 내역에 삽입
-			coinService.insertChangeCoin(user.getUserNo(), ChangeCoinType.CHARGE, amount);
+			coinService.insertChangeCoin(user.getUserNo(), ChangeCoinType.CHARGE, amount, null);
 			
 			System.out.println(user.getUserId() + " 코인 업데이트 완료");
 		} else if (con.isPresent() && con.get().getConversionType().equals(ConversionType.TOCASH)) {
@@ -77,7 +77,7 @@ public class AdminService {
 			goodsRepo.save(goods);
 			
 			// 코인 변동 내역에 삽입
-			coinService.insertChangeCoin(user.getUserNo(), ChangeCoinType.CASH, amount);
+			coinService.insertChangeCoin(user.getUserNo(), ChangeCoinType.CASH, amount, null);
 			
 			System.out.println(user.getUserId() + "현금 업데이트 완료");
 		}

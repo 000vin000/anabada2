@@ -67,4 +67,3 @@ public class Bid {
 	    return formatter.format(price);
 	}
 }
-// jhu

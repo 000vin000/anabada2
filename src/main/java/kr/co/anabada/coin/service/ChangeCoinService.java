@@ -12,6 +12,7 @@ import kr.co.anabada.coin.dto.ChangeCoinDTO;
 import kr.co.anabada.coin.entity.ChangeCoin;
 import kr.co.anabada.coin.entity.ChangeCoin.ChangeCoinType;
 import kr.co.anabada.coin.repository.ChangeCoinRepository;
+import kr.co.anabada.item.repository.ItemRepository;
 import kr.co.anabada.user.entity.User;
 import kr.co.anabada.user.repository.UserRepository;
 
@@ -19,9 +20,10 @@ import kr.co.anabada.user.repository.UserRepository;
 public class ChangeCoinService {
 	@Autowired
 	private UserRepository userRepo;
-	
 	@Autowired
 	private ChangeCoinRepository coinRepo;
+	@Autowired
+	private ItemRepository itemRepository;
 	
 	private User getUserById(Integer userNo) {
         return userRepo.findById(userNo).orElseThrow(() -> new NoSuchElementException("User not found"));
@@ -38,12 +40,13 @@ public class ChangeCoinService {
 	}
 
 	// 코인 변동 내역 기록
-	public void insertChangeCoin(Integer userNo, ChangeCoinType charge, BigDecimal amount) {
+	public void insertChangeCoin(Integer userNo, ChangeCoinType charge, BigDecimal amount, Integer itemNo) {
 		User user = getUserById(userNo);
-		ChangeCoin log = new ChangeCoin().builder()
+		ChangeCoin log = ChangeCoin.builder()
 										 .userNo(user)
 										 .changecoinType(charge)
 										 .changecoinAmount(amount)
+										 .itemNo(itemRepository.findById(itemNo).orElse(null))
 										 .build();
 		coinRepo.save(log);
 	}

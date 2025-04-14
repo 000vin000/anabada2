@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.anabada.coin.entity.ChangeCoin.ChangeCoinType;
-import kr.co.anabada.coin.repository.GoodsRepository;
 import kr.co.anabada.coin.service.ChangeCoinService;
 import kr.co.anabada.coin.service.GoodsService;
 import kr.co.anabada.item.dto.ItemDetailDTO;
@@ -24,7 +23,7 @@ import kr.co.anabada.item.repository.ImageRepository;
 import kr.co.anabada.item.repository.ItemDetailRepository;
 import kr.co.anabada.jwt.JwtAuthHelper;
 import kr.co.anabada.jwt.UserTokenInfo;
-import kr.co.anabada.user.service.UserService;
+import kr.co.anabada.user.service.BuyerService;
 
 @Service
 public class ItemDetailService {
@@ -37,13 +36,11 @@ public class ItemDetailService {
 	@Autowired
 	private ImageRepository imageRepository;
 	@Autowired
-	private GoodsRepository goodsRepository;
-	@Autowired
 	private GoodsService goodsService;
 	@Autowired
 	private ChangeCoinService changeCoinService;
 	@Autowired
-	private UserService userService;
+	private BuyerService buyerService;
 
 	public Item getItem(Integer itemNo) {
 		return itemDetailRepository.findById(itemNo)
@@ -116,18 +113,6 @@ public class ItemDetailService {
 				.orElseThrow(() -> new ResourceNotFoundException("판매 종료 시간을 불러올 수 없습니다."));
 	}
 	
-//	public BigDecimal getCoinBalanceWithBidCoin(Integer itemNo, Integer userNo) {
-//		BigDecimal coinBalance = goodsService.checkCurrentCashCoin(userNo).getGoodsCoin();
-//		BigDecimal lastestBidCoin =
-//				bidRepository.findTopBidPriceByUserUserNoAndItemItemNoOrderByBidTimeDesc(userNo, itemNo)
-//				.orElse(null);
-//		
-//		if (lastestBidCoin != null) {
-//			coinBalance.add(lastestBidCoin);
-//		}
-//		return coinBalance;
-//	}
-	
 	public BigDecimal getCoinBalance(Integer userNo) {
 		BigDecimal coinBalance = goodsService.checkCurrentCashCoin(userNo).getGoodsCoin();
 		return coinBalance;
@@ -138,12 +123,12 @@ public class ItemDetailService {
 		Bid topBid = bidRepository.findTopByItemItemNoOrderByBidTimeDesc(itemNo)
 				.orElse(null);
 		if (topBid != null) {
-			Integer targetUserNo = topBid.getUser().getUserNo();
+			Integer targetUserNo = topBid.getBuyer().getUser().getUserNo();
 			BigDecimal bidCoin = topBid.getBidPrice();
 			BigDecimal targetCoinBalance = getCoinBalance(targetUserNo);
 			
 			goodsService.updateGoodsCoin(targetUserNo, targetCoinBalance.add(bidCoin));
-			changeCoinService.insertChangeCoin(targetUserNo, ChangeCoinType.CANCEL, bidCoin);
+			changeCoinService.insertChangeCoin(targetUserNo, ChangeCoinType.CANCEL, bidCoin, itemNo);
 		}
 	}
 
@@ -174,11 +159,11 @@ public class ItemDetailService {
 			}
 			
 			goodsService.updateGoodsCoin(userNo, coinBalance.subtract(newPrice));
-			changeCoinService.insertChangeCoin(userNo, ChangeCoinType.BID, newPrice);
+			changeCoinService.insertChangeCoin(userNo, ChangeCoinType.BID, newPrice, itemNo);
 			returnBidCoinToUser(itemNo);
 
 			Bid bid = Bid.builder()
-					.user(userService.getUser(userNo))
+					.buyer(buyerService.getBuyer(userNo))
 					.item(item)
 					.bidStatus(BidStatus.ACTIVE)
 					.bidPrice(newPrice)

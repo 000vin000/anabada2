@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <title>고객센터</title>
     <link rel="stylesheet" href="/css/styleAdmin.css" />
+    <link rel="stylesheet" href="/css/styleWarnModal.css"/>
  </head>
 <body>
     <!-- 네비게이션 바 -->
@@ -33,43 +34,51 @@
 
         <!-- 신고 목록 -->
         <div id="report-table">
-            <h2>신고 목록</h2>
+            <h2>신고 접수 목록</h2>
             <table border="1">
                 <thead>
                     <tr>
-                        <th>신고 번호</th>
-                        <th>사용자 ID</th>
-                        <th>경고 사유</th>
-                        <th>경고 상태</th>
-                        <th>신고 생성일</th>
-                        <th>신고 처리일</th>
-                        <th>승인하기</th>
-                        <th>거부하기</th>
+                        <th>번호</th>
+                        <th>신고한 유저 아이디</th>
+                        <th>신고당한 유저 아이디</th>
+                        <th>신고 접수일</th>
+                        <th>신고 사유</th>
+                        <th>상세보기</th>
+                        <th>처리</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="warn" items="${warns}">
+                    <c:forEach var="warn" items="${warns}" varStatus="status">
                         <tr>
-                            <td>${warn.warnNo}</td>
-                            <td>${warn.user.userId}</td>
-                            <td>${warn.warnReason}</td>
-                            <td>${warn.warnStatus}</td>
-                            <td>${warn.warnCreatedDate}</td>
-                            <td>${warn.warnProcessedDate != null ? warn.warnProcessedDate : '처리 안됨'}</td>
+                            <td>${status.index + 1}</td>
+                            <td>${warn.warnPlaintiffUser.userId}</td>
+                            <td>${warn.warnDefendantUser.userId}</td>
+                            <td>${warn.formatDateTime(warn.warnCreatedDate)}</td>
                             <td>
-                                <c:if test="${warn.warnStatus == 'REQUESTED'}">
-                                    <form action="/admin/management/approve/${warn.warnNo}" method="post">
-                                        <button type="submit" onclick="return confirm('정말 승인하시겠습니까?')">승인</button>
-                                    </form>
-                                </c:if>
+                            	<c:if test="${warn.warnReason != 'OTHER' }">
+                            		${warn.warnReason.getKorean()}
+                            	</c:if>
+                            	<c:if test="${warn.warnReason == 'OTHER' }">
+									<span class="showWarnReasonDetailBtn" data-detail="${warn.warnReasonDetail}" role="button" tabindex="0">
+									    ${warn.warnReason.getKorean()}
+									</span>
+                            	</c:if>
                             </td>
-                            <td>
-                                <c:if test="${warn.warnStatus == 'REQUESTED'}">
-                                    <form action="/admin/management/reject/${warn.warnNo}" method="post">
-                                        <button type="submit" onclick="return confirm('정말 거부하시겠습니까?')">거부</button>
-                                    </form>
-                                </c:if>
-                            </td>
+							<td>
+								<c:if test="${warn.warnWhere == 'PROFILE'}">
+									<a href="#">프로필 링크</a>
+								</c:if>
+								<c:if test="${warn.warnWhere == 'ITEM'}">
+									<a href="/item/detail/${warn.warnItem.itemNo}" target="_blank" rel="noopener noreferrer">${warn.warnItem.itemTitle}</a>
+								</c:if>
+								<c:if test="${warn.warnWhere == 'CHATTING'}">
+									<a href="#">채팅방 링크</a>	
+								</c:if>
+							</td>
+							<th>
+								<button onclick="openWarnSetResultModal('${warn.warnNo}')">승인</button>
+								<button class="deleteWarn" data-warn-no="${warn.warnNo}">삭제</button>
+							</th>
                         </tr>
                     </c:forEach>
                 </tbody>
@@ -185,8 +194,95 @@
         </div>
     </div>
 
+	<!-- 신고 상세 내용 모달 -->
+	<div id="warnReasonModal" style="display: none;">
+	    <div id="warnReasonText"></div>
+	    <div id="warnReasonModalFooter">
+	        <button onclick="closeModal('warnReasonModal')">닫기</button>
+	    </div>
+	</div>
+
+	<!-- 신고 처리 모달 -->
+	<div id="warnResultModal" style="display: none;">
+	    <div id="warnResultRadioBtn">
+	    	<label for="warning">
+	    		<input type="radio" id="warning" name="warnResult" value="WARNING" onchange="toggleSuspensionDays()">경고
+	    	</label>
+	        <label for="suspension">
+	            <input type="radio" id="suspension" name="warnResult" value="SUSPENSION" onchange="toggleSuspensionDays()"> 정지
+	        </label>
+	        <label for="permanentStop">
+	            <input type="radio" id="permanentStop" name="warnResult" value="PERMANENTSTOP" onchange="toggleSuspensionDays()"> 영구정지
+	        </label>
+	    </div>
+	
+	    <div id="setWarnResultDays" style="display: none;">
+	        <input type="number" id="warnSuspensionDays" value="1" min="1"> 일
+	    </div>
+	
+	    <div id="warnResultModalFooter">
+	        <button class="submitWarnResult" data-warn-no="${warn.warnNo}">확인</button>
+	        <button onclick="closeModal('warnResultModal')">닫기</button>
+	    </div>
+	</div>
+
     <!-- 스크립트 -->
     <script type="module" src="/js/admin/customerManagement.js"></script>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const buttons = document.querySelectorAll(".showWarnReasonDetailBtn");
+        const modal = document.getElementById("warnReasonModal");
+        const modalText = document.getElementById("warnReasonText");
 
+        buttons.forEach(button => {
+            button.addEventListener("click", () => {
+                const detail = button.getAttribute("data-detail");
+                modalText.textContent = detail || "";
+                
+                modal.style.display = "block";
+            });
+        });
+        
+        const input = document.getElementById("warnSuspensionDays");
+
+        input.addEventListener("input", function () {
+            if (parseInt(this.value) < 1) {
+                this.value = 1;
+            }
+        });
+    });
+
+    function closeModal(modal) {
+        document.getElementById(modal).style.display = "none";
+    }
+    
+    function openWarnSetResultModal(warnNo) {
+        document.getElementById("warnResultModal").style.display = "block";
+        document.querySelector(".submitWarnResult").setAttribute("data-warn-no", warnNo);
+    }
+    
+    function toggleSuspensionDays() {
+        const suspensionOption = document.getElementById("suspension");
+        const suspensionDaysInput = document.getElementById("setWarnResultDays");
+
+        if (suspensionOption.checked) {
+            suspensionDaysInput.style.display = "block";
+        } else {
+            suspensionDaysInput.style.display = "none";
+        }
+    }
+    
+    function openDeleteWarn(warnNo) {
+    	const confirmed = confirm("정말 삭제하시겠습니까?");
+    	if (confirmed) {
+			fetch(`/warn/deleteWarn/${warnNo}`, {
+				
+			});
+    	    console.log("신고 처리 실행!");
+    	} else {
+    	    console.log("신고 취소됨");
+    	}
+    }
+</script>
 </html>

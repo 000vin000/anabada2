@@ -1,0 +1,146 @@
+/* 사유 = 기타 모달 열기 버튼 */
+.showWarnReasonDetailBtn {
+	text-decoration: none;
+	background-color: #e3f4ff;
+}
+
+.showWarnReasonDetailBtn:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+/* 사유 = 기타 모달 */
+/* 모달 */
+#warnReasonModal,
+#warnResultModal {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    border: 4px solid black;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	width: 400px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: hidden;
+    padding-bottom: 60px;
+}
+
+#warnReasonModal {
+	height: 400px;
+}
+
+#warnResultModal {
+	height: 200px;
+}
+
+
+/* 내용 영역 */
+#warnReasonText {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+    font-size: 16px;
+}
+
+/* 하단 버튼 영역 (고정 위치) */
+#warnReasonModalFooter,
+#warnResultModalFooter {
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
+}
+
+/* 닫기 버튼 스타일 */
+#warnReasonModalFooter button,
+#warnResultModalFooter button {
+    padding: 6px 12px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#warnReasonModalFooter button:hover,
+#warnResultModalFooter button:hover {
+    background-color: #0056b3;
+}
+
+/* 신고 처리 모달 */
+/* 모달 전체 */
+#warnResultModal {
+    display: none;
+    padding: 30px 30px; 
+    border: 4px solid black;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    width: 350px;
+    margin: auto;
+    text-align: center;
+}
+
+/* 라디오 버튼 영역 */
+#warnResultRadioBtn {
+    margin: 20px 0;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    font-size: 18px; 
+}
+
+#warnResultRadioBtn label {
+    cursor: pointer;
+    font-weight: 500;
+}
+
+#warnResultRadioBtn input[type="radio"] {
+    margin-right: 8px;
+    transform: scale(1.3); 
+}
+
+/* 정지 기간 입력 */
+#setWarnResultDays {
+    margin: 25px 0;
+    font-size: 18px;
+}
+
+#setWarnResultDays input[type="number"] {
+    width: 100px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* 모달 하단 버튼 */
+#warnResultModalFooter {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+#warnResultModalFooter button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: #007d8a;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#warnResultModalFooter button:hover {
+    background-color: #005f66;
+    transform: scale(1.05);
+}
+

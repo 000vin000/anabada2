@@ -3,6 +3,7 @@ package kr.co.anabada.admin.controller;
 import kr.co.anabada.admin.entity.Answer;
 import kr.co.anabada.admin.entity.Notice;
 import kr.co.anabada.admin.entity.Warn;
+import kr.co.anabada.admin.entity.Warn.WarnStatus;
 import kr.co.anabada.admin.entity.Withdrawal;
 import kr.co.anabada.admin.repository.AnswerRepository;
 import kr.co.anabada.admin.repository.NoticeRepository;
@@ -33,9 +34,6 @@ public class ManagementController {
     private AnswerRepository answerRepository;
 
     @Autowired
-    private WarnRepository warnRepository;
-
-    @Autowired
     private WarnService warnService;
     
     @Autowired
@@ -44,7 +42,7 @@ public class ManagementController {
     @Autowired
     private WithdrawalRepository withdrawalRepository;
 
-    @GetMapping("admin/management")
+    @GetMapping("/admin/management")
     public String getManagement(Model model) {
     
         List<Question> questions = questionRepository.findAll();
@@ -57,7 +55,7 @@ public class ManagementController {
             answersByQuestionNo.put(question.getQuestionNo(), answers);
         }
         
-        List<Warn> warns = warnRepository.findAll();
+        List<Warn> warns = warnService.findAllByWarnStatus(WarnStatus.REQUESTED);
         
         List<Notice> notices = noticeRepository.findAll();
         
@@ -71,34 +69,5 @@ public class ManagementController {
         model.addAttribute("withdrawals", withdrawals);
         
         return "admin/customerManagement";  // 모든 질문을 보여주는 페이지로 이동
-    }
-    
-    @PostMapping("admin/management/approve/{warnNo}")
-    public String approveWarn(@PathVariable Integer warnNo, Model model) {
-        boolean success = warnService.approveWarn(warnNo);  // 신고 승인
-
-        if (success) {
-            model.addAttribute("message", "신고가 승인되었습니다.");
-        } else {
-            model.addAttribute("message", "신고 승인에 실패했습니다.");
-        }
-
-        return "redirect:/admin/management";  // 처리 후 관리 페이지로 리다이렉트
-    }
-
-    // 신고 거부 처리 기능
-    @PostMapping("admin/management/reject/{warnNo}")
-    public String rejectWarn(@PathVariable Integer warnNo, Model model) {
-        boolean success = warnService.rejectWarn(warnNo);  // 신고 거부
-
-        if (success) {
-            model.addAttribute("message", "신고가 거부되었습니다.");
-        } else {
-            model.addAttribute("message", "신고 거부에 실패했습니다.");
-        }
-
-        return "redirect:/admin/management";  // 처리 후 관리 페이지로 리다이렉트
-    }
-    
- 
+    }  
 }

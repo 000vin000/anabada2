@@ -26,26 +26,45 @@ public class UserProfileDetailDTO extends UserProfileDTO {
 	public static class SellerDetailDTO {
 		private LocalDateTime sellerCreatedDate;
 		private LocalDateTime sellerUpdatedDate;
-		private int pendingSales;
-		private int completedSales;
-		private int canceledSales;
-		private Map<String, Integer> salesByCategory;
-		private List<BigDecimal> monthlyRevenueStats;
-		private double salesSuccessRate;
-		// 판매자 관련 통계
+		
+		// daily update
+		private int activeItemCount; // 판매중 아이템 갯수
+		private int completedSellItemCount; // 판매완료 아이템 갯수
+		private double avgRating; // 평균 평점
+		
+		// monthly update
+		private String grade; // 판매자 등급
+		private BigDecimal monthlySales; // 한달 기준 판매액
+		
+		// 누적 update
+		private BigDecimal totalSales; // 누적 총 판매액
+		
+		// 실시간 계산
+		private Map<String, Integer> sellItemCountByCategory; // 카테고리별 판매아이템 갯수
+		private List<BigDecimal> monthlyRevenue; // 월별 판매액
+		private double salesSuccessRate; // 판매 성공률
 	}
 
 	@Data
 	public static class BuyerDetailDTO {
 		private LocalDateTime buyerCreatedDate;
 		private LocalDateTime buyerUpdatedDate;
-		private int totalBids;
-		private int wonBids;
-		private int activeBids;
-		private Map<String, Integer> purchasesByCategory;
-		private List<BigDecimal> monthlySpendingStats;
-		private double bidSuccessRate;
-		// 구매자 관련 통계
+		
+		// daily update
+		private int bidCount; // 입찰 횟수
+		private int activeBidItemCount; // 입찰중 아이템 개수
+		private int bidItemCount; // 입찰한 아이템 개수
+		private int bidSuccessCount; // 낙찰 횟수
+		private int paySuccessCount; // 결제완료 횟수
+		private double bidSuccessRate; // 낙찰률
+		private double paySuccessRate; // 결제완료율
+		
+		// monthly update
+		private BigDecimal monthlySpending; // 한달 기준 지출액
+
+		// 실시간 계산
+		private Map<String, Integer> bidItemCountByCategory; // 카테고리별 입찰아이템 갯수
+		private List<BigDecimal> monthlySpendingStats; // 월별 지출액
 	}
 	
 	@Data
