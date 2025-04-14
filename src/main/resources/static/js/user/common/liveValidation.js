@@ -1,5 +1,5 @@
 /**
- * 실시간 유효성검사
+ * 실시간 유효성검사 (회원가입용)
  */
 document.addEventListener("DOMContentLoaded", function () {
     console.log("liveValidation.js 로드됨");
@@ -22,67 +22,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (checkUserNickBtn) checkUserNickBtn.addEventListener("click", checkUserNick);
 });
 
+// ==== 회원가입 전용: DOM 연동 함수들 ====
 
-// 아이디 중복 체크
-function checkUserId() {
-    const userId = document.getElementById("userId").value;
-    const userIdCheckMessage = document.getElementById("userIdCheckMessage");
-
-    if (userId.length < 4) {
-        userIdCheckMessage.textContent = "아이디는 최소 4자 이상이어야 합니다.";
-        userIdCheckMessage.style.color = "red";
-        return;
-    }
-
-	fetch(`/join/individual/checkUserId?userId=${userId}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.available) {
-                userIdCheckMessage.textContent = "사용 가능한 아이디입니다.";
-                userIdCheckMessage.style.color = "green";
-            } else {
-                userIdCheckMessage.textContent = "이미 사용 중인 아이디입니다.";
-                userIdCheckMessage.style.color = "red";
-            }
-        })
-        .catch(error => {
-            console.error("아이디 중복 체크 오류:", error);
-            userIdCheckMessage.textContent = "오류 발생. 다시 시도해주세요.";
-            userIdCheckMessage.style.color = "red";
-        });
-}
-
-// 닉네임 중복 체크
-function checkUserNick() {
-    const userNick = document.getElementById("userNick").value;
-    const userNickCheckMessage = document.getElementById("userNickCheckMessage");
-
-    if (userNick.length < 2) {
-        userNickCheckMessage.textContent = "닉네임은 최소 2자 이상이어야 합니다.";
-        userNickCheckMessage.style.color = "red";
-        return;
-    }
-
-	fetch(`/join/individual/checkUserNick?userNick=${userNick}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.available) {
-                userNickCheckMessage.textContent = "사용 가능한 닉네임입니다.";
-                userNickCheckMessage.style.color = "green";
-            } else {
-                userNickCheckMessage.textContent = "이미 사용 중인 닉네임입니다.";
-                userNickCheckMessage.style.color = "red";
-            }
-        })
-        .catch(error => {
-            console.error("닉네임 중복 체크 오류:", error);
-            userNickCheckMessage.textContent = "오류 발생. 다시 시도해주세요.";
-            userNickCheckMessage.style.color = "red";
-        });
-}
-
-
-// 아이디 유효성 검사
 function validateUserId() {
     const userIdInput = document.getElementById("userId");
     const userIdWarning = document.getElementById("userIdWarning");
@@ -92,11 +33,10 @@ function validateUserId() {
         userIdWarning.textContent = "영어와 숫자만 입력 가능합니다. (4~20자)";
         userIdWarning.style.color = "red";
     } else {
-        userIdWarning.textContent = ""; 
+        userIdWarning.textContent = "";
     }
 }
 
-// 비밀번호 유효성 검사
 function validatePassword() {
     const passwordInput = document.getElementById("userPw");
     const passwordWarning = document.getElementById("passwordWarning");
@@ -106,12 +46,12 @@ function validatePassword() {
         passwordWarning.textContent = "비밀번호는 8~20자, 영문+숫자+특수문자를 포함해야 합니다.";
         passwordWarning.style.color = "red";
     } else {
-        passwordWarning.textContent = ""; 
+        passwordWarning.textContent = "";
     }
-    validatePasswordMatch(); 
+
+    validatePasswordMatch();
 }
 
-// 비밀번호 확인 검사
 function validatePasswordMatch() {
     const passwordInput = document.getElementById("userPw");
     const passwordConfirmInput = document.getElementById("userPw2");
@@ -121,11 +61,10 @@ function validatePasswordMatch() {
         passwordMatchWarning.textContent = "비밀번호가 일치하지 않습니다.";
         passwordMatchWarning.style.color = "red";
     } else {
-        passwordMatchWarning.textContent = ""; 
+        passwordMatchWarning.textContent = "";
     }
 }
 
-// 이메일 유효성 검사 
 function validateEmail() {
     const emailInput = document.getElementById("userEmail");
     const emailWarning = document.getElementById("emailWarning");
@@ -139,11 +78,10 @@ function validateEmail() {
     }
 }
 
-// 전화번호 유효성 검사
 function validatePhoneNumber() {
-    let phone1 = document.getElementById("phone1").value;
-    let phone2 = document.getElementById("phone2").value;
-    let phone3 = document.getElementById("phone3").value;
+    let phone1 = document.getElementById("phone1")?.value;
+    let phone2 = document.getElementById("phone2")?.value;
+    let phone3 = document.getElementById("phone3")?.value;
     let userPhone = phone1 + "-" + phone2 + "-" + phone3;
 
     const phoneWarning = document.getElementById("phoneWarning");
@@ -155,4 +93,15 @@ function validatePhoneNumber() {
     } else {
         phoneWarning.textContent = "";
     }
+}
+
+// ==== 비밀번호 변경 등에서 재사용할 수 있도록 export 함수 정의 ====
+
+export function validatePasswordForUpdate(password) {
+    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/;
+    return passwordPattern.test(password);
+}
+
+export function isPasswordMatch(pw1, pw2) {
+    return pw1 === pw2;
 }

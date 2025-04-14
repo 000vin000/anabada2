@@ -4,6 +4,7 @@ import kr.co.anabada.user.entity.User;
 import kr.co.anabada.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 @Service
@@ -12,8 +13,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     
+    // 사용자 No으로 조회
     public User getUser(Integer userNo) {
-    	return userRepository.findById(userNo).orElse(null);
+        return userRepository.findById(userNo).orElse(null);
     }
 
     // 사용자 ID로 조회

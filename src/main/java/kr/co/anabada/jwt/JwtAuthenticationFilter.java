@@ -38,6 +38,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     throws ServletException, IOException {
 
         String token = jwtUtil.extractAccessToken(request);
+        
+        // 헤더에서 권한을 찾을 수 없으면 쿠키에서 추출 시도 - jhu
+        if (token == null) {
+            token = jwtUtil.extractTokenFromCookie(request, "Token");
+        }
 
         if (token != null && jwtUtil.validateToken(token)) {
             String userId = jwtUtil.extractUserId(token);

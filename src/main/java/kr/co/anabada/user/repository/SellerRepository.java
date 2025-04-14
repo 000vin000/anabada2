@@ -15,16 +15,32 @@ import kr.co.anabada.user.entity.User;
 
 @Repository
 public interface SellerRepository extends JpaRepository<Seller, Integer> {
-    // 판매자의 전체 판매액 합계 구하기
+	// 판매자의 전체 판매액 합계 구하기
 	@Query("SELECT SUM(s.sellerTotalSales) FROM Seller s")
-    BigDecimal sumTotalSales();
-	
+	BigDecimal sumTotalSales();
+
 	Seller findByUser(User user);
-  
+
 	@Query("SELECT sellerNo FROM Seller")
-	List<Integer> findAllSellerNos(); //userProfile
-	
+	List<Integer> findAllSellerNos(); // userProfile
+
 	@Modifying
-    @Query("UPDATE Seller SET sellerGrade = :sellerGrade WHERE sellerNo = :sellerNo")
-    int updateSellerGrade(@Param("sellerNo") Integer sellerNo, @Param("sellerGrade") SellerGrade sellerGrade); //userProfile
+	@Query("UPDATE Seller SET sellerGrade = :sellerGrade WHERE sellerNo = :sellerNo")
+	int updateSellerGrade(@Param("sellerNo") Integer sellerNo, @Param("sellerGrade") SellerGrade sellerGrade); // userProfile
+
+	// UserProfileService : updateSingleSellerStatistics
+	@Modifying
+	@Query("UPDATE Seller s SET "
+			+ "s.sellerActiveItemCnt = :activeItemCount, "
+			+ "s.sellerCompletedSellItemCnt = :completedSellItemCount,"
+			+ "s.sellerAvgRating = :avgRating, "
+			+ "s.sellerTotalSales = :totalSales, "
+			+ "s.sellerUpdatedDate = CURRENT_TIMESTAMP "
+			+ "WHERE s.sellerNo = :sellerNo")
+	int updateDailySellerStats(
+			@Param("sellerNo") Integer sellerNo,
+			@Param("activeItemCount") int activeItemCount,
+			@Param("completedSellItemCount") int completedSellItemCount,
+			@Param("avgRating") double avgRating,
+			@Param("totalSales") BigDecimal totalSales);
 }

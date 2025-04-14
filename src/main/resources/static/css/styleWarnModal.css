@@ -1,0 +1,93 @@
+/* 사유 = 기타 모달 열기 버튼 */
+.showWarnReasonDetailBtn {
+	text-decoration: none;
+	background-color: #e3f4ff;
+}
+
+.showWarnReasonDetailBtn:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+/* 사유 = 기타 모달 */
+/* 모달 */
+#warnReasonModal,
+#warnResultModal {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    border: 4px solid black;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	width: 400px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: hidden;
+    padding-bottom: 60px;
+}
+
+#warnReasonModal {
+	height: 400px;
+}
+
+#warnResultModal {
+	height: 200px;
+}
+
+
+/* 내용 영역 */
+#warnReasonText {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+    font-size: 16px;
+}
+
+/* 하단 버튼 영역 (고정 위치) */
+#warnReasonModalFooter,
+#warnResultModalFooter {
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
+}
+
+/* 닫기 버튼 스타일 */
+#warnReasonModalFooter button,
+#warnResultModalFooter button {
+    padding: 6px 12px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#warnReasonModalFooter button:hover,
+#warnResultModalFooter button:hover {
+    background-color: #0056b3;
+}
+
+/* 신고 처리 모달 */
+/* 라디오 버튼 영역 */
+#warnResultRadioBtn {
+    margin: 15px;
+    display: flex;
+    gap: 20px;
+    font-size: 16px;
+}
+
+/* 정지 기간 입력 */
+#setWarnResultDays {
+    margin: 20px;
+    font-size: 16px;
+}
+
+#setWarnResultDays input[type="number"] {
+    width: 80px;
+    padding: 5px;
+    font-size: 16px;
+}

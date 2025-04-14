@@ -12,6 +12,8 @@ public interface ChatMessageRepository extends CrudRepository<Chat_Message, Inte
 	// 채팅 메세지 저장 및 조회   
 	List<Chat_Message> findByChatRoom_RoomNoOrderByMsgDateAsc(Integer roomNo);
 
+	// 사용자의 메시지 조회 (추가된 부분)
+    List<Chat_Message> findBySender_UserNo(Integer userNo);
    
    
    

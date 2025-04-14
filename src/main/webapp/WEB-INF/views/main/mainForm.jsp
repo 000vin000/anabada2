@@ -28,7 +28,6 @@
     </div>
 	<jsp:include page="../footer.jsp" />
     <jsp:include page="../sidebar.jsp" />
-    <jsp:include page="../main/bottom_nav.jsp" />
 </body>
 <script src="/js/common.js"></script>
 <script src="/js/recent/config.js"></script>

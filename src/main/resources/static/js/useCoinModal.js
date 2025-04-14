@@ -72,7 +72,7 @@ function showUseCoinModal(data) {
 				<td>${formattedChangeCoinAt}</td> 
 				<td>${changeCoin.changecoinTypeKorean}</td> 
 				<td style="color: ${typeColor};">${changeCoin.changecoinAmount}</td>
-				${changeCoin.itemNo ? `<td>상품명</td>` : '<td>-</td>'}
+				${changeCoin.itemNo ? `<td><a href="/item/detail/${changeCoin.itemNo.itemNo}>${changeCoin.itemNo.itemTitle}</a></td>` : '<td>-</td>'}
 			`;
 			tbody.appendChild(row);
 		});
