@@ -42,7 +42,7 @@ function renderQuestions(questions) {
                 <a href="/question/edit/${question.questionNo}">수정</a>
 			</td>
 			<td>
-                <button data-question-no="${question.questionNo}">삭제</button>
+                <button class="delete-btn" data-question-no="${question.questionNo}" >삭제</button>
             </td>
         `;
 
