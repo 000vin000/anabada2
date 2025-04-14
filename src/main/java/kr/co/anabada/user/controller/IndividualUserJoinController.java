@@ -32,8 +32,8 @@ public class IndividualUserJoinController {
             log.info("회원가입 완료!");
 
             return ResponseEntity.ok(Map.of(
-            	    "message", "회원가입 성공!",
-            	    "redirectUrl", "/auth/login/individual/IndividualLogin.html"
+                    "message", "회원가입이 완료되었습니다.",
+                    "redirectUrl", "/login"
             ));
         } catch (IllegalArgumentException e) {
             log.warn("회원가입 실패: {}", e.getMessage());

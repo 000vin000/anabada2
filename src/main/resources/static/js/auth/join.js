@@ -12,9 +12,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 	if (selectedType.value === "individual") {
-	  location.href = "/auth/join/individual/emailAuth.html";
+	  location.href = "/join/individual/emailAuth";
 	} else if (selectedType.value === "brand") {
-      location.href = "/auth/join/brand/사업자등록번호확인.html";
-    }
+	  location.href = "/auth/join/brand/사업자등록번호확인.html"; 
+	}
+
   });
 });
