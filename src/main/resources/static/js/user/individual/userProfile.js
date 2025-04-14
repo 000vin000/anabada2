@@ -1,4 +1,5 @@
-import { fetchWithAuth } from '/js/user/common/fetchWithAuth.js'
+import { fetchWithAuth } from '/js/user/common/fetchWithAuth.js';
+import { getRelativeTimeString, getFormattedDate, addCommas } from '/js/user/individual/userProfileUtil.js';
 
 let loggedInUserNo = 0;
 let isOwnProfile = false;
@@ -26,7 +27,9 @@ function openTab(tabId) {
         loadSellItems();
     } else if (tabId === 'buy-tab') {
         loadBuyItems();
-    }
+    } else if (tabId === 'dashboard-tab') {
+		loadDashboard();
+	}
 }
 
 function changeStatusFilter(type, newStatusFilter) {
@@ -118,6 +121,21 @@ function loadBuyItems() {
             console.error('오류 발생:', error);
             document.getElementById('items-container').innerHTML = '<div class="empty-message">데이터 로드 실패</div>';
         });
+}
+
+function loadDashboard() {
+	document.getElementById('dashboard-container').innerHTML = '<div class="loading-message">대시보드 로딩 중</div>';
+
+	const url = '/api/user/profile/' + userNo + '/dashboard';
+	fetchWithAuth(url, { method: "GET" })
+		.then(response => response.json())
+		.then(data => {
+			displayDashboard(data);
+		})
+		.catch(error => {
+			console.error('오류 발생:', error);
+			document.getElementById('items-container').innerHTML = '<div class="empty-message">데이터 로드 실패</div>';
+		});
 }
 
 function displayPagination(data, containerId, type) {
@@ -280,4 +298,134 @@ function displayItems(data, containerId) {
     });
 
     container.appendChild(grid);
+}
+
+function displayDashboard(dashboardData) {
+	const container = document.getElementById('dashboard-container');
+	container.innerHTML = '';
+
+	if (!dashboardData) {
+		container.innerHTML = '<div class="empty-message">대시보드 정보를 불러올 수 없습니다.</div>';
+		return;
+	}
+
+	const dashboardDiv = document.createElement('div');
+	dashboardDiv.className = 'dashboard-content';
+
+	const sellerData = dashboardData.sellerDashboardDTO;
+	if (sellerData) {
+		const sellerSection = document.createElement('div');
+		sellerSection.className = 'dashboard-section seller-dashboard';
+
+		const sellerTitle = document.createElement('h3');
+		sellerTitle.textContent = '판매 활동 요약';
+		sellerSection.appendChild(sellerTitle);
+
+		const sellerLastUpdateInfo = createLastUpdateInfo(sellerData.sellerUpdatedDate);
+		sellerSection.appendChild(sellerLastUpdateInfo);
+
+		const sellerGrid = document.createElement('div');
+		sellerGrid.appendChild(createDashboardItem('등급',
+			sellerData.grade || '정보 없음', 'monthly-update-item'));
+		sellerGrid.className = 'dashboard-grid';
+		sellerGrid.appendChild(createDashboardItem('판매 중 상품',
+			sellerData.activeItemCount !== null ? addCommas(sellerData.activeItemCount) + '개' : '0개'));
+		sellerGrid.appendChild(createDashboardItem('누적 판매액',
+			sellerData.totalSales !== null ? addCommas(Math.round(sellerData.totalSales)) + '원' : '0원'));
+
+		sellerGrid.appendChild(document.createElement('br'));
+		
+		sellerGrid.appendChild(createDashboardItem('판매한 상품',
+			sellerData.itemCount !== null ? addCommas(sellerData.itemCount) + '개' : '0개'));
+		sellerGrid.appendChild(createDashboardItem('판매 완료',
+			sellerData.completedSellItemCount !== null ? addCommas(sellerData.completedSellItemCount) + '건' : '0건'));
+		sellerGrid.appendChild(createDashboardItem('판매 성공률',
+			sellerData.salesSuccessRate !== null ? sellerData.salesSuccessRate.toFixed(1) + '%' : '0.0%'));
+		sellerGrid.appendChild(createDashboardItem('판매 평점',
+			sellerData.avgRating !== null ? sellerData.avgRating.toFixed(1) + '점' : '0.0점'));
+
+		sellerSection.appendChild(sellerGrid);
+		dashboardDiv.appendChild(sellerSection);
+	} else {
+		const noSellerInfo = document.createElement('p');
+		noSellerInfo.textContent = '판매 활동 내역이 없습니다.';
+		noSellerInfo.className = 'empty-message';
+		dashboardDiv.appendChild(noSellerInfo);
+	}
+
+	const buyerData = dashboardData.buyerDashboardDTO;
+	if (buyerData) {
+		const buyerSection = document.createElement('div');
+		buyerSection.className = 'dashboard-section buyer-dashboard';
+
+		const buyerTitle = document.createElement('h3');
+		buyerTitle.textContent = '구매 활동 요약';
+		buyerSection.appendChild(buyerTitle);
+
+		const buyerLastUpdateInfo = createLastUpdateInfo(buyerData.buyerUpdatedDate);
+		buyerSection.appendChild(buyerLastUpdateInfo);
+
+		const buyerGrid = document.createElement('div');
+		buyerGrid.className = 'dashboard-grid';
+		buyerGrid.appendChild(createDashboardItem('총 입찰 횟수',
+			buyerData.bidCount !== null ? addCommas(buyerData.bidCount) + '회' : '0회'));
+		buyerGrid.appendChild(createDashboardItem('입찰 중 상품',
+			buyerData.activeBidItemCount !== null ? addCommas(buyerData.activeBidItemCount) + '개' : '0개'));
+			buyerGrid.appendChild(createDashboardItem('입찰한 상품',
+				buyerData.bidItemCount !== null ? addCommas(buyerData.bidItemCount) + '개' : '0개'));
+		buyerGrid.appendChild(createDashboardItem('낙찰',
+			buyerData.bidSuccessCount !== null ? addCommas(buyerData.bidSuccessCount) + '건' : '0건'));
+		buyerGrid.appendChild(createDashboardItem('낙찰률',
+			buyerData.bidSuccessRate !== null ? buyerData.bidSuccessRate.toFixed(1) + '%' : '0.0%'));
+			
+		buyerGrid.appendChild(document.createElement('br'));
+		
+		buyerGrid.appendChild(createDashboardItem('결제 완료',
+			buyerData.paySuccessCount !== null ? addCommas(buyerData.paySuccessCount) + '건' : '0건'));
+		buyerGrid.appendChild(createDashboardItem('결제율',
+			buyerData.paySuccessRate !== null ? buyerData.paySuccessRate.toFixed(1) + '%' : '0.0%'));
+
+		buyerSection.appendChild(buyerGrid);
+		dashboardDiv.appendChild(buyerSection);
+	} else {
+		const noBuyerInfo = document.createElement('p');
+		noBuyerInfo.textContent = '구매 활동 내역이 없습니다.';
+		noBuyerInfo.className = 'empty-message';
+		dashboardDiv.appendChild(noBuyerInfo);
+	}
+
+	container.appendChild(dashboardDiv);
+}
+
+function createDashboardItem(label, value, extraClass = '') {
+	const itemDiv = document.createElement('div');
+	itemDiv.className = `dashboard-item ${extraClass}`;
+
+	const labelSpan = document.createElement('span');
+	labelSpan.className = 'dashboard-item-label';
+	labelSpan.textContent = label;
+
+	const valueSpan = document.createElement('span');
+	valueSpan.className = 'dashboard-item-value';
+	valueSpan.textContent = value;
+
+	itemDiv.appendChild(labelSpan);
+	itemDiv.appendChild(valueSpan);
+	return itemDiv;
+}
+
+function createLastUpdateInfo(updatedDate) {
+	const sellerLastUpdateInfo = document.createElement('div');
+	sellerLastUpdateInfo.className = 'last-update-info';
+
+	const relativeTime = document.createElement('span');
+	relativeTime.className = 'relative-time';
+	relativeTime.textContent = getRelativeTimeString(updatedDate);
+	sellerLastUpdateInfo.appendChild(relativeTime);
+
+	const infoText = document.createElement('span');
+	infoText.textContent = `(마지막 업데이트: ${getFormattedDate(updatedDate)})`;
+	sellerLastUpdateInfo.appendChild(infoText);
+	
+	return sellerLastUpdateInfo;
 }

@@ -13,11 +13,12 @@ import kr.co.anabada.user.entity.Buyer;
 
 @Repository
 public interface BuyerRepository extends JpaRepository<Buyer, Integer> {
-	Optional<Buyer> findByUser_UserNo(Integer userNo); // userProfile
+	Optional<Buyer> findByUserUserNo(Integer userNo); // userProfile
 
 	@Query("SELECT buyerNo FROM Buyer")
 	List<Integer> findAllBuyerNos(); // userProfile
 
+	@Query("SELECT b.buyerNo FROM Buyer b WHERE b.user.userNo = :userNo")
 	Optional<Integer> findBuyerNoByUserUserNo(Integer userNo); // userProfile
 
 	@Modifying
@@ -28,7 +29,8 @@ public interface BuyerRepository extends JpaRepository<Buyer, Integer> {
 			+ "b.buyerBidSuccessCnt = :bidSuccessCount, "
 			+ "b.buyerPaySuccessCnt = :paySuccessCount, "
 			+ "b.buyerBidSuccessRate = :bidSuccessRate, "
-			+ "b.buyerPaySuccessRate = :paySuccessRate "
+			+ "b.buyerPaySuccessRate = :paySuccessRate, "
+			+ "b.buyerUpdatedDate = CURRENT_TIMESTAMP "
 			+ "WHERE b.buyerNo = :buyerNo")
 	int updateDailyBuyerStats(
 			@Param("buyerNo") Integer buyerNo,
