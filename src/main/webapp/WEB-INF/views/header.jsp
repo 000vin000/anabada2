@@ -32,7 +32,7 @@
 
         <nav>
             <ul>
-                <li><a id="loginBtn" href="/auth/login/individual/IndividualLogin.html">로그인</a></li>
+                <li><a id="loginBtn" href="/login">로그인</a></li>
                 <li><a id="joinBtn" href="/auth/join/join.html">회원가입</a></li>
                 <li><a id="mypageBtn" href="/mypage">마이페이지</a></li>
                 <li><a id="logoutBtn" href="#" onclick="logout()">로그아웃</a></li>

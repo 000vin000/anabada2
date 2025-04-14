@@ -5,7 +5,6 @@
 	<div class="user-container">
 		<div class="user-header">
 			<div id="user-name"><!-- 사용자 닉네임(아이디) --></div>
-			<a id="updateInfoBtn" href="#">회원정보 수정</a>
 		</div>
 		<div id="user-info"><!-- 사용자 정보 : 이름, 전화번호, 가입 일자  --></div>
 	</div>
@@ -137,6 +136,9 @@ window.goToUpdateInfo = goToUpdateInfo;
 <script>
 function openNewWindow(name, url) {
 	window.open(url, name, "width=500,height=300,top=200,left=600,resizable=yes,scrollbars=yes,status=no,menubar=no,toolbar=no,location=no");
+}
+function openWarnWindow(name, url) {
+	window.open(url, name, "width=650,height=500,resizable=yes,scrollbars=yes,status=no,menubar=no,toolbar=no,location=no");
 }
 </script>
 <script src="/js/mypage.js"></script>

@@ -17,6 +17,7 @@
 		<div class="profile-header">
 			<h1>${profile.userNick}(${profile.userId})의 프로필</h1>
 			<button id="favor-btn" data-seller-no="${profile.userNo}">☆</button>
+			<button class="openReportWindow" onclick="openReportWindow()">신고하기</button> <!-- syeon -->
 		</div>
 
 		<div class="profile-info">
@@ -125,6 +126,30 @@
 	<script>
 		const contextPath = '${pageContext.request.contextPath}';
 		const userNo = ${profile.userNo};
+	</script>
+
+	<!-- 신고하기 창 열림 by수연 -->
+	<script>
+	function openReportWindow() {
+		const currentUrl = window.location.href;
+
+		const reportWindow = window.open("/report", "ReportWindow", "width=700,height=600,top=200,left=650");
+
+		const sendData = () => {
+			reportWindow.postMessage({
+				warnWhere: currentUrl,
+				warnDefendantUser: "${profile.userNo}"
+			}, window.location.origin);
+		};
+
+		window.addEventListener("message", function handleAck(event) {
+			if (event.origin !== window.location.origin) return;
+			if (event.data === "READY_FOR_DATA") {
+				sendData();
+				window.removeEventListener("message", handleAck); 
+			}
+		});
+	}
 	</script>
 
 	<script type="module" src="/js/user/individual/userProfile.js"></script>

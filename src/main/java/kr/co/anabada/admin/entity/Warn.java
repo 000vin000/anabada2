@@ -136,6 +136,7 @@ public class Warn {
     }
     
     public enum WarnResult {
+    	WARNING,
     	SUSPENSION,
     	PERMANENTSTOP
     }
