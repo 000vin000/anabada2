@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Index;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +23,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "payment")
+@Table(name = "payment", indexes = {
+	    @Index(name = "idx_pay_completed_date", columnList = "payCompletedDate"),
+	    @Index(name = "idx_pay_status", columnList = "payStatus"),
+	    @Index(name = "idx_order_no", columnList = "orderNo")
+	})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
