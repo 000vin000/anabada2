@@ -77,7 +77,7 @@ public class User {
 
     // 사용자 상태 (active, inactive)
     @Enumerated(EnumType.STRING)
-    @Column(name = "userStatus", nullable = false)
+    @Column(name = "userStatus", nullable = false, length = 20)
     private UserStatus userStatus = UserStatus.ACTIVE;
 
     // 경고 횟수
