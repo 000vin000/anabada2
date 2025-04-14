@@ -48,7 +48,7 @@
 			<button class="tab-button" onclick="openTab('buy-tab')">
 				구매 아이템
 			</button>
-			<button class="tab-button logged-in-only" onclick="openTab('dashboard-tab')">
+			<button class="tab-button" onclick="openTab('dashboard-tab')">
 				대시보드
 			</button>
 		</div>

@@ -23,18 +23,20 @@ public class UserProfileSchedulerService {
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void updateSingleSellerStatistics(
 			Integer sellerNo,
-			Map<Integer, Integer> activeItemCounts,
-			Map<Integer, Integer> completedSellItemCounts,
-			Map<Integer, Double> avgRatings,
-			Map<Integer, BigDecimal> totalSales) {
-
-		int activeCount = activeItemCounts.getOrDefault(sellerNo, 0);
-		int completedCount = completedSellItemCounts.getOrDefault(sellerNo, 0);
-		double avgRating = avgRatings.getOrDefault(sellerNo, 0.0);
-		BigDecimal totalSaleAmt = totalSales.getOrDefault(sellerNo, BigDecimal.ZERO);
+			int itemCount,
+			int activeItemCount,
+			int completedSellItemCount,
+			BigDecimal totalSales,
+			double avgRating,
+			double salesSuccessRate) {
 
 		int updatedRows = sellerRepository.updateDailySellerStats(
-				sellerNo, activeCount, completedCount, avgRating, totalSaleAmt);
+				sellerNo,
+				itemCount,
+				activeItemCount,
+				completedSellItemCount, totalSales,
+				avgRating,
+				salesSuccessRate);
 
 		if (updatedRows > 0) {
 			log.debug("Successfully updated statistics for sellerNo {}", sellerNo);
@@ -53,6 +55,7 @@ public class UserProfileSchedulerService {
 			int paySuccessCount,
 			double bidSuccessRate,
 			double paySuccessRate) {
+		
 		int updatedRows = buyerRepository.updateDailyBuyerStats(
 				buyerNo,
 				bidCount,

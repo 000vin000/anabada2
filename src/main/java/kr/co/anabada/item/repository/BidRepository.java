@@ -1,6 +1,5 @@
 package kr.co.anabada.item.repository;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 

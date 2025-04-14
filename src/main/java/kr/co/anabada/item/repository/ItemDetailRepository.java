@@ -53,18 +53,24 @@ public interface ItemDetailRepository extends JpaRepository<Item, Integer> {
 	Page<Item> findByBuyerNoAndOptionalItemStatus(
 			@Param("buyerNo") Integer buyerNo, @Param("status") ItemStatus status, Pageable pageable);
 	
-	// UserProfileScheduler : activeItemCount (updateDailyStatistics)
+	// UserProfileScheduler : itemCount, activeItemCount (updateDailyStatistics)
 	@Query("SELECT i.seller.sellerNo, COUNT(i.itemNo) "
-			+ "FROM Item i WHERE i.itemStatus = :status "
+			+ "FROM Item i "
+			+ "WHERE (:status IS NULL OR i.itemStatus = :status) "
 			+ "GROUP BY i.seller.sellerNo")
-	List<Object[]> countItemsPerSellerByItemStatus(@Param("status") ItemStatus status);
+	List<Object[]> countItemsPerSellerByOptionalItemStatus(@Param("status") ItemStatus status);
 	
 	// UserProfileScheduler : activeBidItemCount (updateDailyStatistics)
 	@Query("SELECT b.buyer.buyerNo, COUNT(DISTINCT b.item.itemNo) "
 			+ "FROM Bid b JOIN b.item i "
 			+ "WHERE i.itemStatus = :itemStatus "
-			+ "AND (b.bidStatus IS NULL OR b.bidStatus = :bidStatus) "
+			+ "AND (:bidStatus IS NULL OR b.bidStatus = :bidStatus) "
 			+ "GROUP BY b.buyer.buyerNo")
 	List<Object[]> countItemsPerBuyerByItemStatusAndOptionalBidStatus(
 			@Param("itemStatus") ItemStatus itemStatus, @Param("bidStatus") BidStatus bidStatus);
+
+	@Query("SELECT b.buyer.buyerNo, COUNT(DISTINCT b.item.itemNo) "
+			+ "FROM Bid b JOIN b.item i "
+			+ "GROUP BY b.buyer.buyerNo")
+	List<Object[]> countBidItemsPerBuyer();
 }
