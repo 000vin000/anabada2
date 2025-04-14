@@ -71,9 +71,9 @@ async function verifyAuthCode() {
 
 
       localStorage.setItem("verifiedEmail", userEmail);
-      setTimeout(() => {
-		location.href = "/auth/join/individual/IndividualJoin.html";
-      }, 1500);
+	  setTimeout(() => {
+	    location.href = "/join/individual/details";
+	  }, 1500);
     } else {
       resultBox.innerText = "인증 실패: " + message;
       resultBox.style.color = "red";

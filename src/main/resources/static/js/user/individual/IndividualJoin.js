@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //인증 안 된 경우 접근 차단
     if (!verifiedEmail) {
         alert("이메일 인증을 먼저 완료해주세요.");
-        window.location.href = "/auth/join/individual/emailAuth.html";
+		window.location.href = "/join/individual/emailAuth";
         return;
     }
 

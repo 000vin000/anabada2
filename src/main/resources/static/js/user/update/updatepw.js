@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!form || !resultMessage) return;
 
-  // ✅ 실시간 유효성 검사 이벤트
+  // 실시간 유효성 검사
   document.getElementById("newPassword").addEventListener("input", () => {
     const pw = document.getElementById("newPassword").value;
     const warning = document.getElementById("passwordWarning");
@@ -33,7 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ✅ 제출 이벤트
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -58,7 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
+      // === base64 padding 보정 추가된 부분 ===
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const padded = base64.padEnd(base64.length + (4 - base64.length % 4) % 4, '=');
+      const payload = JSON.parse(atob(padded));
+
       if (payload.roles && payload.roles.includes("ROLE_SOCIAL")) {
         resultMessage.textContent = "소셜 로그인 계정은 비밀번호를 변경할 수 없습니다.";
         return;

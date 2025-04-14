@@ -21,7 +21,7 @@ public class UserPinUpdateController {
     @PutMapping
     public ResponseEntity<String> updatePin(@RequestBody @Valid UserPinUpdateRequestDto dto,
                                             HttpServletRequest request) {
-        UserTokenInfo userInfo = jwtTokenHelper.getUserNoFromRequest(request); // ✅ 인스턴스로 호출
+        UserTokenInfo userInfo = jwtTokenHelper.getUserNoFromRequest(request); 
 
         if (userInfo == null) {
             return ResponseEntity.status(401).body("인증 정보가 유효하지 않습니다.");
