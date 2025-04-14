@@ -38,7 +38,7 @@
             <table border="1">
                 <thead>
                     <tr>
-                        <th>신고 번호</th>
+                        <th>번호</th>
                         <th>신고한 유저 아이디</th>
                         <th>신고당한 유저 아이디</th>
                         <th>신고 접수일</th>
@@ -278,7 +278,6 @@
 			});
     	    console.log("신고 처리 실행!");
     	} else {
-    	    // 취소 버튼을 눌렀을 때 실행할 코드
     	    console.log("신고 취소됨");
     	}
     }
