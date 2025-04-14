@@ -9,13 +9,13 @@
 </head>
 <body>
 	<!-- 불러오기 : 신고당한 사람, 신고한 위치, 아이템 번호 -->
-	<label>신고할 유저<input type="text" id="warnDefendantUser" name="warnDefendantUser" readonly></label>
+	<input type="text" id="warnDefendantUser" name="warnDefendantUser" readonly>
 	<input type="hidden" id="warnWhere" name="warnWhere">
 	<input type="hidden" id="warnItem" name="warnItem">
 	
 	<!-- 입력받기 : 신고 사유, 신고사유 상세 -->
+	<h2>신고 사유 선택</h2>
 	<section>
-		<strong>신고 사유 선택</strong>
 		<label><input type="radio" name="warnReason" value="SPAM" onclick="showDescription('spam')" checked>스팸홍보/도배글</label>
 		<label><input type="radio" name="warnReason" value="PORNOGRAPHY" onclick="showDescription('pornography')">음란물</label>
 		<label><input type="radio" name="warnReason" value="ILLEGALITY" onclick="showDescription('illegality')">불법정보 포함</label>

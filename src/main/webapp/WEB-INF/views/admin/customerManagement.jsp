@@ -39,8 +39,8 @@
                 <thead>
                     <tr>
                         <th>번호</th>
-                        <th>신고한 유저 아이디</th>
-                        <th>신고당한 유저 아이디</th>
+                        <th>신고한 유저</th>
+                        <th>신고당한 유저</th>
                         <th>신고 접수일</th>
                         <th>신고 사유</th>
                         <th>상세보기</th>
@@ -66,7 +66,7 @@
                             </td>
 							<td>
 								<c:if test="${warn.warnWhere == 'PROFILE'}">
-									<a href="#">프로필 링크</a>
+									<a href="/user/profile/${warn.warnDefendantUser.userNo}" target="_blank" rel="noopener noreferrer">${warn.warnDefendantUser.userId}의 프로필</a>
 								</c:if>
 								<c:if test="${warn.warnWhere == 'ITEM'}">
 									<a href="/item/detail/${warn.warnItem.itemNo}" target="_blank" rel="noopener noreferrer">${warn.warnItem.itemTitle}</a>
