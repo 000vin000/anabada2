@@ -1,12 +1,8 @@
 package kr.co.anabada;
 
-import jakarta.servlet.http.HttpServletResponse;
-import kr.co.anabada.auth.handler.OAuth2LoginSuccessHandler;
-import kr.co.anabada.jwt.JwtAuthenticationFilter;
-import kr.co.anabada.jwt.JwtUtil;
-import kr.co.anabada.social.CustomOAuth2UserService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +14,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import kr.co.anabada.auth.handler.OAuth2LoginFailureHandler;
+import kr.co.anabada.auth.handler.OAuth2LoginSuccessHandler;
+import kr.co.anabada.jwt.JwtAuthenticationFilter;
+import kr.co.anabada.jwt.JwtUtil;
+import kr.co.anabada.social.CustomOAuth2UserService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 @Configuration
 @EnableWebSecurity
@@ -27,6 +31,7 @@ public class SecurityConfig {
     private final JwtUtil jwtUtil;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
@@ -50,10 +55,7 @@ public class SecurityConfig {
                     .userService(customOAuth2UserService)
                 )
                 .successHandler(oAuth2LoginSuccessHandler)
-                .failureHandler((request, response, exception) -> {
-                    log.error("OAuth2 로그인 실패: {}", exception.getMessage());
-                    response.sendRedirect("/auth/login/individual/IndividualLogin.html?error");
-                })
+                .failureHandler(oAuth2LoginFailureHandler) 
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
