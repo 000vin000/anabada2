@@ -119,7 +119,9 @@ public class User {
     public enum UserStatus {
         ACTIVE,   // 활성 상태
         INACTIVE,  // 비활성 (n일 후 삭제)
-        WITHDRAWN
+        WITHDRAWN,
+        SUSPENSION, //임시정지
+        PERMANENTSTOP //영구정지
     }
 
     // 업데이트 시 시간 자동 설정
