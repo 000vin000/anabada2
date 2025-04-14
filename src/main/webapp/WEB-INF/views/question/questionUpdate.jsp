@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>문의사항 수정</title>
+    <link rel="stylesheet" type="text/css" href="/css/question.css" />
 </head>
 <body>
     <div class="container">
@@ -25,7 +26,7 @@
             </div>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">수정하기</button>
+                <button type="submit" class="btn btn-primary">수정</button>
                 <a href="${pageContext.request.contextPath}/question/mypage/myQuestions" class="btn btn-secondary">취소</a>
             </div>
             <input type="hidden" id="questionNo" name="questionNo" value="${question.questionNo}" />

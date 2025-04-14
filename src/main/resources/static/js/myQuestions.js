@@ -25,13 +25,13 @@ function renderQuestions(questions) {
     const tableBody = document.querySelector('#questionsTable');
     tableBody.innerHTML = '';
 
-    questions.forEach(question => {
+    questions.forEach((question, index) => {
         const row = document.createElement('tr');
         row.id = `question-${question.questionNo}`;
 
         row.innerHTML = `
-            <td>${question.questionNo}</td>
-            <td>${question.questionTitle}</td>
+		<td>${index + 1}</td> <!-- 순번 처리 -->
+			<td><a href="/question/detail/${question.questionNo}?index=${index + 1}">${question.questionTitle}</a></td>
             <td>${question.questionContent}</td>
 			<td>
 			  ${question.answers && question.answers.length > 0
@@ -40,6 +40,8 @@ function renderQuestions(questions) {
 			</td>
             <td>
                 <a href="/question/edit/${question.questionNo}">수정</a>
+			</td>
+			<td>
                 <button data-question-no="${question.questionNo}">삭제</button>
             </td>
         `;
