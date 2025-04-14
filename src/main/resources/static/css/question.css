@@ -1,0 +1,198 @@
+/* 공통 스타일 */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 20px;
+}
+
+/* 제목 공통 */
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* 링크 */
+a, .back-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #007BFF;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+a:hover, .back-link:hover {
+    text-decoration: underline;
+}
+
+/* 문의 작성 폼 스타일 */
+.container {
+    width: 500px;
+    margin: 50px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 15px;
+    color: #444;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+input[type="checkbox"] {
+    margin-top: 10px;
+}
+
+input[type="submit"] {
+    margin-top: 20px;
+    width: 100%;
+    background-color: #21afbf;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #1a94a2;
+}
+
+/* 내 문의사항 목록 테이블 */
+table {
+    width: 90%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: center;
+}
+
+table th {
+    background-color: #21afbf;
+    color: white;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* 답변 관련 스타일 */
+.answer {
+    background-color: #eef7ff;
+    padding: 10px;
+    border-radius: 6px;
+    margin: 5px 0;
+}
+
+.waiting {
+    color: #888;
+    font-style: italic;
+}
+
+/* 버튼 스타일 */
+.buttons {
+    text-align: center;
+}
+
+.btn {
+    display: inline-block;
+    margin: 10px 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: white;
+    background-color: #21afbf;
+    transition: background-color 0.3s;
+    border: none;
+}
+
+.btn:hover {
+    background-color: #1a94a2;
+}
+
+.btn.back {
+    background-color: #6c757d;
+}
+
+.btn.back:hover {
+    background-color: #5a6268;
+}
+/* delete-btn 스타일 */
+.delete-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: #dcdcdc; 
+    color: #333;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #5a6268; /* hover 시 색상 회색 톤으로 변경 */
+}
+
+/* 삭제 버튼을 포함하는 테이블 셀 넓이 조정 */
+td button.delete-btn {
+    width: 90px; /* 버튼을 조금 넓게 설정 */
+}
+
+
+
+/* 문의사항 상세보기 스타일 */
+.container {
+    width: 700px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+table.question-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #007BFF;
+    color: white;
+    width: 20%;
+}

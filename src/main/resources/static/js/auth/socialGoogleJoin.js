@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem("Token", result.token);
         }
         alert("소셜 회원가입이 완료되었습니다.");
-        window.location.href = "/user/mypage";
+        window.location.href = "/mypage";
       } else {
         const err = await res.text();
         alert("회원가입 실패: " + err);

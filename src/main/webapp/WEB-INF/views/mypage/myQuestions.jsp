@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>내 문의사항 목록</title>
+    <link rel="stylesheet" type="text/css" href="/css/question.css" />
 </head>
 <body>
 
@@ -17,13 +18,14 @@
             <th>문의 제목</th>
             <th>문의 내용</th>
             <th>답변 내용</th>
-            <th>작업</th>
+            <th>수정</th>
+            <th>삭제</th>
         </tr>
     </thead>
     <tbody id="questionsTable">
     </tbody>
 </table>
 <script type="module" src="/js/myQuestions.js"></script>
-<p><a href="/mypage">마이페이지로 돌아가기</a></p>
+<p><a href="/mypage">← 마이페이지로 돌아가기</a></p>
 </body>
 </html>

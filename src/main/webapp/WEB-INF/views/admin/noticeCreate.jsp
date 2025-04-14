@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>공지사항 등록</title>
+    <link rel="stylesheet" href="/css/notice.css" />
 </head>
 <body>
 
@@ -16,8 +17,8 @@
         <label for="noticeContent">내용:</label><br>
         <textarea id="noticeContent" name="noticeContent" rows="5" cols="40" required></textarea><br>
 
-        <input type="submit" value="등록">
-        <a href="/admin/management"><button type="button">취소</button></a>
+        <button type="submit" class="btn btn-primary">등록</button>
+        <a href="/admin/management"><button type="button" class="btn btn-primary">취소</button></a>
     </form>
     <script type="module" src="/js/admin/noticeCreate.js"></script>
 </body>

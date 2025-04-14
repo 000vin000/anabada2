@@ -6,32 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <title>공지사항 목록</title>
-    <style>
-        table {
-            width: 70%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            margin: 20px auto;
-        }
-
-        th, td {
-            border: 1px solid #aaa;
-            padding: 10px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        h2 {
-            text-align: center;
-            margin-top: 40px;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/notice.css" />
 </head>
 <body>
-    <h2>공지사항 목록</h2>
+    <h1>공지사항 목록</h1>
     <table>
         <thead>
             <tr>
@@ -42,9 +20,9 @@
             </tr>
         </thead>
         <tbody>
-            <c:forEach var="notice" items="${noticeList}">
+            <c:forEach var="notice" items="${noticeList}" varStatus="status">
                 <tr>
-                    <td>${notice.noticeNo}</td>
+                    <td>${status.index + 1}</td>
                     <td>${notice.noticeTitle}</td>
                     <td>${notice.noticeContent}</td>
                     <td>${notice.noticeCreatedDate}</td>
@@ -52,6 +30,6 @@
             </c:forEach>
         </tbody>
     </table>
-    <p><a href="/mypage">마이페이지로 돌아가기</a></p>
+    <a class="back-link" href="/mypage">← 마이페이지로 돌아가기</a>
 </body>
 </html>

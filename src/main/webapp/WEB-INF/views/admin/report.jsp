@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>유저 신고하기</title>
+<title>신고하기</title>
 <link rel="stylesheet" type="text/css" href="/css/reportUser.css">
 </head>
 <body>
@@ -26,7 +26,7 @@
    	</section>
    	
    	<!-- 설명 -->
-	<div id="spam" class="description">
+	<div id="spam" class="description" style="display: block;">
 		<ul>
 			<li>사행성 오락이나 도박을 홍보하거나 권장하는 내용 등의 부적절한 스팸 홍보 행위</li>
 			<li>동일하거나 유사한 내용 반복 게시</li>
