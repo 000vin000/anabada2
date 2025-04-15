@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>월매출 상세보기</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
 </head>
 <body>
 
