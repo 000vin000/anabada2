@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>${date} 수수료 내역</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
 </head>
 <body>
     <h1>${date} 수수료 내역</h1>
