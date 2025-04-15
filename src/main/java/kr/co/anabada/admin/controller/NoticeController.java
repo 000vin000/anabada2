@@ -6,8 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.anabada.admin.entity.Notice;
+import kr.co.anabada.admin.repository.NoticeRepository;
 import kr.co.anabada.admin.service.NoticeService;
 
 @Controller
@@ -16,6 +18,8 @@ public class NoticeController {
 	
 	@Autowired
 	private NoticeService noticeService;
+	
+
     
     // 공지사항 작성 페이지
     @GetMapping("/create")
@@ -36,4 +40,14 @@ public class NoticeController {
         model.addAttribute("noticeList", noticeService.getAllNotices());
         return "mypage/noticeList";
     }
+    
+    @GetMapping("/detail")
+    public String noticeDetail(@RequestParam("noticeNo") Integer noticeNo, Model model) {
+        Notice notice = noticeService.getNoticeById(noticeNo);
+
+        model.addAttribute("notice", notice);
+
+        return "mypage/noticeDetail";
+    }
+
 }
