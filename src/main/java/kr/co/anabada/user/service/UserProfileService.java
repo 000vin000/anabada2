@@ -1,7 +1,5 @@
 package kr.co.anabada.user.service;
 
-import java.util.Arrays;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,8 +25,10 @@ import kr.co.anabada.user.entity.User;
 import kr.co.anabada.user.repository.BuyerRepository;
 import kr.co.anabada.user.repository.SellerRepository;
 import kr.co.anabada.user.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class UserProfileService {
 	@Autowired
 	private JwtAuthHelper jwtAuthHelper;
@@ -89,11 +89,7 @@ public class UserProfileService {
 	private Page<UserProfileDTO.ItemSummaryDTO> getItems(
 			UserRole role, Integer targetUserNo, boolean isOwnProfile, int page, int size, String status, String sort) {
 		Pageable pageable = getPageableBySort(page, size, sort);
-		Page<Item> items;
-		
-		items = Arrays.stream(ItemStatus.values()).anyMatch(s -> s.name().equalsIgnoreCase(status))
-				? getItemsByRoleAndOptionalStatus(role, targetUserNo, status, pageable)
-				: getItemsByRoleAndOptionalStatus(role, targetUserNo, null, pageable);
+		Page<Item> items = getItemsByRoleAndOptionalStatus(role, targetUserNo, status, pageable);
 
 		if (isOwnProfile) {
 			Integer buyerNo = buyerRepository.findBuyerNoByUserUserNo(targetUserNo).orElse(null);
@@ -105,17 +101,24 @@ public class UserProfileService {
 	}
 
 	private Page<Item> getItemsByRoleAndOptionalStatus(UserRole role, Integer userNo, String status, Pageable pageable) {
-		if (role == UserRole.SELLER) {
-			return (status == null)
-					? itemDetailRepository.findBySellerUserUserNo(userNo, pageable)
-					: itemDetailRepository.findBySellerUserUserNoAndItemStatus(
-							userNo, ItemStatus.valueOf(status.toUpperCase()), pageable);
-		} else {
-			return buyerRepository.findBuyerNoByUserUserNo(userNo)
-					.map(buyerNo -> itemDetailRepository.findByBuyerNoAndOptionalItemStatus(buyerNo, null, pageable))
-					.orElseGet(() -> {
-	                    return Page.empty(pageable);
-	                });
+		ItemStatus statusEnum = null;
+		if (!status.equalsIgnoreCase("all") && status != null && !status.trim().isEmpty()) {
+			try {
+				statusEnum = ItemStatus.valueOf(status.toUpperCase());
+			} catch (IllegalArgumentException ignore) {
+				log.warn("status 변환 실패: 입력값 '{}'", status);
+			}
+		}
+		
+		switch (role) {
+		case SELLER:
+			return itemDetailRepository.findBySellerUserNoAndOptionalItemStatus(
+						userNo, statusEnum, pageable);
+		case BUYER:
+			return itemDetailRepository.findByBuyerUserNoAndOptionalItemStatus(
+					userNo, statusEnum, pageable);
+		default:
+			return Page.empty(pageable);
 		}
 	}
 
