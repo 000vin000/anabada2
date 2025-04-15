@@ -174,10 +174,4 @@ document.addEventListener("DOMContentLoaded", function () {
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    leaveButton.addEventListener("click", () => {
-        if (socket.readyState === WebSocket.OPEN) {
-            socket.send(JSON.stringify({ messageType: "LEAVE" }));
-            socket.close();
-        }
-    });
 });
