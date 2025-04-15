@@ -28,9 +28,7 @@ public class UserProfileDTO {
 	private Integer userNo;
 	private String userId;
 	private String userNick;
-//	private String profileImage;
 	private LocalDateTime userCreatedDate;
-//	private int trustScore;
 
 	private int sellerItemCnt;
 	private double sellerAvgRating;

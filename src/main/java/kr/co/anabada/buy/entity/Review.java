@@ -3,13 +3,11 @@ package kr.co.anabada.buy.entity;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.*;
-import kr.co.anabada.item.entity.Bid;
+import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.user.entity.Buyer;
 import kr.co.anabada.user.entity.Seller;
-import kr.co.anabada.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,15 +26,15 @@ public class Review {
     @Column(name = "reviewNo")
     private Integer reviewNo;
 
-    @ManyToOne
-    @JoinColumn(name = "bidNo", nullable = false)  
-    private Bid bid; 
+    @OneToOne
+    @JoinColumn(name = "itemNo", nullable = false)  
+    private Item item; // 아이템 기준 리뷰 조회 복잡성 낮추기
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "sellerNo", nullable = false) 
     private Seller seller; 
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "buyerNo", nullable = false) 
     private Buyer buyer;  
 
@@ -48,10 +46,5 @@ public class Review {
 
     @CreationTimestamp
     @Column(name = "reviewCreatedDate", nullable = false, updatable = false)
-    private LocalDateTime reviewCreatedDate; 
-
-    @UpdateTimestamp
-    @Column(name = "reviewUpdatedDate", nullable = false)
-    private LocalDateTime reviewUpdatedDate; 
-
+    private LocalDateTime reviewCreatedDate;
 }
