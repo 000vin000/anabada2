@@ -36,8 +36,7 @@ import kr.co.anabada.user.service.UserService;
 @RequestMapping("/api/chat")
 public class ChatRestController {
 
-    @Autowired
-    private static Logger logger = LoggerFactory.getLogger(ChatRestController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ChatRestController.class);
 
     @Autowired
     private ChatRoomService chatRoomService;
