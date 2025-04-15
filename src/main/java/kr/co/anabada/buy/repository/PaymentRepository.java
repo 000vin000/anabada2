@@ -45,23 +45,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
     	List<Object[]> sumTotalSalesByDateRangeWithPaymentId(@Param("startDate") LocalDateTime startDate, 
     	                                                     @Param("endDate") LocalDateTime endDate);
     
-    @Query("SELECT COUNT(*) FROM Payment p JOIN p.order o "
-    	 + "WHERE o.seller.sellerNo = :sellerNo AND p.payStatus = 'PAID'")
-    int countBySellerNo(@Param("sellerNo") Integer sellerNo); //userProfile
-
-    @Query("SELECT SUM(p.payPrice) FROM Payment p JOIN p.order o "
-    	 + "WHERE o.seller.sellerNo = :sellerNo AND p.payStatus = 'PAID'")
-    BigDecimal sumSalesBySellerNo(@Param("sellerNo") Integer sellerNo); //userProfile
-
-	@Query("SELECT COUNT(*) FROM Payment p JOIN p.order o "
-		 + "WHERE o.seller.sellerNo = :sellerNo AND p.payStatus = 'PAID' "
-		 + "AND p.payCompletedDate BETWEEN :startDate AND :endDate")
-	int countBySellerNoAndDateRange(
-			@Param("sellerNo") Integer sellerNo, 
-			@Param("startDate") LocalDateTime startDate, 
-			@Param("endDate") LocalDateTime endDate
-    ); //userProfile
-
 	// UserProfileScheduler : totalSales (from updateDailyStatistics)
 	@Query("SELECT p.order.item.seller.sellerNo, SUM(p.payPrice) "
 			+ "FROM Payment p "
@@ -82,4 +65,16 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 			+ "WHERE p.payStatus = :status "
 			+ "GROUP BY p.order.buyer.buyerNo")
 	List<Object[]> countPaysPerBuyerByPayStatus(@Param("status") PayStatus status);
+	
+    // UserProfileScheduler : grade (from updateMonthlyStatistics)
+	@Query("SELECT p.order.item.seller.sellerNo, COUNT(p.payNo) "
+			+ "FROM Payment p "
+			+ "WHERE p.payStatus = :status "
+			+ "AND p.payCompletedDate >= :startDate "
+			+ "AND p.payCompletedDate < :endDate "
+			+ "GROUP BY p.order.item.seller.sellerNo")
+	List<Object[]> countMonthlyCompletedSalesPerSeller(
+			@Param("status") PayStatus status,
+			@Param("startDate") LocalDateTime startDate,
+			@Param("endDate") LocalDateTime endDate);
 }

@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
-import kr.co.anabada.buy.repository.ReviewRepository;
 import kr.co.anabada.item.entity.Item;
-import kr.co.anabada.item.entity.Bid.BidStatus;
 import kr.co.anabada.item.entity.Item.ItemStatus;
 import kr.co.anabada.item.repository.BidRepository;
 import kr.co.anabada.item.repository.ItemDetailRepository;
@@ -40,8 +38,6 @@ public class UserProfileService {
 	private ItemDetailRepository itemDetailRepository;
 	@Autowired
 	private BidRepository bidRepository;
-	@Autowired
-	private ReviewRepository reviewRepository;
 	@Autowired
 	private SellerRepository sellerRepository;
 	@Autowired
@@ -155,8 +151,7 @@ public class UserProfileService {
 		UserProfileDTO.AuthenticatedItemSummaryDTO dto =
 				new UserProfileDTO.AuthenticatedItemSummaryDTO();
 		BeanUtils.copyProperties(getItemSummaryDTO(item), dto);
-		dto.setReviewed(reviewRepository.existsByBidItemItemNoAndBidBuyerBuyerNoAndBidBidStatus(
-				item.getItemNo(), buyerNo, BidStatus.WINNING));
+//		dto.setReviewed(); // TODO 리뷰버튼 노출 로직 구현 필요
 
 		return dto;
 	}

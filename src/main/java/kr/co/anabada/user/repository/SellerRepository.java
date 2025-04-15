@@ -27,9 +27,12 @@ public interface SellerRepository extends JpaRepository<Seller, Integer> {
 	@Query("SELECT sellerNo FROM Seller")
 	List<Integer> findAllSellerNos(); // userProfile
 
+	 // UserProfileService : updateSingleSellerGrade
 	@Modifying
 	@Query("UPDATE Seller SET sellerGrade = :sellerGrade WHERE sellerNo = :sellerNo")
-	int updateSellerGrade(@Param("sellerNo") Integer sellerNo, @Param("sellerGrade") SellerGrade sellerGrade); // userProfile
+	int updateSellerGrade(
+			@Param("sellerNo") Integer sellerNo,
+			@Param("sellerGrade") SellerGrade sellerGrade);
 
 	// UserProfileService : updateSingleSellerStatistics
 	@Modifying
