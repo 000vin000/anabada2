@@ -105,11 +105,11 @@ public class FavorService {
 
 	public List<FavorItem> findItemByUser(Integer userNo) {
 		User user = getUserById(userNo);
-		return favorItemRepo.findByUser(user);
+		return favorItemRepo.findByUserOrderByFavorCreatedDateDesc(user);
 	}
 	
 	public List<FavorSeller> findSellerByUser(Integer userNo) {
 		User user = getUserById(userNo);
-		return favorSellerRepo.findByUser(user);
+		return favorSellerRepo.findByUserOrderByFavorCreatedDateDesc(user);
 	}
 }
