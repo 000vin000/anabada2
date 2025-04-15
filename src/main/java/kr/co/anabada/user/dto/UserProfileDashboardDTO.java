@@ -2,8 +2,6 @@ package kr.co.anabada.user.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
 
 import kr.co.anabada.user.entity.Buyer;
 import kr.co.anabada.user.entity.Seller;
@@ -44,8 +42,9 @@ public class UserProfileDashboardDTO {
 					.itemCount(seller.getSellerItemCnt())
 					.activeItemCount(seller.getSellerActiveItemCnt())
 					.completedSellItemCount(seller.getSellerCompletedSellItemCnt())
-					.salesSuccessRate(seller.getSellerSalesSuccessRate())
+					.totalSales(seller.getSellerTotalSales())
 					.avgRating(seller.getSellerAvgRating())
+					.salesSuccessRate(seller.getSellerSalesSuccessRate())
 					.grade(seller.getSellerGrade().getKorean())
 					.sellerUpdatedDate(seller.getSellerUpdatedDate())
 					.build();

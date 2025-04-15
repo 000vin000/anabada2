@@ -1,6 +1,8 @@
 package kr.co.anabada.user.scheduler;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +20,8 @@ import kr.co.anabada.item.entity.Bid.BidStatus;
 import kr.co.anabada.item.entity.Item.ItemStatus;
 import kr.co.anabada.item.repository.BidRepository;
 import kr.co.anabada.item.repository.ItemDetailRepository;
+import kr.co.anabada.user.entity.Seller.SellerGrade;
+import kr.co.anabada.user.repository.SellerRepository;
 import kr.co.anabada.user.service.UserProfileSchedulerService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,6 +38,8 @@ public class UserProfileScheduler {
 	private ReviewRepository reviewRepository;
 	@Autowired
 	private BidRepository bidRepository;
+	@Autowired
+	private SellerRepository sellerRepository;
 
 	@Scheduled(cron = "0 0 2 * * *")
 	public void updateDailyStatistics() {
@@ -64,7 +70,7 @@ public class UserProfileScheduler {
 		allSellerNos.addAll(totalSales.keySet());
 		allSellerNos.addAll(avgRatings.keySet());
 
-		log.info("Found {} sellers to update.", allSellerNos.size());
+		log.info("Found {} sellers to update", allSellerNos.size());
 
 		int successSellerCount = 0;
 		int failSellerCount = 0;
@@ -148,6 +154,52 @@ public class UserProfileScheduler {
 		    }
 		}
 		log.info("Buyer daily statistics update finished. Success: {}, Fail: {}", successBuyerCount, failBuyerCount);
+	}
+	
+	@Scheduled(cron = "0 0 3 1 * *")
+	public void updateMonthlySellerGradeJob() {
+		log.info("Starting monthly seller grade update job...");
+
+		YearMonth lastMonth = YearMonth.now().minusMonths(1);
+		LocalDateTime startDate = lastMonth.atDay(1).atStartOfDay(); // 지난달 1일 0시 0분 0초
+		LocalDateTime endDate = YearMonth.now().atDay(1).atStartOfDay(); // 이번달 1일 0시 0분 0초
+
+		Map<Integer, Integer> monthlySalesCounts;
+		try {
+			monthlySalesCounts = listToMap(
+					paymentRepository.countMonthlyCompletedSalesPerSeller(PayStatus.PAID, startDate, endDate));
+			log.info("Calculated last month's sales counts for {} sellers", monthlySalesCounts.size());
+		} catch (Exception e) {
+			log.error("Failed to calculate monthly sales counts. Aborting grade update", e);
+			return;
+		}
+
+		List<Integer> allSellerNos;
+		try {
+			allSellerNos = sellerRepository.findAllSellerNos();
+		} catch (Exception e) {
+			log.error("Failed to retrieve all seller IDs. Aborting grade update", e);
+			return;
+		}
+
+		log.info("Processing grades for {} total sellers", allSellerNos.size());
+		int successCount = 0;
+		int failCount = 0;
+
+		for (Integer sellerNo : allSellerNos) {
+			try {
+				int itemCount = monthlySalesCounts.getOrDefault(sellerNo, 0);
+				SellerGrade newGrade = SellerGrade.fromSalesCount(itemCount);
+				newUserProfileSchedulerService.updateSingleSellerGrade(sellerNo, newGrade);
+				successCount++;
+
+			} catch (Exception e) {
+				failCount++;
+				log.error("Failed to update grade for sellerNo {}: {}", sellerNo, e.getMessage(), e);
+			}
+		}
+
+		log.info("Monthly seller grade update job finished. Success: {}, Fail: {}", successCount, failCount);
 	}
 
 	private double calculateRate(int numerator, int denominator) {

@@ -30,8 +30,12 @@
             text-decoration: underline;
         }
         .chart-container {
+        	display: flex;
             width: 100%;
             height: 400px;
+            align-items: center;
+    		justify-content: center;
+    		margin: 30px 0;
         }
     </style>
 </head>
@@ -56,6 +60,12 @@
         <p><strong>₩${todaySalesAmount}</strong></p>
         <a href="/admin/daily-details">상세보기</a>
     </div>
+    
+    <!-- 일매출 그래프 -->
+    <div class="chart-container">
+        <h3>일매출</h3>
+        <canvas id="dailySalesChart"></canvas>
+    </div>
 
     <div class="dashboard-box">
         <h3>주매출</h3>
@@ -67,12 +77,6 @@
         <h3>월매출</h3>
         <p><strong>₩${monthlySalesTotal}</strong></p>
         <a href="/admin/monthly-details">상세보기</a>
-    </div>
-
-    <!-- 일매출 그래프 -->
-    <div class="chart-container">
-        <h3>일매출</h3>
-        <canvas id="dailySalesChart"></canvas>
     </div>
 
     <!-- 월매출 그래프 -->

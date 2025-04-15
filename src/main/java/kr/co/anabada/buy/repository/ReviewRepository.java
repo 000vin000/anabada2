@@ -12,12 +12,7 @@ import kr.co.anabada.item.entity.Bid.BidStatus;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Integer> {
-	boolean existsByBidItemItemNoAndBidBuyerBuyerNoAndBidBidStatus(
-			@Param("itemNo") Integer itemNo,
-			@Param("buyerNo") Integer buyerNo,
-			@Param("bidStatus") BidStatus bidStatus); //userProfile
-	
-	// UserProfileScheduler : updateDailyStatistics
+	// UserProfileScheduler : avgRatings (from updateDailyStatistics)
 	@Query("SELECT r.seller.sellerNo, AVG(r.reviewRating) "
 			+ "FROM Review r "
 			+ "WHERE r.seller IS NOT NULL "

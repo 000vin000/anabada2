@@ -8,7 +8,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${profile.userNick}의 프로필</title>
-<link rel="stylesheet" type="text/css" href="/css/userProfile.css">
 <link rel="stylesheet" type="text/css" href="/css/style.css">
 <link rel="stylesheet" type="text/css" href="/css/userProfile.css">
 </head>
@@ -109,9 +108,7 @@
 				<h2>대시보드</h2>
 			</div>
 			<div id="dashboard-container">
-				<p>UserProfileDashboardDTO 조회</p>
-				<p>- 추가 정보</p>
-				<p>- 대시보드 등</p>
+				<!-- 대시보드는 JavaScript로 렌더링 -->
 			</div>
 		</div>
 	</div>
