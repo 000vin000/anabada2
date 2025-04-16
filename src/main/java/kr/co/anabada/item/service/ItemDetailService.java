@@ -50,35 +50,9 @@ public class ItemDetailService {
 	public ItemDetailDTO getItemDetailDTO(Integer itemNo) {
 		Item item = getItem(itemNo);
 		int imageCount = imageRepository.countByItemNo(item);
-
 //		incrementViewCount(itemNo, userNo);
 
-		ItemDetailDTO dto = ItemDetailDTO.builder()
-				.itemNo(item.getItemNo())
-				.itemSaleType(item.getItemSaleType().getKorean())
-				.itemTitle(item.getItemTitle())
-				.itemContent(item.getItemContent())
-				.itemStatus(item.getItemStatus().getKorean())
-				.itemQuality(item.getItemQuality() != null ? item.getItemQuality().getKorean() : null)
-				.itemQuantity(item.getItemQuantity())
-				.itemPrice(item.getItemPrice())
-				.itemViewCnt(item.getItemViewCnt())
-				.itemAvgRating(item.getItemAvgRating())
-				.itemLatitude(item.getItemLatitude())
-				.itemLongitude(item.getItemLongitude())
-				.itemPurcConfirmed(item.isItemPurcConfirmed())
-				.itemSaleConfirmed(item.isItemSaleConfirmed())
-				.itemSaleStartDate(item.getItemSaleStartDate())
-				.itemSaleEndDate(item.getItemSaleEndDate())
-				.itemResvStartDate(item.getItemResvStartDate())
-				.itemResvEndDate(item.getItemResvEndDate())
-				.itemCreatedDate(item.getItemCreatedDate())
-				.itemUpdatedDate(item.getItemUpdatedDate())
-				.sellerNo(item.getSeller().getUser().getUserNo())
-				.sellerNick(item.getSeller().getUser().getUserNick())
-				.categoryName(item.getCategory().getCategoryName())
-				.imageCount(imageCount).build();
-
+		ItemDetailDTO dto = ItemDetailDTO.fromEntity(item, imageCount);
 		return dto;
 	}
 
@@ -88,10 +62,10 @@ public class ItemDetailService {
 		return loggedInUserNo;
 	}
 
-	@Transactional
-	public void incrementViewCount(Integer itemNo, Integer userNo) {
-		itemDetailRepository.incrementItemViewCount(itemNo, userNo);
-	}
+//	@Transactional
+//	public void incrementViewCount(Integer itemNo, Integer userNo) {
+//		itemDetailRepository.incrementItemViewCount(itemNo, userNo);
+//	}
 
 	public BigDecimal getPrice(Integer itemNo) {
 		return itemDetailRepository.findItemPriceByItemNo(itemNo)
