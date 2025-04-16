@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String userId = jwtUtil.extractUserId(token);
             List<String> roles = jwtUtil.extractRoles(token);
 
-            log.info("Extracted userId: " + userId + ", roles: " + roles);
+            //log.info("Extracted userId: " + userId + ", roles: " + roles);
 
             User user = userJoinRepository.findByUserId(userId)
                     .orElse(null);
