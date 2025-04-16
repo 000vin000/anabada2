@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import kr.co.anabada.user.dto.IndividualUserJoinDTO;
 import kr.co.anabada.user.entity.Buyer;
 import kr.co.anabada.user.entity.Seller;
@@ -97,8 +98,14 @@ public class IndividualUserJoinService {
         Seller newSeller = Seller.builder().user(user).sellerDesc(userJoinDTO.getUserNick() + "의 옷장").sellerType(SellerType.INDIVIDUAL).build();
         Buyer newBuyer = Buyer.builder().user(user).build();
         log.info("회원가입 요청: {}", user);
-
-        userJoinRepository.save(user);
+        
+        individualUserJoinTransaction(user, newSeller, newBuyer);
+    }
+    
+    // 로그인 시도시 구매자 판매자 정보가 생성되지 않으면 유저도 생성되지 않는 트랜잭션 : jhu
+    @Transactional
+    public void individualUserJoinTransaction(User user, Seller newSeller, Buyer newBuyer) {
+    	userJoinRepository.save(user);
         sellerRepo.save(newSeller);
         buyerRepo.save(newBuyer);
         log.info("회원가입 완료! userUpdatedDate={}", user.getUserUpdatedDate());
