@@ -11,7 +11,7 @@ import kr.co.anabada.user.entity.User;
 
 @Repository
 public interface FavorItemRepository extends JpaRepository<FavorItem, Integer> {
-	List<FavorItem> findByUser(User user);
+	List<FavorItem> findByUserOrderByFavorCreatedDateDesc(User user);
 	FavorItem findByUserAndItem(User user, Item item);
 	int countByUserAndItem(User user, Item item);
 	void deleteByUserAndItem(User user, Item item);
