@@ -1,7 +1,5 @@
 package kr.co.anabada.common.advice;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,11 +8,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import kr.co.anabada.item.exception.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
-	private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-
 	@Getter
 	@AllArgsConstructor
 	private static class ErrorResponse {
@@ -24,7 +22,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException ex) {
-		log.warn("리소스 검색 실패: {}", ex.getMessage()); // 간단한 로그 기록
+		log.warn("리소스 검색 실패: {}", ex.getMessage());
 		ErrorResponse response = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
