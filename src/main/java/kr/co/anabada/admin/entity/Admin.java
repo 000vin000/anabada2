@@ -57,5 +57,19 @@ public class Admin {
     
     @Column(name = "admin_pw", updatable = false)
     private String adminPw;
+    
+    public static Admin createDefaultAdmin(User user, String adminDept) {
+        Admin admin = new Admin();
+        admin.setUser(user);
+        admin.setAdminId(user.getUserId());
+        admin.setAdminPw(user.getUserPw());
+        admin.setAdminLevel((byte) 1);
+        admin.setCanManageIndivisual(true);
+        admin.setCanManageBrand(true);
+        admin.setCanManageFinances(true);
+        admin.setAdminDept(adminDept);
+        return admin;
+    }
+
 
 }

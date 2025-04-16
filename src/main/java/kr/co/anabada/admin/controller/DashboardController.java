@@ -55,8 +55,8 @@ public class DashboardController {
         }
 
         // 일매출 데이터를 차트용 데이터로 변환
-        List<String> dailySalesLabels = new ArrayList<>();
-        List<Double> dailySalesAmounts = new ArrayList<>();
+        List<String> dailySalesLabels = new ArrayList<>(); // x축
+        List<Double> dailySalesAmounts = new ArrayList<>(); // y축
 
         // 날짜 포맷터 정의 (MM/dd 형식)
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd");
