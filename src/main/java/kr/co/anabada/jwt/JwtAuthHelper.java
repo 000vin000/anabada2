@@ -21,7 +21,7 @@ public class JwtAuthHelper {
 
             UserTokenInfo userTokenInfo = new UserTokenInfo(userId, userNo, userType, nickname);
             
-            System.out.println("userTokenInfo: " + userTokenInfo);
+            //System.out.println("userTokenInfo: " + userTokenInfo);
             
             return userTokenInfo;
         }

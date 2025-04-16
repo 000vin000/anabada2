@@ -85,64 +85,55 @@ public class UserAdminRestController {
 	        }
 	    }
 
-    @PostMapping("/change-role")
-    public ResponseEntity<?> changeUserRole(@RequestBody Map<String, String> data, HttpServletRequest req) {
-    	// 관리자 로그인 확인
-        UserTokenInfo authUser = jwtAuthHelper.getUserFromRequest(req);
-        if (authUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("관리자 로그인 필요");
-        }
+	 @PostMapping("/change-role")
+	    public ResponseEntity<?> changeUserRole(@RequestBody Map<String, String> data, HttpServletRequest req) {
+	        // 관리자 로그인 확인
+	        UserTokenInfo authUser = jwtAuthHelper.getUserFromRequest(req);
+	        if (authUser == null) {
+	            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("관리자 로그인 필요");
+	        }
 
-        Admin authAdmin = adminService.findByUserNo(authUser.getUserNo());
-        if (authAdmin == null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("관리자 권한 없음");
-        }
+	        Admin authAdmin = adminService.findByUserNo(authUser.getUserNo());
+	        if (authAdmin == null) {
+	            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("관리자 권한 없음");
+	        }
 
-    	
-    	
-    	String userId = data.get("userId");
-        String newRole = data.get("newRole");
-        String adminDept = data.getOrDefault("adminDept", "관리부서");
+	        String userId = data.get("userId");
+	        String newRole = data.get("newRole");
+	        String adminDept = data.getOrDefault("adminDept", "관리부서");
 
-        User user = userRepository.findByUserId(userId);
-        if (user == null) {
-            return ResponseEntity.status(404).body("사용자 없음");
-        }
+	        User user = userRepository.findByUserId(userId);
+	        if (user == null) {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자 없음");
+	        }
 
-        try {
-            UserType role = UserType.valueOf(newRole);
-            user.setUserType(role);
-            userRepository.save(user);
+	        try {
+	            UserType role = UserType.valueOf(newRole);
+	            user.setUserType(role);
+	            userRepository.save(user);
 
-            if (role == UserType.ADMIN) {
-                Admin admin = adminRepository.findByUser(user);
-                if (admin == null) {
-                    admin = new Admin();
-                    admin.setUser(user);
-                    admin.setAdminLevel((byte) 1);
-                    admin.setCanManageIndivisual(true);
-                    admin.setCanManageBrand(true);
-                    admin.setCanManageFinances(true);
-                    admin.setAdminId(user.getUserId());
-                    admin.setAdminPw(user.getUserPw()); 
-                }
-                admin.setAdminDept(adminDept);
-                adminRepository.save(admin);
-            } else {
-                Admin existingAdmin = adminRepository.findByUser(user);
-                if (existingAdmin != null) {
-                    adminRepository.delete(existingAdmin);
-                    System.out.println("admin 테이블에서 권한 삭제 완료");
-                }
-            }
-            boolean isSelfChange = authUser.getUserId().equals(userId);
+	            // ADMIN 권한 부여
+	            if (role == UserType.ADMIN) {
+	                Admin admin = adminRepository.findByUser(user);
+	                if (admin == null) {
+	                    admin = Admin.createDefaultAdmin(user, adminDept);  // 정적 팩토리 메서드 사용
+	                } else {
+	                    admin.setAdminDept(adminDept);  // 관리자 부서 업데이트
+	                }
+	                adminRepository.save(admin);
+	            } else {
+	                // 관리자 권한 삭제
+	                Admin existingAdmin = adminRepository.findByUser(user);
+	                if (existingAdmin != null) {
+	                    adminRepository.delete(existingAdmin);
+	                }
+	            }
 
-
-            return ResponseEntity.ok(Map.of("message", "권한 변경 성공", "selfChange", isSelfChange));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("서버 오류: " + e.getMessage());
-        }
-    }
-
-}
+	            boolean isSelfChange = authUser.getUserId().equals(userId);
+	            return ResponseEntity.ok(Map.of("message", "권한 변경 성공", "selfChange", isSelfChange));
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류: " + e.getMessage());
+	        }
+	    }
+	}
