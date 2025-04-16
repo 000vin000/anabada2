@@ -478,6 +478,7 @@ nav ul li a:hover {
     cursor: pointer; /* 마우스 오버 시 클릭 가능하게 */
     display: flex;
     align-items: center;
+    margin-right: 12px;
     padding: 0;
     line-height: 1;
 }

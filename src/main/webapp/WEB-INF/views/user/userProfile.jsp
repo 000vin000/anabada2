@@ -16,7 +16,9 @@
 		<div class="profile-header">
 			<h1>${profile.userNick}(${profile.userId})의 프로필</h1>
 			<button id="favor-btn" data-seller-no="${profile.userNo}">☆</button>
-			<button class="openReportWindow" onclick="openReportWindow()" style="margin-left: 800px;">신고하기</button> <!-- syeon -->
+			
+			<div class="spacer"></div>
+			<button class="openReportWindow" onclick="openReportWindow()">신고하기</button> <!-- syeon -->
 		</div>
 
 		<div class="profile-info">

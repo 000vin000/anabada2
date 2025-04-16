@@ -14,12 +14,16 @@
 }
 
 .profile-header h1 {
-	flex: 1;
-	white-space: nowrap;
 	font-size: 24px;
 	color: #222;
 	margin: 0;
-	margin-right: 15px;
+	margin-right: 12px;
+	white-space: nowrap;
+}
+
+/* 오른쪽 끝을 밀어내는 유연한 공간 */
+.spacer {
+	flex-grow: 1;
 }
 
 .profile-info {
