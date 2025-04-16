@@ -14,15 +14,7 @@ h1 {
 }
 
 /* 폼 컨테이너 */
-form#noticeForm {
-    width: 500px;
-    margin: 0 auto;
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
+form#noticeForm,
 form#editNoticeForm {
     width: 500px;
     margin: 0 auto;
@@ -51,10 +43,13 @@ textarea {
     box-sizing: border-box;
     font-size: 14px;
 }
+
+/* 버튼 컨테이너 */
 .buttons {
     text-align: center;
 }
 
+/* 버튼 스타일 */
 .btn {
     display: inline-block;
     margin: 10px 8px;
@@ -79,6 +74,7 @@ textarea {
 .btn.back:hover {
     background-color: #5a6268;
 }
+
 /* 테이블 스타일 */
 table {
     width: 80%;
@@ -122,3 +118,20 @@ a.back-link:hover {
     text-decoration: underline;
 }
 
+/* 상세보기 페이지 콘텐츠 스타일 */
+.info {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.content {
+    font-size: 16px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}

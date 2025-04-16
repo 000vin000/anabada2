@@ -26,9 +26,12 @@
             background-color: #f1f1f1;
         }
         .chart-container {
-            width: 80%;
-            margin: 30px auto;
-            text-align: center;
+        	display: flex;
+            width: 100%;
+            height: 400px;
+            align-items: center;
+    		justify-content: center;
+    		margin: 30px 0;
         }
     </style>
 </head>
@@ -65,7 +68,7 @@
 </tbody>
     </table>
        <div class="chart-container">
-        <h2>일별 수수료 총합</h2>
+        <h3>일별 수수료 총합</h3>
         <canvas id="dailyFeeChart"></canvas>
     </div>
 
@@ -89,7 +92,7 @@
     </table>
     
     <div class="chart-container">
-        <h2>월별 수수료 총합</h2>
+        <h3>월별 수수료 총합</h3>
         <canvas id="monthlyFeeChart"></canvas>
     </div>
     

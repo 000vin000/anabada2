@@ -38,5 +38,9 @@ public class Chat_Room {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now(); // 생성일자
     
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean isActive = true; // 활성 상태 여부 추가
+    
 
 }

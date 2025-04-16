@@ -46,31 +46,35 @@ public class Seller {
 
     @Column(name = "sellerDesc", nullable = false)
     private String sellerDesc;
+    
+    @Column(name = "sellerItemCnt", nullable = false)
+    @Builder.Default
+    private Integer sellerItemCnt = 0;
 
     @Column(name = "sellerActiveItemCnt", nullable = false)
     @Builder.Default
-    private int sellerActiveItemCnt = 0;
+    private Integer sellerActiveItemCnt = 0;
+    
+    @Column(name = "sellerTotalSales", nullable = false)
+    @Builder.Default
+    private BigDecimal sellerTotalSales = BigDecimal.ZERO;
 
     @Column(name = "sellerCompletedSellItemCnt", nullable = false)
     @Builder.Default
-    private int sellerCompletedSellItemCnt = 0;
+    private Integer sellerCompletedSellItemCnt = 0;
     
     @Column(name="sellerAvgRating", nullable = false)
     @Builder.Default
-    private double sellerAvgRating = 0;
+    private Double sellerAvgRating = 0.0;
+
+	@Column(name = "sellerSalesSuccessRate", nullable = false)
+	@Builder.Default
+	private Double sellerSalesSuccessRate = 0.0;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	@Builder.Default
 	private SellerGrade sellerGrade = SellerGrade.HANGER;
-
-	@Column(nullable = false, precision = 12, scale = 2)
-	@Builder.Default
-    private BigDecimal sellerMonthlySales = BigDecimal.ZERO;
-
-	@Column(nullable = false, precision = 12, scale = 2)
-	@Builder.Default
-    private BigDecimal sellerTotalSales = BigDecimal.ZERO;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

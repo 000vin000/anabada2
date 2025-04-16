@@ -1,6 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
     console.log("login.js 로드됨");
+
+    // 로그인 버튼 이벤트 연결
     document.getElementById("loginForm").addEventListener("submit", loginUser);
+
+    // 쿼리 파라미터에서 error 읽기
+    const params = new URLSearchParams(window.location.search);
+    const errorMessage = params.get("error");
+
+    // 에러 메시지가 있으면 팝업으로 출력
+    if (errorMessage) {
+        alert(decodeURIComponent(errorMessage));
+    }
 });
 
 function loginUser(event) {

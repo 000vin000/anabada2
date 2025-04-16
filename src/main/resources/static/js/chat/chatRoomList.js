@@ -6,7 +6,7 @@ export function initChatRoomList() {
 
 	const modal = document.getElementById("chatRoomModal");
 	const listBox = document.getElementById("chat-room-list-box");
-	const closeBtn = document.getElementById("leave-chat-room");
+	const closeBtn = document.getElementById("closeChatModal");
 
 	// 닫기 이벤트 등록
 	if (closeBtn) {

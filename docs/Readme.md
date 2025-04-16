@@ -29,7 +29,6 @@
 ## 유스케이스
 ![관리자](/docs/images/usecase1.jpg)
 ![개인회원](/docs/images/usecase2.jpg)
-![기업회원](/docs/images/usecase3.jpg)
 
 ---
 

@@ -20,6 +20,7 @@ public class ChatRoomDTO {
     private Integer sellerUserNo;
     private Integer buyerUserNo;
 
+    private boolean isActive;
     
     // Chat_Room 엔티티를 ChatRoomDTO로 변환
     public static ChatRoomDTO fromEntity(Chat_Room chatRoom) {
@@ -30,7 +31,8 @@ public class ChatRoomDTO {
             chatRoom.getCreatedAt(),
             chatRoom.getBuyer().getUserNick(),
             chatRoom.getSeller().getUser().getUserNo(),
-            chatRoom.getBuyer().getUserNo()
+            chatRoom.getBuyer().getUserNo(),
+            chatRoom.isActive()
 
         );
     }

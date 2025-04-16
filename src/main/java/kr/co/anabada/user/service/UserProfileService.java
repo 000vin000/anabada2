@@ -1,7 +1,5 @@
 package kr.co.anabada.user.service;
 
-import java.util.Arrays;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,9 +10,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
-import kr.co.anabada.buy.repository.ReviewRepository;
 import kr.co.anabada.item.entity.Item;
-import kr.co.anabada.item.entity.Bid.BidStatus;
 import kr.co.anabada.item.entity.Item.ItemStatus;
 import kr.co.anabada.item.repository.BidRepository;
 import kr.co.anabada.item.repository.ItemDetailRepository;
@@ -22,13 +18,17 @@ import kr.co.anabada.jwt.JwtAuthHelper;
 import kr.co.anabada.jwt.UserTokenInfo;
 import kr.co.anabada.user.dto.UserProfileDTO;
 import kr.co.anabada.user.dto.UserProfileDTO.ItemSummaryDTO;
-import kr.co.anabada.user.dto.UserProfileDetailDTO.AuthenticatedItemSummaryDTO;
+import kr.co.anabada.user.dto.UserProfileDashboardDTO;
 import kr.co.anabada.user.entity.Buyer;
 import kr.co.anabada.user.entity.Seller;
 import kr.co.anabada.user.entity.User;
+import kr.co.anabada.user.repository.BuyerRepository;
+import kr.co.anabada.user.repository.SellerRepository;
 import kr.co.anabada.user.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class UserProfileService {
 	@Autowired
 	private JwtAuthHelper jwtAuthHelper;
@@ -39,29 +39,34 @@ public class UserProfileService {
 	@Autowired
 	private BidRepository bidRepository;
 	@Autowired
-	private ReviewRepository reviewRepository;
+	private SellerRepository sellerRepository;
 	@Autowired
-	private SellerService sellerService;
-	@Autowired
-	private BuyerService buyerService;
+	private BuyerRepository buyerRepository;
 
 	public UserProfileDTO getUserProfileDTO(Integer targetUserNo) {
 		User user = userRepository.findById(targetUserNo)
 				.orElseThrow(() -> new EntityNotFoundException("유저 정보가 존재하지 않습니다."));
-		Seller seller = sellerService.findById(targetUserNo);
-		Buyer buyer = buyerService.getBuyer(targetUserNo);
+		
+		Seller seller = sellerRepository.findByUserUserNo(targetUserNo).orElse(null);
+		Buyer buyer = buyerRepository.findByUserUserNo(targetUserNo).orElse(null);
 
-		UserProfileDTO dto = UserProfileDTO.builder()
-				.userNo(user.getUserNo())
-				.userId(user.getUserId())
-				.userNick(user.getUserNick())
-				.userCreatedDate(user.getUserCreatedDate())
-				.sellerItemCnt(seller.getSellerActiveItemCnt())
-				.sellerAvgRating(seller.getSellerAvgRating())
-				.sellerGrade(seller.getSellerGrade().getKorean())
-				.buyerBidCnt(buyer.getBuyerBidItemCnt())
-				.build();
+		UserProfileDTO dto = UserProfileDTO.fromEntity(user, seller, buyer);
 
+		return dto;
+	}
+
+	public UserProfileDashboardDTO getUserProfileDashboardDTO(Integer targetUserNo) {
+		Seller seller = sellerRepository.findByUserUserNo(targetUserNo).orElse(null);
+		Buyer buyer = buyerRepository.findByUserUserNo(targetUserNo).orElse(null);
+		
+		UserProfileDashboardDTO.SellerDashboardDTO sellerDashboard =
+				UserProfileDashboardDTO.SellerDashboardDTO.fromEntity(seller);
+		
+		UserProfileDashboardDTO.BuyerDashboardDTO buyerDashboard =
+				UserProfileDashboardDTO.BuyerDashboardDTO.fromEntity(buyer);
+		
+		UserProfileDashboardDTO dto = UserProfileDashboardDTO.fromEntity(sellerDashboard, buyerDashboard);
+		
 		return dto;
 	}
 
@@ -84,30 +89,37 @@ public class UserProfileService {
 	private Page<UserProfileDTO.ItemSummaryDTO> getItems(
 			UserRole role, Integer targetUserNo, boolean isOwnProfile, int page, int size, String status, String sort) {
 		Pageable pageable = getPageableBySort(page, size, sort);
-		Page<Item> items;
-		
-		items = Arrays.stream(ItemStatus.values()).anyMatch(s -> s.name().equalsIgnoreCase(status))
-				? getItemsByRoleAndStatus(role, targetUserNo, status, pageable)
-				: getItemsByRole(role, targetUserNo, pageable);
+		Page<Item> items = getItemsByRoleAndOptionalStatus(role, targetUserNo, status, pageable);
 
 		if (isOwnProfile) {
-			Integer buyerNo = buyerService.getBuyerNo(targetUserNo);
-			items.map(item -> convertToAuthenticatedItemSummaryDTO(item, buyerNo));
+			Integer buyerNo = buyerRepository.findBuyerNoByUserUserNo(targetUserNo).orElse(null);
+			if (buyerNo != null) {
+				return items.map(item -> getAuthenticatedItemSummaryDTO(item, buyerNo));
+			}
 		}
-		return items.map(item -> convertToItemSummaryDTO(item));
+		return items.map(item -> getItemSummaryDTO(item));
 	}
 
-	private Page<Item> getItemsByRole(UserRole role, Integer userNo, Pageable pageable) {
-		return role == UserRole.SELLER
-				? itemDetailRepository.findBySellerUserUserNo(userNo, pageable)
-				: itemDetailRepository.findByBuyerNoAndOptionalItemStatus(userNo, null, pageable);
-	}
-
-	private Page<Item> getItemsByRoleAndStatus(UserRole role, Integer userNo, String status, Pageable pageable) {
-		ItemStatus statusEnum = ItemStatus.valueOf(status.toUpperCase());
-		return role == UserRole.SELLER
-				? itemDetailRepository.findBySellerUserUserNoAndItemStatus(userNo, statusEnum, pageable)
-				: itemDetailRepository.findByBuyerNoAndOptionalItemStatus(userNo, statusEnum, pageable);
+	private Page<Item> getItemsByRoleAndOptionalStatus(UserRole role, Integer userNo, String status, Pageable pageable) {
+		ItemStatus statusEnum = null;
+		if (!status.equalsIgnoreCase("all") && status != null && !status.trim().isEmpty()) {
+			try {
+				statusEnum = ItemStatus.valueOf(status.toUpperCase());
+			} catch (IllegalArgumentException ignore) {
+				log.warn("status 변환 실패: 입력값 '{}'", status);
+			}
+		}
+		
+		switch (role) {
+		case SELLER:
+			return itemDetailRepository.findBySellerUserNoAndOptionalItemStatus(
+						userNo, statusEnum, pageable);
+		case BUYER:
+			return itemDetailRepository.findByBuyerUserNoAndOptionalItemStatus(
+					userNo, statusEnum, pageable);
+		default:
+			return Page.empty(pageable);
+		}
 	}
 
 	private Pageable getPageableBySort(int page, int size, String sort) {
@@ -132,25 +144,17 @@ public class UserProfileService {
 		return pageable;
 	}
 
-	private ItemSummaryDTO convertToItemSummaryDTO(Item item) {
-		ItemSummaryDTO dto = ItemSummaryDTO.builder()
-				.itemNo(item.getItemNo())
-				.itemTitle(item.getItemTitle())
-				.itemPrice(item.getItemPrice())
-				.itemStatus(item.getItemStatus().getKorean())
-				.itemSoldDate(item.getItemSoldDate())
-				.viewCount(item.getItemViewCnt())
-				.bidCount(bidRepository.countByItemItemNo(item.getItemNo()))
-				.build();
-
+	private ItemSummaryDTO getItemSummaryDTO(Item item) {
+		int bidCount = bidRepository.countByItemItemNo(item.getItemNo());
+		ItemSummaryDTO dto = ItemSummaryDTO.fromEntity(item, bidCount);
 		return dto;
 	}
 
-	private AuthenticatedItemSummaryDTO convertToAuthenticatedItemSummaryDTO(Item item, Integer buyerNo) {
-		AuthenticatedItemSummaryDTO dto = new AuthenticatedItemSummaryDTO();
-		BeanUtils.copyProperties(convertToItemSummaryDTO(item), dto);
-		dto.setReviewed(reviewRepository.existsByBidItemItemNoAndBidBuyerBuyerNoAndBidBidStatus(
-				item.getItemNo(), buyerNo, BidStatus.WINNING));
+	private UserProfileDTO.AuthenticatedItemSummaryDTO getAuthenticatedItemSummaryDTO(Item item, Integer buyerNo) {
+		UserProfileDTO.AuthenticatedItemSummaryDTO dto =
+				new UserProfileDTO.AuthenticatedItemSummaryDTO();
+		BeanUtils.copyProperties(getItemSummaryDTO(item), dto);
+//		dto.setReviewed(); // TODO 리뷰버튼 노출 로직 구현 필요
 
 		return dto;
 	}

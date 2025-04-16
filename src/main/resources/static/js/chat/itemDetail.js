@@ -20,10 +20,12 @@ export function initInquiryButton() {
 				}
 			}).then((result) => {
 				if (result.isConfirmed) {
-					window.location.href = "/auth/login/individual/IndividualLogin.html";
+					window.location.href = "/login";
+				} else {
+					resetButton(); // 취소를 누르면 버튼 상태 초기화
 				}
 			});
-			return;
+			return; // 로그인하지 않은 경우 종료
 		}
 
 		inquiryBtn.textContent = "문의 중...";

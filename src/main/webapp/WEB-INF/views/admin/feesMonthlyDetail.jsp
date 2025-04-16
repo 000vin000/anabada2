@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>${month}월 수수료 상세</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
 </head>
 <body>
     <h1>${month}월 수수료 상세 내역</h1>

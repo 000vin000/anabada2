@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +57,20 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             );
         } else {
             User user = optionalUser.get();
+
+            if (user.getUserStatus() != User.UserStatus.ACTIVE) {
+                String reason = switch (user.getUserStatus()) {
+                    case INACTIVE -> "탈퇴 처리된 계정입니다.";
+                    case SUSPENSION -> "일시 정지된 계정입니다.";
+                    case PERMANENTSTOP -> "영구 정지된 계정입니다.";
+                    case WITHDRAWN -> "이미 탈퇴된 계정입니다.";
+                    default -> "로그인 불가 상태입니다.";
+                };
+
+                OAuth2Error error = new OAuth2Error("invalid_token", reason, null);
+                throw new OAuth2AuthenticationException(error, reason); // 사용자용 메시지만 전달
+               }
+
             return new CustomOAuth2User(
                 List.of(new SimpleGrantedAuthority(user.getRole())),
                 Map.of(

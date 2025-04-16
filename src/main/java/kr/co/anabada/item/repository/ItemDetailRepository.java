@@ -40,31 +40,40 @@ public interface ItemDetailRepository extends JpaRepository<Item, Integer> {
 			+ "WHERE itemNo = :itemNo AND (:userNo IS NULL OR seller.sellerNo != :userNo)")
 	void incrementItemViewCount(@Param("itemNo") Integer itemNo, @Param("userNo") Integer userNo);
 
-	Page<Item> findBySellerUserUserNo(@Param("userNo") Integer userNo, Pageable pageable);
-
-	Page<Item> findBySellerUserUserNoAndItemStatus(
+	@Query("SELECT DISTINCT i "
+			+ "FROM Item i "
+			+ "WHERE i.seller.user.userNo = :userNo "
+			+ "AND (:status IS NULL OR i.itemStatus = :status)")
+	Page<Item> findBySellerUserNoAndOptionalItemStatus(
 			@Param("userNo") Integer userNo, @Param("status") ItemStatus status, Pageable pageable);
 	
-	@Query("SELECT DISTINCT i FROM Item i "
+	@Query("SELECT DISTINCT i "
+			+ "FROM Item i "
 			+ "JOIN Bid b ON b.item = i "
-			+ "JOIN b.buyer by "
-			+ "WHERE by.buyerNo = :buyerNo "
+			+ "JOIN b.buyer buyer "
+			+ "WHERE buyer.user.userNo = :userNo "
 			+ "AND (:status IS NULL OR i.itemStatus = :status)")
-	Page<Item> findByBuyerNoAndOptionalItemStatus(
-			@Param("buyerNo") Integer buyerNo, @Param("status") ItemStatus status, Pageable pageable);
+	Page<Item> findByBuyerUserNoAndOptionalItemStatus(
+			@Param("userNo") Integer userNo, @Param("status") ItemStatus status, Pageable pageable);
 	
-	// UserProfileScheduler : activeItemCount (updateDailyStatistics)
+	// UserProfileScheduler : itemCount, activeItemCount (updateDailyStatistics)
 	@Query("SELECT i.seller.sellerNo, COUNT(i.itemNo) "
-			+ "FROM Item i WHERE i.itemStatus = :status "
+			+ "FROM Item i "
+			+ "WHERE (:status IS NULL OR i.itemStatus = :status) "
 			+ "GROUP BY i.seller.sellerNo")
-	List<Object[]> countItemsPerSellerByItemStatus(@Param("status") ItemStatus status);
+	List<Object[]> countItemsPerSellerByOptionalItemStatus(@Param("status") ItemStatus status);
 	
 	// UserProfileScheduler : activeBidItemCount (updateDailyStatistics)
 	@Query("SELECT b.buyer.buyerNo, COUNT(DISTINCT b.item.itemNo) "
 			+ "FROM Bid b JOIN b.item i "
 			+ "WHERE i.itemStatus = :itemStatus "
-			+ "AND (b.bidStatus IS NULL OR b.bidStatus = :bidStatus) "
+			+ "AND (:bidStatus IS NULL OR b.bidStatus = :bidStatus) "
 			+ "GROUP BY b.buyer.buyerNo")
 	List<Object[]> countItemsPerBuyerByItemStatusAndOptionalBidStatus(
 			@Param("itemStatus") ItemStatus itemStatus, @Param("bidStatus") BidStatus bidStatus);
+
+	@Query("SELECT b.buyer.buyerNo, COUNT(DISTINCT b.item.itemNo) "
+			+ "FROM Bid b JOIN b.item i "
+			+ "GROUP BY b.buyer.buyerNo")
+	List<Object[]> countBidItemsPerBuyer();
 }

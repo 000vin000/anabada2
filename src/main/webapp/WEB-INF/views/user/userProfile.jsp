@@ -8,7 +8,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${profile.userNick}의 프로필</title>
-<link rel="stylesheet" type="text/css" href="/css/userProfile.css">
 <link rel="stylesheet" type="text/css" href="/css/style.css">
 <link rel="stylesheet" type="text/css" href="/css/userProfile.css">
 </head>
@@ -27,7 +26,7 @@
 					<span class="info-value">${profile.formattedDate}</span>
 				</div>
 				<div class="info-item">
-					<span class="info-label">판매수</span>
+					<span class="info-label">판매중</span>
 					<span class="info-value">${profile.sellerItemCnt}</span>
 				</div>
 				<div class="info-item">
@@ -42,9 +41,15 @@
 		</div>
 
 		<div class="profile-tabs">
-			<button class="tab-button active" onclick="openTab('sell-tab')">판매 아이템</button>
-			<button class="tab-button" onclick="openTab('buy-tab')">구매 아이템</button>
-			<button class="tab-button logged-in-only" onclick="openTab('etc-tab')" hidden>추가 정보</button>
+			<button class="tab-button active" onclick="openTab('sell-tab')">
+				판매 아이템
+			</button>
+			<button class="tab-button" onclick="openTab('buy-tab')">
+				구매 아이템
+			</button>
+			<button class="tab-button" onclick="openTab('dashboard-tab')">
+				대시보드
+			</button>
 		</div>
 
 		<div id="sell-tab" class="tab-content active">
@@ -98,14 +103,12 @@
 				<!-- 페이지네이션은 JavaScript로 렌더링 -->
 			</div>
 		</div>
-		<div id="etc-tab" class="tab-content">
+		<div id="dashboard-tab" class="tab-content">
 			<div class="items-header">
-				<h2>추가 정보</h2>
+				<h2>대시보드</h2>
 			</div>
-			<div id="etc-container">
-				<p>UserProfileDetailDTO 조회</p>
-				<p>- 추가 정보</p>
-				<p>- 대시보드 등</p>
+			<div id="dashboard-container">
+				<!-- 대시보드는 JavaScript로 렌더링 -->
 			</div>
 		</div>
 	</div>

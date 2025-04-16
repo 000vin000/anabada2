@@ -23,7 +23,11 @@
             <c:forEach var="notice" items="${noticeList}" varStatus="status">
                 <tr>
                     <td>${status.index + 1}</td>
-                    <td>${notice.noticeTitle}</td>
+                    <td>
+    				<a href="/notice/detail?noticeNo=${notice.noticeNo}">
+       					 ${notice.noticeTitle}
+   					</a>
+					</td>
                     <td>${notice.noticeContent}</td>
                     <td>${notice.noticeCreatedDate}</td>
                 </tr>

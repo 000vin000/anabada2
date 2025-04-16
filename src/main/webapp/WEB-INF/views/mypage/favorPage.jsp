@@ -41,9 +41,9 @@
     <ul class="breadcrumb" id="breadcrumb">
 		<li><a href="/">홈</a></li>
     	<li><a href="/mypage">마이페이지</a></li>
-    	<li><a href="/mypage/favor">관심물품</a></li>
+    	<li><a href="/mypage/favor">즐겨찾기</a></li>
     </ul>
-	<h1>관심 물품</h1>
+	<h1>즐겨찾기</h1>
 	<div class="tabs">
 	    <div class="tab active" onclick="showTab('items')">관심물품</div>
 	    <div class="tab" onclick="showTab('sellers')">관심판매자</div>

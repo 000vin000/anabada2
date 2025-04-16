@@ -13,7 +13,7 @@ public class BuyerService {
 	private BuyerRepository buyerRepository;
 	
 	public Buyer getBuyer(Integer userNo) {
-		return buyerRepository.findByUser_UserNo(userNo)
+		return buyerRepository.findByUserUserNo(userNo)
 	            .orElseThrow(() -> new EntityNotFoundException("구매자 프로필이 존재하지 않습니다."));
 	}
 	
