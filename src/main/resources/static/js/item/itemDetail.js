@@ -16,8 +16,11 @@ const priceText = document.getElementById('price-text');
 
 let loggedInUserNo = 0;
 let isOwnItem = false;
+
+let saleStartTime = null;
+let saleEndTime = null;
+let currentClientStatus;
 let intervals = [];
-let status = '';
 
 function changeMainImage(src) {
 	if (mainImage) {
@@ -27,21 +30,9 @@ function changeMainImage(src) {
 window.changeMainImage = changeMainImage;
 
 document.addEventListener('DOMContentLoaded', async function() {
-	status = initialItemStatus;
-
-	if ((status === '대기중' || status === '판매중')
-		&& initialItemSaleEndDate !== 'null') {
-
-		startInterval(() => updateStatus(itemNo), 5000);
-		let inner = await updateRemainTime(itemNo);
-		await inner();
-		startInterval(inner, 1000);
-		startInterval(() => updatePrice(itemNo), 5000);
-	} else {
-		if (priceInputSection) priceInputSection.hidden = true;
-		if (timeSection) timeSection.hidden = true;
-	}
-
+	currentClientStatus = initialItemStatus;
+	
+	await initTimeInfo(itemNo);
 	await verifyLoggedInAndInit();
 });
 
@@ -70,8 +61,6 @@ export async function verifyLoggedInAndInit() {
 		initInquiryButton();
 	}
 }
-
-
 
 function startInterval(f, s) {
 	let interval = setInterval(f, s);
@@ -134,7 +123,6 @@ if (priceText) {
 					throw new Error('자신 물품 입찰 오류');
 				}
 
-				//fetchWithAuth() then으로도 이어지는지 확인 필요
 				const balanceData = await fetchWithAuth(`/api/item/detail/user/balance`, { method: 'GET' })
 					.then(response => {
 						if (!response.ok) {
@@ -196,135 +184,106 @@ if (priceText) {
 }
 
 function updatePrice(itemNo) {
-	if (!priceElement) {
+	if (priceElement) {
+		fetch(`/api/item/detail/${itemNo}/price`)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`현재가 갱신 실패: ${response.status}`);
+				}
+				return response.text();
+			})
+			.then(newPriceText => {
+				const currentDisplayedText = priceElement.innerText;
+				const currentDisplayedPrice = currentDisplayedText.replace(/[^0-9]/g, '');
+				const newPrice = newPriceText.trim().replace(/\.\d*$/, '');;
+
+				if (newPrice !== currentDisplayedPrice) {
+					priceElement.innerText = addCommas(newPrice) + ' 원';
+					priceText.value = parseInt(newPrice, 10) + 1000;
+				}
+			})
+			.catch(error => {
+				console.error('updatePrice() error: ', error.message);
+			});
+	}
+}
+
+async function initTimeInfo(itemNo) {
+	try {
+		const response = await fetch(`/api/item/detail/${itemNo}/time-info`);
+		const timeData = await response.json();
+		saleStartTime = new Date(timeData.saleStartTime).getTime();
+		saleEndTime = new Date(timeData.saleEndTime).getTime();
+		currentClientStatus = timeData.status;
+
+		updateDisplay();
+		
+		if (currentClientStatus === 'WAITING' || currentClientStatus === 'ACTIVE') {
+			startInterval(() => syncStatusFromServer(itemNo), 1000);
+			startInterval(updateDisplay, 1000);
+			startInterval(() => updatePrice(itemNo), 5000);
+
+			if (timeSection) timeSection.hidden = false;
+			if (priceInputSection) priceInputSection.hidden = false;
+		} else {
+			if (timeSection) timeSection.hidden = true;
+			if (priceInputSection) priceInputSection.hidden = true;
+		}
+	} catch (error) {
+		console.error('타이머 초기화 실패:', error);
+	}
+}
+
+function updateDisplay() {
+	const now = Date.now();
+	let remainingSeconds = 0;
+	let displayType = '';
+
+	if (currentClientStatus === 'WAITING') {
+		remainingSeconds = Math.max(0, Math.floor((saleStartTime - now) / 1000));
+		displayType = '시작';
+	} else if (currentClientStatus === 'ACTIVE') {
+		remainingSeconds = Math.max(0, Math.floor((saleEndTime - now) / 1000));
+		displayType = '종료';
+	} else {
+		stopAllIntervals();
+		if (timeSection) timeSection.hidden = true;
+		if (priceInputSection) priceInputSection.hidden = true;
 		return;
 	}
-	
-	fetch(`/api/item/detail/${itemNo}/price`)
-		.then(response => {
-			if (!response.ok) {
-				throw new Error(`현재가 갱신 실패: ${response.status}`);
-			}
-			return response.text();
-		})
-		.then(newPriceText => {
-			const currentDisplayedText = priceElement.innerText;
-			const currentDisplayedPrice = currentDisplayedText.replace(/[^0-9]/g, '');
-			const newPrice = newPriceText.trim().replace(/\.\d*$/, '');;
 
-			if (newPrice !== currentDisplayedPrice) {
-				priceElement.innerText = addCommas(newPrice) + ' 원';
-				priceText.value = parseInt(newPrice, 10) + 1000;
-			}
-		})
-		.catch(error => {
-			console.error('updatePrice() error: ', error.message);
-		});
+	if (remainTimeHeading) {
+		remainTimeHeading.innerText = '경매 ' + displayType + '까지 남은 시간';
+	}
+	if (remainTimeElement && remainingSeconds >= 0) {
+		remainTimeElement.innerText = formatTimeText(remainingSeconds);
+	}
 }
 
-async function updateStatus(itemNo) {
+async function syncStatusFromServer(itemNo) {
 	try {
 		const response = await fetch(`/api/item/detail/${itemNo}/status`);
-		const data = await response.text();
+		const serverStatus = await response.text();
 
-		if (data !== status) {
-			status = data;
-
-			if (statusElement) statusElement.innerText = status;
-			if (priceHeadingElement) priceHeadingElement.innerText = status;
-
-			if (status !== '대기중' && status !== '판매중') {
-				stopAllIntervals();
-				if (priceInputSection) priceInputSection.hidden = true;
-				if (timeSection) timeSection.hidden = true;
-
-			} else if (status === '판매중') {
-				if (priceInputSection) priceInputSection.hidden = false;
-				if (priceText) priceText.disabled = isOwnItem || loggedInUserNo === 0;
-				if (bidBtn) bidBtn.disabled = isOwnItem || loggedInUserNo === 0;
-
-			} else {
-				if (priceInputSection) priceInputSection.hidden = true;
-			}
+		if (serverStatus !== currentClientStatus) {
+			console.log(`상태 변경 감지: ${currentClientStatus} -> ${serverStatus}`);
+			currentClientStatus = serverStatus;
+			updateStatusUI(currentClientStatus);
 		}
 	} catch (error) {
-		console.error('updateStatus() error: ', error.message);
+		console.error('서버 상태 동기화 오류:', error);
 	}
 }
 
-async function getRemainTime(itemNo) {
-	try {
-		const response = await fetch(`/api/item/detail/${itemNo}/remainTime`);
-		const data = await response.json();
-		const { remainTime, type } = data;
+function updateStatusUI(status) {
+	console.log('updateStatusUI 호출됨. 전달받은 status:', typeof status, status);
+	    console.log('비교 대상 currentClientStatus:', typeof currentClientStatus, currentClientStatus);
+	
+	if (statusElement) statusElement.innerText = status;
 
-		if (remainTimeHeading) {
-			remainTimeHeading.innerText = '경매 ' + type + '까지 남은 시간';
-		}
-		return { remainTime, type };
-
-	} catch (error) {
-		console.error('getRemainTime() error: ', error.message);
-		if (remainTimeHeading) remainTimeHeading.innerText = '시간 로딩 실패';
-		return { remainTime: 0, type: '오류' };
+	if (currentClientStatus !== 'WAITING' && currentClientStatus !== 'ACTIVE') {
+		stopAllIntervals();
+		if (timeSection) timeSection.hidden = true;
+		if (priceInputSection) priceInputSection.hidden = true;
 	}
-}
-
-async function updateRemainTime(itemNo) {
-	let response = await getRemainTime(itemNo);
-	let { remainTime } = response;
-	const { type } = response;
-
-	let inner = async function() {
-		if (remainTime <= 0) {
-			if (type === '종료') {
-				return;
-
-			} else if (type === '시작') {
-				if (await waitForStatus(itemNo, '판매중')) {
-					let newTimeData = await getRemainTime(itemNo);
-					remainTime = newTimeData.remainTime;
-					if (priceInputSection) priceInputSection.hidden = false;
-
-				} else {
-					stopAllIntervals();
-					if (remainTimeElement) remainTimeElement.innerText = '상태 변경 실패';
-					return;
-				}
-			}
-		}
-
-		if (remainTimeElement && remainTime > 0) {
-			document.getElementById('remain-time').innerText = formatTimeText(remainTime);
-		} else if (remainTimeElement && type === '종료') {
-			remainTimeElement.innerText = '경매 종료';
-		}
-		if (remainTime > 0) {
-			remainTime--;
-		}
-	};
-
-	return inner;
-}
-
-async function waitForStatus(itemNo, targetStatus, maxAttempts = 10, interval = 500) {
-	await updateStatus(itemNo);
-	if (status === targetStatus) {
-		return true;
-	}
-
-	for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-		await new Promise(resolve => setTimeout(resolve, interval));
-		await updateStatus(itemNo);
-
-		if (status === targetStatus) {
-			return true;
-		}
-		if (status !== '대기중' && status !== '판매중') {
-			return false;
-		}
-	}
-
-	console.log(`${maxAttempts}회 시도 후 실패: '${targetStatus}' 상태`);
-	return false;
 }

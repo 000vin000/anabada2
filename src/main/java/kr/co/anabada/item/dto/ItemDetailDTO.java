@@ -6,21 +6,18 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import kr.co.anabada.item.entity.Item;
-import lombok.AllArgsConstructor;
+import kr.co.anabada.item.entity.Item.ItemStatus;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Value;
 
-@Data
+@Value
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class ItemDetailDTO {
 	private Integer itemNo;
 	private String itemSaleType;
 	private String itemTitle;
 	private String itemContent;	
-	private String itemStatus;
+	private ItemStatus itemStatus;
 	private String itemQuality;	
 	private Integer itemQuantity;
 	private BigDecimal itemPrice;	
@@ -52,7 +49,7 @@ public class ItemDetailDTO {
 				.itemSaleType(item.getItemSaleType().getKorean())
 				.itemTitle(item.getItemTitle())
 				.itemContent(item.getItemContent())
-				.itemStatus(item.getItemStatus().getKorean())
+				.itemStatus(item.getItemStatus())
 				.itemQuality(item.getItemQuality() != null ? item.getItemQuality().getKorean() : null)
 				.itemQuantity(item.getItemQuantity())
 				.itemPrice(item.getItemPrice())

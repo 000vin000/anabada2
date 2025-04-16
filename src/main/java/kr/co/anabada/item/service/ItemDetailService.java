@@ -12,6 +12,7 @@ import kr.co.anabada.coin.entity.ChangeCoin.ChangeCoinType;
 import kr.co.anabada.coin.service.ChangeCoinService;
 import kr.co.anabada.coin.service.GoodsService;
 import kr.co.anabada.item.dto.ItemDetailDTO;
+import kr.co.anabada.item.dto.ItemTimeInfoDTO;
 import kr.co.anabada.item.entity.Bid;
 import kr.co.anabada.item.entity.Bid.BidStatus;
 import kr.co.anabada.item.entity.Item;
@@ -67,13 +68,18 @@ public class ItemDetailService {
 //		itemDetailRepository.incrementItemViewCount(itemNo, userNo);
 //	}
 
+	public ItemTimeInfoDTO getTimeInfoDTO(Integer itemNo) {
+		return itemDetailRepository.findTimeInfoByItemNo(itemNo)
+				.orElseThrow(() -> new ResourceNotFoundException("시간 정보를 불러올 수 없습니다."));
+	}
+
 	public BigDecimal getPrice(Integer itemNo) {
 		return itemDetailRepository.findItemPriceByItemNo(itemNo)
 				.orElseThrow(() -> new ResourceNotFoundException("가격 정보를 불러올 수 없습니다."));
 	}
 
-	public String getStatus(Integer itemNo) {
-		return itemDetailRepository.findItemStatusByItemNo(itemNo).map(ItemStatus::getKorean)
+	public ItemStatus getStatus(Integer itemNo) {
+		return itemDetailRepository.findItemStatusByItemNo(itemNo)
 				.orElseThrow(() -> new ResourceNotFoundException("상태 정보를 불러올 수 없습니다."));
 	}
 

@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
+import kr.co.anabada.item.dto.ItemTimeInfoDTO;
 import kr.co.anabada.item.entity.Item;
+import kr.co.anabada.item.entity.Item.ItemStatus;
 import kr.co.anabada.item.exception.AuthenticationRequiredException;
 import kr.co.anabada.item.service.ItemDetailService;
 
@@ -27,6 +29,12 @@ public class ItemDetailRestController {
 	public ResponseEntity<Integer> getCurrentUser(HttpServletRequest req) {
 		return ResponseEntity.ok(itemDetailService.getCurrentUser(req));
 	}
+	
+	@GetMapping("{itemNo}/time-info")
+	public ResponseEntity<ItemTimeInfoDTO> getTimeInfo(@PathVariable Integer itemNo) {
+		ItemTimeInfoDTO timeInfoDTO = itemDetailService.getTimeInfoDTO(itemNo);
+		return ResponseEntity.ok(timeInfoDTO);
+	}
 
 	@GetMapping("{itemNo}/remainTime")
 	public ResponseEntity<Map<String, Object>> getRemainTime(@PathVariable Integer itemNo) {
@@ -38,12 +46,14 @@ public class ItemDetailRestController {
 
 	@GetMapping("{itemNo}/price")
 	public ResponseEntity<BigDecimal> getPrice(@PathVariable Integer itemNo) {
-		return ResponseEntity.ok(itemDetailService.getPrice(itemNo));
+		BigDecimal price = itemDetailService.getPrice(itemNo);
+		return ResponseEntity.ok(price);
 	}
 
 	@GetMapping("{itemNo}/status")
-	public ResponseEntity<String> getStatus(@PathVariable Integer itemNo) {
-		return ResponseEntity.ok(itemDetailService.getStatus(itemNo));
+	public ResponseEntity<ItemStatus> getStatus(@PathVariable Integer itemNo) {
+		ItemStatus status = itemDetailService.getStatus(itemNo);
+		return ResponseEntity.ok(status);
 	}
 
 	@GetMapping("user/balance")

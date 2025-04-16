@@ -64,16 +64,15 @@
 					</c:when>
 					<c:otherwise>
 						<div class="gallery-main-image no-image"
-							 style="display: flex; align-items: center; justify-content: center; color: #999">
-							이미지가 없습니다
-						</div>
+							style="display: flex; align-items: center; justify-content: center; color: #999">
+							이미지가 없습니다</div>
 					</c:otherwise>
 				</c:choose>
 			</div>
 
 			<div class="item-info-section">
 				<div id="time-section" class="time-section"
-					 ${item.itemStatus ne '대기중' and item.itemStatus ne '판매중' or empty item.itemSaleEndDate ? 'hidden' : ''}>
+					 ${item.itemStatus ne 'WAITING' and item.itemStatus ne 'ACTIVE' or empty item.itemSaleEndDate ? 'hidden' : ''}>
 					<span id="remain-time-heading">경매 시간</span>
 					<span id="remain-time">계산 중</span>
 				</div>
@@ -82,7 +81,7 @@
 					<h2 id="price-heading">${item.itemStatus}</h2>
 					<span id="price">${item.getFormattedPrice(item.itemPrice)} 원</span>
 
-					<div id="price-input-section" ${item.itemStatus ne '판매중' ? 'hidden' : ''}>
+					<div id="price-input-section" ${item.itemStatus ne 'ACTIVE' ? 'hidden' : ''}>
 						<br>
 						<h2 id="price-heading">희망 입찰가</h2>
 						<div class="bid-input-group">
@@ -158,7 +157,7 @@
 	<script>
 		const itemNo = ${item.itemNo};
 		const sellerNo = ${item.sellerNo};
-		const initialItemStatus = "${item.itemStatus}";
+		const initialItemStatus = '${item.itemStatus.name()}';
 		const initialItemSaleEndDate = ${not empty item.itemSaleEndDate ? '"' += item.itemSaleEndDate.toString() += '"' : 'null'};
 	</script>
 

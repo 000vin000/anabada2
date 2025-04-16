@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import kr.co.anabada.item.dto.ItemTimeInfoDTO;
 import kr.co.anabada.item.entity.Bid.BidStatus;
 import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.item.entity.Item.ItemStatus;
@@ -21,6 +22,12 @@ import kr.co.anabada.item.entity.Item.ItemStatus;
 public interface ItemDetailRepository extends JpaRepository<Item, Integer> {
 	@Query("SELECT itemPrice FROM Item WHERE itemNo = :itemNo")
 	Optional<BigDecimal> findItemPriceByItemNo(@Param("itemNo") Integer itemNo);
+	
+	@Query("SELECT new kr.co.anabada.item.dto.ItemTimeInfoDTO"
+			+ "(i.itemSaleStartDate, i.itemSaleEndDate, i.itemStatus) "
+			+ "FROM Item i "
+			+ "WHERE i.itemNo = :itemNo")
+	Optional<ItemTimeInfoDTO> findTimeInfoByItemNo(@Param("itemNo") Integer itemNo);
 
 	@Query("SELECT itemStatus FROM Item WHERE itemNo = :itemNo")
 	Optional<ItemStatus> findItemStatusByItemNo(@Param("itemNo") Integer itemNo);
