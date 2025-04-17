@@ -33,15 +33,18 @@ public class UserPinController {
     @GetMapping("/status")
     public ResponseEntity<?> hasUserPin(HttpServletRequest request) {
         UserTokenInfo userInfo = jwtTokenHelper.getUserFromRequest(request);
-        if (userInfo == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증 실패");
+        if (userInfo == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "인증 실패")); // ✅ JSON 구조로 응답
+        }
 
         User user = userLoginRepository.findById(userInfo.getUserNo())
                 .orElseThrow(() -> new RuntimeException("유저 없음"));
 
-
         boolean hasPin = user.getUserPin() != null;
         return ResponseEntity.ok(Map.of("hasPin", hasPin));
     }
+
 
     // 2차 비밀번호 최초 등록
     @PostMapping

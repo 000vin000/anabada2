@@ -136,3 +136,5 @@ public class User {
         this.userUpdatedDate = LocalDateTime.now(); // 업데이트할 때 자동 변경
     }
 }
+
+

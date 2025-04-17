@@ -4,11 +4,8 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import kr.co.anabada.item.entity.Item;
-import kr.co.anabada.user.dto.UserProfileDashboardDTO.BuyerDashboardDTO;
-import kr.co.anabada.user.dto.UserProfileDashboardDTO.SellerDashboardDTO;
 import kr.co.anabada.user.entity.Buyer;
 import kr.co.anabada.user.entity.Seller;
 import kr.co.anabada.user.entity.User;
