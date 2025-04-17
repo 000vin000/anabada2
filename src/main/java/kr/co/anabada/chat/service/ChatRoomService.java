@@ -100,24 +100,33 @@ public class ChatRoomService {
     public List<ChatRoomDTO> findChatRoomsByItemNoAndUser(Integer itemNo, Integer userNo) {
         List<Chat_Room> chatRooms = chatRoomRepository.findAllByItemNo(itemNo);
 
-        return chatRooms.stream().map(room -> {
-            Optional<Chat_Message> lastMsgOpt = chatMessageRepository.findTopByChatRoomOrderByMsgDateDesc(room);
+        // 채팅방별 마지막 메시지 시간 기준 내림차순 정렬
+        return chatRooms.stream()
+            .map(room -> {
+                Optional<Chat_Message> lastMsgOpt = chatMessageRepository.findTopByChatRoomOrderByMsgDateDesc(room);
 
-            String lastMessage = "";
-            LocalDateTime lastMessageTime = null;
+                String lastMessage = "";
+                LocalDateTime lastMessageTime = null;
 
-            if (lastMsgOpt.isPresent()) {
-                Chat_Message lastMsg = lastMsgOpt.get();
-                lastMessage = lastMsg.getMsgContent();
-                lastMessageTime = lastMsg.getMsgDate();
-            }
+                if (lastMsgOpt.isPresent()) {
+                    Chat_Message lastMsg = lastMsgOpt.get();
+                    lastMessage = lastMsg.getMsgContent();
+                    lastMessageTime = lastMsg.getMsgDate();
+                }
 
-            // 로그인 유저 기준 안읽은 메시지 개수 조회
-            int unreadCount = chatMessageRepository.countUnreadMessages(room.getRoomNo(), userNo);
+                int unreadCount = chatMessageRepository.countUnreadMessages(room.getRoomNo(), userNo);
 
-            return ChatRoomDTO.fromEntity(room, lastMessage, lastMessageTime, unreadCount);
-        }).collect(Collectors.toList());
+                return ChatRoomDTO.fromEntity(room, lastMessage, lastMessageTime, unreadCount);
+            })
+            // lastMessageTime이 null인 경우 가장 오래된 날짜로 처리하여 뒤로 밀기
+            .sorted((dto1, dto2) -> {
+                LocalDateTime t1 = dto1.getLastMessageTime() != null ? dto1.getLastMessageTime() : LocalDateTime.MIN;
+                LocalDateTime t2 = dto2.getLastMessageTime() != null ? dto2.getLastMessageTime() : LocalDateTime.MIN;
+                return t2.compareTo(t1);  // 내림차순 정렬 (최신이 위로)
+            })
+            .collect(Collectors.toList());
     }
+
 
 
 
