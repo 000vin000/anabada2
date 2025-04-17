@@ -99,6 +99,9 @@
 }
 
 .chat-room-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 12px 16px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -113,7 +116,8 @@
 .chat-room-item a {
   text-decoration: none;
   color: #333;
-  font-weight: 500;
+  font-weight: 700; /* 굵게 */
+  flex-grow: 1; /* 공간 채우기 */
 }
 
 
@@ -160,6 +164,17 @@
     display: inline-flex; /* 아이콘 정렬 */
     align-items: center; /* 중앙 정렬 */
 }
+
+/* 채팅방 목록에서 안읽음 메세지 있는지 여부 */
+.unread-count {
+  color: #f1c40f; /* 노란색 */
+  font-weight: bold;
+  font-size: 1rem;
+  margin-left: 12px;
+  min-width: 20px;
+  text-align: right;
+}
+
 
 
 

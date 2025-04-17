@@ -95,5 +95,31 @@ public class ChatRoomService {
 
         return chatRoomRepository.save(chatRoom);
     }
+    
+    // 채팅방 목록에서 마지막 메세지 조회
+    public List<ChatRoomDTO> findChatRoomsByItemNoAndUser(Integer itemNo, Integer userNo) {
+        List<Chat_Room> chatRooms = chatRoomRepository.findAllByItemNo(itemNo);
+
+        return chatRooms.stream().map(room -> {
+            Optional<Chat_Message> lastMsgOpt = chatMessageRepository.findTopByChatRoomOrderByMsgDateDesc(room);
+
+            String lastMessage = "";
+            LocalDateTime lastMessageTime = null;
+
+            if (lastMsgOpt.isPresent()) {
+                Chat_Message lastMsg = lastMsgOpt.get();
+                lastMessage = lastMsg.getMsgContent();
+                lastMessageTime = lastMsg.getMsgDate();
+            }
+
+            // 로그인 유저 기준 안읽은 메시지 개수 조회
+            int unreadCount = chatMessageRepository.countUnreadMessages(room.getRoomNo(), userNo);
+
+            return ChatRoomDTO.fromEntity(room, lastMessage, lastMessageTime, unreadCount);
+        }).collect(Collectors.toList());
+    }
+
+
+
 
 }

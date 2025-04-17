@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatRoomRequestDto {
+public class ChatRoomRequestDTO {
     private Integer sellerUserNo;
     private Integer buyerUserNo;
     private Integer itemNo;

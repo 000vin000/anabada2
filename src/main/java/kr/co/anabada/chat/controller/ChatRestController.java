@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.anabada.chat.dto.ChatMessageDTO;
 import kr.co.anabada.chat.dto.ChatRoomDTO;
-import kr.co.anabada.chat.dto.ChatRoomRequestDto;
+import kr.co.anabada.chat.dto.ChatRoomRequestDTO;
 import kr.co.anabada.chat.entity.Chat_Message;
 import kr.co.anabada.chat.entity.Chat_Room;
 import kr.co.anabada.chat.service.ChatMessageService;
@@ -114,7 +114,7 @@ public class ChatRestController {
     
     // 기존 채팅방 조회 
     @PostMapping("/room")
-    public ResponseEntity<?> findExistingChatRoom(@RequestBody ChatRoomRequestDto request) {
+    public ResponseEntity<?> findExistingChatRoom(@RequestBody ChatRoomRequestDTO request) {
         // itemNo를 이용해 item 객체를 가져온 후 sellerNo를 추출
         Item item = itemService.findById(request.getItemNo());
         if (item == null) {
@@ -188,16 +188,17 @@ public class ChatRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("상품을 찾을 수 없습니다.");
         }
 
-        // 판매자 userNo와 로그인 유저 비교
-        Integer sellerUserNo = item.getSeller().getUser().getUserNo(); // ✔️ 핵심!
+        Integer sellerUserNo = item.getSeller().getUser().getUserNo();
 
         if (!user.getUserNo().equals(sellerUserNo)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("접근 권한이 없습니다.");
         }
 
-        List<ChatRoomDTO> chatRooms = chatRoomService.findChatRoomsByItemNo(itemNo);
+        // 로그인 유저 정보(userNo)를 서비스 메서드에 전달
+        List<ChatRoomDTO> chatRooms = chatRoomService.findChatRoomsByItemNoAndUser(itemNo, user.getUserNo());
         return ResponseEntity.ok(chatRooms);
     }
+
     
     // 메시지 읽음 처리
     @PostMapping("/messages/read/{messageId}")
