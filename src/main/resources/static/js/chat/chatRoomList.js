@@ -45,15 +45,38 @@ export function initChatRoomList() {
 			}
 
 			data.forEach(room => {
-				const div = document.createElement("div");
-				div.className = "chat-room-item";
-				div.innerHTML = `
-					<a href="/chat/chatRoom?roomNo=${room.roomNo}">
-						[${room.buyerNickname}]님과의 채팅방
-					</a>
-				`;
-				listBox.appendChild(div);
+			  const div = document.createElement("div");
+			  div.className = "chat-room-item";
+
+			  const date = room.lastMessageTime ? new Date(room.lastMessageTime) : null;
+			  const formattedTime = date ? date.toLocaleString('ko-KR', {
+			    year: 'numeric',
+			    month: '2-digit',
+			    day: '2-digit',
+			    hour: '2-digit',
+			    minute: '2-digit'
+			  }) : '';
+
+			  div.innerHTML = `
+			    <div class="chat-room-info">
+			      <a href="/chat/chatRoom?roomNo=${room.roomNo}" class="chat-room-link">
+			        <span class="chat-room-nickname">[${room.buyerNickname}]님과의 채팅방</span>
+			        ${room.unreadCount > 0 ? `<span class="unread-count">${room.unreadCount}</span>` : ''}
+			      </a>
+			      <p class="last-message">
+			        ${room.lastMessage || '최근 메시지가 없습니다.'}
+			      </p>
+			      <small class="last-message-time">${formattedTime}</small>
+			    </div>
+			  `;
+
+			  listBox.appendChild(div);
 			});
+
+
+
+
+
 		} catch (err) {
 			alert("채팅방 목록 불러오기 실패");
 			console.error("오류:", err);
