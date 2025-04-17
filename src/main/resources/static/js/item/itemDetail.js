@@ -43,12 +43,15 @@ document.addEventListener('DOMContentLoaded', async function() {
 	}
 
 	await verifyLoggedInAndInit();
+	if (isOwnItem && priceInputSection) {
+		priceInputSection.hidden = true;
+	}
 });
 
 export async function verifyLoggedInAndInit() {
 	
 	loggedInUserNo = await getVerifiedLoggedInUserNo();
-	isOwnItem = loggedInUserNo !== 0 && loggedInUserNo === sellerNo;
+	isOwnItem = loggedInUserNo === sellerNo;
 
 	console.log('로그인된 userNo:', loggedInUserNo);
 	console.log('sellerNo:', sellerNo);
@@ -232,18 +235,17 @@ async function updateStatus(itemNo) {
 			if (statusElement) statusElement.innerText = status;
 			if (priceHeadingElement) priceHeadingElement.innerText = status;
 
-			if (status !== '대기중' && status !== '판매중') {
-				stopAllIntervals();
-				if (priceInputSection) priceInputSection.hidden = true;
-				if (timeSection) timeSection.hidden = true;
-
-			} else if (status === '판매중') {
-				if (priceInputSection) priceInputSection.hidden = false;
-				if (priceText) priceText.disabled = isOwnItem || loggedInUserNo === 0;
-				if (bidBtn) bidBtn.disabled = isOwnItem || loggedInUserNo === 0;
-
+			if (status === '판매중') {
+				if (priceInputSection && !isOwnItem) {
+					priceInputSection.hidden = false;
+				}
 			} else {
 				if (priceInputSection) priceInputSection.hidden = true;
+				
+				if (status !== '대기중') {
+					stopAllIntervals();
+					if (timeSection) timeSection.hidden = true;
+				}
 			}
 		}
 	} catch (error) {
@@ -283,7 +285,6 @@ async function updateRemainTime(itemNo) {
 				if (await waitForStatus(itemNo, '판매중')) {
 					let newTimeData = await getRemainTime(itemNo);
 					remainTime = newTimeData.remainTime;
-					if (priceInputSection) priceInputSection.hidden = false;
 
 				} else {
 					stopAllIntervals();
