@@ -21,9 +21,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import kr.co.anabada.user.entity.Seller;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -37,9 +35,9 @@ public class Item {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer itemNo;
 
-    @ManyToOne
-    @JoinColumn(name = "seller_no", nullable = false)
-    private Seller seller;
+	@ManyToOne
+	@JoinColumn(name = "seller_no", nullable = false)
+	private Seller seller;
 
 	@ManyToOne
 	@JoinColumn(name = "categoryNo", nullable = false)
@@ -82,13 +80,11 @@ public class Item {
 	private Double itemAvgRating;
 
 	private LocalDateTime itemSaleStartDate;
-
 	private LocalDateTime itemSaleEndDate;
 
 	private LocalDateTime itemResvStartDate;
-
 	private LocalDateTime itemResvEndDate;
-	
+
 	private LocalDateTime itemSoldDate;
 
 	@Column(nullable = false)
@@ -115,73 +111,76 @@ public class Item {
 		}
 	}
 
-	public void activate() {
-		if (this.itemStatus == ItemStatus.WAITING) {
-			this.itemStatus = ItemStatus.ACTIVE;
-		} else {
-			throw new IllegalStateException("판매 상태로 변경할 수 없습니다: " + this.itemStatus);
-		}
+	public boolean isAuction() {
+		return itemSaleType == ItemSaleType.AUCTION;
 	}
 
-	public void expire() {
-		if (this.itemStatus == ItemStatus.ACTIVE) {
-			this.itemStatus = ItemStatus.EXPIRED;
+	public boolean isWaiting() {
+		return itemSaleStartDate != null && LocalDateTime.now().isBefore(itemSaleStartDate);
+	}
+
+	public boolean isActive() {
+		LocalDateTime now = LocalDateTime.now();
+		boolean afterStart = itemSaleStartDate == null || !now.isBefore(itemSaleStartDate);
+		boolean beforeEnd = itemSaleEndDate == null || now.isBefore(itemSaleEndDate);
+		return afterStart && beforeEnd;
+	}
+
+	public boolean isExpiredOrReservedOrSold() {
+		return itemSaleEndDate != null && LocalDateTime.now().isAfter(itemSaleEndDate);
+	}
+
+	public void activate() {
+		if (isWaiting()) {
+			itemStatus = ItemStatus.ACTIVE;
 		} else {
-			throw new IllegalStateException("종료 상태로 변경할 수 없습니다: " + this.itemStatus);
+			throw new IllegalStateException("판매 상태로 변경할 수 없습니다: " + itemStatus);
 		}
 	}
 
 	public void reserve(LocalDateTime resvStartDate, LocalDateTime resvEndDate) {
-		if (this.itemStatus == ItemStatus.ACTIVE) {
-			this.itemResvStartDate = resvStartDate;
-			this.itemResvEndDate = resvEndDate;
-			this.itemStatus = ItemStatus.RESERVED;
+		if (isActive()) {
+			itemResvStartDate = resvStartDate;
+			itemResvEndDate = resvEndDate;
+			itemStatus = ItemStatus.RESERVED;
 		} else {
-			throw new IllegalStateException("예약 상태로 변경할 수 없습니다: " + this.itemStatus);
+			throw new IllegalStateException("예약 상태로 변경할 수 없습니다: " + itemStatus);
+		}
+	}
+
+	public void markAsExpired() {
+		if (itemStatus == ItemStatus.ACTIVE) {
+			itemStatus = ItemStatus.EXPIRED;
+		} else {
+			throw new IllegalStateException("종료 상태로 변경할 수 없습니다: " + itemStatus);
 		}
 	}
 
 	public void markAsSold() {
-		if (this.itemPurcConfirmed == true && this.itemSaleConfirmed == true) {
-			this.itemStatus = ItemStatus.SOLD;
-			this.itemSoldDate = LocalDateTime.now();
+		if (isFullyConfirmed()) {
+			itemStatus = ItemStatus.SOLD;
+			itemSoldDate = LocalDateTime.now();
 		} else {
-			throw new IllegalStateException("판매완료 상태로 변경할 수 없습니다: " + this.itemStatus);
+			throw new IllegalStateException("판매완료 상태로 변경할 수 없습니다: " + itemStatus);
 		}
-	}
-
-	public boolean isAuction() {
-		return this.itemSaleType == ItemSaleType.AUCTION;
-	}
-
-	public boolean isExpired() {
-		return this.itemStatus == ItemStatus.EXPIRED && LocalDateTime.now().isAfter(this.itemSaleEndDate);
-	}
-	
-	public boolean isWaiting() {
-		return this.itemStatus == ItemStatus.WAITING && LocalDateTime.now().isBefore(itemSaleStartDate);
-	}
-
-	public boolean isActive() {
-		return this.itemStatus == ItemStatus.ACTIVE && !isExpired() && LocalDateTime.now().isAfter(itemSaleStartDate);
 	}
 
 	public Duration getTimeLeft() {
 		if (isWaiting()) {
-			return Duration.between(LocalDateTime.now(), this.itemSaleStartDate);
+			return Duration.between(LocalDateTime.now(), itemSaleStartDate);
 		}
 		if (isActive()) {
-			return Duration.between(LocalDateTime.now(), this.itemSaleEndDate);
+			return Duration.between(LocalDateTime.now(), itemSaleEndDate);
 		}
 		return Duration.ZERO;
 	}
 
 	public boolean canBid(BigDecimal bidAmount) {
-		return isAuction() && isActive() && bidAmount.compareTo(this.itemPrice.add(new BigDecimal(999))) > 0;
+		return isAuction() && isActive() && bidAmount.compareTo(itemPrice.add(new BigDecimal(999))) > 0;
 	}
 
 	public boolean isFullyConfirmed() {
-		return this.itemPurcConfirmed && this.itemSaleConfirmed;
+		return itemPurcConfirmed && itemSaleConfirmed;
 	}
 
 	public enum ItemSaleType {

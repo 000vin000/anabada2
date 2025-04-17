@@ -109,7 +109,7 @@ if (priceText) {
 						cancelButtonText: '취소'
 					}).then((result) => {
 						if (result.isConfirmed) {
-							window.location.href = '/'; // login url로 교체
+							window.location.href = '/login';
 						}
 					});
 					throw new Error('로그인 인증 오류');
@@ -134,7 +134,6 @@ if (priceText) {
 					throw new Error('자신 물품 입찰 오류');
 				}
 
-				//fetchWithAuth() then으로도 이어지는지 확인 필요
 				const balanceData = await fetchWithAuth(`/api/item/detail/user/balance`, { method: 'GET' })
 					.then(response => {
 						if (!response.ok) {

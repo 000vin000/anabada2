@@ -5,6 +5,7 @@ import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import kr.co.anabada.item.entity.Item;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,13 +40,39 @@ public class ItemDetailDTO {
 	private LocalDateTime itemCreatedDate;
 	private LocalDateTime itemUpdatedDate;
 	
-	private Integer sellerNo; //seller
+	private Integer sellerNo;
 	private String sellerNick;
-	private String categoryName; //category
-//	private BigDecimal pointBalance; //point_account
-	private int imageCount; //image
+	private String categoryName;
+	private int imageCount;
 	
-	
+	public static ItemDetailDTO fromEntity(Item item, int imageCount) {
+		if (item == null) return null;
+		return builder()
+				.itemNo(item.getItemNo())
+				.itemSaleType(item.getItemSaleType().getKorean())
+				.itemTitle(item.getItemTitle())
+				.itemContent(item.getItemContent())
+				.itemStatus(item.getItemStatus().getKorean())
+				.itemQuality(item.getItemQuality() != null ? item.getItemQuality().getKorean() : null)
+				.itemQuantity(item.getItemQuantity())
+				.itemPrice(item.getItemPrice())
+				.itemViewCnt(item.getItemViewCnt())
+				.itemAvgRating(item.getItemAvgRating())
+				.itemLatitude(item.getItemLatitude())
+				.itemLongitude(item.getItemLongitude())
+				.itemPurcConfirmed(item.isItemPurcConfirmed())
+				.itemSaleConfirmed(item.isItemSaleConfirmed())
+				.itemSaleStartDate(item.getItemSaleStartDate())
+				.itemSaleEndDate(item.getItemSaleEndDate())
+				.itemResvStartDate(item.getItemResvStartDate())
+				.itemResvEndDate(item.getItemResvEndDate())
+				.itemCreatedDate(item.getItemCreatedDate())
+				.itemUpdatedDate(item.getItemUpdatedDate())
+				.sellerNo(item.getSeller().getUser().getUserNo())
+				.sellerNick(item.getSeller().getUser().getUserNick())
+				.categoryName(item.getCategory().getCategoryName())
+				.imageCount(imageCount).build();
+	}
 	
 	public String getFormattedDate(LocalDateTime date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
