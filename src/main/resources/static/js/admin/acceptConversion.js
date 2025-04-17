@@ -104,11 +104,11 @@ function acceptConversion(conversionNo) {
     })
     .then(data => {
         alert(data.message);
-        location.reload();
     })
     .catch(error => {
         console.error("전환 승인 에러:", error);
     });
+	location.reload();
 }
 
 // ✅ 날짜 형식 변환 함수

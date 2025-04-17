@@ -49,10 +49,11 @@ public class WeatherService {
 	
 	// 3km 반경 아이템 리스트
 	public List<ItemInclude1Image> getIn3km(List<ItemInclude1Image> list, Double latitude, Double longitude) {
-		
+		// 위도, 경도 차이 계산
 		double latDiff = 3 / 111.32;
 		double lonDiff = 3 / (111.32 * Math.cos(Math.toRadians(latitude)));
 		
+		// 경계값 설정 (3km 범위)
 		double minlat = latitude - latDiff;
 		double maxlat = latitude + latDiff;
 		double minlon = longitude - lonDiff;
