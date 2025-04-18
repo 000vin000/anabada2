@@ -4,6 +4,69 @@
 <head>
 <meta charset="UTF-8">
 <title>코인으로 전환하기</title>
+<style>
+    body {
+        font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+        background-color: #f9fafb;
+        margin: 0;
+        padding: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    form#toCoin {
+        background-color: #ffffff;
+        padding: 30px 40px;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        width: 360px;
+        box-sizing: border-box;
+    }
+
+    #currentCash {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 24px;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    p {
+        font-size: 15px;
+        color: #333;
+        margin-bottom: 8px;
+        font-weight: 500;
+    }
+
+    input[type="number"] {
+        width: 100%;
+        padding: 10px 12px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+    }
+
+    input[type="submit"] {
+        width: 100%;
+        padding: 12px 0;
+        font-size: 15px;
+        background-color: #00b894;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #019875;
+    }
+</style>
+
 </head>
 <body>
     <form id="toCoin" method="post" action="/changeChargeToCoin" onsubmit="return toCoinSubmit(event)">

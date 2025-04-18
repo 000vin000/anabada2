@@ -43,7 +43,7 @@
   font-weight: bold;
 }
 
-#updateInfoBtn {
+.update-info {
   padding: 6px 12px;
   background-color: #21afbf;
   color: white;
@@ -56,8 +56,12 @@
   transition: background-color 0.2s;
 }
 
-#updateInfoBtn:hover {
+.update-info:hover {
   background-color: #1a9ea9;
+}
+
+#withdrawBtn {
+	background-color: #c53030;
 }
 
 /* --------------------- 보유 잔액/코인 --------------------- */
@@ -187,6 +191,7 @@
 	max-width: 500px; 
 	border-radius: 10px; 
 	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+	overflow-y: auto; /* 내용이 넘칠 경우 세로 스크롤 */
 }
 
 /* 모달 닫기 버튼 */

@@ -46,7 +46,7 @@ public class ChangeCoinService {
 										 .userNo(user)
 										 .changecoinType(charge)
 										 .changecoinAmount(amount)
-										 .itemNo(itemRepository.findById(itemNo).orElse(null))
+										 .itemNo(itemNo != null ? itemRepository.findById(itemNo).orElse(null) : null)
 										 .build();
 		coinRepo.save(log);
 	}

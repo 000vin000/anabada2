@@ -407,21 +407,6 @@ nav ul li a:hover {
 	z-index: 9999; /* 다른 요소들보다 위에 배치 */
 }
 
-/*
-.sidebar {
-    position: fixed; 
-    right: 10px; 
-    top: 200px; 
-    width: 200px;
-    background: #ffffff; 
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    z-index: 9999;
-}
-
-*/
-
 /* 최근 본 상품 */
 .recently-viewed-box {
 	width: 95px;
@@ -491,73 +476,73 @@ nav ul li a:hover {
 }
 
 /*로그인 페이지 */
- .login-box {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            width: 100%;
-            max-width: 400px;
-            margin: 20px auto;
-        }
+.login-box {
+           background: white;
+           padding: 30px;
+           border-radius: 10px;
+           width: 100%;
+           max-width: 400px;
+           margin: 20px auto;
+       }
 
-        #login-label {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
+ #login-label {
+     text-align: center;
+     margin-bottom: 20px;
+     color: #333;
+ }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+.form-group {
+    margin-bottom: 20px;
+}
 
-        .form-group label {
-            font-size: 16px;
-            color: #555;
-            display: block;
-            margin-bottom: 5px;
-        }
+.form-group label {
+    font-size: 16px;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+}
 
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
 
-        .form-group input:focus {
-            border-color: #21afbf;
-            outline: none;
-        }
+.form-group input:focus {
+    border-color: #21afbf;
+    outline: none;
+}
 
-        .error-message {
-            color: red;
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
 
-        .signup-link {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
-            padding: 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+.signup-link {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
-      .signup-link:hover {
-         background-color: #e7f9fa;
-      }
-      
-        .signup-link a {
-            color: #21afbf;
-            text-decoration: none;
-            font-size: 18px;
-        }
-        
+.signup-link:hover {
+   background-color: #e7f9fa;
+}
+
+.signup-link a {
+    color: #21afbf;
+    text-decoration: none;
+    font-size: 18px;
+}
+  
 /* 마이페이지 - 마이페이지로 돌아가기 버튼 */
 .toMypage {
         display: block; /* 버튼 모양 만들기 */
