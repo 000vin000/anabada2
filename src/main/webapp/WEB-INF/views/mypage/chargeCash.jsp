@@ -6,6 +6,99 @@
 <meta charset="UTF-8">
 <title>충전</title>
 </head>
+<style>
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 40px;
+    line-height: 1.6;
+}
+
+form {
+    max-width: 400px;
+    margin: auto;
+    padding: 30px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+h2 {
+    margin-top: 0;
+    color: #007d8a;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+input[type="radio"] {
+    margin-right: 8px;
+    transform: scale(1.2);
+}
+
+/* 폼 내 구역 */
+#nopassbookForm,
+#cardForm {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+
+/* 제출 버튼 */
+input[type="submit"] {
+    width: 100%;
+    background-color: white;
+    color: #007d8a;
+    border: 2px solid #007d8a;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    background-color: #007d8a;
+    color: white;
+    transform: scale(1.03);
+}
+
+/* 반응형 */
+@media (max-width: 500px) {
+    form {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    input[type="submit"] {
+        font-size: 14px;
+    }
+}
+
+</style>
 <body>
 	<form id="chargeForm" method="post" action="/submitCharge" onsubmit="return handleSubmit(event)">
 		<label><input type="radio" name="chargetype" value="nopassbook" checked onclick="updateForm()">무통장 입금</label>

@@ -9,6 +9,7 @@ function fetchWeatherData() {
     const now = new Date().getTime();
     const oneHour = 1000 * 60 * 60;
 
+	// 1시간 이내에 저장된 데이터가 있다면 캐시 사용
     if (cachedWeather && cachedTime && (now - cachedTime) < oneHour) {
         const parsedData = JSON.parse(cachedWeather);
         renderWeather(parsedData);
@@ -29,6 +30,7 @@ function showPosition(position) {
 
     const weatherUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apikey}&units=metric&lang=kr`;
 
+	// 날씨 API 호출 및 로컬 저장, 렌더링
     fetch(weatherUrl)
         .then(res => res.json())
         .then(data => {
@@ -45,6 +47,7 @@ function renderWeather(data) {
     const weatherContainer = document.querySelector('.weather-container');
     const itemListContainer = document.getElementById('item-list');
 	
+	// 날씨 설명과 아이콘 이미지 매핑
     const weatherIconMapping = {
         "맑음": "sunny.png", "구름 조금": "cloudy.png", "구름 많음": "cloudy.png", "온흐림": "cloudy.png",
         "흐림": "cloudy.png", "약한 비": "rainy.png", "비": "rainy.png", "강한 비": "rainy.png",
@@ -54,6 +57,7 @@ function renderWeather(data) {
         "연기": "smoke.png", "돌풍": "tornado.png", "토네이도": "tornado.png"
     };
 
+	// 도시명 한글 변환
     const cityNameMapping = {
         "Seoul": "서울", "Busan": "부산", "Incheon": "인천", "Daegu": "대구", "Daejeon": "대전", "Gwangju": "광주",
         "Ulsan": "울산", "Suwon": "수원", "Jeju City": "제주", "Changwon": "창원", "Goyang": "고양",
@@ -61,6 +65,7 @@ function renderWeather(data) {
         "Cheonan": "천안", "Jecheon": "제천", "Gimhae": "김해", "Pohang": "포항"
     };
 
+	// 가장 현재에 가까운 시간의 날씨 데이터 선택
     const now = new Date();
     const nowTimestamp = now.getTime();
     let closestTimeData = null;
@@ -202,7 +207,8 @@ function renderWeather(data) {
     }
 }
 
-function showError(error) {
+// 위치 권한 거부 시 기본 서울 날씨 표시
+function showError() {
     document.getElementById("weatherError").style.display = "flex";
     document.getElementById("weatherError").innerHTML = "위치 정보 사용이 불가능하여 서울 기준으로 날씨를 표시합니다.";
     showPosition({ coords: { latitude: 37.5665, longitude: 126.9780 } });

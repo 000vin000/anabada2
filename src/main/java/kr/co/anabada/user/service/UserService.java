@@ -1,11 +1,14 @@
 package kr.co.anabada.user.service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.anabada.admin.entity.Warn;
 import kr.co.anabada.admin.repository.WarnRepository;
 import kr.co.anabada.user.entity.User;
+import kr.co.anabada.user.entity.User.UserStatus;
 import kr.co.anabada.user.repository.UserRepository;
 
 @Service
@@ -49,6 +52,12 @@ public class UserService {
         }
         
         user.setUserWarnCnt((byte) (currentCnt + 1));
+        
+        if (user.getUserWarnCnt() >= 5) {
+        	user.setUserStatus(UserStatus.PERMANENTSTOP);
+        	user.setUserWithdrawalDate(LocalDateTime.now());
+        }
+        
         userRepository.save(user);
         
         return true;

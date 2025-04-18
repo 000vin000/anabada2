@@ -5,6 +5,90 @@
 <head>
 <meta charset="UTF-8">
 <title>출금 신청</title>
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 550px;
+        overflow: hidden;
+        font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+        background-color: #f1f3f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    form#withdrawal {
+        background-color: #ffffff;
+        padding: 24px;
+        border-radius: 14px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        width: 360px;
+        max-height: 510px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    #currentCash {
+        font-size: 18px;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    form p {
+        margin: 8px 0 4px;
+        font-size: 15px;
+        color: #333;
+    }
+
+    input[type="number"],
+    input[type="text"],
+    select {
+        width: 100%;
+        padding: 8px 10px;
+        font-size: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+
+    div[style*="background-color: #C8FAC8"] {
+        background-color: #f0fff0;
+        padding: 14px;
+        border-radius: 10px;
+        margin: 10px 0;
+    }
+
+    input[type="submit"] {
+        width: 100%;
+        background-color: #00b894;
+        color: white;
+        padding: 10px;
+        font-size: 15px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+        margin-top: 8px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #019875;
+    }
+
+    .note {
+        font-size: 13px;
+        color: #828282;
+        margin: 0 0 10px;
+    }
+</style>
+
 </head>
 <body>
 	<form id="withdrawal" method="post" action="/withdrawalApplication" onsubmit="return withdrawal(event)">
