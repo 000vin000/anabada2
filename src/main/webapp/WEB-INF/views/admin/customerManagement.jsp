@@ -87,23 +87,23 @@
 
         <!-- 질문 목록 -->
         <div class="mt-5">
-            <h2>질문 목록</h2>
+            <h2>문의 목록</h2>
             <table border="1" cellpadding="10">
                 <thead>
                     <tr>
-                        <th>질문 번호</th>
-                        <th>질문자 ID</th>
-                        <th>질문 제목</th>
-                        <th>질문 내용</th>
+                        <th>번호</th>
+                        <th>문의자 ID</th>
+                        <th>문의 제목</th>
+                        <th>문의 내용</th>
                         <th>답변 내용</th>
                         <th>답변하기</th>
                         <th>삭제하기</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="question" items="${questions}">
+                    <c:forEach var="question" items="${questions}" varStatus="status">
                         <tr>
-                            <td>${question.questionNo}</td>
+                            <td>${status.index + 1}</td>
                             <td>${question.sender.userId}</td>
                             <td>${question.questionTitle}</td>
                             <td>${question.questionContent}</td>
@@ -149,9 +149,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="notices" items="${notices}">
+                    <c:forEach var="notices" items="${notices}" varStatus="status">
                         <tr>
-                            <td>${notices.noticeNo}</td>
+                            <td>${status.index + 1}</td>
                             <td>${notices.noticeTitle}</td>
                             <td>${notices.noticeContent}</td>
                             <td><a href="/notice/edit/${notices.noticeNo}">수정하기</a></td>

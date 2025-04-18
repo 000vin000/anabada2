@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="/css/styleAdmin.css" />
     <style>
     	table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+           width: 50%;
+       	   border-collapse: collapse;
+           margin: 20px auto; 
         }
         th, td {
             border: 1px solid #ddd;
@@ -28,7 +28,7 @@
         .chart-container {
         	display: flex;
             width: 100%;
-            height: 400px;
+            height: 350px;
             align-items: center;
     		justify-content: center;
     		margin: 30px 0;

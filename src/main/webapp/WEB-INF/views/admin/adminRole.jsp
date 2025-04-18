@@ -5,6 +5,37 @@
     <meta charset="UTF-8">
     <title>관리자 권한 설정</title>
 	<link rel="stylesheet" href="/css/styleAdmin.css" />
+	 <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 80vh; /* 검색창이 화면 중앙에 오도록 */
+            text-align: center;
+        }
+
+        .search-section {
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 250px;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
 	 <nav>
