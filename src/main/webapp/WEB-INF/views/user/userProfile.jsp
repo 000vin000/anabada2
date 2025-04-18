@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="isOwner" value="${loggedInUserNo eq profile.userNo}" />
 <%@ include file="../header.jsp"%>
 <!DOCTYPE html>
 <html>
@@ -55,6 +54,12 @@
 		</div>
 
 		<div id="sell-tab" class="tab-content active">
+			<div class="items-header logged-in-only" hidden>
+				<h2>판매 확정 대기</h2>
+			</div>
+			<div id="sell-items-pending-container" class="logged-in-only" hidden>
+				<!-- 판매 확정 대기 목록은 JS로 렌더링 -->
+			</div>
 			<div class="items-header">
 				<h2>판매 아이템</h2>
 				<div class="dropdown">
@@ -73,14 +78,20 @@
 				</div>
 			</div>
 			<div id="sell-items-container">
-				<!-- 아이템 목록은 JavaScript로 렌더링 -->
+				<!-- 아이템 목록은 JS로 렌더링 -->
 			</div>
 			<div id="sell-pagination" class="pagination-container">
-				<!-- 페이지네이션은 JavaScript로 렌더링 -->
+				<!-- 페이지네이션은 JS로 렌더링 -->
 			</div>
 		</div>
 
 		<div id="buy-tab" class="tab-content">
+			<div class="items-header logged-in-only" hidden>
+				<h2>구매 확정 대기</h2>
+			</div>
+			<div id="buy-items-pending-container" class="logged-in-only" hidden>
+				<!-- 구매 확정 대기 목록은 JS로 렌더링 -->
+			</div>
 			<div class="items-header">
 				<h2>구매 아이템</h2>
 				<div class="dropdown">
@@ -99,10 +110,10 @@
 				</div>
 			</div>
 			<div id="buy-items-container">
-				<!-- 아이템 목록은 JavaScript로 렌더링 -->
+				<!-- 아이템 목록은 JS로 렌더링 -->
 			</div>
 			<div id="buy-pagination" class="pagination-container">
-				<!-- 페이지네이션은 JavaScript로 렌더링 -->
+				<!-- 페이지네이션은 JS로 렌더링 -->
 			</div>
 		</div>
 		<div id="dashboard-tab" class="tab-content">
@@ -110,7 +121,7 @@
 				<h2>대시보드</h2>
 			</div>
 			<div id="dashboard-container">
-				<!-- 대시보드는 JavaScript로 렌더링 -->
+				<!-- 대시보드는 JS로 렌더링 -->
 			</div>
 		</div>
 	</div>
@@ -124,7 +135,7 @@
 
 	<script>
 		const contextPath = '${pageContext.request.contextPath}';
-		const userNo = ${profile.userNo};
+		const targetUserNo = ${profile.userNo};
 	</script>
 
 	<!-- 신고하기 창 열림 by수연 -->

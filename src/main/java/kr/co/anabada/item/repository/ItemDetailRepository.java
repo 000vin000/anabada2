@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.anabada.item.entity.Bid.BidStatus;
 import kr.co.anabada.item.entity.Item;
@@ -35,10 +36,10 @@ public interface ItemDetailRepository extends JpaRepository<Item, Integer> {
 	@Query("UPDATE Item SET itemPrice = :newPrice WHERE itemNo = :itemNo")
 	int updateItemPrice(@Param("itemNo") Integer itemNo, @Param("newPrice") BigDecimal newPrice);
 
-	@Modifying
-	@Query("UPDATE Item SET itemViewCnt = itemViewCnt + 1 "
-			+ "WHERE itemNo = :itemNo AND (:userNo IS NULL OR seller.sellerNo != :userNo)")
-	void incrementItemViewCount(@Param("itemNo") Integer itemNo, @Param("userNo") Integer userNo);
+//	@Modifying
+//	@Query("UPDATE Item SET itemViewCnt = itemViewCnt + 1 "
+//			+ "WHERE itemNo = :itemNo AND (:userNo IS NULL OR seller.sellerNo != :userNo)")
+//	void incrementItemViewCount(@Param("itemNo") Integer itemNo, @Param("userNo") Integer userNo);
 
 	@Query("SELECT DISTINCT i "
 			+ "FROM Item i "
@@ -72,8 +73,54 @@ public interface ItemDetailRepository extends JpaRepository<Item, Integer> {
 	List<Object[]> countItemsPerBuyerByItemStatusAndOptionalBidStatus(
 			@Param("itemStatus") ItemStatus itemStatus, @Param("bidStatus") BidStatus bidStatus);
 
+	// UserProfileScheduler
 	@Query("SELECT b.buyer.buyerNo, COUNT(DISTINCT b.item.itemNo) "
 			+ "FROM Bid b JOIN b.item i "
 			+ "GROUP BY b.buyer.buyerNo")
 	List<Object[]> countBidItemsPerBuyer();
+	
+	// UserProfile
+	@Query("SELECT i "
+			+ "FROM Item i "
+			+ "WHERE i.seller.sellerNo = :sellerNo "
+			+ "AND i.itemStatus = 'RESERVED' "
+			+ "AND i.itemSaleConfirmed = false ")
+	List<Item> findPendingSaleConfirmationItems(@Param("sellerNo") Integer sellerNo);
+
+	// UserProfile
+	@Query("SELECT i "
+			+ "FROM Item i "
+			+ "WHERE i.buyer.buyerNo = :buyerNo "
+			+ "AND i.itemStatus = 'RESERVED' "
+			+ "AND i.itemPurcConfirmed = false ")
+	List<Item> findPendingPurchaseConfirmationItems(@Param("buyerNo") Integer buyerNo);
+
+	@Modifying
+	@Transactional
+	@Query("UPDATE Item i SET i.itemSaleConfirmed = true "
+			+ "WHERE i.itemNo = :itemNo "
+			+ "AND i.seller.user.userNo = :userNo "
+			+ "AND i.itemStatus = 'RESERVED' "
+			+ "AND i.itemSaleConfirmed = false")
+	int confirmSaleBySeller(@Param("itemNo") Integer itemNo, @Param("userNo") Integer userNo);
+
+	@Modifying
+	@Transactional
+	@Query("UPDATE Item i SET i.itemPurcConfirmed = true "
+			+ "WHERE i.itemNo = :itemNo "
+			+ "AND i.buyer.user.userNo = :userNo "
+			+ "AND i.itemStatus = 'RESERVED' "
+			+ "AND i.itemPurcConfirmed = false")
+	int confirmPurchaseByBuyer(@Param("itemNo") Integer itemNo, @Param("userNo") Integer userNo);
+
+	Optional<Integer> findSellerUserUserNoByItemNo(Integer itemNo);
+	
+	@Modifying
+	@Transactional
+	@Query("UPDATE Item i SET i.itemStatus = 'SOLD', i.itemSoldDate = CURRENT_TIMESTAMP "
+			+ "WHERE i.itemNo = :itemNo "
+			+ "AND i.itemSaleConfirmed = true "
+			+ "AND i.itemPurcConfirmed = true "
+			+ "AND i.itemStatus = 'RESERVED'")
+	int updateStatusToSoldWhenConfirmed(@Param("itemNo") Integer itemNo);
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import kr.co.anabada.item.entity.Bid;
 import kr.co.anabada.item.entity.Bid.BidStatus;
 import kr.co.anabada.item.entity.Item;
+import kr.co.anabada.user.entity.Buyer;
 
 @Repository
 public interface BidRepository extends JpaRepository<Bid, Integer> {
@@ -33,4 +34,11 @@ public interface BidRepository extends JpaRepository<Bid, Integer> {
 			+ "WHERE b.bidStatus = :status "
 			+ "GROUP BY b.buyer.buyerNo")
 	List<Object[]> countBidsPerBuyerByBidStatus(@Param("status") BidStatus status);
+	
+	// ItemStatusScheduler
+	@Query("SELECT b.buyer "
+			+ "FROM Bid b "
+			+ "WHERE b.item = :item "
+			+ "ORDER BY b.bidPrice DESC, b.bidTime ASC")
+    Optional<Buyer> findWinningBuyerByItem(@Param("item") Item item);
 }
