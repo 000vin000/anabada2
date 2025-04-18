@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -146,6 +147,26 @@ public class ItemDetailService {
 
 		} catch (BidException e) {
 			throw new BidException("입찰 처리에 실패했습니다.");
+		}
+	}
+
+	@Transactional
+	public void confirmSale(Integer itemNo, Integer userNo) {
+		int updatedRows = itemDetailRepository.confirmSaleBySeller(itemNo, userNo);
+		if (updatedRows == 0) {
+			throw new AccessDeniedException("판매 확정에 실패했습니다.");
+		} else {
+			itemDetailRepository.updateStatusToSoldWhenConfirmed(itemNo);
+		}
+	}
+
+	@Transactional
+	public void confirmPurchase(Integer itemNo, Integer userNo) {
+		int updatedRows = itemDetailRepository.confirmPurchaseByBuyer(itemNo, userNo);
+		if (updatedRows == 0) {
+			throw new AccessDeniedException("구매 확정에 실패했습니다.");
+		} else {
+			itemDetailRepository.updateStatusToSoldWhenConfirmed(itemNo);
 		}
 	}
 }

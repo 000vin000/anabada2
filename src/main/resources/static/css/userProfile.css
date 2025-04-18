@@ -21,7 +21,6 @@
 	white-space: nowrap;
 }
 
-/* 오른쪽 끝을 밀어내는 유연한 공간 */
 .spacer {
 	flex-grow: 1;
 }
@@ -97,7 +96,7 @@
 	display: block;
 }
 
-.items-header {
+.items-header:not([hidden]) {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -421,4 +420,105 @@
   font-size: 12px;
   color: #43BFC7;
   font-weight: normal;
+}
+
+.pending-items-grid {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	width: 100%;
+	margin-top: 15px;
+}
+
+.pending-item-card {
+	display: flex;
+	align-items: center;
+	padding: 12px;
+	border-left: 3px solid #43BFC7;
+	background-color: white;
+	border-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+	transition: all 0.2s ease;
+}
+
+.pending-item-card:hover {
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.pending-item-image {
+	width: 60px;
+	height: 60px;
+	object-fit: cover;
+	border-radius: 4px;
+	margin-right: 15px;
+}
+
+.pending-item-info {
+	flex: 1;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.pending-item-title {
+	width: 100%;
+	font-weight: 600;
+	font-size: 15px;
+	margin-bottom: 6px;
+	color: #333;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.pending-item-price, .pending-item-counterpart, .pending-item-deadline {
+	font-size: 13px;
+	color: #666;
+	margin-right: 15px;
+}
+
+.pending-item-price {
+	color: #43BFC7;
+	font-weight: 500;
+}
+
+.pending-item-action {
+	margin-left: auto;
+}
+
+.confirm-button {
+	background-color: #43BFC7;
+	color: white;
+	border: none;
+	padding: 8px 12px;
+	border-radius: 4px;
+	font-size: 13px;
+	cursor: pointer;
+	transition: background-color 0.2s;
+	white-space: nowrap;
+}
+
+.confirm-button:hover {
+	background-color: #38a6ad;
+}
+
+@media ( max-width : 768px) {
+	.pending-item-card {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.pending-item-image {
+		width: 100%;
+		height: 120px;
+		margin-right: 0;
+		margin-bottom: 10px;
+	}
+	.pending-item-action {
+		margin-left: 0;
+		margin-top: 10px;
+		width: 100%;
+	}
+	.confirm-button {
+		width: 100%;
+	}
 }

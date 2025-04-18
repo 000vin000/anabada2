@@ -1,8 +1,6 @@
-import { fetchWithAuth } from '/js/user/common/fetchWithAuth.js';
-import { getRelativeTimeString, getFormattedDate, addCommas } from '/js/user/individual/userProfileUtil.js';
+import { fetchWithoutRedirect } from '/js/user/common/fetchWithAuth.js';
+import { checkIsOwnProfile, getRelativeTimeString, getFormattedDate, addCommas } from '/js/user/individual/userProfileUtil.js';
 
-let loggedInUserNo = 0;
-let isOwnProfile = false;
 let sellPage = 0;
 let buyPage = 0;
 let size = 8;
@@ -11,7 +9,7 @@ let buyStatusFilter = 'all';
 let sellSort = 'recent';
 let buySort = 'recent';
 
-function openTab(tabId) {
+async function openTab(tabId) {
 	document.querySelectorAll('.tab-content').forEach(tab => {
 		tab.classList.remove('active');
 	});
@@ -24,8 +22,14 @@ function openTab(tabId) {
 	document.querySelector('.tab-button[onclick="openTab(\'' + tabId + '\')"]').classList.add('active');
 
 	if (tabId === 'sell-tab') {
+		if (await checkIsOwnProfile(targetUserNo)) {
+			loadPendingSellItems();
+		}
 		loadSellItems();
 	} else if (tabId === 'buy-tab') {
+		if (await checkIsOwnProfile(targetUserNo)) {
+			loadPendingBuyItems();
+		}
 		loadBuyItems();
 	} else if (tabId === 'dashboard-tab') {
 		loadDashboard();
@@ -71,13 +75,10 @@ window.openTab = openTab;
 window.changeStatusFilter = changeStatusFilter;
 window.changeSorting = changeSorting;
 window.changePage = changePage;
+window.handleConfirmation = handleConfirmation;
 
 document.addEventListener('DOMContentLoaded', async function() {
-	const response = await fetchWithAuth('/api/user/profile', { method: "GET" });
-	loggedInUserNo = response.ok ? parseInt(await response.text()) : 0;
-	isOwnProfile = loggedInUserNo === userNo;
-
-	console.log('로그인 uid: ' + loggedInUserNo);
+	const isOwnProfile = await checkIsOwnProfile(targetUserNo);
 	console.log('본인프로필 여부: ' + isOwnProfile);
 
 	if (isOwnProfile) {
@@ -86,15 +87,15 @@ document.addEventListener('DOMContentLoaded', async function() {
 		});
 	}
 
-	loadSellItems();
+	openTab('sell-tab');
 });
 
 function loadSellItems() {
 	document.getElementById('sell-items-container').innerHTML = '<div class="loading-message">판매 아이템 로딩 중</div>';
 
-	const url = '/api/user/profile/' + userNo + '/sells?page=' + sellPage + '&size=' + size
+	const url = '/api/user/profile/' + targetUserNo + '/sells?page=' + sellPage + '&size=' + size
 		+ '&status=' + sellStatusFilter + '&sort=' + sellSort;
-	fetchWithAuth(url, { method: "GET" })
+	fetchWithoutRedirect(url, { method: "GET" })
 		.then(response => response.json())
 		.then(data => {
 			displayItems(data, 'sell-items-container');
@@ -109,9 +110,9 @@ function loadSellItems() {
 function loadBuyItems() {
 	document.getElementById('buy-items-container').innerHTML = '<div class="loading-message">구매 아이템 로딩 중</div>';
 
-	const url = '/api/user/profile/' + userNo + '/buys?page=' + buyPage + '&size=' + size
+	const url = '/api/user/profile/' + targetUserNo + '/buys?page=' + buyPage + '&size=' + size
 		+ '&status=' + buyStatusFilter + '&sort=' + buySort;
-	fetchWithAuth(url, { method: "GET" })
+	fetchWithoutRedirect(url, { method: "GET" })
 		.then(response => response.json())
 		.then(data => {
 			displayItems(data, 'buy-items-container');
@@ -123,11 +124,55 @@ function loadBuyItems() {
 		});
 }
 
+function loadPendingSellItems() {
+	const container = document.getElementById('sell-items-pending-container');
+	if (container) {
+		container.innerHTML = '<div class="loading-message">판매 확정 대기 목록 로딩 중...</div>';
+
+		fetchWithoutRedirect(`/api/user/profile/${targetUserNo}/pending-sells`)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+				return response.json();
+			})
+			.then(data => {
+				displayPendingItems(data, 'sell-items-pending-container', 'sell');
+			})
+			.catch(error => {
+				console.error('Error loading pending sell items:', error);
+				container.innerHTML = '<div class="error-message">판매 확정 대기 목록 로드 실패</div>';
+			});
+	}
+}
+
+function loadPendingBuyItems() {
+	const container = document.getElementById('buy-items-pending-container');
+	if (container) {
+		container.innerHTML = '<div class="loading-message">구매 확정 대기 목록 로딩 중...</div>';
+
+		fetchWithoutRedirect(`/api/user/profile/${targetUserNo}/pending-buys`)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+				return response.json();
+			})
+			.then(data => {
+				displayPendingItems(data, 'buy-items-pending-container', 'buy');
+			})
+			.catch(error => {
+				console.error('Error loading pending buy items:', error);
+				container.innerHTML = '<div class="error-message">구매 확정 대기 목록 로드 실패</div>';
+			});
+	}
+}
+
 function loadDashboard() {
 	document.getElementById('dashboard-container').innerHTML = '<div class="loading-message">대시보드 로딩 중</div>';
 
-	const url = '/api/user/profile/' + userNo + '/dashboard';
-	fetchWithAuth(url, { method: "GET" })
+	const url = '/api/user/profile/' + targetUserNo + '/dashboard';
+	fetchWithoutRedirect(url, { method: "GET" })
 		.then(response => response.json())
 		.then(data => {
 			displayDashboard(data);
@@ -284,7 +329,7 @@ function displayItems(data, containerId) {
 		infoDiv.appendChild(titleDiv);
 		infoDiv.appendChild(priceDiv);
 
-		if (isOwnProfile && item.reviewed) {
+		if (item.reviewed) {
 			const reviewDiv = document.createElement('review');
 			reviewDiv.className = 'item-review logged-in-only';
 			reviewDiv.innerHTML = '<button>리뷰</button>';
@@ -298,6 +343,137 @@ function displayItems(data, containerId) {
 	});
 
 	container.appendChild(grid);
+}
+
+function displayPendingItems(items, containerId, type) {
+	const container = document.getElementById(containerId);
+	container.innerHTML = '';
+
+	if (!items || items.length === 0) {
+		container.innerHTML = `<div class="empty-message">
+			${type === 'sell' ? '판매' : '구매'} 확정 대기 중인 아이템이 없습니다.</div>`;
+		return;
+	}
+
+	const grid = document.createElement('div');
+	grid.className = 'pending-items-grid';
+
+	items.forEach(item => {
+		const imageUrl = contextPath + '/image/' + item.itemNo;
+		const detailUrl = contextPath + '/item/detail/' + item.itemNo;
+
+		const link = document.createElement('a');
+		link.href = detailUrl;
+		link.className = 'item-card-link';
+
+		const itemCard = document.createElement('div');
+		itemCard.className = 'pending-item-card';
+		itemCard.dataset.itemNo = item.itemNo;
+
+		const img = document.createElement('img');
+		img.src = imageUrl;
+		img.alt = item.itemTitle;
+		img.className = 'pending-item-image';
+		img.onerror = () => {
+			img.alt = '이미지가 없습니다';
+		};
+
+		const infoDiv = document.createElement('div');
+		infoDiv.className = 'pending-item-info';
+
+		const titleDiv = document.createElement('div');
+		titleDiv.className = 'pending-item-title';
+		titleDiv.textContent = item.itemTitle;
+
+		const priceDiv = document.createElement('div');
+		priceDiv.className = 'pending-item-price';
+		priceDiv.textContent = `낙찰가: ${item.formattedFinalBidPrice || addCommas(item.itemFinalBidPrice || 0)}원`;
+
+		const counterpartDiv = document.createElement('div');
+		counterpartDiv.className = 'pending-item-counterpart';
+		counterpartDiv.textContent = `${type === 'sell' ? '구매자' : '판매자'}: ${item.itemCounterNick || '정보 없음'}`;
+
+		const deadlineDiv = document.createElement('div');
+		deadlineDiv.className = 'pending-item-deadline';
+		deadlineDiv.textContent = `확정 마감: ${item.formattedResvEndDate || '기한 없음'}`;
+
+		const actionDiv = document.createElement('div');
+		actionDiv.className = 'pending-item-action';
+
+		const confirmButton = document.createElement('button');
+		confirmButton.className = 'confirm-button';
+		confirmButton.textContent = `${type === 'sell' ? '판매' : '구매'} 확정`;
+		confirmButton.onclick = (event) => handleConfirmation(event, item.itemNo, type);
+
+		actionDiv.appendChild(confirmButton);
+
+		infoDiv.appendChild(titleDiv);
+		infoDiv.appendChild(priceDiv);
+		infoDiv.appendChild(counterpartDiv);
+		infoDiv.appendChild(deadlineDiv);
+		infoDiv.appendChild(actionDiv);
+
+		itemCard.appendChild(img);
+		itemCard.appendChild(infoDiv);
+
+		link.appendChild(itemCard);
+		grid.appendChild(link);
+	});
+
+	container.appendChild(grid);
+}
+
+async function handleConfirmation(event, itemNo, type) {
+	event.stopPropagation();
+	event.preventDefault();
+	
+	const actionText = type === 'sell' ? '판매' : '구매';
+	if (!confirm(`${actionText} 확정하시겠습니까? 확정 후에는 거래 상태를 되돌릴 수 없습니다.`)) {
+		return
+	}
+
+	const button = document.querySelector(`.pending-item-card[data-item-no="${itemNo}"] .confirm-button`);
+	if (button) {
+		button.disabled = true;
+		button.textContent = '처리 중...';
+	}
+
+	const endpoint = type === 'sell'
+		? `/api/item/detail/${itemNo}/sale-confirm`
+		: `/api/item/detail/${itemNo}/purc-confirm`;
+
+	try {
+		const response = await fetchWithoutRedirect(endpoint, { method: 'PATCH' });
+
+		if (response.ok) {
+			alert(`${actionText} 확정이 완료되었습니다.`);
+
+			const cardToRemove = document.querySelector(`.pending-item-card[data-item-no="${itemNo}"]`);
+			if (cardToRemove) {
+				const container = cardToRemove.parentNode.parentNode;
+				cardToRemove.remove();
+
+				if (container && !container.querySelector('.pending-item-card')) {
+					container.innerHTML = `<div class="empty-message">${type === 'sell' ? '판매' : '구매'} 확정 대기 중인 아이템이 없습니다.</div>`;
+				}
+			}
+		} else {
+			const errorText = await response.text();
+			console.error(`Confirmation failed for item ${itemNo}:`, response.status, errorText);
+			alert(`${actionText} 확정 처리 중 오류가 발생했습니다. (${response.status})\n${errorText || '잠시 후 다시 시도해주세요.'}`);
+			if (button) {
+				button.disabled = false;
+				button.textContent = `${actionText} 확정`;
+			}
+		}
+	} catch (error) {
+		console.error('Network or fetch error during confirmation:', error);
+		alert(`${actionText} 확정 처리 중 네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.`);
+		if (button) {
+			button.disabled = false;
+			button.textContent = `${actionText} 확정`;
+		}
+	}
 }
 
 function displayDashboard(dashboardData) {

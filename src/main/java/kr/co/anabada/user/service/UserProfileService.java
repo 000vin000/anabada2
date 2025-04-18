@@ -1,5 +1,11 @@
 package kr.co.anabada.user.service;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,10 +18,13 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.item.entity.Item.ItemStatus;
+import kr.co.anabada.item.exception.AuthenticationRequiredException;
 import kr.co.anabada.item.repository.BidRepository;
 import kr.co.anabada.item.repository.ItemDetailRepository;
 import kr.co.anabada.jwt.JwtAuthHelper;
 import kr.co.anabada.jwt.UserTokenInfo;
+import kr.co.anabada.user.dto.PendingItemSummaryDTO;
+import kr.co.anabada.user.dto.PendingItemSummaryDTO.UserRole;
 import kr.co.anabada.user.dto.UserProfileDTO;
 import kr.co.anabada.user.dto.UserProfileDTO.ItemSummaryDTO;
 import kr.co.anabada.user.dto.UserProfileDashboardDTO;
@@ -69,6 +78,34 @@ public class UserProfileService {
 		
 		return dto;
 	}
+	
+	public List<PendingItemSummaryDTO> getPendingSellConfirmItems(Integer targetUserNo, HttpServletRequest req) {
+		Integer sellerNo = sellerRepository.findSellerNoByUserNo(targetUserNo).orElse(null);
+		if (sellerNo != null) {
+			List<Item> items = itemDetailRepository.findPendingSaleConfirmationItems(sellerNo);
+
+			return items.stream()
+					.map(item -> PendingItemSummaryDTO.fromEntity(UserRole.SELLER, item))
+					.filter(Objects::nonNull)
+					.collect(Collectors.toList());
+		} else {
+			return Collections.emptyList();
+		}
+	}
+
+	public List<PendingItemSummaryDTO> getPendingBuyConfirmItems(Integer targetUserNo, HttpServletRequest req) {
+		Integer buyerNo = buyerRepository.findBuyerNoByUserNo(targetUserNo).orElse(null);
+		if (buyerNo != null) {
+			List<Item> items = itemDetailRepository.findPendingPurchaseConfirmationItems(buyerNo);
+
+			return items.stream()
+					.map(item -> PendingItemSummaryDTO.fromEntity(UserRole.BUYER, item))
+					.filter(Objects::nonNull)
+					.collect(Collectors.toList());
+		} else {
+			return Collections.emptyList();
+		}
+	}
 
 	public Integer getCurrentUser(HttpServletRequest req) {
 		UserTokenInfo loggedInUser = jwtAuthHelper.getUserFromRequest(req);
@@ -92,7 +129,7 @@ public class UserProfileService {
 		Page<Item> items = getItemsByRoleAndOptionalStatus(role, targetUserNo, status, pageable);
 
 		if (isOwnProfile) {
-			Integer buyerNo = buyerRepository.findBuyerNoByUserUserNo(targetUserNo).orElse(null);
+			Integer buyerNo = buyerRepository.findBuyerNoByUserNo(targetUserNo).orElse(null);
 			if (buyerNo != null) {
 				return items.map(item -> getAuthenticatedItemSummaryDTO(item, buyerNo));
 			}
@@ -150,16 +187,13 @@ public class UserProfileService {
 		return dto;
 	}
 
-	private UserProfileDTO.AuthenticatedItemSummaryDTO getAuthenticatedItemSummaryDTO(Item item, Integer buyerNo) {
-		UserProfileDTO.AuthenticatedItemSummaryDTO dto =
-				new UserProfileDTO.AuthenticatedItemSummaryDTO();
-		BeanUtils.copyProperties(getItemSummaryDTO(item), dto);
-//		dto.setReviewed(); // TODO 리뷰버튼 노출 로직 구현 필요
-
-		return dto;
-	}
-
-	private enum UserRole {
-		SELLER, BUYER
+	private UserProfileDTO.AuthBuyItemSummaryDTO getAuthenticatedItemSummaryDTO(Item item, Integer buyerNo) {
+		ItemSummaryDTO baseDto = getItemSummaryDTO(item);
+		UserProfileDTO.AuthBuyItemSummaryDTO authDto = new UserProfileDTO.AuthBuyItemSummaryDTO();
+		BeanUtils.copyProperties(baseDto, authDto);
+//		BigDecimal userBidPrice = bidRepository.findBidPriceByItemNoAndBuyerNo(baseDto.getItemNo(), buyerNo);
+//		authDto.setUserBidPrice(userBidPrice);
+		
+		return authDto;
 	}
 }
