@@ -1,0 +1,247 @@
+@charset "UTF-8";
+
+/* 전체 공통 폼 레이아웃 */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 100px;
+    margin: 0;
+}
+
+/* 공통 제목 */
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* 로그인/회원가입 공통 폼 */
+form {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+/* 공통 라벨 */
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-weight: bold;
+}
+
+/* 공통 입력창 */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #2adbe0;
+    outline: none;
+}
+
+/* 제출 버튼 */
+input[type="submit"],
+button[type="submit"],
+input[type="button"],
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #2adbe0;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 10px;
+}
+
+input[type="submit"]:hover,
+button[type="submit"]:hover,
+input[type="button"]:hover,
+button:hover {
+    background-color: #22bfc3;
+}
+
+/* 에러 메시지 */
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* 회원가입 링크 */
+.signup-link {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.signup-link:hover {
+    background-color: #e7f9fa;
+}
+
+.signup-link a {
+    color: #21afbf;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+/* 이메일 인증 전용 입력창 */
+.email-verification-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.email-verification-container h2 {
+    margin-bottom: 20px;
+}
+
+.email-verification-container input[type="email"],
+.email-verification-container input[type="text"] {
+    text-align: center;
+}
+
+#verificationSection {
+    display: none;
+}
+
+/* 구글 로그인 버튼 */
+.login-with-google {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    background-color: white;
+    color: #3c4043;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+    width: 100%;
+    justify-content: center;
+}
+
+.login-with-google:hover {
+    box-shadow: 0 1px 3px rgba(60, 64, 67, 0.3), 0 4px 8px rgba(60, 64, 67, 0.15);
+}
+
+.google-icon {
+    height: 18px;
+    width: 18px;
+    margin-right: 10px;
+}
+
+/* 구분선 */
+.or-separator {
+    text-align: center;
+    margin: 20px 0 10px;
+    color: #888;
+    font-size: 13px;
+    position: relative;
+}
+
+.or-separator::before,
+.or-separator::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background-color: #ddd;
+}
+
+.or-separator::before {
+    left: 0;
+}
+
+.or-separator::after {
+    right: 0;
+}
+
+/* 취소 링크 */
+.login-cancel {
+    margin-top: 20px;
+    font-size: 16px;
+    text-decoration: none;
+    color: #999;
+    transition: color 0.2s ease;
+    display: block;
+    text-align: center;
+}
+
+.login-cancel:hover {
+    color: #333;
+}
+
+.email-row {
+  display: flex;
+  flex-direction: column;  /* 세로 배치 유지 */
+  width: 100%;
+  margin-bottom: 12px; /* 간격 살짝 줄임 */
+}
+
+.email-row input,
+.email-row button {
+  width: 100%;
+  margin-bottom: 6px; /* 입력창과 버튼 사이 간격 줄임 */
+}
+
+
+/* 버튼 너비 고정 */
+.email-row button {
+  flex: 1;
+  white-space: nowrap;
+}
+
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.phone-inputs {
+  display: flex;
+  gap: 10px;
+  width: 100%; /* ← 다른 input들과 폭 맞춤 */
+}
+
+.phone-inputs input {
+  flex: 1;               /* 1:1:1 균등분할 */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+

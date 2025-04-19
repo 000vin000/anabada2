@@ -40,8 +40,8 @@
 <jsp:include page="../sidebar.jsp" />
 <script src="/js/recent/config.js"></script>
 <script src="/js/recent/getRecent_sidebar.js"></script>
-<script type="module" src="/js/user/pin/goToUpdateInfo.js"></script>
 <script src="/js/user/update/hidePasswordMenuIfSocial.js"></script>
+<script type="module" src="/js/user/pin/goToUpdateInfo.js"></script>
 
 </body>
 </html>

@@ -25,5 +25,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/join/individual/details")
                 .setViewName("forward:/auth/join/individual/IndividualJoin.html");
 
+    
     }
 }
