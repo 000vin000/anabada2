@@ -16,11 +16,6 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 
 	List<Item> findBySeller(Seller seller);
 
-	int countBySeller_SellerNo(Integer sellerNo); // userProfile
-
-	@Query("SELECT itemNo FROM Item")
-	List<Integer> findAllItemNos(); // ItemStatusScheduler
-
 	@Modifying
 	@Transactional
 	@Query("UPDATE Item SET itemStatus = ItemStatus.ACTIVE " +
@@ -36,11 +31,9 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 			"AND NOT EXISTS (SELECT b FROM Bid b WHERE b.item = i)")
 	int expireActiveItems(); //ItemStatusScheduler
 	
-	@Modifying
-	@Transactional
-	@Query("UPDATE Item i SET i.itemStatus = ItemStatus.RESERVED " +
+	@Query("SELECT i FROM Item i " +
 			"WHERE i.itemStatus = ItemStatus.ACTIVE " +
 			"AND i.itemSaleEndDate <= now() " +
 			"AND EXISTS (SELECT b FROM Bid b WHERE b.item = i)")
-	int reserveActiveItems(); //ItemStatusScheduler
+	List<Item> findItemsToReserve(); //ItemStatusScheduler
 }

@@ -19,6 +19,7 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import kr.co.anabada.user.entity.Buyer;
 import kr.co.anabada.user.entity.Seller;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,8 +37,12 @@ public class Item {
 	private Integer itemNo;
 
 	@ManyToOne
-	@JoinColumn(name = "seller_no", nullable = false)
+	@JoinColumn(name = "sellerNo", nullable = false)
 	private Seller seller;
+	
+	@ManyToOne
+	@JoinColumn(name = "buyerNo")
+	private Buyer buyer;
 
 	@ManyToOne
 	@JoinColumn(name = "categoryNo", nullable = false)

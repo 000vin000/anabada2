@@ -19,8 +19,6 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class UserProfileDTO {
 	private Integer userNo;
 	private String userId;
@@ -48,6 +46,7 @@ public class UserProfileDTO {
 	}
     
     public String getFormattedDate() {
+    	if (userCreatedDate == null) return "불러올 수 없음";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         return userCreatedDate.format(formatter);
     }
@@ -66,7 +65,7 @@ public class UserProfileDTO {
         private int bidCount;
         
         public String getFormattedDate() {
-        	if (itemSoldDate == null) return null;
+        	if (itemSoldDate == null) return "불러올 수 없음";
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
             return itemSoldDate.format(formatter);
         }
@@ -96,7 +95,8 @@ public class UserProfileDTO {
 	@SuperBuilder
 	@EqualsAndHashCode(callSuper = true)
 	@ToString(callSuper = true)
-	public static class AuthenticatedItemSummaryDTO extends ItemSummaryDTO {
-		private boolean isReviewed;
+	public static class AuthBuyItemSummaryDTO extends ItemSummaryDTO {
+		private BigDecimal userBidPrice;
+//		private boolean isReviewed; // TODO 리뷰버튼 노출 로직 구현 필요
 	}
 }

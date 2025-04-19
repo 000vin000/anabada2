@@ -31,7 +31,7 @@ public class UserProfileScheduler {
 	@Autowired
 	private ItemDetailRepository itemDetailRepository;
 	@Autowired
-	private UserProfileSchedulerService newUserProfileSchedulerService;
+	private UserProfileSchedulerService userProfileSchedulerService;
 	@Autowired
 	private PaymentRepository paymentRepository;
 	@Autowired
@@ -42,8 +42,8 @@ public class UserProfileScheduler {
 	private SellerRepository sellerRepository;
 
 	@Scheduled(cron = "0 0 2 * * *")
-	public void updateDailyStatistics() {
-		log.info("Starting daily statistics update job...");
+	public void updateProfileDashboardDaily() {
+		log.info("프로필 대시보드 1일 주기 스케줄러 시작");
 
 		// ---Seller
 		Map<Integer, Integer> itemCounts = listToMap(
@@ -70,7 +70,7 @@ public class UserProfileScheduler {
 		allSellerNos.addAll(totalSales.keySet());
 		allSellerNos.addAll(avgRatings.keySet());
 
-		log.info("Found {} sellers to update", allSellerNos.size());
+		log.info("{}명의 판매자가 업데이트 됩니다.", allSellerNos.size());
 
 		int successSellerCount = 0;
 		int failSellerCount = 0;
@@ -84,7 +84,7 @@ public class UserProfileScheduler {
 
 		        double salesSuccessRate = calculateRate(completedSellItemCount, itemCount);
 				
-				newUserProfileSchedulerService.updateSingleSellerStatistics(
+				userProfileSchedulerService.updateSingleSellerStatistics(
 						sellerNo,
 						itemCount,
 						activeItemCount,
@@ -94,9 +94,10 @@ public class UserProfileScheduler {
 						salesSuccessRate);
 				successSellerCount++;
 			} catch (Exception e) {
-				log.error("Failed to update statistics for sellerNo {}: {}", sellerNo, e.getMessage(), e);
+				failSellerCount++;
+				log.error("판매자 업데이트 실패: {}", sellerNo, e.getMessage(), e);
 			}
-			log.info("Daily statistics update job finished. Success: {}, Fail: {}", successSellerCount, failSellerCount);
+			log.info("프로필 대시보드 1일 주기 스케줄러(판매자) 완료. 성공: {}, 실패: {}", successSellerCount, failSellerCount);
 		}
 
 		// ---Buyer
@@ -137,7 +138,7 @@ public class UserProfileScheduler {
 		        double bidSuccessRate = calculateRate(bidSuccessCount, bidItemCount);
 		        double paySuccessRate = calculateRate(paySuccessCount, bidSuccessCount);
 
-		        newUserProfileSchedulerService.updateSingleBuyerStatistics(
+		        userProfileSchedulerService.updateSingleBuyerStatistics(
 		                buyerNo,
 		                bidCount,
 		                activeBidItemCount,
@@ -153,11 +154,11 @@ public class UserProfileScheduler {
 		        log.error("Failed to update statistics for buyerNo {}: {}", buyerNo, e.getMessage(), e);
 		    }
 		}
-		log.info("Buyer daily statistics update finished. Success: {}, Fail: {}", successBuyerCount, failBuyerCount);
+		log.info("프로필 대시보드 1일 주기 스케줄러(구매자) 완료. 성공: {}, 실패: {}", successBuyerCount, failBuyerCount);
 	}
 	
 	@Scheduled(cron = "0 0 3 1 * *")
-	public void updateMonthlySellerGradeJob() {
+	public void updateProfileDashboardMonthly() {
 		log.info("Starting monthly seller grade update job...");
 
 		YearMonth lastMonth = YearMonth.now().minusMonths(1);
@@ -190,7 +191,7 @@ public class UserProfileScheduler {
 			try {
 				int itemCount = monthlySalesCounts.getOrDefault(sellerNo, 0);
 				SellerGrade newGrade = SellerGrade.fromSalesCount(itemCount);
-				newUserProfileSchedulerService.updateSingleSellerGrade(sellerNo, newGrade);
+				userProfileSchedulerService.updateSingleSellerGrade(sellerNo, newGrade);
 				successCount++;
 
 			} catch (Exception e) {

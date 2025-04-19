@@ -19,7 +19,7 @@ public interface BuyerRepository extends JpaRepository<Buyer, Integer> {
 	List<Integer> findAllBuyerNos(); // userProfile
 
 	@Query("SELECT b.buyerNo FROM Buyer b WHERE b.user.userNo = :userNo")
-	Optional<Integer> findBuyerNoByUserUserNo(Integer userNo); // userProfile
+	Optional<Integer> findBuyerNoByUserNo(Integer userNo); // userProfile
 
 	@Modifying
 	@Query("UPDATE Buyer b SET "

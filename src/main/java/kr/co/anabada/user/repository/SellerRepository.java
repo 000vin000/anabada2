@@ -20,14 +20,17 @@ public interface SellerRepository extends JpaRepository<Seller, Integer> {
 	@Query("SELECT SUM(s.sellerTotalSales) FROM Seller s")
 	BigDecimal sumTotalSales();
 
-	Optional<Seller> findByUserUserNo(Integer targetUserNo);
+	Optional<Seller> findByUserUserNo(Integer userNo);
+
+	@Query("SELECT s.sellerNo FROM Seller s WHERE s.user.userNo = :userNo")
+	Optional<Integer> findSellerNoByUserNo(Integer userNo);
 
 	Seller findByUser(User user);
 
 	@Query("SELECT sellerNo FROM Seller")
 	List<Integer> findAllSellerNos(); // userProfile
 
-	 // UserProfileService : updateSingleSellerGrade
+	// UserProfileService : updateSingleSellerGrade
 	@Modifying
 	@Query("UPDATE Seller SET sellerGrade = :sellerGrade WHERE sellerNo = :sellerNo")
 	int updateSellerGrade(

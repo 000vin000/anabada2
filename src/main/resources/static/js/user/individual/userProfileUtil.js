@@ -1,3 +1,22 @@
+import { fetchWithoutRedirect } from '/js/user/common/fetchWithAuth.js';
+
+export async function checkIsOwnProfile(targetUserNo) {
+	try {
+		const response = await fetchWithoutRedirect('/api/user/profile', { method: "GET" });
+		if (response.ok) {
+			const loggedInUserNoText = await response.text();
+			const loggedInUserNo = parseInt(loggedInUserNoText.trim(), 10);
+			return !isNaN(loggedInUserNo) && loggedInUserNo > 0 && loggedInUserNo === targetUserNo;
+		} else {
+			console.warn(`로그인 상태 확인 실패: ${response.status}`);
+			return false;
+		}
+	} catch (error) {
+		console.error("로그인 상태 확인 중 네트워크 오류:", error);
+		return false;
+	}
+}
+
 export function getRelativeTimeString(dateString) {
 	const date = new Date(dateString);
 	const now = new Date();
