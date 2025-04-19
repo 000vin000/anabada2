@@ -1,0 +1,131 @@
+@charset "UTF-8";
+
+/* 회원정보 수정 메인 박스 */
+.update-info-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+/* 제목 */
+.update-info-container h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* 라벨 */
+.update-info-container label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #444;
+}
+
+/* 일반 input */
+.update-info-container input[type="text"],
+.update-info-container input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+/* 읽기 전용 필드 회색 배경 */
+.update-info-container input[readonly] {
+    background-color: #eee;
+    color: #666;
+    cursor: not-allowed;
+}
+
+/* 전화번호: 가로 정렬 */
+.phone-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.phone-group input {
+    width: 100px;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    text-align: center;
+}
+
+/* 주소 라인: 기본주소 + 상세주소 */
+.address-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.address-group input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 버튼 */
+.update-info-container button,
+.update-info-container input[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    background-color: #21afbf;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.update-info-container button:hover,
+.update-info-container input[type="submit"]:hover {
+    background-color: #2adbe0;
+}
+
+/* 경고 메시지 */
+.update-info-container .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 15px;
+}
+
+/* 닉네임 중복 버튼 */
+.nickname-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.nickname-row input {
+    flex: 1;
+}
+
+.nickname-row button {
+    padding: 10px 16px;
+    white-space: nowrap;
+    background-color: #ddd;
+    color: #333;
+    border-radius: 6px;
+    font-weight: bold;
+    border: none;
+}
+
+.nickname-row button:hover {
+    background-color: #ccc;
+}

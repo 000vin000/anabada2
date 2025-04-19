@@ -37,12 +37,15 @@
 		<span id="emailWarning" style="margin-left: 10px; font-size: 12px; color: red;"></span>
 		<br>
 		
-        <label for="phone1">전화번호:</label>
-        <input type="text" id="phone1" name="phone1" maxlength="3" required> -
-        <input type="text" id="phone2" name="phone2" maxlength="4" required> -
-        <input type="text" id="phone3" name="phone3" maxlength="4" required>
-        <span id="phoneWarning" style="margin-left: 10px; font-size: 12px; color: red;"></span>
-        <br>
+		<div class="phone-group">
+		  <label for="phone1">전화번호:</label>
+		  <div class="phone-inputs">
+		    <input type="text" id="phone1" name="phone1" maxlength="3">
+		    <input type="text" id="phone2" name="phone2" maxlength="4">
+		    <input type="text" id="phone3" name="phone3" maxlength="4">
+		  </div>
+		</div>
+
 
         <label for="baseAddress">기본 주소:</label>
         <input type="text" id="baseAddress" name="baseAddress" required><br>
@@ -55,6 +58,6 @@
 
 <script type="module" src="/js/user/individual/IndividualJoin.js"></script>
 <script type="module" src="/js/user/common/liveValidation.js"></script>
-
+<link rel="stylesheet" href="/css/userForm.css">
 </body>
 </html>
