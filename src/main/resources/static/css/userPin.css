@@ -1,0 +1,115 @@
+@charset "UTF-8";
+
+/* 기본 배경 및 레이아웃 */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 100px;
+    margin: 0;
+    min-height: 100vh;
+}
+
+/* 제목 */
+h1, h2 {
+    color: #21afbf;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* PIN 입력 폼 공통 */
+form {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 320px;
+    text-align: center;
+}
+
+/* 라벨 및 입력 */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #444;
+    font-size: 15px;
+}
+
+input[type="password"],
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+input:focus {
+    border-color: #2adbe0;
+    outline: none;
+}
+
+/* 버튼 */
+button,
+input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #21afbf;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover,
+input[type="submit"]:hover {
+    background-color: #2adbe0;
+}
+
+/* 메시지 출력 */
+#message {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #e74c3c;
+}
+
+/* 뒤로가기 링크 */
+.back-link {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    text-decoration: none;
+    color: #21afbf;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: #2adbe0;
+}
+
+/* 에러 메시지 */
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* 성공 메시지 */
+.success-message {
+    color: green;
+    font-size: 14px;
+    margin-top: 5px;
+}

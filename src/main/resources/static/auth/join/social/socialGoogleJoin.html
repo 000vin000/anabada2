@@ -5,6 +5,8 @@
   <title>소셜 회원가입</title>
   <script type="module" src="/js/auth/socialGoogleJoin.js"></script>
   <script type="module" src="/js/user/common/liveValidation.js"></script>
+  <link rel="stylesheet" href="/css/userForm.css">
+  <link rel="stylesheet" href="/css/userUpdate.css"> 
 </head>
 <body>
   <h2>소셜 회원가입</h2>
@@ -21,11 +23,14 @@
     <button type="button" id="checkUserNickBtn">중복 체크</button>
     <span id="userNickCheckMessage"></span><br>
 
-    <label for="phone1">전화번호</label>
-    <input type="text" id="phone1" name="phone1" maxlength="3" required> -
-    <input type="text" id="phone2" name="phone2" maxlength="4" required> -
-    <input type="text" id="phone3" name="phone3" maxlength="4" required>
-    <span id="phoneWarning"></span><br>
+	<label for="phone1">전화번호</label>
+	<div class="phone-group">
+	  <input type="text" id="phone1" name="phone1" maxlength="3" required>
+	  <input type="text" id="phone2" name="phone2" maxlength="4" required>
+	  <input type="text" id="phone3" name="phone3" maxlength="4" required>
+	</div>
+	<span id="phoneWarning"></span><br>
+
 
     <label for="baseAddress">기본 주소</label>
     <input type="text" id="baseAddress" name="baseAddress" required><br>
