@@ -471,10 +471,26 @@
 	text-overflow: ellipsis;
 }
 
-.pending-item-price, .pending-item-counterpart, .pending-item-deadline {
+.pending-item-price, .pending-item-deadline {
 	font-size: 13px;
 	color: #666;
 	margin-right: 15px;
+}
+
+.pending-item-counterpart {
+	font-size: 13px;
+	color: #222;
+	font-weight: 500;
+	margin-right: 15px;
+}
+
+.pending-item-counterpart a {
+	color: #43BFC7;
+	text-decoration: none;
+}
+
+.pending-item-counterpart a:hover {
+	text-decoration: underline;
 }
 
 .pending-item-price {
