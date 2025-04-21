@@ -391,7 +391,16 @@ function displayPendingItems(items, containerId, type) {
 
 		const counterpartDiv = document.createElement('div');
 		counterpartDiv.className = 'pending-item-counterpart';
-		counterpartDiv.textContent = `${type === 'sell' ? '구매자' : '판매자'}: ${item.itemCounterNick || '정보 없음'}`;
+		const counterpartBaseText = `${type === 'sell' ? '구매자' : '판매자'}: ${item.itemCounterNick || '정보 없음'}`;
+		
+		if (item.itemCounterUserNo && typeof contextPath !== 'undefined') {
+			const profileLink = document.createElement('a');
+			profileLink.href = `${contextPath}/user/profile/${item.itemCounterUserNo}`;
+			profileLink.textContent = counterpartBaseText;
+			counterpartDiv.appendChild(profileLink);
+		} else {
+			counterpartDiv.textContent = counterpartBaseText;
+		}
 
 		const deadlineDiv = document.createElement('div');
 		deadlineDiv.className = 'pending-item-deadline';
