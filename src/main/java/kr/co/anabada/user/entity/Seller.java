@@ -90,10 +90,10 @@ public class Seller {
 	}
 	
 	public enum SellerGrade {
-	    HANGER(0, 1, "옷걸이"),
-	    BUNDLE(2, 3, "보따리"),
-	    SMALL_SHOP(4, 50, "구멍가게"),
-	    STORE(51, 100, "상점"),
+	    HANGER(0, 19, "옷걸이"),
+	    BUNDLE(20, 39, "보따리"),
+	    SMALL_SHOP(40, 59, "구멍가게"),
+	    STORE(60, 100, "상점"),
 	    MART(101, Integer.MAX_VALUE, "마트");
 	    
 	    private final int minSalesCount;
