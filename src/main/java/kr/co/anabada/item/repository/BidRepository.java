@@ -3,10 +3,13 @@ package kr.co.anabada.item.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.anabada.item.entity.Bid;
 import kr.co.anabada.item.entity.Bid.BidStatus;
@@ -41,4 +44,13 @@ public interface BidRepository extends JpaRepository<Bid, Integer> {
 			+ "WHERE b.item = :item "
 			+ "ORDER BY b.bidPrice DESC, b.bidTime ASC")
     Optional<Buyer> findWinningBuyerByItem(@Param("item") Item item);
+
+//	@Query("SELECT b FROM Bid b " +
+//			"WHERE b.item = :item AND b.bidStatus = BidStatus.ACTIVE " +
+//			"ORDER BY b.bidPrice DESC, b.bidTime ASC")
+//	Optional<Bid> findTopActiveBidByItem(@Param("item") Item item, Pageable pageable);
+//
+//	@Query("UPDATE Bid b SET b.bidStatus = BidStatus.WINNING " +
+//			"WHERE b = :bid AND b.bidStatus = BidStatus.ACTIVE")
+//	int markBidAsWinning(@Param("bid") Bid bid);
 }

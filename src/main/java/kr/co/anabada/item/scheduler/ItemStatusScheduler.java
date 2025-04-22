@@ -3,10 +3,13 @@ package kr.co.anabada.item.scheduler;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.co.anabada.item.entity.Bid;
 import kr.co.anabada.item.entity.Item;
 import kr.co.anabada.item.entity.Item.ItemStatus;
 import kr.co.anabada.item.repository.BidRepository;
@@ -43,6 +46,7 @@ public class ItemStatusScheduler {
 			if (!itemsToReserve.isEmpty()) {
 				for (Item item : itemsToReserve) {
 					Buyer winner = bidRepository.findWinningBuyerByItem(item).orElse(null);
+					log.info("Winner: {}", winner.toString());
 					
 					if (winner != null) {
 						item.setBuyer(winner);
@@ -50,6 +54,12 @@ public class ItemStatusScheduler {
 						item.setItemResvStartDate(item.getItemSaleEndDate());
 						item.setItemResvEndDate(item.getItemSaleEndDate().plusDays(3));
 						itemRepository.save(item);
+						
+//						Pageable topOne = PageRequest.of(0, 1);
+//						Bid winBid = bidRepository.findTopActiveBidByItem(item, topOne).orElse(null);
+//						if (winBid != null) {
+//							bidRepository.markBidAsWinning(winBid);
+//						}
 						updatedCount++;
 					}
 				}
